@@ -1,0 +1,35 @@
+---
+title: "Differential expression between groups (without replicates)"
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+---
+
+Testing.
+
+
+ # Overview
+ 
+ Sometimes there are no biological replicates, yet you still want to make a comparison.
+ 
+ # Example
+ 
+ Compare the difference between two XXXX subtypes...
+ 
+ ...
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+

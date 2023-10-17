@@ -1,0 +1,92 @@
+---
+title: "Differential expression between groups using pseudobulk"
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+---
+
+PLACEHOLDER
+
+Pseudobulk analysis is an option where you have biological replicates. It is essentially pooling the individual cell counts and treating your expreiment like a bulk RNAseq.
+
+
+First, you need to build a pseudobulk matrix - the `AggregateExpression()` function can do this, once you set the 'Idents' of your seurat object to your grouping factor (here, thats a combination of individual+treatment called 'sample', instead of the 'stim' treatment column).
+
+```{r eval=FALSE}
+# Tools for bulk differential expression
+library(limma)
+library(edgeR)
+
+
+# Change idents to ind for grouping.
+kang.celltype$sample <- factor(paste(kang.celltype$stim, kang.celltype$ind, sep="_"))
+Idents(kang.celltype) <- kang.celltype$sample
+
+# THen pool together counts in those groups
+# AggregateExperssion returns a list of matricies - one for each assay requested (even just requesting one)
+pseudobulk_matrix_list <- AggregateExpression( kang.celltype,  slot = 'counts', assays='RNA' )
+pseudobulk_matrix      <- pseudobulk_matrix_list[['RNA']]
+colnames(pseudobulk_matrix) <- as.character(colnames(pseudobulk_matrix)) # Changes colnames to simple text
+pseudobulk_matrix[1:5,1:4]
+```
+
+Now it looks like a bulk RNAseq experiment, so treat it like one.
+
+We can use the popular `limma` package for differential expression. Here is one [tutorial](https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html), and the hefty reference manual is hosted by [bioconductor](https://bioconductor.org/packages/release/bioc/html/limma.html).
+
+In brief, this code below constructs a linear model for this experiment that accounts for the variation in individuals and treatment. It then tests for differential expression between 'stim' and 'ctrl' groups.
+
+```{r eval=FALSE}
+dge <- DGEList(pseudobulk_matrix)
+dge <- calcNormFactors(dge)
+
+# Remove _ and everything after it - yeilds stim group
+stim <- gsub("_.*","",colnames(pseudobulk_matrix)) 
+
+# Removing everything before the _ for the individua, then converting those numerical ind explictiy to text. Else limma will treat them as numbers!
+ind  <- as.character(gsub(".*_","",colnames(pseudobulk_matrix))) 
+
+design <- model.matrix( ~0 + stim + ind)
+vm  <- voom(dge, design = design, plot = FALSE)
+fit <- lmFit(vm, design = design)
+
+contrasts <- makeContrasts(stimstim - stimctrl, levels=coef(fit))
+fit <- contrasts.fit(fit, contrasts)
+fit <- eBayes(fit)
+
+de_result_pseudobulk <- topTable(fit, n = Inf, adjust.method = "BH")
+de_result_pseudobulk <- arrange(de_result_pseudobulk , adj.P.Val)
+```
+
+
+Look at the significantly differentially expressed genes:
+```{r eval=FALSE}
+head(de_result_pseudobulk)
+```
+
+
+```{r eval=FALSE}
+p1 <- ggplot(de_result_pseudobulk, aes(x=AveExpr, y=logFC, col=adj.P.Val < 0.05)) +
+  geom_point() +
+  scale_colour_manual(values=c('TRUE'="red",'FALSE'="black")) + 
+  theme_bw() +
+  ggtitle("Pseudobulk")
+
+
+p2 <- ggplot(de_result_pseudobulk, aes(x=logFC, y=-log10(P.Value), col=adj.P.Val < 0.05)) +
+  geom_point() +
+  scale_colour_manual(values=c('TRUE'="red",'FALSE'="black")) + 
+  theme_bw() +
+  ggtitle("Pseudobulk Test (Volcano)")
+
+p1 + p2
+
+```
