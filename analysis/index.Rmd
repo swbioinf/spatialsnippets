@@ -11,9 +11,14 @@ editor_options:
 
 Testing... nothing useful here yet.
 
-
 ## Differential Expression
 
 * [Differential expression between groups (no replicates)](e_DEWithoutReps.html)
 * [Differential expression with pseudobulk](e_DEPseudobulk.html)
+
+
+## Something else.
+
+...
+
 
