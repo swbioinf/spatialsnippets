@@ -13,18 +13,66 @@ editor_options:
   chunk_output_type: console
 ---
 
-Testing.
 
 
- # Overview
+
+# Overview
+
+*<DIAGRAM>*
  
- Sometimes there are no biological replicates, yet you still want to make a comparison.
+Sometimes there are no biological replicates, yet you still want to make a comparison.
+
+E.g.
+
+* Differences betwee two similar clusters in a single sample pilot
+* A 1 vs 1 comparison, where replicates simply aren't available
+
+
+
+# Example Problem
  
- # Example
- 
- Compare the difference between two XXXX subtypes...
- 
- ...
+Compare the difference between two XXXX subtypes...
+
+
+More context around test 
+```{ r eval=FALSE}
+
+# Load data
+
+# Look at columns
+
+
+```
+
+
+# Code Snippet
+
+Just the test. The bit to be copy-pasted into analysis code.
+
+```{r eval=FALSE}
+# DefaultAssay() <- 
+#FindMarkers
+
+
+```
+
+
+# Results
+
+
+
+
+# Further Information
+
+
+
+
+
+
+
+
+
+
  
  
  

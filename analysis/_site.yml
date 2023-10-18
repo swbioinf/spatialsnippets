@@ -3,8 +3,10 @@ output_dir: ../docs
 navbar:
   title: spatialsnippets
   left:
-  - text: Home
+  - text: Tests
     href: index.html
+  - text: Data
+    href: index_data.html
   - text: About
     href: about.html
   - text: License

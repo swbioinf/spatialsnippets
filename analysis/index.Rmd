@@ -11,14 +11,31 @@ editor_options:
 
 Testing... nothing useful here yet.
 
-## Differential Expression
+## Differential Expression (core)
 
-* [Differential expression between groups (no replicates)](e_DEWithoutReps.html)
+Ways of testing differential expression
+
 * [Differential expression with pseudobulk](e_DEPseudobulk.html)
+* [Differential expression between groups (no replicates)](e_DEWithoutReps.html)
+* Differential expression, using cell level information
+
+## Differential expression applied
+
+Ways of selection for differential expression
+
+* Test for differential expression by condition in all celltypes
+* Test for differential expression by different cell niches.
+* Test for differential expression by proximity to celltype
+
+## Proportional changes
+
+* Test for different cell type composition by group
+
+## Spatial hypotheses
+
+* Identify spatially restricted genes
+* Identify spatially co-expressed or adjacent genes
 
 
-## Something else.
-
-...
 
 

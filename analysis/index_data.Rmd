@@ -1,5 +1,6 @@
 ---
-title: "About"
+title: "Data"
+site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
     toc: false
@@ -8,4 +9,4 @@ editor_options:
 ---
 
 
-Copy-pasteable snippets. 
+Source of data.
