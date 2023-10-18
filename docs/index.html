@@ -255,7 +255,10 @@ $(document).ready(function () {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Home</a>
+  <a href="index.html">Tests</a>
+</li>
+<li>
+  <a href="index_data.html">Data</a>
 </li>
 <li>
   <a href="about.html">About</a>
@@ -357,15 +360,15 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree6ab63fe290937e08ad3afe3b1ccc25433f39d0fetargetblank6ab63fea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree507ead4d3149a8703afa56cbf10bf74e5cefafa7targetblank507ead4a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/6ab63fe290937e08ad3afe3b1ccc25433f39d0fe" target="_blank">6ab63fe</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/507ead4d3149a8703afa56cbf10bf74e5cefafa7" target="_blank">507ead4</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree6ab63fe290937e08ad3afe3b1ccc25433f39d0fetargetblank6ab63fea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree507ead4d3149a8703afa56cbf10bf74e5cefafa7targetblank507ead4a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -375,7 +378,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/6ab63fe290937e08ad3afe3b1ccc25433f39d0fe" target="_blank">6ab63fe</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/507ead4d3149a8703afa56cbf10bf74e5cefafa7" target="_blank">507ead4</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -395,6 +398,7 @@ Ignored files:
     Ignored:    analysis/e_DEPseudobulk.nb.html
     Ignored:    analysis/e_DEWithoutReps.nb.html
     Ignored:    renv/library/
+    Ignored:    renv/staging/
 
 Unstaged changes:
     Modified:   README.md
@@ -442,6 +446,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/507ead4d3149a8703afa56cbf10bf74e5cefafa7/analysis/index.Rmd" target="_blank">507ead4</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2023-10-18
+</td>
+<td>
+wflow_publish("analysis/")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/cfe5b98be6a5512be1c53ec665dfa355dd05e05f/docs/index.html" target="_blank">cfe5b98</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2023-10-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -501,18 +539,38 @@ adding
 </div>
 </div>
 <p>Testing… nothing useful here yet.</p>
-<div id="differential-expression" class="section level2">
-<h2>Differential Expression</h2>
+<div id="differential-expression-core" class="section level2">
+<h2>Differential Expression (core)</h2>
+<p>Ways of testing differential expression</p>
 <ul>
-<li><a href="e_DEWithoutReps.html">Differential expression between
-groups (no replicates)</a></li>
 <li><a href="e_DEPseudobulk.html">Differential expression with
 pseudobulk</a></li>
+<li><a href="e_DEWithoutReps.html">Differential expression between
+groups (no replicates)</a></li>
+<li>Differential expression, using cell level information</li>
 </ul>
 </div>
-<div id="something-else." class="section level2">
-<h2>Something else.</h2>
-<p>…</p>
+<div id="differential-expression-applied" class="section level2">
+<h2>Differential expression applied</h2>
+<p>Ways of selection for differential expression</p>
+<ul>
+<li>Test for differential expression by condition in all celltypes</li>
+<li>Test for differential expression by different cell niches.</li>
+<li>Test for differential expression by proximity to celltype</li>
+</ul>
+</div>
+<div id="proportional-changes" class="section level2">
+<h2>Proportional changes</h2>
+<ul>
+<li>Test for different cell type composition by group</li>
+</ul>
+</div>
+<div id="spatial-hypotheses" class="section level2">
+<h2>Spatial hypotheses</h2>
+<ul>
+<li>Identify spatially restricted genes</li>
+<li>Identify spatially co-expressed or adjacent genes</li>
+</ul>
 </div>
 
 
