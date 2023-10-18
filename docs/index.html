@@ -32,6 +32,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -263,7 +265,13 @@ $(document).ready(function () {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/swbioinf/spatialsnippets">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -281,7 +289,7 @@ $(document).ready(function () {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -292,8 +300,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -302,13 +310,13 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2023-10-17
+<strong>Last updated:</strong> 2023-10-18
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 1
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>spatialsnippets/</code> <span
@@ -331,34 +339,33 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown file has unstaged changes. To know which version of
-the R Markdown file created these results, you’ll want to first commit
-it to the Git repo. If you’re still working on the analysis, you can
-ignore this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongd212fda">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree6ab63fe290937e08ad3afe3b1ccc25433f39d0fetargetblank6ab63fea">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> d212fda
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/6ab63fe290937e08ad3afe3b1ccc25433f39d0fe" target="_blank">6ab63fe</a>
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongd212fda"
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree6ab63fe290937e08ad3afe3b1ccc25433f39d0fetargetblank6ab63fea"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -367,7 +374,8 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version d212fda.
+The results in this page were generated with repository version
+<a href="https://github.com/swbioinf/spatialsnippets/tree/6ab63fe290937e08ad3afe3b1ccc25433f39d0fe" target="_blank">6ab63fe</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -386,16 +394,10 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/e_DEPseudobulk.nb.html
     Ignored:    analysis/e_DEWithoutReps.nb.html
-
-Untracked files:
-    Untracked:  analysis/e_DEPseudobulk.Rmd
-    Untracked:  analysis/e_DEWithoutReps.Rmd
-    Untracked:  renv.lock
-    Untracked:  renv/
+    Ignored:    renv/library/
 
 Unstaged changes:
-    Modified:   .Rprofile
-    Modified:   analysis/index.Rmd
+    Modified:   README.md
 
 </code></pre>
 <p>
@@ -445,7 +447,24 @@ Message
 Rmd
 </td>
 <td>
-d212fda
+<a href="https://github.com/swbioinf/spatialsnippets/blob/6ab63fe290937e08ad3afe3b1ccc25433f39d0fe/analysis/index.Rmd" target="_blank">6ab63fe</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2023-10-18
+</td>
+<td>
+wflow_publish("analysis/")
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/584cf7388ac5d6a551b4245bd6116c4eec38f733/analysis/index.Rmd" target="_blank">584cf73</a>
 </td>
 <td>
 Sarah Williams
@@ -454,7 +473,24 @@ Sarah Williams
 2023-10-17
 </td>
 <td>
-Start workflowr project.
+adding
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/584cf7388ac5d6a551b4245bd6116c4eec38f733/docs/index.html" target="_blank">584cf73</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2023-10-17
+</td>
+<td>
+adding
 </td>
 </tr>
 </tbody>
@@ -473,6 +509,10 @@ groups (no replicates)</a></li>
 <li><a href="e_DEPseudobulk.html">Differential expression with
 pseudobulk</a></li>
 </ul>
+</div>
+<div id="something-else." class="section level2">
+<h2>Something else.</h2>
+<p>…</p>
 </div>
 
 
