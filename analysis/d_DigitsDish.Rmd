@@ -1,0 +1,164 @@
+---
+title: "Dataset: Digits in a dish. "
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+---
+
+Preparation of data from: 
+*Digits in a dish: An in vitro system to assess the molecular genetics of hand/foot development at single-cell resolution* Allison M. Fuiten, Yuki Yoshimoto, Chisa Shukunami, H. Scott Stadler. Fronteirs in Cell and Developmental Biology 2023.
+
+https://www.frontiersin.org/articles/10.3389/fcell.2023.1135025/full
+
+Data from GEO, GSE221883. https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE221883
+
+
+Data processing here is simplified for demonstrative purposes - and differs from that used in the paper!
+
+<!-- Package install
+Seurat5
+#renv::install('satijalab/seurat-wrappers@seurat5') # Yes.
+#renv::install('satijalab/seurat@seurat5')
+-->
+
+# Libraries
+
+```{r}
+library(Seurat)
+library(tidyverse)
+```
+
+
+# Data Download
+
+
+Download counts matricies from GEO. Note the read10X function used later expects a folder per sample with 
+files exactly named barcodes.tsv.gz/features.tsv.gz and matrix.mtx.gz
+
+```{sh eval=FALSE}
+wget https://www.ncbi.nlm.nih.gov/geo/download/?acc=GSE221883&format=file
+tar -xzf GSE221883_RAW.tar
+
+mkdir data_for_seurat
+
+
+
+mkdir data_for_seurat
+mkdir seurat_objects
+for sample in GSM6908653_Day2_A GSM6908655_Day7_A GSM6908657_Day10_A GSM6908654_Day2_B GSM6908656_Day7_B GSM6908658_Day10_B
+do
+echo ${sample}
+mkdir data_for_seurat/${sample}
+cp ${sample}_barcodes.tsv.gz data_for_seurat/${sample}/barcodes.tsv.gz
+cp ${sample}_features.tsv.gz data_for_seurat/${sample}/features.tsv.gz
+cp ${sample}_matrix.mtx.gz data_for_seurat/${sample}/matrix.mtx.gz
+done
+```
+
+
+
+
+Contains the following files:
+```
+GSM6908653_Day2_A_barcodes.tsv.gz		
+GSM6908653_Day2_A_features.tsv.gz		
+GSM6908653_Day2_A_matrix.mtx.gz		
+GSM6908654_Day2_B_barcodes.tsv.gz		
+GSM6908654_Day2_B_features.tsv.gz		
+GSM6908654_Day2_B_matrix.mtx.gz		
+GSM6908655_Day7_A_barcodes.tsv.gz		
+GSM6908655_Day7_A_features.tsv.gz		
+GSM6908655_Day7_A_matrix.mtx.gz		
+GSM6908656_Day7_B_barcodes.tsv.gz		
+GSM6908656_Day7_B_features.tsv.gz		
+GSM6908656_Day7_B_matrix.mtx.gz		
+GSM6908657_Day10_A_barcodes.tsv.gz		
+GSM6908657_Day10_A_features.tsv.gz		
+GSM6908657_Day10_A_matrix.mtx.gz		
+GSM6908658_Day10_B_barcodes.tsv.gz		
+GSM6908658_Day10_B_features.tsv.gz		
+GSM6908658_Day10_B_matrix.mtx.g		
+```
+
+
+# Data Load
+
+
+```{r}
+data_dir <- '/Users/s2992547/data_local/datasets/GSE221883_DigitsDish_ScRNAseq/data_for_seurat/'
+seurat_objects_dir <- '/Users/s2992547/data_local/datasets/GSE221883_DigitsDish_ScRNAseq/seurat_objects/'
+```
+
+
+```{r}
+samples <- list.files(data_dir)
+
+sample_dirs <- file.path(data_dir, samples)
+names(sample_dirs) <- samples
+
+data <- Read10X(data.dir = sample_dirs)
+so   <- CreateSeuratObject(counts = data, project = "Fuiten2023")
+
+so[["percent.mt"]] <- PercentageFeatureSet(so, pattern = "^mt-")
+
+
+```
+
+```{r}
+VlnPlot(so, features = c("nFeature_RNA"))
+VlnPlot(so, features = c("nCount_RNA")) + scale_y_log10()
+VlnPlot(so, features = c("percent.mt"))
+```
+
+Add basic sample information.
+```{r}
+anno_table <- as_tibble(str_split_fixed(rownames(so@meta.data), "_", n = 4 ))
+colnames(anno_table) <- c("Accession", "Day","Rep","Cell")
+so[["Sample"]] <- paste(anno_table$Day, anno_table$Rep, anno_table$Accession, sep="_")
+so[["Accession"]] <- anno_table$Accession
+so[["Day"]] <- anno_table$Day
+so[["Rep"]] <- anno_table$Rep
+so[["Cell"]] <- anno_table$Cell
+```
+
+
+Do routine processing (absolutely not optimised for this study, just need something reasonable.)
+```{r}
+so <- subset(so, subset = nFeature_RNA > 2000 & percent.mt < 25)
+so <- NormalizeData(so)
+so <- FindVariableFeatures(so, selection.method = "vst", nfeatures = 2000)
+so <- ScaleData(so) # No cc regression.
+so <- RunPCA(so, features = VariableFeatures(object = so))
+so <- RunUMAP(so, dims = 1:20)
+so <- FindNeighbors(so, dims = 1:20)
+so <- FindClusters(so)
+```
+
+
+```{r}
+ElbowPlot(so,ndims = 30)
+```
+
+
+UMAP views
+```{r}
+DimPlot(so)
+DimPlot(so, group.by='Sample')
+DimPlot(so, group.by='Day')
+DimPlot(so, split.by='Sample', ncol=3)
+```
+
+```{r eval=FALSE}
+saveRDS(so, file.path(seurat_objects_dir,"Fuiten2023_DigitsInDish_00_load.RDS"))
+```
+
+
+

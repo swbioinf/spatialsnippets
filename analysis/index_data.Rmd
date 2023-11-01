@@ -10,3 +10,5 @@ editor_options:
 
 
 Source of data.
+
+* [Fuiten 2023 - Digits in a Dish](d_DigitsDish.html) : *Digits in a dish: An in vitro system to assess the molecular genetics of hand/foot development at single-cell resolution* Allison M. Fuiten, Yuki Yoshimoto, Chisa Shukunami, H. Scott Stadler. Fronteirs in Cell and Developmental Biology 2023.
