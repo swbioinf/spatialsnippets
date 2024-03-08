@@ -1,0 +1,385 @@
+---
+title: "Dataset: IBD cosMX GarridoTrigo2023"
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+---
+
+
+Data is from paper [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570)
+from Garrido-Trigo et al 2023.
+
+The study included 9 cosmx slides of colonic biopsies
+
+* 3x HC - Healthy controls
+* 3x UC - Ulcerative colitis
+* 3x CD - Chrones's disease
+
+
+Fastantically - not only have they made their raw and annotated data available, but have also shared their analysis code; https://github.com/HelenaLC/CosMx-SMI-IBD
+
+
+They have also shared browseable interface here: https://servidor2-ciberehd.upc.es/external/garrido/app/
+
+
+# Libraries
+
+```{r}
+library(Seurat)
+library(SeuratObject)
+library(tidyverse)
+```
+
+# Data download
+
+From the project description:
+
+Raw data on GEO here; https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE234713
+
+_Inflammatory bowel diseases (IBDs) including ulcerative colitis (UC) and Crohn’s disease (CD) are chronic inflammatory diseases with increasing worldwide prevalence that show a perplexing heterogeneity in manifestations and response to treatment. We applied spatial transcriptomics at single-cell resolution (CosMx Spatial Molecular Imaging) to human inflamed and uninflamed intestine._
+
+
+The following files were download from GEO
+
+* GSE234713_CosMx_annotation.csv.gz
+* GSE234713_CosMx_normalized_matrix.txt.gz
+* GSE234713_RAW.tar: RAW data was downloaded via custom downlod in 3 batches, one per group
+  * GSE234713_RAW_CD.tar
+  * GSE234713_RAW_HC.tar
+  * GSE234713_RAW_UC.tar
+* GSE234713_ReadMe_SMI_Data_File.html
+
+```{sh eval=FALSE}
+cd raw_data
+tar -xf GSE234713_RAW_CD.tar
+tar -xf GSE234713_RAW_HC.tar
+tar -xf GSE234713_RAW_UC.tar
+```
+
+
+
+# Data load
+
+
+```{r}
+dataset_dir      <- '~/data_local/datasets/'
+project_data_dir <- file.path(dataset_dir,'GSE234713_IBDcosmx_GarridoTrigo2023')
+sample_dir            <- file.path(project_data_dir, "raw_data/") 
+annotation_file       <- file.path(project_data_dir,"GSE234713_CosMx_annotation.csv.gz")
+data_dir              <- file.path(project_data_dir, "processed_data/") 
+
+
+seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
+
+# config
+min_count_per_cell <- 100
+max_pc_negs        <- 1.5
+max_avg_neg        <- 0.5
+
+
+
+sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Chrones's disease")
+
+ 
+
+```
+
+
+
+
+## Raw data
+
+
+## Load data
+
+```{r}
+load_sample_into_seurat <- function(the_sample){
+  
+  metadata_cols <- c("fov","Area") 
+  
+  sample_metadata_file <- file.path(sample_dir, paste0(the_sample,'_metadata_file.csv.gz'))
+  sample_mtx_file      <- file.path(sample_dir, paste0(the_sample,'_exprMat_file.csv.gz'))
+  sample_molecules_file <- file.path(sample_dir, paste0(the_sample,'_tx_file.csv.gz'))
+  
+  ns <- ReadNanostring(
+                 data.dir           = sample_dir,
+                 mtx.file           = sample_mtx_file,
+                 metadata.file      = sample_metadata_file,
+                 molecules.file     = sample_molecules_file,
+                 segmentations.file = NULL,
+                 metadata           = metadata_cols , # Can only draw from selected feilds. So add later. Using ensures table-ness.
+                 type="centroids"
+        )
+  
+  # Add the rest of the metadata
+  metadata_table <- read_csv(sample_metadata_file)
+  
+  # Check order matches.
+  stopifnot(all(paste0(metadata_table$cell_ID, "_", metadata_table$fov)  == ns$metadata$cell)) #im not paranoid, who's paranoid? not me.
+  # pull the whole of annodation in now, and shuffle column order.
+  ns$metadata <- cbind(ns$metadata, metadata_table[,!colnames(metadata_table) %in% metadata_cols])
+  ns$metadata <- ns$metadata[, c(2,1,3:ncol(ns$metadata))]
+  rownames(ns$metadata) <- ns$metadata$cell
+  
+  cents  <- CreateCentroids(ns$centroids)
+  coords <- CreateFOV(coords = list("centroids" = cents), type = "centroids")
+  so     <- CreateSeuratObject(counts    = ns$matrix,
+                               meta.data = ns$metadata)
+  so$orig.ident <- the_sample
+  
+  # sample info
+  so$group     <- substr(the_sample, 12, 13)
+  so$group     <- factor(so$group, levels=names(sample_codes))
+  so$condition <- factor(as.character(sample_codes[so$group]), levels=sample_codes)
+  
+
+  # Put neg probes into their own assay.
+  neg_probes <- rownames(so)[grepl(x=rownames(so), pattern="NegPrb")]
+  neg_matrix         <- GetAssayData(so,assay = 'RNA', layer = 'counts')[neg_probes,]
+  so[["negprobes"]] <- CreateAssayObject(counts = neg_matrix)
+  
+  ## and remove from the main one
+  #rna_probes <- rownames(so)[(! rownames(so) %in% neg_probes)]
+  #so         <- so[rna_probes,]
+  
+
+  return(so)
+  
+}
+
+```
+
+
+
+```{r}
+samples <- c('GSM7473682_HC_a','GSM7473683_HC_b','GSM7473684_HC_c',
+             'GSM7473685_UC_a','GSM7473686_UC_b','GSM7473687_UC_c',
+             'GSM7473688_CD_a','GSM7473689_CD_b','GSM7473690_CD_c')
+sample_prefix <- paste0(substr(samples, 12,15))
+
+so.list <- lapply(FUN=load_sample_into_seurat, X=samples)
+
+#NB: merge is in SeuratObject packages, but must be called without :: 
+so.raw <- merge(so.list[[1]], y=so.list[2:length(so.list)], add.cell.ids=sample_prefix)
+rm(so.list)
+```
+
+# Negative probe handling
+
+```{r}
+so.raw$pc_neg <-  ( so.raw$nCount_negprobes / so.raw$nCount_RNA ) * 100
+so.raw$avg_neg <-  colMeans(so.raw[["negprobes"]])
+```
+
+
+<!-- ```{r} -->
+<!-- # Put neg probes into their own assay. -->
+<!-- neg_probes <- rownames(so.raw)[grepl(x=rownames(so.raw), pattern="NegPrb")] -->
+<!-- neg_matrix         <- GetAssayData(so.raw,assay = 'RNA', layer = 'counts')[neg_probes,] -->
+<!-- so.raw[["negprobes"]] <- CreateAssayObject(counts = neg_matrix) -->
+
+<!-- ## and remove from the main one -->
+<!-- rna_probes <- rownames(so)[(! rownames(so.raw) %in% neg_probes)] -->
+<!-- so.raw         <- so[rna_probes,] -->
+<!-- ``` -->
+
+
+# Pull in annotation
+
+Most cell annotations. 
+
+```{r}
+anno_table <- read_csv(annotation_file)
+
+anno_table <- as.data.frame(anno_table)
+rownames(anno_table) <- anno_table$id
+
+head(so.raw@meta.data)
+head(anno_table)
+
+so.raw$full_cell_id <- as.character(rownames(so.raw@meta.data))
+
+so.raw$celltype_subset   <- anno_table[so.raw$full_cell_id,]$subset
+so.raw$celltype_SingleR2 <- anno_table[so.raw$full_cell_id,]$SingleR2
+
+table(is.na(so.raw$celltype_subset))
+```
+
+
+# Basic QC filter
+
+## Min count per cell
+
+```{r}
+ggplot(so.raw@meta.data, aes(x=nCount_RNA, col=orig.ident)) +
+  geom_density() + 
+  geom_vline(xintercept = min_count_per_cell, lty=3) +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle("Counts per cell")
+```
+
+
+## Percent Negative probes
+
+```{r}
+ggplot(so.raw@meta.data, aes(x=pc_neg, col=orig.ident)) +
+  geom_density() + 
+  geom_vline(xintercept = max_pc_negs, lty=3) +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle("Negative probe composition")
+```
+
+```{r}
+ggplot(so.raw@meta.data, aes(x=avg_neg, col=orig.ident)) +
+  geom_density() + 
+  geom_vline(xintercept = max_avg_neg, lty=3) +
+  theme_bw() +
+  ggtitle("Negative probe average")
+```
+
+
+Use bottom left corner;
+```{r}
+ggplot(so.raw@meta.data, aes(y=avg_neg, x=nCount_RNA)) +
+  geom_point(pch=3, alpha=0.1) + 
+  geom_hline(yintercept = max_avg_neg, lty=3) +
+  geom_vline(xintercept = min_count_per_cell, lty=3) +
+  scale_x_log10() + 
+  theme_bw() +
+  ggtitle("Negative probes vs counts")
+```
+
+
+
+## Apply filteres
+
+From paper: _"Cells with an average negative control count greater than 0.5 and less than 20 detected features were filtered out."_
+
+Also remove cell with no cell type annotations.
+```{r}
+so <- so.raw[ ,so.raw$nCount_RNA >= min_count_per_cell &
+               so.raw$avg_neg <= max_avg_neg &
+               !(is.na(so.raw$celltype_subset) )]
+ncol(so.raw)
+ncol(so)
+```
+
+```{r}
+so <- readRDS(seurat_file_01_loaded)
+```
+
+## How many cells per sample?
+
+```{r}
+table(so@meta.data$orig.ident)
+```
+
+
+
+# Basic preprocessing
+
+```{r eval=FALSE}
+num_dims <- 15
+# Run through preprocessing
+so <- NormalizeData(so)
+
+## Do per sample to mimic paper approach somewhat.
+so <- FindVariableFeatures(so, nfeatures = 200) 
+
+
+so <- ScaleData(so) # Just 2k variable features
+so <- RunPCA(so, features = VariableFeatures(so))
+so <- RunUMAP(so, dims=1:num_dims)
+so <- FindNeighbors(so, dims = 1:num_dims)
+so <- FindClusters(so)
+
+```
+
+# Basic plots
+
+
+
+## UMAP {.tabset .tabset-pills}
+
+### Sample
+
+```{r}
+DimPlot(so, group.by = 'orig.ident')
+```
+
+
+### Condition
+
+```{r}
+DimPlot(so, group.by = 'condition')
+```
+
+
+
+### Condition X Sample
+
+```{r fig.width=12, fig.height=3}
+DimPlot(so, group.by = 'orig.ident',split.by = "condition")
+```
+
+### Total counts
+
+```{r}
+FeaturePlot(so, 'nCount_RNA') + scale_colour_viridis_c(option="magma", direction = -1)
+```
+
+
+### Clustered
+
+```{r}
+DimPlot(so, group.by = 'seurat_clusters')
+```
+
+
+### celltype_subset
+
+Classifications from Garrido-Trigo et al 2023.
+
+```{r}
+DimPlot(so, group.by = 'celltype_subset')
+```
+
+### celltype_SingleR2
+
+Classifications from Garrido-Trigo et al 2023.
+
+```{r}
+DimPlot(so, group.by = 'celltype_SingleR2')
+```
+
+## Clustering
+
+Double checking the clusters line up with annotaiaon
+```{r}
+table(so$celltype_subset)
+table(so$celltype_SingleR2)
+```
+
+
+Composition
+```{r}
+heatmap(table(so$celltype_subset,so$celltype_SingleR2))
+```
+
+
+# Save data
+
+```{r eval=FALSE}
+saveRDS(so, seurat_file_01_loaded)
+```
+

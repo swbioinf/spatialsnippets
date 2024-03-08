@@ -14,7 +14,6 @@ Testing... nothing useful here yet.
 ## Differential Expression (core)
 
 Ways of testing differential expression
-
 * [Differential expression with pseudobulk](e_DEPseudobulk.html)
 * [Differential expression between groups (no replicates)](e_DEWithoutReps.html)
 * Differential expression, using cell level information
@@ -22,7 +21,6 @@ Ways of testing differential expression
 ## Differential expression applied
 
 Ways of selection for differential expression
-
 * Test for differential expression by condition in all celltypes
 * Test for differential expression by different cell niches.
 * Test for differential expression by proximity to celltype
@@ -37,5 +35,9 @@ Ways of selection for differential expression
 * Identify spatially co-expressed or adjacent genes
 
 
+
+# Data preparation
+
+* [IBD cosmx dataset](d_cosmxIBD.html) :  [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570) from Garrido-Trigo et al 2023.
 
 
