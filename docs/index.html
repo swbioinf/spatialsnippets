@@ -313,7 +313,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2023-10-18
+<strong>Last updated:</strong> 2024-03-08
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -360,15 +360,15 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree507ead4d3149a8703afa56cbf10bf74e5cefafa7targetblank507ead4a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree6295b7d314030df2d6cbc32d1c08ab215a1c8389targetblank6295b7da">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/507ead4d3149a8703afa56cbf10bf74e5cefafa7" target="_blank">507ead4</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/6295b7d314030df2d6cbc32d1c08ab215a1c8389" target="_blank">6295b7d</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree507ead4d3149a8703afa56cbf10bf74e5cefafa7targetblank507ead4a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree6295b7d314030df2d6cbc32d1c08ab215a1c8389targetblank6295b7da"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -378,7 +378,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/507ead4d3149a8703afa56cbf10bf74e5cefafa7" target="_blank">507ead4</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/6295b7d314030df2d6cbc32d1c08ab215a1c8389" target="_blank">6295b7d</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -393,15 +393,27 @@ were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/d_DigitsDish.nb.html
+    Ignored:    analysis/d_cosmxIBD.nb.html
     Ignored:    analysis/e_DEPseudobulk.nb.html
     Ignored:    analysis/e_DEWithoutReps.nb.html
     Ignored:    renv/library/
     Ignored:    renv/staging/
 
+Untracked files:
+    Untracked:  analysis/d_cosmxLiver.Rmd
+    Untracked:  analysis/d_cosmxLung.Rmd
+    Untracked:  code/Seurat_loadNanostring_production_bugxfix.R
+    Untracked:  code/d_cosmxLiver_subsetting.R
+    Untracked:  d_cosmxLung.nb.html
+    Untracked:  notes/
+
 Unstaged changes:
-    Modified:   README.md
+    Modified:   analysis/e_DEPseudobulk.Rmd
+    Modified:   analysis/index_data.Rmd
 
 </code></pre>
 <p>
@@ -446,6 +458,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/6295b7d314030df2d6cbc32d1c08ab215a1c8389/analysis/index.Rmd" target="_blank">6295b7d</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+<td>
+wflow_publish(c("analysis/index.Rmd", "analysis/d_cosmxIBD.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/e7a4c1232709d2520c307c758f907eb9005812a0/docs/index.html" target="_blank">e7a4c12</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2023-10-18
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -541,23 +587,18 @@ adding
 <p>Testing… nothing useful here yet.</p>
 <div id="differential-expression-core" class="section level2">
 <h2>Differential Expression (core)</h2>
-<p>Ways of testing differential expression</p>
-<ul>
-<li><a href="e_DEPseudobulk.html">Differential expression with
-pseudobulk</a></li>
-<li><a href="e_DEWithoutReps.html">Differential expression between
-groups (no replicates)</a></li>
-<li>Differential expression, using cell level information</li>
-</ul>
+<p>Ways of testing differential expression * <a
+href="e_DEPseudobulk.html">Differential expression with pseudobulk</a> *
+<a href="e_DEWithoutReps.html">Differential expression between groups
+(no replicates)</a> * Differential expression, using cell level
+information</p>
 </div>
 <div id="differential-expression-applied" class="section level2">
 <h2>Differential expression applied</h2>
-<p>Ways of selection for differential expression</p>
-<ul>
-<li>Test for differential expression by condition in all celltypes</li>
-<li>Test for differential expression by different cell niches.</li>
-<li>Test for differential expression by proximity to celltype</li>
-</ul>
+<p>Ways of selection for differential expression * Test for differential
+expression by condition in all celltypes * Test for differential
+expression by different cell niches. * Test for differential expression
+by proximity to celltype</p>
 </div>
 <div id="proportional-changes" class="section level2">
 <h2>Proportional changes</h2>
@@ -570,6 +611,15 @@ groups (no replicates)</a></li>
 <ul>
 <li>Identify spatially restricted genes</li>
 <li>Identify spatially co-expressed or adjacent genes</li>
+</ul>
+</div>
+<div id="data-preparation" class="section level1">
+<h1>Data preparation</h1>
+<ul>
+<li><a href="d_cosmxIBD.html">IBD cosmx dataset</a> : <a
+href="https://www.ncbi.nlm.nih.gov/pubmed/37495570"><em>Macrophage and
+neutrophil heterogeneity at single-cell spatial resolution in human
+inflammatory bowel disease</em></a> from Garrido-Trigo et al 2023.</li>
 </ul>
 </div>
 
