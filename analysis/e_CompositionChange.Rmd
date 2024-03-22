@@ -1,0 +1,192 @@
+---
+title: "Differential celltype composition between groups"
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+---
+
+
+
+Is there a difference in the celltype composition between individuals with  Ulcerative colitis  or Crohn's disease, and Healthy controls?
+
+
+# Load libraries and data object
+
+```{r}
+library(Seurat)
+library(speckle)
+library(tidyverse)
+```
+
+```{r}
+data_dir              <- file.path("~/data_local/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
+seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
+```
+
+
+```{r}
+so <- readRDS(seurat_file_01_loaded)
+
+# MIGRATE TO DATA PREP >>>>
+so$individual_code <- factor(substr(so$orig.ident,12,16))
+so$tissue_sample   <- factor(substr(so$orig.ident,12,16))
+so$fov_name        <- paste0(so$individual_code,"_", str_pad(so$fov, 3, 'left',pad='0'))
+so$celltype_subset <- factor(so$celltype_subset)
+# <<<<
+```
+
+# Looking at the data
+
+<!-- Move this to own page? --->
+
+There are three indivduals per contidion (one tissue sample from each individual). With multiple fovs on each physical tissue sample.
+```{r}
+select(as_tibble(so@meta.data), condition, individual_code, fov_name) %>%
+  unique() %>% 
+  group_by(condition, individual_code) %>% 
+  summarise(n_fovs= n(), item = str_c(fov_name, collapse = ", "))
+```
+
+
+
+
+
+
+
+
+# Full worked example 
+
+## Count how many cells of each type in your data
+
+```{r}
+celltype_summary_table <- so@meta.data %>% 
+  group_by(condition, individual_code, fov_name, celltype_subset) %>%
+  summarise(cells=n(), .groups = 'drop')
+
+```
+
+## check for very low count groups
+
+
+Here T cells are rare, but there are still a decent distribution of them with 10-100+ cells in a FOV.
+
+If many of your celltypes, consider merging similar cell types (e.g. T cells rather than T cell subtypes)
+
+
+```{r}
+ggplot(celltype_summary_table, aes(x=cells, col=celltype_subset)) +
+  geom_density() +
+  geom_rug(alpha=0.2) +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle("Cells per FOV by celltype")
+```
+
+
+-----
+
+
+If you have alot of cell types, sometimes there can be very rare types that would be hard to detect differences in. 
+
+This can expecially happen if you're using celltype assignment with a detailed reference. You might get a handful of irrelevant cell types called (e.g. 4 hepatocytes on a non-liver sample). No reasonable stats could be generated there, and leaving them in would mean a more extreme FDR adjustment. 
+
+
+
+```{r}
+celltype_summary_table.SingleR <- so@meta.data %>% 
+  group_by(condition, individual_code, fov_name, celltype_SingleR2) %>%
+  summarise(cells=n(), .groups = 'drop')
+
+
+
+ggplot(celltype_summary_table.SingleR, aes(x=cells, col=celltype_SingleR2)) +
+  geom_density() +
+  geom_rug(alpha=0.2) +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle("Cells per FOV by celltype")
+```
+
+
+## Look at your samples. 
+
+
+```{r}
+ggplot(celltype_summary_table, aes(x=fov_name, y=cells, fill=celltype_subset)) +
+  geom_bar(position="fill", stat="identity") + 
+  theme_bw() +
+  coord_flip() + 
+  theme(legend.position = "bottom") +
+  facet_wrap(~condition, ncol=3, scales = 'free_y') +
+  scale_y_continuous(expand = c(0,0)) 
+```
+
+
+## Calculate stats.
+
+
+```{r}
+results.anova <- propeller(clusters= so$celltype_subset, 
+          sample  = so$individual_code, 
+          group   = so$condition)
+results.anova
+
+# If a column is preferred over rownames
+results.anova.table <- rownames_to_column( results.anova, var="celltype_subset")
+```
+
+
+```{r}
+so.UCvsHC <- so[,so$condition %in% c("Healthy controls", "Ulcerative colitis")]
+
+
+results.pair <- propeller( clusters= so.UCvsHC$celltype_subset, 
+                           sample  = so.UCvsHC$individual_code, 
+                           group   = so.UCvsHC$condition)
+```
+
+# Code snippet
+
+
+```{r eval=FALSE}
+library(speckle)
+# seurat object so
+results_table <- propeller(clusters = so$cluster, 
+                           sample   = so$sample, 
+                           group    = so$condition)
+
+
+```
+
+# Results
+
+
+```{r}
+results.anova
+```
+
+* rownames : 
+* BaselineProp 
+* PropMean.Chrones.s.disease 
+* PropMean.Healthy.controls 
+* PropMean.Ulcerative.colitis
+* Fstatistic   
+* P.Value
+* FDR
+
+# More information
+
+* Propeller paper: https://academic.oup.com/bioinformatics/article/38/20/4720/6675456
+
+
+
+
+

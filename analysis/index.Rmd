@@ -14,8 +14,8 @@ Testing... nothing useful here yet.
 ## Differential Expression (core)
 
 Ways of testing differential expression
-* [Differential expression with pseudobulk](e_DEPseudobulk.html)
-* [Differential expression between groups (no replicates)](e_DEWithoutReps.html)
+* Differential expression with pseudobulk
+* Differential expression between groups (no replicates)
 * Differential expression, using cell level information
 
 ## Differential expression applied
@@ -27,7 +27,7 @@ Ways of selection for differential expression
 
 ## Proportional changes
 
-* Test for different cell type composition by group
+* [Test for different cell type composition by group](e_CompositionChange.html)
 
 ## Spatial hypotheses
 
