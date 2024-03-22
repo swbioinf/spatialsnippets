@@ -313,7 +313,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-03-08
+<strong>Last updated:</strong> 2024-03-22
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -360,15 +360,15 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree6295b7d314030df2d6cbc32d1c08ab215a1c8389targetblank6295b7da">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree89c3371760221645926a2337889f1571bfaa8801targetblank89c3371a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/6295b7d314030df2d6cbc32d1c08ab215a1c8389" target="_blank">6295b7d</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/89c3371760221645926a2337889f1571bfaa8801" target="_blank">89c3371</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree6295b7d314030df2d6cbc32d1c08ab215a1c8389targetblank6295b7da"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree89c3371760221645926a2337889f1571bfaa8801targetblank89c3371a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -378,7 +378,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/6295b7d314030df2d6cbc32d1c08ab215a1c8389" target="_blank">6295b7d</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/89c3371760221645926a2337889f1571bfaa8801" target="_blank">89c3371</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -398,6 +398,7 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/d_DigitsDish.nb.html
     Ignored:    analysis/d_cosmxIBD.nb.html
+    Ignored:    analysis/e_CompositionChange.nb.html
     Ignored:    analysis/e_DEPseudobulk.nb.html
     Ignored:    analysis/e_DEWithoutReps.nb.html
     Ignored:    renv/library/
@@ -412,8 +413,9 @@ Untracked files:
     Untracked:  notes/
 
 Unstaged changes:
+    Modified:   analysis/d_cosmxIBD.Rmd
     Modified:   analysis/e_DEPseudobulk.Rmd
-    Modified:   analysis/index_data.Rmd
+    Modified:   renv.lock
 
 </code></pre>
 <p>
@@ -458,6 +460,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/89c3371760221645926a2337889f1571bfaa8801/analysis/index.Rmd" target="_blank">89c3371</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-22
+</td>
+<td>
+wflow_publish(c("analysis/index_data.Rmd", "analysis/index.Rmd",
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/index.html" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -587,11 +623,9 @@ adding
 <p>Testing… nothing useful here yet.</p>
 <div id="differential-expression-core" class="section level2">
 <h2>Differential Expression (core)</h2>
-<p>Ways of testing differential expression * <a
-href="e_DEPseudobulk.html">Differential expression with pseudobulk</a> *
-<a href="e_DEWithoutReps.html">Differential expression between groups
-(no replicates)</a> * Differential expression, using cell level
-information</p>
+<p>Ways of testing differential expression * Differential expression
+with pseudobulk * Differential expression between groups (no replicates)
+* Differential expression, using cell level information</p>
 </div>
 <div id="differential-expression-applied" class="section level2">
 <h2>Differential expression applied</h2>
@@ -603,7 +637,8 @@ by proximity to celltype</p>
 <div id="proportional-changes" class="section level2">
 <h2>Proportional changes</h2>
 <ul>
-<li>Test for different cell type composition by group</li>
+<li><a href="e_CompositionChange.html">Test for different cell type
+composition by group</a></li>
 </ul>
 </div>
 <div id="spatial-hypotheses" class="section level2">
