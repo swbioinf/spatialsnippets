@@ -36,6 +36,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -330,7 +332,10 @@ div.tocify {
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="index.html">Home</a>
+  <a href="index.html">Tests</a>
+</li>
+<li>
+  <a href="index_data.html">Data</a>
 </li>
 <li>
   <a href="about.html">About</a>
@@ -340,7 +345,13 @@ div.tocify {
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/swbioinf/spatialsnippets">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -360,7 +371,7 @@ using pseudobulk</h1>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
+workflowr <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -371,8 +382,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> </a>
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
+</a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -381,13 +392,13 @@ aria-hidden="true"></span> </a>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2023-10-17
+<strong>Last updated:</strong> 2024-03-25
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 1
+aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>spatialsnippets/</code> <span
@@ -410,21 +421,18 @@ versions</em> tab lists the development history.
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges">
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted
-changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
+</a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges"
+<div id="strongRMarkdownfilestronguptodate"
 class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R
-Markdown file created these results, you’ll want to first commit it to
-the Git repo. If you’re still working on the analysis, you can ignore
-this warning. When you’re finished, you can run
-<code>wflow_publish</code> to commit the R Markdown file and build the
-HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git
+repository, you know the exact version of the code that produced these
+results.</p>
 </div>
 </div>
 </div>
@@ -515,13 +523,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongd212fda">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree0a3a1ae402c4ecb2bb0bf5bfe879bed5e5981dd1targetblank0a3a1aea">
 <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong> d212fda
+aria-hidden="true"></span> <strong>Repository version:</strong>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/0a3a1ae402c4ecb2bb0bf5bfe879bed5e5981dd1" target="_blank">0a3a1ae</a>
 </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongd212fda"
+<div
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree0a3a1ae402c4ecb2bb0bf5bfe879bed5e5981dd1targetblank0a3a1aea"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -530,7 +540,8 @@ and connecting the code version to the results is critical for
 reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version d212fda.
+The results in this page were generated with repository version
+<a href="https://github.com/swbioinf/spatialsnippets/tree/0a3a1ae402c4ecb2bb0bf5bfe879bed5e5981dd1" target="_blank">0a3a1ae</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -545,20 +556,22 @@ were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .DS_Store
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/d_DigitsDish.nb.html
+    Ignored:    analysis/d_cosmxIBD.nb.html
+    Ignored:    analysis/e_CompositionChange.nb.html
     Ignored:    analysis/e_DEPseudobulk.nb.html
     Ignored:    analysis/e_DEWithoutReps.nb.html
-
-Untracked files:
-    Untracked:  analysis/e_DEPseudobulk.Rmd
-    Untracked:  analysis/e_DEWithoutReps.Rmd
-    Untracked:  renv.lock
-    Untracked:  renv/
+    Ignored:    notes/
+    Ignored:    renv/library/
+    Ignored:    renv/staging/
 
 Unstaged changes:
-    Modified:   .Rprofile
-    Modified:   analysis/index.Rmd
+    Modified:   .gitignore
+    Deleted:    code/d_cosmxLiver_subsetting.R
+    Modified:   renv.lock
 
 </code></pre>
 <p>
@@ -573,15 +586,142 @@ have uncommitted changes.
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with
-<code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were
+made to the R Markdown (<code>analysis/e_DEPseudobulk.Rmd</code>) and
+HTML (<code>docs/e_DEPseudobulk.html</code>) files. If you’ve configured
+a remote Git repository (see <code>?wflow_git_remote</code>), click on
+the hyperlinks in the table below to view the files as they were in that
+past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/0a3a1ae402c4ecb2bb0bf5bfe879bed5e5981dd1/analysis/e_DEPseudobulk.Rmd" target="_blank">0a3a1ae</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-25
+</td>
+<td>
+wflow_publish("analysis/")
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/584cf7388ac5d6a551b4245bd6116c4eec38f733/analysis/e_DEPseudobulk.Rmd" target="_blank">584cf73</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2023-10-17
+</td>
+<td>
+adding
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/584cf7388ac5d6a551b4245bd6116c4eec38f733/docs/e_DEPseudobulk.html" target="_blank">584cf73</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2023-10-17
+</td>
+<td>
+adding
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
 </div>
-<p>PLACEHOLDER</p>
+<div id="section" class="section level1">
+<h1></h1>
+<pre class="r"><code>library(Seurat)</code></pre>
+<pre><code>Loading required package: SeuratObject</code></pre>
+<pre><code>Loading required package: sp</code></pre>
+<pre><code>
+Attaching package: &#39;SeuratObject&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:base&#39;:
+
+    intersect</code></pre>
+<pre class="r"><code>#library(limma)
+#library(edgeR)</code></pre>
+<pre class="r"><code>dataset_dir &lt;- &#39;/Users/s2992547/data_local/datasets/&#39;
+
+#liver_cosmx_seurat_file &lt;- file.path(dataset_dir, &#39;cosmx_smi_human_liver_ffpe_dataset&#39;,&#39;LiverDataReleaseSeurat_subset2.RDS&#39;)
+#liver_cosmx_seurat_file &lt;- file.path(dataset_dir, &#39;cosmx_smi_human_liver_ffpe_dataset&#39;,&#39;LiverDataReleaseSeurat_subset_8fov.RDS&#39;)
+# No matter how few fovs, these are beeing subset large files.
+
+
+liver_cosmx_seurat_file &lt;- file.path(dataset_dir, &#39;cosmx_smi_human_liver_ffpe_dataset&#39;,&#39;LiverDataReleaseSeurat_subset_notranscript.RDS&#39;)
+
+#full_metadata_file &lt;- file.path(dataset_dir, #&#39;cosmx_smi_human_liver_ffpe_dataset&#39;,&#39;/LiverData_metadata2.tsv.gz&#39;)</code></pre>
+<div id="explore-the-annotation" class="section level2">
+<h2>Explore the annotation</h2>
+<p>This data only has two biological samples, the healthy liver and the
+cancerous liver. It has no <strong>biological replicates</strong> , only
+pseudoreplicates (multiple fovs in the same sample).</p>
+<p>We need the following information in the metadata</p>
+<ul>
+<li>Sample identifier: What biological sample aka peice of tissue is
+being measured</li>
+<li>FOV identifier: What FOV (rectangular feild of view) is being
+measures. There can be multiple FOVs per Sample. When there are multiple
+slides in an experiment, FOV numbers can be repeated - we need an ID
+unique to the experiment. You can join slide identifier to fov number if
+needed.</li>
+<li>Condition of interest;</li>
+<li>Any other experimental factors; e.g. Individual, timepoint, age,
+sex, treatment</li>
+<li>Celltype (or cluster)</li>
+</ul>
+<pre class="r"><code>so &lt;- readRDS(liver_cosmx_seurat_file)</code></pre>
+<p>How many cells are prsent in each grouping</p>
+</div>
+</div>
+<div id="placeholder" class="section level1">
+<h1>PLACEHOLDER</h1>
 <p>Pseudobulk analysis is an option where you have biological
 replicates. It is essentially pooling the individual cell counts and
 treating your expreiment like a bulk RNAseq.</p>
@@ -661,7 +801,7 @@ Session information
 <pre class="r"><code>sessionInfo()</code></pre>
 <pre><code>R version 4.3.1 (2023-06-16)
 Platform: aarch64-apple-darwin20 (64-bit)
-Running under: macOS Ventura 13.5
+Running under: macOS Sonoma 14.4
 
 Matrix products: default
 BLAS:   /Library/Frameworks/R.framework/Versions/4.3-arm64/Resources/lib/libRblas.0.dylib 
@@ -677,20 +817,52 @@ attached base packages:
 [1] stats     graphics  grDevices datasets  utils     methods   base     
 
 other attached packages:
-[1] workflowr_1.7.0
+[1] Seurat_5.0.1       SeuratObject_5.0.0 sp_2.1-1           workflowr_1.7.0   
 
 loaded via a namespace (and not attached):
- [1] vctrs_0.6.3       httr_1.4.6        cli_3.6.1         knitr_1.43       
- [5] rlang_1.1.1       xfun_0.39         stringi_1.7.12    processx_3.8.2   
- [9] renv_1.0.0        promises_1.2.0.1  jsonlite_1.8.7    glue_1.6.2       
-[13] rprojroot_2.0.3   git2r_0.32.0      htmltools_0.5.5   httpuv_1.6.11    
-[17] ps_1.7.5          sass_0.4.7        fansi_1.0.4       rmarkdown_2.23   
-[21] jquerylib_0.1.4   tibble_3.2.1      evaluate_0.21     fastmap_1.1.1    
-[25] yaml_2.3.7        lifecycle_1.0.3   whisker_0.4.1     stringr_1.5.0    
-[29] compiler_4.3.1    fs_1.6.3          pkgconfig_2.0.3   Rcpp_1.0.11      
-[33] rstudioapi_0.15.0 later_1.3.1       digest_0.6.33     R6_2.5.1         
-[37] utf8_1.2.3        pillar_1.9.0      callr_3.7.3       magrittr_2.0.3   
-[41] bslib_0.5.0       tools_4.3.1       cachem_1.0.8      getPass_0.2-2    </code></pre>
+  [1] RColorBrewer_1.1-3     rstudioapi_0.15.0      jsonlite_1.8.7        
+  [4] magrittr_2.0.3         spatstat.utils_3.0-4   rmarkdown_2.23        
+  [7] fs_1.6.3               vctrs_0.6.3            ROCR_1.0-11           
+ [10] spatstat.explore_3.2-5 htmltools_0.5.5        sass_0.4.7            
+ [13] sctransform_0.4.1      parallelly_1.36.0      KernSmooth_2.23-22    
+ [16] bslib_0.5.0            htmlwidgets_1.6.2      ica_1.0-3             
+ [19] plyr_1.8.9             plotly_4.10.3          zoo_1.8-12            
+ [22] cachem_1.0.8           whisker_0.4.1          igraph_1.5.1          
+ [25] mime_0.12              lifecycle_1.0.3        pkgconfig_2.0.3       
+ [28] Matrix_1.6-1.1         R6_2.5.1               fastmap_1.1.1         
+ [31] fitdistrplus_1.1-11    future_1.33.0          shiny_1.7.5.1         
+ [34] digest_0.6.33          colorspace_2.1-0       patchwork_1.1.3       
+ [37] ps_1.7.5               rprojroot_2.0.3        tensor_1.5            
+ [40] RSpectra_0.16-1        irlba_2.3.5.1          progressr_0.14.0      
+ [43] fansi_1.0.5            spatstat.sparse_3.0-3  httr_1.4.6            
+ [46] polyclip_1.10-6        abind_1.4-5            compiler_4.3.1        
+ [49] fastDummies_1.7.3      MASS_7.3-60            tools_4.3.1           
+ [52] lmtest_0.9-40          httpuv_1.6.11          future.apply_1.11.0   
+ [55] goftest_1.2-3          glue_1.6.2             callr_3.7.3           
+ [58] nlme_3.1-162           promises_1.2.0.1       grid_4.3.1            
+ [61] Rtsne_0.16             getPass_0.2-2          cluster_2.1.4         
+ [64] reshape2_1.4.4         generics_0.1.3         gtable_0.3.4          
+ [67] spatstat.data_3.0-3    tidyr_1.3.0            data.table_1.14.8     
+ [70] utf8_1.2.4             spatstat.geom_3.2-7    RcppAnnoy_0.0.21      
+ [73] ggrepel_0.9.4          RANN_2.6.1             pillar_1.9.0          
+ [76] stringr_1.5.0          spam_2.10-0            RcppHNSW_0.5.0        
+ [79] later_1.3.1            splines_4.3.1          dplyr_1.1.3           
+ [82] lattice_0.21-8         renv_1.0.0             survival_3.5-7        
+ [85] deldir_1.0-9           tidyselect_1.2.0       miniUI_0.1.1.1        
+ [88] pbapply_1.7-2          knitr_1.43             git2r_0.32.0          
+ [91] gridExtra_2.3          scattermore_1.2        xfun_0.39             
+ [94] matrixStats_1.0.0      stringi_1.7.12         lazyeval_0.2.2        
+ [97] yaml_2.3.7             evaluate_0.21          codetools_0.2-19      
+[100] tibble_3.2.1           BiocManager_1.30.22    cli_3.6.1             
+[103] uwot_0.1.16            xtable_1.8-4           reticulate_1.34.0     
+[106] munsell_0.5.0          processx_3.8.2         jquerylib_0.1.4       
+[109] Rcpp_1.0.11            globals_0.16.2         spatstat.random_3.2-1 
+[112] png_0.1-8              parallel_4.3.1         ellipsis_0.3.2        
+[115] ggplot2_3.4.4          dotCall64_1.1-0        listenv_0.9.0         
+[118] viridisLite_0.4.2      scales_1.2.1           ggridges_0.5.4        
+[121] leiden_0.4.3           purrr_1.0.2            rlang_1.1.1           
+[124] cowplot_1.1.1         </code></pre>
+</div>
 </div>
 
 
