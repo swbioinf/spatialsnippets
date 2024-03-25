@@ -13,7 +13,64 @@ editor_options:
   chunk_output_type: console
 ---
 
-PLACEHOLDER
+
+# 
+```{r}
+library(Seurat)
+#library(limma)
+#library(edgeR)
+```
+
+
+```{r}
+dataset_dir <- '/Users/s2992547/data_local/datasets/'
+
+#liver_cosmx_seurat_file <- file.path(dataset_dir, 'cosmx_smi_human_liver_ffpe_dataset','LiverDataReleaseSeurat_subset2.RDS')
+#liver_cosmx_seurat_file <- file.path(dataset_dir, 'cosmx_smi_human_liver_ffpe_dataset','LiverDataReleaseSeurat_subset_8fov.RDS')
+# No matter how few fovs, these are beeing subset large files.
+
+
+liver_cosmx_seurat_file <- file.path(dataset_dir, 'cosmx_smi_human_liver_ffpe_dataset','LiverDataReleaseSeurat_subset_notranscript.RDS')
+
+#full_metadata_file <- file.path(dataset_dir, #'cosmx_smi_human_liver_ffpe_dataset','/LiverData_metadata2.tsv.gz')
+```
+
+
+## Explore the annotation
+
+This data only has two biological samples, the healthy liver and the cancerous liver. It has no **biological replicates** , only pseudoreplicates (multiple fovs in the same sample).
+
+
+We need the following information in the metadata
+
+* Sample identifier: What biological sample aka peice of tissue is being measured
+* FOV identifier: What FOV (rectangular feild of view) is being measures. There can be multiple FOVs per Sample. When there are multiple slides in an experiment, FOV numbers can be repeated - we need an ID unique to the experiment. You can join slide identifier to fov number if needed.
+* Condition of interest; 
+* Any other experimental factors; e.g. Individual, timepoint, age, sex, treatment
+* Celltype (or cluster)
+
+
+```{R eval=FALSE}
+so <- readRDS(liver_cosmx_seurat_file)
+```
+
+
+
+
+
+
+How many cells are prsent in each grouping
+
+
+
+
+
+
+
+
+
+
+# PLACEHOLDER
 
 Pseudobulk analysis is an option where you have biological replicates. It is essentially pooling the individual cell counts and treating your expreiment like a bulk RNAseq.
 

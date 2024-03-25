@@ -13,6 +13,7 @@ editor_options:
   chunk_output_type: console
 ---
 
+(FIX SPELLING IN OBJECT) of CHRONES
 
 Data is from paper [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570)
 from Garrido-Trigo et al 2023.
