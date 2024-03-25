@@ -1,0 +1,57 @@
+---
+title: "Dataset: Cosmx Lung "
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+---
+
+The classic NSLC lung cancer dataset.
+https://nanostring.com/products/cosmx-spatial-molecular-imager/ffpe-dataset/nsclc-ffpe-dataset/
+
+Prototype machine. Liver is probably better.
+
+# Libraries
+
+```{r}
+library(Seurat)
+library(tidyverse)
+```
+
+# Data download
+
+Seurat object (with transcript positions) downloaded directly from nanostring website.
+
+https://nanostring.com/products/cosmx-spatial-molecular-imager/ffpe-dataset/human-liver-rna-ffpe-dataset/
+
+NOTE: Download links only work in chrome (welcome to the early 2000s), but you can copy the link from there to wget/curl.
+
+<!-- curl https://smi-public.objects.liquidweb.services/LiverDataReleaseSeurat_newUMAP.RDS  --output LiverDataReleaseSeurat_newUMAP.RDS --> 
+
+
+Do not use this dataset. Its only really 1 sample so less relevant. 
+
+
+# Data load
+
+```{r}
+dataset_dir <- '/Users/s2992547/data_local/datasets/'
+liver_cosmx_seurat_file <- file.path(dataset_dir, 'cosmx_smi_human_liver_ffpe_dataset/LiverDataReleaseSeurat_newUMAP.RDS')
+```
+
+
+
+```{r eval=FALSE}
+so <- readRDS(liver_cosmx_seurat_file )
+# Error: vector memory exhausted (limit reached?)
+# hits 14G ram. 
+```
+
+

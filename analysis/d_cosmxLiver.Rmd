@@ -1,0 +1,184 @@
+---
+title: "Dataset: Cosmx Liver "
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+---
+
+
+
+The example 1000plex cosmx-SMI data from nanostring. Via the 
+https://nanostring.com/products/cosmx-spatial-molecular-imager/ffpe-dataset/nsclc-ffpe-dataset/
+Getting the pre-prepared Seurat object 'https://nanostring.com/resources/seurat-object-cosmx-smi-human-liver-ffpe-dataset/'
+
+Consisting 2 samples:
+
+* FFPE human normal liver
+* FFPE human hepatocellular carcinoma
+
+
+
+# Libraries
+
+```{r}
+library(Seurat)
+library(tidyverse)
+```
+
+# Data download
+
+Seurat object (with transcript positions) downloaded directly from nanostring website.
+
+https://nanostring.com/products/cosmx-spatial-molecular-imager/ffpe-dataset/human-liver-rna-ffpe-dataset/
+
+NOTE: Download links only work in chrome (welcome to the early 2000s), but you can copy the link from there to wget/curl.
+
+What about no transcripts, is that one loadable???
+
+
+# Data load
+
+File is 20G.
+
+```{r eval=FALSE}
+dataset_dir <- '/Users/s2992547/data_local/datasets/'
+#liver_cosmx_seurat_file <- file.path(dataset_dir, 'cosmx_smi_human_liver_ffpe_dataset/LiverDataReleaseSeurat_newUMAP.RDS')
+# subst of 20FOVs - still too big.
+liver_cosmx_seurat_file <- file.path(dataset_dir, 'cosmx_smi_human_liver_ffpe_dataset/LiverDataReleaseSeurat_subset2.RDS')
+
+so <- readRDS(liver_cosmx_seurat_file )
+# Error: vector memory exhausted (limit reached?)
+# hits 14G ram. 
+```
+
+
+
+
+
+# Initial processing on Cluster
+
+This object is too large to load on my 14G ram laptop. 
+
+Will load in an interactive job on the HPC to see if I can subset/shrink it down somehow.
+
+NB: Remember to pingID when transfering data to gawonga, because filesilla will disconnect between files.
+
+See https://nanostring.com/wp-content/uploads/2023/01/LiverPublicDataRelease.html
+
+
+```{sh eval=FALSE}
+cd /export/home/s2992547/projects
+git clone https://github.com/swbioinf/spatialsnippets.git
+
+mkdir spatialsnippets_work 
+cd /export/home/s2992547/projects/spatialsnippets_work
+
+
+# is this R recent enough? WOrking on 4.3.1
+# module load R/4.1.3 
+# module load gcc/13.1.0/
+# The R is fine, but you need to load the modern gcc and setup /.Makevars.
+#NB: Be sure to ask for 'mem' not 'vmem', else R will abort due to lack of memory,
+# with just 'Killed'
+# But with no helpful error messags in an interactive job!
+
+
+# New R module installed 
+module load R/4.3.2
+
+# R
+#Not using renv (installation issues)
+#install.packages("Seurat")
+```
+
+Queue an interactive job, for say an hour or two, 24G ram (each cpu has ~12G ratio, so why not).
+
+```{sh eval=FALSE}
+#then once job starts
+qsub -I -l select=1:ncpus=2:mem=64GB -l walltime=02:00:00 -q workq
+
+module load R/4.3.2
+cd /export/home/s2992547/projects/spatialsnippets_work
+R
+```
+
+Or, since that takes too long with this amount of ram.
+
+The R script
+```{r eval=FALSE}
+library(Seurat)
+
+dataset_dir <- '/export/home/s2992547/scratch/'
+liver_cosmx_seurat_file <- file.path(dataset_dir,'LiverDataReleaseSeurat_newUMAP.RDS')
+so <- readRDS(liver_cosmx_seurat_file )
+
+# summary of samples
+table(so$fov, so$orig.ident)
+
+# save all metadata to disk
+write.table(so@meta.data, file="LiverData_metadata.tsv", sep='\t')
+
+# Take an assortment of fovs, aiming for 10 from each sample
+keep_fovs <- c(20,40,60,80,100,120,140,160,180,200,
+               320, 340,360,380,400,420,440,460,480,500)
+
+
+so <- so[,so$fov %in% keep_fovs]
+dim(so)
+saveRDS(so,file="LiverDataReleaseSeurat_subset.RDS")
+```
+
+And the shell PBS script to launch it
+```{sh eval=FALSE}
+#!/bin/sh
+#PBS -m e
+#PBS -N SeuratSubset
+#PBS -q workq
+#PBS -l walltime=24:15:00
+#PBS -l select=2:ncpus=2:mem=124GB
+
+# Do work 
+echo "Load modules"
+module load R/4.3.2
+
+echo "Go"
+
+cd /export/home/s2992547/projects/spatialsnippets_work
+Rscript d_cosmxLiver_subsetting.R
+
+echo "Done"
+```
+
+
+
+And start work:
+i
+File is 20G.
+
+From the doco: https://nanostring.com/wp-content/uploads/2023/01/LiverPublicDataRelease.html#22_Seurat_Object_data 
+
+```While a Seurat object can be easier to use, please be aware that reading an entire dataset into memory can be RAM exhaustive. This full Seurat object, containing all of the count data, metadata, and analysis results data is 70.87 GB in size.```
+
+
+```{r eval=FALSE}
+library(Seurat)
+dataset_dir <- '/export/home/s2992547/scratch/'
+liver_cosmx_seurat_file <- file.path(dataset_dir,'LiverDataReleaseSeurat_newUMAP.RDS')
+so <- readRDS(liver_cosmx_seurat_file )
+dim(so)
+```
+Error in readRDS(liver_cosmx_seurat_file) : error reading from connection
+
+
+Explor the seurat object: whats in there? Why is it so big. , 
+
+
+
