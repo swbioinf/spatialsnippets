@@ -27,7 +27,7 @@ library(tidyverse)
 ```
 
 ```{r}
-data_dir              <- file.path("~/data_local/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
+data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
 seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
 ```
 
@@ -169,22 +169,43 @@ results_table <- propeller(clusters = so$cluster,
 # Results
 
 
+## Paired
+
+```{r}
+results.pair
+```
+* **rownames** : The tested cell types
+* **BaselineProp** : The overall proportion of the cell type across the dataset. (Overall, not a average of PropMean per group).
+* **PropMean.X** : The proportion of cell type in each group. Here that's PropMean.Healthy.controls, PropMean.Ulcerative.colitis) 
+* **PropRatio** : Ratio of proprotions of first to second group.
+* **Tstatistic** : The T statistic.
+* **P.Value** : P.value
+* **FDR** : A multiple-hypothesis corrected p-value
+
+
+
+
+## Anova
+
 ```{r}
 results.anova
 ```
 
-* rownames : 
-* BaselineProp 
-* PropMean.Chrones.s.disease 
-* PropMean.Healthy.controls 
-* PropMean.Ulcerative.colitis
-* Fstatistic   
-* P.Value
-* FDR
+* **rownames** : The tested cell types
+* **BaselineProp** : The overall proportion of the cell type across the dataset. (Overall, not a average of PropMean per group).
+* **PropMean.X** : The proportion of cell type in each group. Here that's PropMean.Chrones.s.disease, PropMean.Healthy.controls, PropMean.Ulcerative.colitis) 
+* **Fstatistic** : The Fstatistic calculated.  
+* **P.Value** : P.value
+* **FDR** : A multiple-hypothesis corrected p-value
+
+
+
+
 
 # More information
 
-* Propeller paper: https://academic.oup.com/bioinformatics/article/38/20/4720/6675456
+* Speckle Vignette (https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html) : Comphrehensive details of how to use different tests for speckle. 
+* Propeller paper: (https://academic.oup.com/bioinformatics/article/38/20/4720/6675456)
 
 
 

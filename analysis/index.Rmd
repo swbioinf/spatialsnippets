@@ -8,6 +8,7 @@ editor_options:
   chunk_output_type: console
 ---
 
+These examples are a sampler of tests that can be performed on an spatial dataset. Further details on the papers, tools, statistics and methods are linked from each page.
 
 Testing... nothing useful here yet.
 
