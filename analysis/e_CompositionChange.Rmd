@@ -13,7 +13,10 @@ editor_options:
   chunk_output_type: console
 ---
 
-
+```{r angrylibrarian, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+knitr::opts_chunk$set(echo = TRUE)
+```
 
 Is there a difference in the celltype composition between individuals with  Ulcerative colitis  or Crohn's disease, and Healthy controls?
 
