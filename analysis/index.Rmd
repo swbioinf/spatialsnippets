@@ -15,13 +15,17 @@ Testing... nothing useful here yet.
 ## Differential Expression (core)
 
 Ways of testing differential expression
+
 * Differential expression with pseudobulk
 * Differential expression between groups (no replicates)
 * Differential expression, using cell level information
 
+
 ## Differential expression applied
 
 Ways of selection for differential expression
+
+
 * Test for differential expression by condition in all celltypes
 * Test for differential expression by different cell niches.
 * Test for differential expression by proximity to celltype

@@ -27,6 +27,7 @@ Is there a difference in the celltype composition between individuals with  Ulce
 library(Seurat)
 library(speckle)
 library(tidyverse)
+library(DT)
 ```
 
 ```{r}
@@ -37,25 +38,20 @@ seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_load
 
 ```{r}
 so <- readRDS(seurat_file_01_loaded)
-
-# MIGRATE TO DATA PREP >>>>
-so$individual_code <- factor(substr(so$orig.ident,12,16))
-so$tissue_sample   <- factor(substr(so$orig.ident,12,16))
-so$fov_name        <- paste0(so$individual_code,"_", str_pad(so$fov, 3, 'left',pad='0'))
-so$celltype_subset <- factor(so$celltype_subset)
-# <<<<
 ```
 
 # Looking at the data
 
 <!-- Move this to own page? --->
 
-There are three indivduals per contidion (one tissue sample from each individual). With multiple fovs on each physical tissue sample.
+There are three individuals per condition (one tissue sample from each individual). With multiple fovs on each physical tissue sample.
 ```{r}
-select(as_tibble(so@meta.data), condition, individual_code, fov_name) %>%
+sample_table <- select(as_tibble(so@meta.data), condition, individual_code, fov_name) %>%
   unique() %>% 
   group_by(condition, individual_code) %>% 
   summarise(n_fovs= n(), item = str_c(fov_name, collapse = ", "))
+
+DT::datatable(sample_table)
 ```
 
 
@@ -69,20 +65,21 @@ select(as_tibble(so@meta.data), condition, individual_code, fov_name) %>%
 
 ## Count how many cells of each type in your data
 
+In this dataset there are two different levels of categorisation. We'd like to look at the celltype proportions at a more granular resolution - but we need to ensure there are enough cells of each type for meaningful statistics. 
+
+* Celltype_subset; Some broad groupings of cell types.
+* celltype_SingleR2: Much more specific groupings, predicted with the singleR method.
+
+
+In the 'Celltype_subset' column, there are 5 broad categories;
 ```{r}
 celltype_summary_table <- so@meta.data %>% 
   group_by(condition, individual_code, fov_name, celltype_subset) %>%
   summarise(cells=n(), .groups = 'drop')
-
+DT::datatable(celltype_summary_table)
 ```
 
-## check for very low count groups
-
-
-Here T cells are rare, but there are still a decent distribution of them with 10-100+ cells in a FOV.
-
-If many of your celltypes, consider merging similar cell types (e.g. T cells rather than T cell subtypes)
-
+Here T cells are rare, but there are still a decent distribution of them with 10-100+ cells in a FOV. We should be able to see changes in these.
 
 ```{r}
 ggplot(celltype_summary_table, aes(x=cells, col=celltype_subset)) +
@@ -94,22 +91,29 @@ ggplot(celltype_summary_table, aes(x=cells, col=celltype_subset)) +
 ```
 
 
------
+On the other hand, could we use the more fine-grained categoriesation in the 'celltype_SingleR2' grouping?
 
+There are many different types here - which is typical if you're using celltype assignment with a detailed reference. 
 
-If you have alot of cell types, sometimes there can be very rare types that would be hard to detect differences in. 
+In this case, there are just too many cell type categories, and we should stick with the broad categorisation.
 
-This can expecially happen if you're using celltype assignment with a detailed reference. You might get a handful of irrelevant cell types called (e.g. 4 hepatocytes on a non-liver sample). No reasonable stats could be generated there, and leaving them in would mean a more extreme FDR adjustment. 
+Approaches to handle this when you want to keep the specific types:
 
+* Drop 'nonsense' cell types: When cell typing with a broad refernece, you might get a handful of irrelevant cell types called (e.g. 4 hepatocytes on a non-liver sample).
+* Pool subtypes: Some celltypes are simply rare. Rather then dropping them entirely, you can pool transcriptionally similar cells (e.g. T cell subtypes).
+
+The more cell types you have, the more agressive your FDR multiple hypothesis correction will need to be. Its best to remove cell types that can never reach statistical significance. 
 
 
 ```{r}
 celltype_summary_table.SingleR <- so@meta.data %>% 
   group_by(condition, individual_code, fov_name, celltype_SingleR2) %>%
   summarise(cells=n(), .groups = 'drop')
+DT::datatable(celltype_summary_table.SingleR)
+```
 
 
-
+```{r}
 ggplot(celltype_summary_table.SingleR, aes(x=cells, col=celltype_SingleR2)) +
   geom_density() +
   geom_rug(alpha=0.2) +
@@ -121,6 +125,7 @@ ggplot(celltype_summary_table.SingleR, aes(x=cells, col=celltype_SingleR2)) +
 
 ## Look at your samples. 
 
+(add spekcle example)
 
 ```{r}
 ggplot(celltype_summary_table, aes(x=fov_name, y=cells, fill=celltype_subset)) +

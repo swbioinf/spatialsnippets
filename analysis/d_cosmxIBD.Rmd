@@ -13,7 +13,6 @@ editor_options:
   chunk_output_type: console
 ---
 
-(FIX SPELLING IN OBJECT) of CHRONES
 
 Data is from paper [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570)
 from Garrido-Trigo et al 2023.
@@ -71,7 +70,7 @@ tar -xf GSE234713_RAW_UC.tar
 
 
 ```{r}
-dataset_dir      <- '~/data_local/datasets/'
+dataset_dir      <- '~/projects/spatialsnippets/datasets/'
 project_data_dir <- file.path(dataset_dir,'GSE234713_IBDcosmx_GarridoTrigo2023')
 sample_dir            <- file.path(project_data_dir, "raw_data/") 
 annotation_file       <- file.path(project_data_dir,"GSE234713_CosMx_annotation.csv.gz")
@@ -87,7 +86,7 @@ max_avg_neg        <- 0.5
 
 
 
-sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Chrones's disease")
+sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Crohn's disease")
 
  
 
@@ -134,13 +133,16 @@ load_sample_into_seurat <- function(the_sample){
   coords <- CreateFOV(coords = list("centroids" = cents), type = "centroids")
   so     <- CreateSeuratObject(counts    = ns$matrix,
                                meta.data = ns$metadata)
-  so$orig.ident <- the_sample
   
   # sample info
-  so$group     <- substr(the_sample, 12, 13)
-  so$group     <- factor(so$group, levels=names(sample_codes))
+  so$orig.ident <- the_sample
+  so$individual_code <- factor(substr(so$orig.ident,12,16))
+  so$tissue_sample   <- factor(substr(so$orig.ident,12,16))
+  so$group     <- factor(substr(the_sample, 12, 13), levels=names(sample_codes))
   so$condition <- factor(as.character(sample_codes[so$group]), levels=sample_codes)
   
+  so$fov_name        <- paste0(so$individual_code,"_", str_pad(so$fov, 3, 'left',pad='0'))
+
 
   # Put neg probes into their own assay.
   neg_probes <- rownames(so)[grepl(x=rownames(so), pattern="NegPrb")]
@@ -208,8 +210,8 @@ head(anno_table)
 
 so.raw$full_cell_id <- as.character(rownames(so.raw@meta.data))
 
-so.raw$celltype_subset   <- anno_table[so.raw$full_cell_id,]$subset
-so.raw$celltype_SingleR2 <- anno_table[so.raw$full_cell_id,]$SingleR2
+so.raw$celltype_subset   <- factor(anno_table[so.raw$full_cell_id,]$subset)
+so.raw$celltype_SingleR2 <- factor(anno_table[so.raw$full_cell_id,]$SingleR2)
 
 table(is.na(so.raw$celltype_subset))
 ```
