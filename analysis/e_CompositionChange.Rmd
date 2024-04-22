@@ -65,13 +65,16 @@ DT::datatable(sample_table)
 
 ## Count how many cells of each type in your data
 
-In this dataset there are two different levels of categorisation. We'd like to look at the celltype proportions at a more granular resolution - but we need to ensure there are enough cells of each type for meaningful statistics. 
 
-* Celltype_subset; Some broad groupings of cell types.
+In this dataset there are actually two different levels of categorisation; 
+
+* Celltype_subset: Some broad groupings of cell types.
 * celltype_SingleR2: Much more specific groupings, predicted with the singleR method.
 
+Lets check the numbers of cells per category for both categories, to decide which we can use. We'd like to look at the celltype proportions at the most specific resolution - but we need to ensure there are enough cells of each type for meaningful statistics. 
 
-In the 'Celltype_subset' column, there are 5 broad categories;
+
+In the 'Celltype_subset' column, there are just 5 broad categories;
 ```{r}
 celltype_summary_table <- so@meta.data %>% 
   group_by(condition, individual_code, fov_name, celltype_subset) %>%
@@ -79,7 +82,28 @@ celltype_summary_table <- so@meta.data %>%
 DT::datatable(celltype_summary_table)
 ```
 
-Here T cells are rare, but there are still a decent distribution of them with 10-100+ cells in a FOV. We should be able to see changes in these.
+
+
+
+There are many different types in 'celltype_SingleR2' - which is typical if you're using celltype assignment with a detailed reference. 
+
+
+```{r}
+celltype_summary_table.SingleR <- so@meta.data %>% 
+  group_by(condition, individual_code, fov_name, celltype_SingleR2) %>%
+  summarise(cells=n(), .groups = 'drop')
+DT::datatable(celltype_summary_table.SingleR)
+```
+
+
+
+
+## Check your celltype categories
+
+For both categories, plot how many we see per FOV on average.
+
+
+In the 'celltype_subset' category, T cells are rare, but there are still a decent distribution of them with 10-100+ cells in a FOV. We should be able to see changes in these.
 
 ```{r}
 ggplot(celltype_summary_table, aes(x=cells, col=celltype_subset)) +
@@ -93,25 +117,7 @@ ggplot(celltype_summary_table, aes(x=cells, col=celltype_subset)) +
 
 On the other hand, could we use the more fine-grained categoriesation in the 'celltype_SingleR2' grouping?
 
-There are many different types here - which is typical if you're using celltype assignment with a detailed reference. 
-
 In this case, there are just too many cell type categories, and we should stick with the broad categorisation.
-
-Approaches to handle this when you want to keep the specific types:
-
-* Drop 'nonsense' cell types: When cell typing with a broad refernece, you might get a handful of irrelevant cell types called (e.g. 4 hepatocytes on a non-liver sample).
-* Pool subtypes: Some celltypes are simply rare. Rather then dropping them entirely, you can pool transcriptionally similar cells (e.g. T cell subtypes).
-
-The more cell types you have, the more agressive your FDR multiple hypothesis correction will need to be. Its best to remove cell types that can never reach statistical significance. 
-
-
-```{r}
-celltype_summary_table.SingleR <- so@meta.data %>% 
-  group_by(condition, individual_code, fov_name, celltype_SingleR2) %>%
-  summarise(cells=n(), .groups = 'drop')
-DT::datatable(celltype_summary_table.SingleR)
-```
-
 
 ```{r}
 ggplot(celltype_summary_table.SingleR, aes(x=cells, col=celltype_SingleR2)) +
@@ -123,53 +129,155 @@ ggplot(celltype_summary_table.SingleR, aes(x=cells, col=celltype_SingleR2)) +
 ```
 
 
+### Approaches to make use of more specific groupings.
+
+You might still want to use a more speiciic grouping. You might be able to tweak your groups to make this happen.
+
+Some possible approaches:
+
+* Drop 'nonsense' cell types: When cell typing with a broad refernece, you might get a handful of irrelevant cell types called (e.g. 4 hepatocytes on a non-liver sample).
+* Pool subtypes: Some celltypes are simply rare. Rather then dropping them entirely, you can pool transcriptionally similar cells (e.g. T cell subtypes).
+
+The more cell types you have, the more agressive your FDR multiple hypothesis correction will need to be. Its best to remove or condense cell types that can never reach statistical significance. 
+
+
 ## Look at your samples. 
 
-(add spekcle example)
+In a RNAseq experiment, you would typically have one set of measurements per biological sample. In a single cell RNAseq  experiment you'd  typically have one group of cells measured for that same sample. With the current crop of spatially resolved single cell technologies (e.g. cosmx), you can have multiple FOVs (feilds of view) on the same physical chunk of tissue. These are not true biological replicates and can be considered 'pseudoreplicates'.
 
-```{r}
+Pseudoreplicates can still have a degree of heterogeneity, from different regions of the tissue. E.g. some samples might overlap epithelial regions more than others.
+
+Lets plot the cell type composition across all the pseodureplicates, grouped by replicate, and grouped by condition. Where there are more samples or uneven numbers, it might be helpful to plot each condition separately.
+
+```{r fig.width=12, fig.height=11}
 ggplot(celltype_summary_table, aes(x=fov_name, y=cells, fill=celltype_subset)) +
   geom_bar(position="fill", stat="identity") + 
   theme_bw() +
   coord_flip() + 
   theme(legend.position = "bottom") +
-  facet_wrap(~condition, ncol=3, scales = 'free_y') +
+  facet_wrap(~individual_code, ncol=3, scales = 'free_y')  + 
   scale_y_continuous(expand = c(0,0)) 
 ```
 
 
+If there are obvious changes in cell type proprotions, they should be visible now! 
+
+
 ## Calculate stats.
 
+Now we can formally test for differences. 
+
+For the simple case where there are no fov pseudoreplicats (e.g a single cell RNAseq experiment), there is a `propellar` function. This approach is described in the [speckle vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html)
 
 ```{r}
-results.anova <- propeller(clusters= so$celltype_subset, 
-          sample  = so$individual_code, 
-          group   = so$condition)
-results.anova
+# Without FOV replicates - Not what we want.
+results_table.no_fov_info <- propeller(clusters = so$celltype_subset, 
+                           sample   = so$individual_code, 
+                           group    = so$condition)
+DT::datatable(results_table.no_fov_info)
+```
 
-# If a column is preferred over rownames
-results.anova.table <- rownames_to_column( results.anova, var="celltype_subset")
+-----
+
+
+But - having seen the within and between sample heterogeneity, we want to take that into account. This takes few more steps, using the limma duplicateCorrealation approach described in the speckle vignette [here](https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html#including-random-effects)
+
+
+
+Calculate the transformed proportions that speckle needs.
+```{r}
+# If we didn't have fov pseudoreplicates
+#props <- getTransformedProps(so$celltype_subset, so$individual_code, transform="logit")
+props <- getTransformedProps(so$celltype_subset, so$fov_name, transform="logit")
 ```
 
 
+
+
+Then use limma to test for differences.
+
+
+If you are not familiar with limma, or you want more info on building your own 'design' or 'contrasts' there are many online resources that cover it. For example the substantial [limma documentation](https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf), or online tutorials such as [this one](https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html) or any number of forum posts.   The instructions for RNAseq or microarray differential expression tests can be applied to this proportional data. The difference is that we provide the proportions. 
+
+
+
+
+
 ```{r}
-so.UCvsHC <- so[,so$condition %in% c("Healthy controls", "Ulcerative colitis")]
+library(limma)
+
+# The fovs as ordered in props
+fov_name <- colnames(props$TransformedProps)
+
+# Extract the other information in the same order.
+props_order <- match(fov_name, celltype_summary_table$fov_name)
+clusters <- celltype_summary_table$celltype_subset[props_order]
+sample   <- celltype_summary_table$individual_code[props_order] 
+group    <- celltype_summary_table$condition[props_order]
+# Using a 'group code' for brevity, and because spaces and special characters are not supported in limma design.
+group_code_lookup <- list("Crohn's disease"="CD",
+                       "Ulcerative colitis"="UC",
+                       "Healthy controls"="HC"
+                        )
+group_code <- factor(group_code_lookup[group], levels=group_code_lookup)
+
+# Build the design matrix
+# This simple one considers only the disease.
+# and includes the 0+ term to avoid seeting one group to our baseline, which in turn  make building contrasts more intuative.
+design <- model.matrix( ~ 0+ group_code)
+
+# Calculate duplicate correlation, within fovs for different individuals (sample)
+dupcor <- duplicateCorrelation(props$TransformedProps, design=design,  block=sample)
 
 
-results.pair <- propeller( clusters= so.UCvsHC$celltype_subset, 
-                           sample  = so.UCvsHC$individual_code, 
-                           group   = so.UCvsHC$condition)
+# Next fit the model to your data; using the experimental design, blocking on the individual/sample, and providing the 'consensus' correlation value from duplicate correlation.
+fit <- lmFit(props$TransformedProps, design=design, block=sample, correlation=dupcor$consensus)
+
+# These are the groups from the model (not the prefixed 'group')
+colnames(fit)
+
+
+# Use those names to define any relevant contrasts to test 
+# Here there are 2: Ucerative colitis vs healthy controls and Chron's disease vs healthy controls.
+contrasts <- makeContrasts(UCvHC    = group_codeUC - group_codeHC, 
+                           CDvHC    = group_codeCD - group_codeHC,
+                           levels=coef(fit))
+# THen fit contrasts and run ebayes
+fit <- contrasts.fit(fit, contrasts)
+fit <- eBayes(fit)
 ```
+
+
+Then, to see differnences in proportions for the Ulcerative Colitis vs Healthy control ('UCvsHC') test
+
+```{r}
+results_table.UCvsHC <- topTable(fit, coef='UCvHC')
+DT::datatable(results_table.UCvsHC)
+```
+
+
+
+
+
+
 
 # Code snippet
 
+Use duplicate correlation!
 
 ```{r eval=FALSE}
 library(speckle)
+library(limma)
+
+# Without FOV replicates
 # seurat object so
 results_table <- propeller(clusters = so$cluster, 
                            sample   = so$sample, 
                            group    = so$condition)
+
+
+# With Fov replicates
+
 
 
 ```
@@ -177,44 +285,29 @@ results_table <- propeller(clusters = so$cluster,
 # Results
 
 
-## Paired
-
 ```{r}
-results.pair
-```
-* **rownames** : The tested cell types
-* **BaselineProp** : The overall proportion of the cell type across the dataset. (Overall, not a average of PropMean per group).
-* **PropMean.X** : The proportion of cell type in each group. Here that's PropMean.Healthy.controls, PropMean.Ulcerative.colitis) 
-* **PropRatio** : Ratio of proprotions of first to second group.
-* **Tstatistic** : The T statistic.
-* **P.Value** : P.value
-* **FDR** : A multiple-hypothesis corrected p-value
-
-
-
-
-## Anova
-
-```{r}
-results.anova
+results_table.UCvsHC
 ```
 
 * **rownames** : The tested cell types
-* **BaselineProp** : The overall proportion of the cell type across the dataset. (Overall, not a average of PropMean per group).
-* **PropMean.X** : The proportion of cell type in each group. Here that's PropMean.Chrones.s.disease, PropMean.Healthy.controls, PropMean.Ulcerative.colitis) 
-* **Fstatistic** : The Fstatistic calculated.  
+* **logFC** : Log 2 fold change between tested groups. For a test of Test-Con; 
+    + At logFC +1, A is doubled B. 
+    + At logFC -1, A is half of B.  
+    + A logFC 0 indicates no chage.
+* **AveExpr** : Average expression of a gene across all replicates. 
+* **t** : Moderated T-statistic. See Limma documentation.
 * **P.Value** : P.value
-* **FDR** : A multiple-hypothesis corrected p-value
+* **adj.P.Val** : A multiple-hypothesis corrected p-value
+* **B** : B statistic (rarely used). See Limma documentation.
 
 
 
-
-
-# More information
+# More information / References
 
 * Speckle Vignette (https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html) : Comphrehensive details of how to use different tests for speckle. 
 * Propeller paper: (https://academic.oup.com/bioinformatics/article/38/20/4720/6675456)
-
+* [limma documentation](https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
+* Differential Expression with Limma-Voom UC davis bioinformatics training: (https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html) 
 
 
 
