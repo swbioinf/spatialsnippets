@@ -263,11 +263,11 @@ DT::datatable(results_table.UCvsHC)
 
 # Code snippet
 
-Use duplicate correlation!
+
+With only one bucket of cells per tissue sample (e.g. one fov)
 
 ```{r eval=FALSE}
 library(speckle)
-library(limma)
 
 # Without FOV replicates
 # seurat object so
@@ -275,10 +275,33 @@ results_table <- propeller(clusters = so$cluster,
                            sample   = so$sample, 
                            group    = so$condition)
 
+```
 
-# With Fov replicates
+With multiple fovs per tissue sample handled as pseudoreplicates
 
+```{r eval=FALSE}
+library(limma)
+library(speckle)
 
+props <- getTransformedProps(so$cluster, so$fov_name, transform="logit")
+
+# Extract relevant factors in same order as props
+props_order <- match(colnames(props$TransformedProps), celltype_summary_table$fov_name)
+clusters    <- celltype_summary_table$cluster[props_order]
+sample      <- celltype_summary_table$individual_code[props_order] 
+condition   <- celltype_summary_table$condition[props_order]
+
+design <- model.matrix( ~ 0 + condition)
+dupcor <- duplicateCorrelation(props$TransformedProps, design=design,  block=sample)
+
+fit <- lmFit(props$TransformedProps, design=design, block=sample, correlation=dupcor$consensus)
+
+# Contrast called 'test', measuring of test condition vs Control condition.
+contrasts <- makeContrasts(test   = conditionTest - conditionCon,  levels = coef(fit))
+fit <- contrasts.fit(fit, contrasts)
+fit <- eBayes(fit)
+
+results_table <- topTable(fit, coef='test')
 
 ```
 
