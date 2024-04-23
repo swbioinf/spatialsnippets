@@ -401,7 +401,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-04-22
+<strong>Last updated:</strong> 2024-04-23
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -532,15 +532,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree4701a504d96d38b8360d4d9f29b3a3e695ff5043targetblank4701a50a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree96fcd962470bc1effd687e9d5612f71f3e71e56atargetblank96fcd96a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/4701a504d96d38b8360d4d9f29b3a3e695ff5043" target="_blank">4701a50</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/96fcd962470bc1effd687e9d5612f71f3e71e56a" target="_blank">96fcd96</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree4701a504d96d38b8360d4d9f29b3a3e695ff5043targetblank4701a50a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree96fcd962470bc1effd687e9d5612f71f3e71e56atargetblank96fcd96a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -550,7 +550,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/4701a504d96d38b8360d4d9f29b3a3e695ff5043" target="_blank">4701a50</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/96fcd962470bc1effd687e9d5612f71f3e71e56a" target="_blank">96fcd96</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -619,6 +619,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/96fcd962470bc1effd687e9d5612f71f3e71e56a/analysis/e_CompositionChange.Rmd" target="_blank">96fcd96</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-23
+</td>
+<td>
+wflow_publish("analysis/e_CompositionChange.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/22b7d61b800896efa692e917770381fec641c6e4/docs/e_CompositionChange.html" target="_blank">22b7d61</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -877,6 +911,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/22b7d61b800896efa692e917770381fec641c6e4/docs/figure/e_CompositionChange.Rmd/unnamed-chunk-7-1.png" target="_blank">22b7d61</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/e_CompositionChange.Rmd/unnamed-chunk-7-1.png" target="_blank">a722f36</a>
 </td>
 <td>
@@ -1049,6 +1094,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/22b7d61b800896efa692e917770381fec641c6e4/docs/figure/e_CompositionChange.Rmd/unnamed-chunk-9-1.png" target="_blank">22b7d61</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/e_CompositionChange.Rmd/unnamed-chunk-9-1.png" target="_blank">a722f36</a>
 </td>
 <td>
@@ -1151,18 +1207,37 @@ DT::datatable(results_table.UCvsHC)</code></pre>
 </div>
 <div id="code-snippet" class="section level1">
 <h1>Code snippet</h1>
-<p>Use duplicate correlation!</p>
+<p>With only one bucket of cells per tissue sample (e.g. one fov)</p>
 <pre class="r"><code>library(speckle)
-library(limma)
 
 # Without FOV replicates
 # seurat object so
 results_table &lt;- propeller(clusters = so$cluster, 
                            sample   = so$sample, 
-                           group    = so$condition)
+                           group    = so$condition)</code></pre>
+<p>With multiple fovs per tissue sample handled as pseudoreplicates</p>
+<pre class="r"><code>library(limma)
+library(speckle)
 
+props &lt;- getTransformedProps(so$cluster, so$fov_name, transform=&quot;logit&quot;)
 
-# With Fov replicates</code></pre>
+# Extract relevant factors in same order as props
+props_order &lt;- match(colnames(props$TransformedProps), celltype_summary_table$fov_name)
+clusters    &lt;- celltype_summary_table$cluster[props_order]
+sample      &lt;- celltype_summary_table$individual_code[props_order] 
+condition   &lt;- celltype_summary_table$condition[props_order]
+
+design &lt;- model.matrix( ~ 0 + condition)
+dupcor &lt;- duplicateCorrelation(props$TransformedProps, design=design,  block=sample)
+
+fit &lt;- lmFit(props$TransformedProps, design=design, block=sample, correlation=dupcor$consensus)
+
+# Contrast called &#39;test&#39;, measuring of test condition vs Control condition.
+contrasts &lt;- makeContrasts(test   = conditionTest - conditionCon,  levels = coef(fit))
+fit &lt;- contrasts.fit(fit, contrasts)
+fit &lt;- eBayes(fit)
+
+results_table &lt;- topTable(fit, coef=&#39;test&#39;)</code></pre>
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>
