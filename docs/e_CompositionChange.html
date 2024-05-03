@@ -401,7 +401,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-04-23
+<strong>Last updated:</strong> 2024-05-03
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -532,15 +532,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree96fcd962470bc1effd687e9d5612f71f3e71e56atargetblank96fcd96a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree49d07d26e87023eed0a5b2eadcc300e272b36caftargetblank49d07d2a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/96fcd962470bc1effd687e9d5612f71f3e71e56a" target="_blank">96fcd96</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/49d07d26e87023eed0a5b2eadcc300e272b36caf" target="_blank">49d07d2</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree96fcd962470bc1effd687e9d5612f71f3e71e56atargetblank96fcd96a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree49d07d26e87023eed0a5b2eadcc300e272b36caftargetblank49d07d2a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -550,7 +550,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/96fcd962470bc1effd687e9d5612f71f3e71e56a" target="_blank">96fcd96</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/49d07d26e87023eed0a5b2eadcc300e272b36caf" target="_blank">49d07d2</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -619,6 +619,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/49d07d26e87023eed0a5b2eadcc300e272b36caf/analysis/e_CompositionChange.Rmd" target="_blank">49d07d2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-03
+</td>
+<td>
+wflow_publish("analysis/e_CompositionChange.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/2441c2d608aeef735cf4ff73b81ec41093380b37/docs/e_CompositionChange.html" target="_blank">2441c2d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1030,24 +1064,24 @@ Sarah Williams
 <div id="approaches-to-make-use-of-more-specific-groupings."
 class="section level3">
 <h3>Approaches to make use of more specific groupings.</h3>
-<p>You might still want to use a more speiciic grouping. You might be
+<p>You might still want to use a more specific grouping. You might be
 able to tweak your groups to make this happen.</p>
 <p>Some possible approaches:</p>
 <ul>
-<li>Drop ‘nonsense’ cell types: When cell typing with a broad refernece,
+<li>Drop ‘nonsense’ cell types: When cell typing with a broad reference,
 you might get a handful of irrelevant cell types called (e.g. 4
 hepatocytes on a non-liver sample).</li>
 <li>Pool subtypes: Some celltypes are simply rare. Rather then dropping
 them entirely, you can pool transcriptionally similar cells (e.g. T cell
 subtypes).</li>
 </ul>
-<p>The more cell types you have, the more agressive your FDR multiple
+<p>The more cell types you have, the more aggressive your FDR multiple
 hypothesis correction will need to be. Its best to remove or condense
 cell types that can never reach statistical significance.</p>
 </div>
 </div>
-<div id="look-at-your-samples." class="section level2">
-<h2>Look at your samples.</h2>
+<div id="look-at-your-samples" class="section level2">
+<h2>Look at your samples</h2>
 <p>In a RNAseq experiment, you would typically have one set of
 measurements per biological sample. In a single cell RNAseq experiment
 you’d typically have one group of cells measured for that same sample.
@@ -1121,8 +1155,8 @@ swbioinf
 <p>If there are obvious changes in cell type proprotions, they should be
 visible now!</p>
 </div>
-<div id="calculate-stats." class="section level2">
-<h2>Calculate stats.</h2>
+<div id="calculate-stats" class="section level2">
+<h2>Calculate stats</h2>
 <p>Now we can formally test for differences.</p>
 <p>For the simple case where there are no fov pseudoreplicats (e.g a
 single cell RNAseq experiment), there is a <code>propellar</code>
@@ -1142,10 +1176,9 @@ want to take that into account. This takes few more steps, using the
 limma duplicateCorrealation approach described in the speckle vignette
 <a
 href="https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html#including-random-effects">here</a></p>
-<p>Calculate the transformed proportions that speckle needs.</p>
-<pre class="r"><code># If we didn&#39;t have fov pseudoreplicates
-#props &lt;- getTransformedProps(so$celltype_subset, so$individual_code, transform=&quot;logit&quot;)
-props &lt;- getTransformedProps(so$celltype_subset, so$fov_name, transform=&quot;logit&quot;)</code></pre>
+<p>Calculate the transformed proportion that speckle needs on each
+fov.</p>
+<pre class="r"><code>props &lt;- getTransformedProps(so$celltype_subset, so$fov_name, transform=&quot;logit&quot;)</code></pre>
 <p>Then use limma to test for differences.</p>
 <p>If you are not familiar with limma, or you want more info on building
 your own ‘design’ or ‘contrasts’ there are many online resources that
@@ -1207,25 +1240,42 @@ DT::datatable(results_table.UCvsHC)</code></pre>
 </div>
 <div id="code-snippet" class="section level1">
 <h1>Code snippet</h1>
-<p>With only one bucket of cells per tissue sample (e.g. one fov)</p>
-<pre class="r"><code>library(speckle)
-
-# Without FOV replicates
-# seurat object so
-results_table &lt;- propeller(clusters = so$cluster, 
-                           sample   = so$sample, 
-                           group    = so$condition)</code></pre>
+<!-- With only one bucket of cells per tissue sample (e.g. one fov) -->
+<!-- ```{r eval=FALSE} -->
+<!-- library(speckle) -->
+<!-- # Without FOV replicates -->
+<!-- # seurat object so -->
+<!-- results_table <- propeller(clusters = so$cluster,  -->
+<!--                            sample   = so$sample,  -->
+<!--                            group    = so$condition) -->
+<!-- ``` -->
 <p>With multiple fovs per tissue sample handled as pseudoreplicates</p>
+<!--
+so.orig <- so
+so$cluster <- so$celltype_subset
+so$condition <- ifelse(so$condition == "Ulcerative colitis", "Test","Con") # different stats!
+
+so <- so.orig
+--->
 <pre class="r"><code>library(limma)
 library(speckle)
 
+# condition       : Experimental grouping
+# fov_name        : An unique fov identifier
+# individual_code : individual (sample)
+# cluster         : cell type
+
 props &lt;- getTransformedProps(so$cluster, so$fov_name, transform=&quot;logit&quot;)
 
+# Make a table of relevant sample information, in same order as props, and check.
+sample_info_table &lt;- unique( select(so@meta.data, fov_name, condition, individual_code) )
+row_order &lt;- match(colnames(props$TransformedProps),sample_info_table$fov_name)
+sample_info_table &lt;- sample_info_table[row_order,]
+stopifnot(all(sample_info_table$fov_name == colnames(props$TransformedProps))) # check it
+
 # Extract relevant factors in same order as props
-props_order &lt;- match(colnames(props$TransformedProps), celltype_summary_table$fov_name)
-clusters    &lt;- celltype_summary_table$cluster[props_order]
-sample      &lt;- celltype_summary_table$individual_code[props_order] 
-condition   &lt;- celltype_summary_table$condition[props_order]
+sample      &lt;- sample_info_table$individual_code 
+condition   &lt;- sample_info_table$condition
 
 design &lt;- model.matrix( ~ 0 + condition)
 dupcor &lt;- duplicateCorrelation(props$TransformedProps, design=design,  block=sample)
@@ -1256,7 +1306,7 @@ For a test of Test-Con;
 <li>At logFC +1, A is doubled B.</li>
 <li>At logFC -1, A is half of B.<br />
 </li>
-<li>A logFC 0 indicates no chage.</li>
+<li>A logFC 0 indicates no change.</li>
 </ul></li>
 <li><strong>AveExpr</strong> : Average expression of a gene across all
 replicates.</li>
