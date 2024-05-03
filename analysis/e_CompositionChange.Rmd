@@ -131,17 +131,17 @@ ggplot(celltype_summary_table.SingleR, aes(x=cells, col=celltype_SingleR2)) +
 
 ### Approaches to make use of more specific groupings.
 
-You might still want to use a more speiciic grouping. You might be able to tweak your groups to make this happen.
+You might still want to use a more specific grouping. You might be able to tweak your groups to make this happen.
 
 Some possible approaches:
 
-* Drop 'nonsense' cell types: When cell typing with a broad refernece, you might get a handful of irrelevant cell types called (e.g. 4 hepatocytes on a non-liver sample).
+* Drop 'nonsense' cell types: When cell typing with a broad reference, you might get a handful of irrelevant cell types called (e.g. 4 hepatocytes on a non-liver sample).
 * Pool subtypes: Some celltypes are simply rare. Rather then dropping them entirely, you can pool transcriptionally similar cells (e.g. T cell subtypes).
 
-The more cell types you have, the more agressive your FDR multiple hypothesis correction will need to be. Its best to remove or condense cell types that can never reach statistical significance. 
+The more cell types you have, the more aggressive your FDR multiple hypothesis correction will need to be. Its best to remove or condense cell types that can never reach statistical significance. 
 
 
-## Look at your samples. 
+## Look at your samples
 
 In a RNAseq experiment, you would typically have one set of measurements per biological sample. In a single cell RNAseq  experiment you'd  typically have one group of cells measured for that same sample. With the current crop of spatially resolved single cell technologies (e.g. cosmx), you can have multiple FOVs (feilds of view) on the same physical chunk of tissue. These are not true biological replicates and can be considered 'pseudoreplicates'.
 
@@ -163,7 +163,7 @@ ggplot(celltype_summary_table, aes(x=fov_name, y=cells, fill=celltype_subset)) +
 If there are obvious changes in cell type proprotions, they should be visible now! 
 
 
-## Calculate stats.
+## Calculate stats
 
 Now we can formally test for differences. 
 
@@ -184,10 +184,8 @@ But - having seen the within and between sample heterogeneity, we want to take t
 
 
 
-Calculate the transformed proportions that speckle needs.
+Calculate the transformed proportion that speckle needs on each fov.
 ```{r}
-# If we didn't have fov pseudoreplicates
-#props <- getTransformedProps(so$celltype_subset, so$individual_code, transform="logit")
 props <- getTransformedProps(so$celltype_subset, so$fov_name, transform="logit")
 ```
 
@@ -264,32 +262,49 @@ DT::datatable(results_table.UCvsHC)
 # Code snippet
 
 
-With only one bucket of cells per tissue sample (e.g. one fov)
+<!-- With only one bucket of cells per tissue sample (e.g. one fov) -->
 
-```{r eval=FALSE}
-library(speckle)
+<!-- ```{r eval=FALSE} -->
+<!-- library(speckle) -->
 
-# Without FOV replicates
-# seurat object so
-results_table <- propeller(clusters = so$cluster, 
-                           sample   = so$sample, 
-                           group    = so$condition)
+<!-- # Without FOV replicates -->
+<!-- # seurat object so -->
+<!-- results_table <- propeller(clusters = so$cluster,  -->
+<!--                            sample   = so$sample,  -->
+<!--                            group    = so$condition) -->
 
-```
+<!-- ``` -->
 
 With multiple fovs per tissue sample handled as pseudoreplicates
+
+<!--
+so.orig <- so
+so$cluster <- so$celltype_subset
+so$condition <- ifelse(so$condition == "Ulcerative colitis", "Test","Con") # different stats!
+
+so <- so.orig
+--->
 
 ```{r eval=FALSE}
 library(limma)
 library(speckle)
 
+# condition       : Experimental grouping
+# fov_name        : An unique fov identifier
+# individual_code : individual (sample)
+# cluster         : cell type
+
 props <- getTransformedProps(so$cluster, so$fov_name, transform="logit")
 
+# Make a table of relevant sample information, in same order as props, and check.
+sample_info_table <- unique( select(so@meta.data, fov_name, condition, individual_code) )
+row_order <- match(colnames(props$TransformedProps),sample_info_table$fov_name)
+sample_info_table <- sample_info_table[row_order,]
+stopifnot(all(sample_info_table$fov_name == colnames(props$TransformedProps))) # check it
+
 # Extract relevant factors in same order as props
-props_order <- match(colnames(props$TransformedProps), celltype_summary_table$fov_name)
-clusters    <- celltype_summary_table$cluster[props_order]
-sample      <- celltype_summary_table$individual_code[props_order] 
-condition   <- celltype_summary_table$condition[props_order]
+sample      <- sample_info_table$individual_code 
+condition   <- sample_info_table$condition
 
 design <- model.matrix( ~ 0 + condition)
 dupcor <- duplicateCorrelation(props$TransformedProps, design=design,  block=sample)
@@ -316,7 +331,7 @@ results_table.UCvsHC
 * **logFC** : Log 2 fold change between tested groups. For a test of Test-Con; 
     + At logFC +1, A is doubled B. 
     + At logFC -1, A is half of B.  
-    + A logFC 0 indicates no chage.
+    + A logFC 0 indicates no change.
 * **AveExpr** : Average expression of a gene across all replicates. 
 * **t** : Moderated T-statistic. See Limma documentation.
 * **P.Value** : P.value
