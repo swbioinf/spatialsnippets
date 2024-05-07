@@ -1,0 +1,242 @@
+---
+title: "Differential expression between groups using pseudobulk"
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+---
+
+<!-- keywords
+
+insituspatial
+seurat
+de
+test
+
+-->
+
+# Overview
+
+
+
+<IMAGE HERE>
+
+This requires:
+* Biological replicates for each group
+* Assigned cell types
+* [Optionally] Multiple fovs measured per sample
+
+
+
+
+
+# Worked example 
+
+How does gene expression change within each cell type between Ulcerative colitis or Crohn's disease, and Healthy controls?
+
+## Load libraries and data
+
+```{r}
+library(Seurat)
+library(speckle)
+library(tidyverse)
+library(limma)
+library(DT)
+library(edgeR)
+```
+
+```{r}
+data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
+seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
+```
+
+
+```{r}
+so <- readRDS(seurat_file_01_loaded)
+```
+
+## Experimental design
+
+<!-- Move this to own page? --->
+
+There are three individuals per condition (one tissue sample from each individual). With multiple fovs on each physical tissue sample.
+```{r}
+sample_table <- select(as_tibble(so@meta.data), condition, individual_code, fov_name) %>%
+  unique() %>% 
+  group_by(condition, individual_code) %>% 
+  summarise(n_fovs= n(), item = str_c(fov_name, collapse = ", "))
+
+DT::datatable(sample_table)
+```
+
+
+
+
+
+
+## Count how many cells of each type in your data
+
+Using a pseudobulk approach.
+
+
+* Need at least x reads in a cell to include it
+* Need at least x cells of a celltype within an fov to include that
+* Can only test where we have at least 2 samples on each side of a contrast.
+
+
+```{r}
+min_reads_per_cell <- 200
+
+ggplot(so@meta.data, aes(x=nCount_RNA)) +
+  geom_density() +
+  geom_vline(xintercept = min_reads_per_cell, lty=3) +
+  scale_x_log10() +
+  theme_bw()+
+  ggtitle("How many reads per cell?")
+
+
+so<- so[,so$nCount_RNA >= min_reads_per_cell]
+```
+
+
+
+We will pool each celltype within each fov (cluster_group). But there needs to be a certain number of cells for that to work.
+
+
+Note there are much fewer t-cells overall, but given that we have a high number of samples, there should still be enough to include.  Its typical that some of the less common cell types are difficult or impossible to reliably test.
+
+```{r}
+min_cells_per_fovcluster <- 20
+
+so$fov_cluster <- paste0(so$fov_name,"_", so$celltype_subset)
+
+celltype_summary_table <- so@meta.data %>% 
+  group_by(condition, group, individual_code, fov_name, celltype_subset, fov_cluster) %>%
+  summarise(cells=n(), .groups = 'drop')
+DT::datatable(celltype_summary_table)
+
+
+
+```
+
+
+```{r}
+ggplot(celltype_summary_table, aes(x=cells, col=celltype_subset)) +
+  geom_density() +
+  geom_vline(xintercept=min_cells_per_fovcluster, lty=3) +
+  geom_rug() +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle("How many cells per fov-cluster?")
+```
+
+
+```{r}
+passed_fov_clusters <- celltype_summary_table$fov_cluster[celltype_summary_table$cells >= min_cells_per_fovcluster]
+```
+
+## Calculate pseudobulk
+
+
+```{r}
+pseudobulk_counts <- PseudobulkExpression(so, assays = "RNA", layer="counts",  method = 'aggregate', group.by = 'fov_cluster')
+pseudobulk_counts_matrix <- pseudobulk_counts[["RNA"]]
+
+# CHange - back to _. Ideally we'd have neither, but - will cause problems later
+colnames(pseudobulk_counts_matrix)<-gsub("-","_",colnames(pseudobulk_counts_matrix))
+
+```
+
+Keep only the passed fovs
+```{r}
+pseudobulk_counts_matrix <- pseudobulk_counts_matrix[,passed_fov_clusters]
+
+# pull in relevant annotation in a matched order
+pseudobulk_anno_table <- celltype_summary_table
+match_order <- match(passed_fov_clusters, pseudobulk_anno_table$fov_cluster)
+pseudobulk_anno_table <- pseudobulk_anno_table[match_order,]
+stopifnot(all(colnames(pseudobulk_counts_matrix) == pseudobulk_anno_table$fov_cluster  ))
+
+
+```
+
+
+## Calculate Differential Expression
+
+
+```{r}
+min_samples_to_calc <- 2 # require 2 samples on on either side of contrast
+
+de_result_list <- list()
+
+# celltype_subset is a matrix
+for (the_celltype in levels(so$celltype_subset)) {
+  
+  anno_table.this   <- pseudobulk_anno_table[pseudobulk_anno_table$celltype_subset == the_celltype,]
+  count_matrix.this <- pseudobulk_counts_matrix[,anno_table.this$fov_cluster]
+ 
+  print(the_celltype)
+  
+  # skip clusters with nothing 
+  if( nrow(anno_table.this) < 1 ) {next}
+  
+  # Setup objects for limma
+  dge <- DGEList(count_matrix.this)
+  dge <- calcNormFactors(dge)
+  
+  # Build model
+  group           <- anno_table.this$group
+  individual_code <- anno_table.this$individual_code
+  
+  # Do do any calculations, we need at least 2 samples per treatment.
+  # some clusters don't have this (e.g. c14 from mostly one biosample.)
+  # Also needs both sides of the contrast (e.g. c)
+  # if( !  ( all(table(treatment) > 2)  &  length(unique(treatment))==2 ) ) {next}
+  #<<<<<<<<<<<<<<<<<<< FIX ME for 3
+  
+  ###
+  # its fine, do design.  
+  design    <- model.matrix( ~0 + group)
+ 
+  
+  vm  <- voom(dge, design = design, plot = FALSE)
+  
+  # Adding dupliate correlation to use individual fovs, rather than pooled per biosample
+  corrfit <- duplicateCorrelation(vm, design, block=individual_code)
+  fit     <- lmFit(vm, design, correlation = corrfit$consensus, block=individual_code) 
+
+  # Then fit contrasts and run ebayes
+  contrasts <- makeContrasts(UCvHC  = groupUC - groupHC, 
+                             CDvHC  = groupCD - groupHC,
+                           levels=coef(fit))
+
+  fit <- contrasts.fit(fit, contrasts)
+  fit <- eBayes(fit)
+
+  
+  for ( the_coef in colnames(contrasts) ) {
+    de_result.this <- topTable(fit, n = Inf, adjust.method = "BH", coef = the_coef) %>%
+      rownames_to_column("target") %>%
+      mutate(contrast=the_coef,
+             celltype=the_celltype) %>%
+      select(celltype,contrast,target,everything()) %>%
+      arrange(P.Value)
+    
+    
+      de_result_list[[paste0(the_celltype, the_coef, sep="_")]] <- de_result.this
+    
+  }
+
+  
+
+ 
+}
+
+```

@@ -8,41 +8,25 @@ editor_options:
   chunk_output_type: console
 ---
 
-These examples are a sampler of tests that can be performed on an spatial dataset. Further details on the papers, tools, statistics and methods are linked from each page.
+These examples are a sampler of tests that can be performed on an in-situ single cell spatial dataset.
+Examples use cosmx, should be valid on other platforms like xenium.
 
-Testing... nothing useful here yet.
-
-## Differential Expression (core)
-
-Ways of testing differential expression
-
-* Differential expression with pseudobulk
-* Differential expression between groups (no replicates)
-* Differential expression, using cell level information
+Further details on the papers, tools, statistics and methods are linked from each page.
 
 
-## Differential expression applied
+Testing... few entries, and not yet organised.
 
-Ways of selection for differential expression
+## In situ spatial
 
-
-* Test for differential expression by condition in all celltypes
-* Test for differential expression by different cell niches.
-* Test for differential expression by proximity to celltype
-
-## Proportional changes
+We have fovs and some ideas how to use them.
 
 * [Test for different cell type composition by group](e_CompositionChange.html)
-
-## Spatial hypotheses
-
-* Identify spatially restricted genes
-* Identify spatially co-expressed or adjacent genes
+* [Differential Expresison by celltypes, between groups ](e_DEPseudobulk_insitu.html)
 
 
 
 # Data preparation
 
-* [IBD cosmx dataset](d_cosmxIBD.html) :  [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570) from Garrido-Trigo et al 2023.
+* [IBD cosmx dataset](d_cosmxIBD.html) :  [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570) from Garrido-Trigo et al 2023. 
 
 
