@@ -208,11 +208,12 @@ rownames(anno_table) <- anno_table$id
 head(so.raw@meta.data)
 head(anno_table)
 
-so.raw$full_cell_id <- as.character(rownames(so.raw@meta.data))
-
+so.raw$full_cell_id      <- as.character(rownames(so.raw@meta.data))
 so.raw$celltype_subset   <- factor(anno_table[so.raw$full_cell_id,]$subset)
 so.raw$celltype_SingleR2 <- factor(anno_table[so.raw$full_cell_id,]$SingleR2)
-
+so.raw$fov_name          <- factor(so.raw$fov_name)
+so.raw$group          <- factor(so.raw$group, levels=c("CD","UC","HC"))
+so.raw$condition      <- factor(so.raw$condition, levels=c("Crohn's disease",  'Ulcerative colitis', 'Healthy controls'))
 table(is.na(so.raw$celltype_subset))
 ```
 
