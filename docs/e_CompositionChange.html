@@ -532,15 +532,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree469bf349b8b733ae18677905f520d3bba77692f8targetblank469bf34a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreea258ba35a51cd802b9b4aff2ca6811bae5fc3d1btargetblanka258ba3a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/469bf349b8b733ae18677905f520d3bba77692f8" target="_blank">469bf34</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/a258ba35a51cd802b9b4aff2ca6811bae5fc3d1b" target="_blank">a258ba3</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree469bf349b8b733ae18677905f520d3bba77692f8targetblank469bf34a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreea258ba35a51cd802b9b4aff2ca6811bae5fc3d1btargetblanka258ba3a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -550,7 +550,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/469bf349b8b733ae18677905f520d3bba77692f8" target="_blank">469bf34</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/a258ba35a51cd802b9b4aff2ca6811bae5fc3d1b" target="_blank">a258ba3</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -619,6 +619,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a258ba35a51cd802b9b4aff2ca6811bae5fc3d1b/analysis/e_CompositionChange.Rmd" target="_blank">a258ba3</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-07
+</td>
+<td>
+wflow_publish(c("analysis/e_CompositionChange.Rmd"))
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/03a38b8a31bf871ddcc4f522c47629f1df5be44f/docs/e_CompositionChange.html" target="_blank">03a38b8</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-07
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -916,20 +950,53 @@ wflow_publish(c("analysis/index_data.Rmd", "analysis/index.Rmd",
 </div>
 </div>
 </div>
+<!-- keywords
+
+insituspatial
+seurat
+composition
+test
+
+-->
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>With single cell spatial data, the frequency of each cell type can be
+tested between two different groups.</p>
+<p>Testing changes in proportions like this can be challenging, because
+an expansion in one cell type, will mean a reduction in all other cell
+types.</p>
+<p>This document describes how to use the <a
+href="(https://academic.oup.com/bioinformatics/article/38/20/4720/6675456)">propeller</a>
+method from the speckle R package, and limma to test for differences in
+cell type proportions. This takes into account this linked relationship
+between cell type proportions, and can incorporate pseudoreplicate data
+from multiple FOVs (fields of view) from an insitu single cell spatial
+dataset.</p>
+<p><IMAGE HERE></p>
+<p>This requires: * Biological replicates for each group * Assigned cell
+types * [Optionally] Multiple fovs measured per sample</p>
+<p>For example: * Are there more macrophages around the tumour after
+treatment? * Is there a celltype that’s failing to form (or an immature
+form that’s failing to develop) between d3 and d7 in my mouse
+knockouts?</p>
+</div>
+<div id="worked-example" class="section level1">
+<h1>Worked example</h1>
 <p>Is there a difference in the celltype composition between individuals
 with Ulcerative colitis or Crohn’s disease, and Healthy controls?</p>
-<div id="load-libraries-and-data-object" class="section level1">
-<h1>Load libraries and data object</h1>
+<div id="load-libraries-and-data" class="section level2">
+<h2>Load libraries and data</h2>
 <pre class="r"><code>library(Seurat)
 library(speckle)
 library(tidyverse)
+library(limma)
 library(DT)</code></pre>
 <pre class="r"><code>data_dir              &lt;- file.path(&quot;~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data&quot;) 
 seurat_file_01_loaded &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_seurat_01_loaded.RDS&quot;)</code></pre>
 <pre class="r"><code>so &lt;- readRDS(seurat_file_01_loaded)</code></pre>
 </div>
-<div id="looking-at-the-data" class="section level1">
-<h1>Looking at the data</h1>
+<div id="experimental-design" class="section level2">
+<h2>Experimental design</h2>
 <!-- Move this to own page? --->
 <p>There are three individuals per condition (one tissue sample from
 each individual). With multiple fovs on each physical tissue sample.</p>
@@ -942,8 +1009,6 @@ DT::datatable(sample_table)</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-8839f08f82529a5247be" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-8839f08f82529a5247be">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9"],["Crohn's disease","Crohn's disease","Crohn's disease","Healthy controls","Healthy controls","Healthy controls","Ulcerative colitis","Ulcerative colitis","Ulcerative colitis"],["CD_a","CD_b","CD_c","HC_a","HC_b","HC_c","UC_a","UC_b","UC_c"],[19,19,16,19,20,16,19,22,21],["CD_a_001, CD_a_002, CD_a_003, CD_a_004, CD_a_005, CD_a_006, CD_a_007, CD_a_008, CD_a_009, CD_a_010, CD_a_011, CD_a_012, CD_a_013, CD_a_014, CD_a_015, CD_a_016, CD_a_017, CD_a_018, CD_a_019","CD_b_002, CD_b_003, CD_b_004, CD_b_005, CD_b_006, CD_b_007, CD_b_008, CD_b_009, CD_b_010, CD_b_011, CD_b_012, CD_b_013, CD_b_014, CD_b_015, CD_b_016, CD_b_017, CD_b_018, CD_b_019, CD_b_020","CD_c_001, CD_c_002, CD_c_003, CD_c_004, CD_c_005, CD_c_006, CD_c_007, CD_c_008, CD_c_009, CD_c_010, CD_c_011, CD_c_012, CD_c_013, CD_c_014, CD_c_015, CD_c_017","HC_a_001, HC_a_002, HC_a_003, HC_a_004, HC_a_005, HC_a_006, HC_a_007, HC_a_008, HC_a_009, HC_a_010, HC_a_011, HC_a_012, HC_a_013, HC_a_014, HC_a_015, HC_a_016, HC_a_018, HC_a_019, HC_a_020","HC_b_001, HC_b_002, HC_b_003, HC_b_004, HC_b_005, HC_b_006, HC_b_007, HC_b_008, HC_b_009, HC_b_010, HC_b_011, HC_b_012, HC_b_013, HC_b_014, HC_b_015, HC_b_016, HC_b_017, HC_b_018, HC_b_019, HC_b_020","HC_c_001, HC_c_002, HC_c_003, HC_c_004, HC_c_005, HC_c_006, HC_c_007, HC_c_008, HC_c_009, HC_c_010, HC_c_011, HC_c_012, HC_c_013, HC_c_014, HC_c_015, HC_c_016","UC_a_001, UC_a_002, UC_a_005, UC_a_006, UC_a_007, UC_a_008, UC_a_009, UC_a_010, UC_a_012, UC_a_013, UC_a_014, UC_a_015, UC_a_016, UC_a_017, UC_a_018, UC_a_019, UC_a_020, UC_a_021, UC_a_022","UC_b_001, UC_b_002, UC_b_003, UC_b_004, UC_b_005, UC_b_006, UC_b_007, UC_b_008, UC_b_009, UC_b_010, UC_b_011, UC_b_012, UC_b_014, UC_b_015, UC_b_016, UC_b_017, UC_b_018, UC_b_020, UC_b_021, UC_b_022, UC_b_023, UC_b_024","UC_c_001, UC_c_002, UC_c_003, UC_c_004, UC_c_005, UC_c_006, UC_c_007, UC_c_008, UC_c_009, UC_c_010, UC_c_011, UC_c_012, UC_c_013, UC_c_014, UC_c_015, UC_c_016, UC_c_017, UC_c_018, UC_c_019, UC_c_020, UC_c_021"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>condition<\/th>\n      <th>individual_code<\/th>\n      <th>n_fovs<\/th>\n      <th>item<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"condition","targets":1},{"name":"individual_code","targets":2},{"name":"n_fovs","targets":3},{"name":"item","targets":4}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
-<div id="full-worked-example" class="section level1">
-<h1>Full worked example</h1>
 <div id="count-how-many-cells-of-each-type-in-your-data"
 class="section level2">
 <h2>Count how many cells of each type in your data</h2>
@@ -1269,9 +1334,7 @@ one</a> or any number of forum posts. The instructions for RNAseq or
 microarray differential expression tests can be applied to this
 proportional data. The difference is that we provide the
 proportions.</p>
-<pre class="r"><code>library(limma)
-
-# The fovs as ordered in props
+<pre class="r"><code># The fovs as ordered in props
 fov_name &lt;- colnames(props$TransformedProps)
 
 # Extract the other information in the same order.
@@ -1445,7 +1508,7 @@ attached base packages:
 [1] stats     graphics  grDevices datasets  utils     methods   base     
 
 other attached packages:
- [1] limma_3.58.1       DT_0.33            lubridate_1.9.3    forcats_1.0.0     
+ [1] DT_0.33            limma_3.58.1       lubridate_1.9.3    forcats_1.0.0     
  [5] stringr_1.5.1      dplyr_1.1.4        purrr_1.0.2        readr_2.1.5       
  [9] tidyr_1.3.1        tibble_3.2.1       ggplot2_3.5.0      tidyverse_2.0.0   
 [13] speckle_1.2.0      Seurat_5.0.3       SeuratObject_5.0.1 sp_2.1-3          
