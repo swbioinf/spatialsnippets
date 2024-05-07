@@ -77,7 +77,7 @@ Lets check the numbers of cells per category for both categories, to decide whic
 In the 'Celltype_subset' column, there are just 5 broad categories;
 ```{r}
 celltype_summary_table <- so@meta.data %>% 
-  group_by(condition, individual_code, fov_name, celltype_subset) %>%
+  group_by(condition, group, individual_code, fov_name, celltype_subset) %>%
   summarise(cells=n(), .groups = 'drop')
 DT::datatable(celltype_summary_table)
 ```
@@ -90,7 +90,7 @@ There are many different types in 'celltype_SingleR2' - which is typical if you'
 
 ```{r}
 celltype_summary_table.SingleR <- so@meta.data %>% 
-  group_by(condition, individual_code, fov_name, celltype_SingleR2) %>%
+  group_by(condition, group, individual_code, fov_name, celltype_SingleR2) %>%
   summarise(cells=n(), .groups = 'drop')
 DT::datatable(celltype_summary_table.SingleR)
 ```
@@ -160,7 +160,12 @@ ggplot(celltype_summary_table, aes(x=fov_name, y=cells, fill=celltype_subset)) +
 ```
 
 
-If there are obvious changes in cell type proprotions, they should be visible now! 
+If there are obvious changes in cell type proportions, they should be visible now! 
+
+* Are there differences in the tissue regions targeted by the fovs? e.g. Epithealial vs stromal? Consider whether it is appropriate to include fovs together.
+* Are you capturing regions or structures of different sizes that you don't want to test? e.g. Fovs at the epithalial edge might have uninteresting differences in epthialial cells counts, just through fov placement choices. Omitting the epithelial cell counts might be appropriate to measure differences in the rest.
+
+
 
 
 ## Calculate stats
@@ -208,21 +213,17 @@ library(limma)
 fov_name <- colnames(props$TransformedProps)
 
 # Extract the other information in the same order.
+# Note we're using the group column with simple names (entries like 'CD', 'HC') rather than the condition column ("Chron's Disease", "Healthy controls"). 
+# This is because differential tests with limma doesn't handle spaces and special characters (like ',- ) very well at all. 
 props_order <- match(fov_name, celltype_summary_table$fov_name)
 clusters <- celltype_summary_table$celltype_subset[props_order]
 sample   <- celltype_summary_table$individual_code[props_order] 
-group    <- celltype_summary_table$condition[props_order]
-# Using a 'group code' for brevity, and because spaces and special characters are not supported in limma design.
-group_code_lookup <- list("Crohn's disease"="CD",
-                       "Ulcerative colitis"="UC",
-                       "Healthy controls"="HC"
-                        )
-group_code <- factor(group_code_lookup[group], levels=group_code_lookup)
+group    <- celltype_summary_table$group[props_order]
 
 # Build the design matrix
 # This simple one considers only the disease.
-# and includes the 0+ term to avoid seeting one group to our baseline, which in turn  make building contrasts more intuative.
-design <- model.matrix( ~ 0+ group_code)
+# and includes the 0+ term to avoid setting one group to our baseline, which in turn  make building contrasts more intuative.
+design <- model.matrix( ~ 0+ group)
 
 # Calculate duplicate correlation, within fovs for different individuals (sample)
 dupcor <- duplicateCorrelation(props$TransformedProps, design=design,  block=sample)
@@ -237,10 +238,10 @@ colnames(fit)
 
 # Use those names to define any relevant contrasts to test 
 # Here there are 2: Ucerative colitis vs healthy controls and Chron's disease vs healthy controls.
-contrasts <- makeContrasts(UCvHC    = group_codeUC - group_codeHC, 
-                           CDvHC    = group_codeCD - group_codeHC,
+contrasts <- makeContrasts(UCvHC    = groupUC - groupHC, 
+                           CDvHC    = groupCD - groupHC,
                            levels=coef(fit))
-# THen fit contrasts and run ebayes
+# Then fit contrasts and run ebayes
 fit <- contrasts.fit(fit, contrasts)
 fit <- eBayes(fit)
 ```
@@ -326,6 +327,8 @@ results_table <- topTable(fit, coef='test')
 ```{r}
 results_table.UCvsHC
 ```
+
+This table is the typical output of _limma_ tests;
 
 * **rownames** : The tested cell types
 * **logFC** : Log 2 fold change between tested groups. For a test of Test-Con; 
