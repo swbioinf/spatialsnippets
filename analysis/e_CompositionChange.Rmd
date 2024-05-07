@@ -179,8 +179,8 @@ DT::datatable(results_table.no_fov_info)
 
 -----
 
-
-But - having seen the within and between sample heterogeneity, we want to take that into account. This takes few more steps, using the limma duplicateCorrealation approach described in the speckle vignette [here](https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html#including-random-effects)
+It would be possible to counts cells at the sample level, and use the above method. 
+But - having seen the within sample heterogeneity across multiple fovs, we want to take that into account. This takes few more steps, using the limma duplicateCorrealation approach described in the speckle vignette [here](https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html#including-random-effects)
 
 
 
