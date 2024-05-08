@@ -36,15 +36,17 @@ Testing changes in proportions like this can be challenging, because an expansio
 
 This document describes how to use the [propeller]((https://academic.oup.com/bioinformatics/article/38/20/4720/6675456)) method from the speckle R package, and limma to test for differences in cell type proportions. This takes into account this linked relationship between cell type proportions, and can incorporate pseudoreplicate data from multiple FOVs (fields of view) from an insitu single cell spatial dataset. 
 
-<IMAGE HERE>
+![](assets/cluster_prop_diff.png)
 
 This requires:
+
 * Biological replicates for each group
 * Assigned cell types
 * [Optionally] Multiple fovs measured per sample
 
 
 For example:
+
 * Are there more macrophages around the tumour after treatment?
 * Is there a celltype that's failing to form (or an immature form that's failing to develop) between d3 and d7 in my mouse knockouts?
 
