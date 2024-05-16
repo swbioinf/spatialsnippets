@@ -29,6 +29,7 @@ test
 <IMAGE HERE>
 
 This requires:
+
 * Biological replicates for each group
 * Assigned cell types
 * [Optionally] Multiple fovs measured per sample
@@ -84,7 +85,6 @@ DT::datatable(sample_table)
 ## Count how many cells of each type in your data
 
 Using a pseudobulk approach.
-
 
 * Need at least x reads in a cell to include it
 * Need at least x cells of a celltype within an fov to include that
@@ -194,18 +194,14 @@ for (the_celltype in levels(so$celltype_subset)) {
   # Build model
   group           <- anno_table.this$group
   individual_code <- anno_table.this$individual_code
-  
-  # Do do any calculations, we need at least 2 samples per treatment.
-  # some clusters don't have this (e.g. c14 from mostly one biosample.)
-  # Also needs both sides of the contrast (e.g. c)
-  # if( !  ( all(table(treatment) > 2)  &  length(unique(treatment))==2 ) ) {next}
-  #<<<<<<<<<<<<<<<<<<< FIX ME for 3
-  
-  ###
-  # its fine, do design.  
+
+  # To do any calculations, we need at least 2 pseudobulk groups per contrast.
+  # there are plenty in this experiemnt, but with less replicates and rare cell types
+  # it may be neccesary to check and skip certain contrasts
+
+  # Model design 
   design    <- model.matrix( ~0 + group)
- 
-  
+
   vm  <- voom(dge, design = design, plot = FALSE)
   
   # Adding dupliate correlation to use individual fovs, rather than pooled per biosample
@@ -230,7 +226,7 @@ for (the_celltype in levels(so$celltype_subset)) {
       arrange(P.Value)
     
     
-      de_result_list[[paste0(the_celltype, the_coef, sep="_")]] <- de_result.this
+      de_result_list[[paste(the_celltype, the_coef, sep="_")]] <- de_result.this
     
   }
 
@@ -238,5 +234,128 @@ for (the_celltype in levels(so$celltype_subset)) {
 
  
 }
+de_results_all <- bind_rows(de_result_list)
+de_results_sig <- filter(de_results_all, adj.P.Val < 0.01)
+```
+
+
+
+Table of significant results.
+
+```{r}
+DT::datatable(de_results_sig)
+```
+
+
+
+## DE plots
+
+
+```{r}
+library(ggrepel) # gg_repel, For non-overlapping gene labels
+
+
+make_ma_style_plot <- function(res_table, pval_threshold = 0.01, n_genes_to_label = 10) {
+  p <- ggplot(res_table, aes(x=AveExpr, y=logFC, col=adj.P.Val < pval_threshold) ) +
+    geom_hline(yintercept = c(0), col='grey80') +
+    geom_point(pch=3) +
+    geom_text_repel(data    = head(arrange(filter(res_table , adj.P.Val < pval_threshold ), P.Value), n=5),
+                    mapping = aes(label=target), col="red" ) +
+    theme_bw() +
+    geom_hline(yintercept = c(-1,1), lty=3) +
+    scale_colour_manual(values = c('FALSE'="black", 'TRUE'="red")) +
+    theme(legend.position = 'none')
+  return(p)
+}
 
 ```
+
+```{r}
+#res_table.UCvHC.epi <- filter(de_results_all, contrast == "UCvHC", celltype=="epi")
+
+make_ma_style_plot(res_table = filter(de_results_all, contrast == "UCvHC", celltype=="epi"))
+make_ma_style_plot(res_table = filter(de_results_all, contrast == "UCvHC", celltype=="tcells"))
+make_ma_style_plot(res_table = filter(de_results_all, contrast == "UCvHC", celltype=="stroma"))
+
+
+
+```
+
+## Check some examples
+
+Its always worth visualising how the expression of your differentially expressed genes really looks, with respect to your experimental design. How best to do this depends on your experiment. 
+
+
+The results suggests that TNFRSF18 was significantly DE between individuals with Ulcerative Colitis and Healthy Controls in plasma cells. There's some very convenient seurat plots below;
+
+```{r}
+VlnPlot(subset(so, celltype_subset == "plasmas"), features = "TNFRSF18", group.by = 'group', alpha = 0.1)
+FeaturePlot(so, "TNFRSF18", split.by = "group")
+```
+
+But it gets difficult to summarise data at the single cell level. We can also use the the normalised pseudobulk expression to see how gene expression varies within each fov,individual,celltype and condition - The plot below shows an overview of TNFRSF18 across the entire experiment.  
+
+NB: We have to plot normalised expression instead of the raw counts as there are vastly different numbers of cells in each fov+celltype grouping. 
+
+```{r}
+# Get tmm normalised coutns for all pseudobulk
+# WHen we did the DE we calculated this a celltype at a time, so values might differ slightly!
+dge <- DGEList(pseudobulk_counts_matrix)
+dge <- calcNormFactors(dge)
+norm_pseudobulk <- cpm(dge , log=TRUE) # uses tmm normalisation
+
+# Plot expression for TNFRSF18
+plottable <- cbind(pseudobulk_anno_table, expression = norm_pseudobulk["TNFRSF18",])
+ggplot(plottable, aes(x=individual_code, y=expression, col=condition )) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point() + 
+  theme_bw() + 
+  theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
+  facet_wrap(~celltype_subset) 
+
+```
+
+
+And you can compare that with IGHG1, which was flagged at differentially expressed across multiple cell types.
+
+```{r}
+plottable <- cbind(pseudobulk_anno_table, expression = norm_pseudobulk["IGHG1",])
+ggplot(plottable, aes(x=individual_code, y=expression, col=condition )) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point() + 
+  theme_bw() + 
+  theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
+  facet_wrap(~celltype_subset) 
+```
+
+# Code Snippet
+
+Todo
+
+# Results
+
+```{r}
+head(de_results_all)
+```
+
+This table is the typical output of _limma_ tests; With a couple of extra columns added by our code.
+
+* **celltype**: The celltype being tested (Added by example code)
+* **contrast**: The contrast being tested (Added by example code)
+* **target** : The gene name (Added by example code, is the rowname in limma output)
+* **rownames** : The tested cell types
+* **logFC** : Log 2 fold change between tested groups. For a test of Test-Con; 
+    + At logFC +1, A is doubled B. 
+    + At logFC -1, A is half of B.  
+    + A logFC 0 indicates no change.
+* **AveExpr** : Average expression of a gene across all replicates. 
+* **t** : Moderated T-statistic. See Limma documentation.
+* **P.Value** : P.value
+* **adj.P.Val** : A multiple-hypothesis corrected p-value
+* **B** : B statistic (rarely used). See Limma documentation.
+
+
+# More Information
+
+
+Todo
