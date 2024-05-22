@@ -532,15 +532,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree36dd228c42b376d577f528d7fbb8c4021242a570targetblank36dd228a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree9c539650cb5d354033da71571e51d46d5948396atargetblank9c53965a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/36dd228c42b376d577f528d7fbb8c4021242a570" target="_blank">36dd228</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/9c539650cb5d354033da71571e51d46d5948396a" target="_blank">9c53965</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree36dd228c42b376d577f528d7fbb8c4021242a570targetblank36dd228a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree9c539650cb5d354033da71571e51d46d5948396atargetblank9c53965a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -550,7 +550,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/36dd228c42b376d577f528d7fbb8c4021242a570" target="_blank">36dd228</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/9c539650cb5d354033da71571e51d46d5948396a" target="_blank">9c53965</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -616,6 +616,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/9c539650cb5d354033da71571e51d46d5948396a/analysis/e_DEPseudobulk_insitu.Rmd" target="_blank">9c53965</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-22
+</td>
+<td>
+wflow_publish("analysis/e_DEPseudobulk_insitu.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/58ee2ecc8ab57efe1182f72b7812ddf364c07645/docs/e_DEPseudobulk_insitu.html" target="_blank">58ee2ec</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1339,25 +1373,107 @@ swbioinf
 </div>
 <div id="code-snippet" class="section level1">
 <h1>Code Snippet</h1>
-<p>Todo</p>
+<pre class="r"><code>library(Seurat)
+library(edgeR)
+library(limma)
+
+
+min_reads_per_cell       &lt;- 200
+min_cells_per_fovcluster &lt;- 20
+min_samples_to_calc      &lt;- 2 # require 2 samples on on either side of contrast
+
+
+# Remove cells with too few counts
+so &lt;- so[,so$nCount_RNA &gt;= min_reads_per_cell]
+
+
+# Define fov+cluster groups, with all relevant sample annotation
+# remove those with too few cells.
+so$fov_cluster &lt;- paste0(so$fov_name,&quot;_&quot;, so$celltype_subset)
+celltype_summary_table &lt;- so@meta.data %&gt;% 
+  group_by(condition, group, individual_code, fov_name, celltype_subset, fov_cluster) %&gt;%
+  summarise(cells=n(), .groups = &#39;drop&#39;)
+
+
+# Calculate pseudobulk for each fov+cluster group
+pseudobulk_counts &lt;- PseudobulkExpression(so, assays = &quot;RNA&quot;, layer=&quot;counts&quot;,  method = &#39;aggregate&#39;, group.by = &#39;fov_cluster&#39;)
+pseudobulk_counts_matrix &lt;- pseudobulk_counts[[&quot;RNA&quot;]]
+# Change - back to _. Ideally have neither and skip this step
+colnames(pseudobulk_counts_matrix)&lt;-gsub(&quot;-&quot;,&quot;_&quot;,colnames(pseudobulk_counts_matrix))
+
+
+# Determin fov_clusters with eough cells
+# Filter both pseudobulk matrix and pseudobulk annotation 
+passed_fov_clusters &lt;- celltype_summary_table$fov_cluster[celltype_summary_table$cells &gt;= min_cells_per_fovcluster]
+pseudobulk_counts_matrix &lt;- pseudobulk_counts_matrix[,passed_fov_clusters]
+pseudobulk_anno_table    &lt;- celltype_summary_table[passed_fov_clusters,]
+
+
+# Calculate DE across every celltype
+de_result_list &lt;- list()
+
+for (the_celltype in levels(so$celltype_subset)) {
+  
+  anno_table.this   &lt;- pseudobulk_anno_table[pseudobulk_anno_table$celltype_subset == the_celltype,]
+  count_matrix.this &lt;- pseudobulk_counts_matrix[,anno_table.this$fov_cluster]
+ 
+  print(the_celltype)
+  
+  # skip clusters with nothing 
+  if( nrow(anno_table.this) &lt; 1 ) {next}
+  
+  # Setup objects for limma
+  dge &lt;- DGEList(count_matrix.this)
+  dge &lt;- calcNormFactors(dge)
+  
+  # Build model
+  group           &lt;- anno_table.this$group
+  individual_code &lt;- anno_table.this$individual_code
+
+  # To do any calculations, we need at least 2 pseudobulk groups per contrast.
+  # there are plenty in this experiemnt, but with less replicates and rare cell types
+  # it may be neccesary to check and skip certain contrasts
+
+  # Model design 
+  design    &lt;- model.matrix( ~0 + group)
+
+  vm  &lt;- voom(dge, design = design, plot = FALSE)
+  
+  # Adding dupliate correlation to use individual fovs, rather than pooled per biosample
+  corrfit &lt;- duplicateCorrelation(vm, design, block=individual_code)
+  fit     &lt;- lmFit(vm, design, correlation = corrfit$consensus, block=individual_code) 
+
+  # Then fit contrasts and run ebayes
+  contrasts &lt;- makeContrasts(UCvHC  = groupUC - groupHC
+                           levels=coef(fit))
+
+  fit &lt;- contrasts.fit(fit, contrasts)
+  fit &lt;- eBayes(fit)
+
+  
+  for ( the_coef in colnames(contrasts) ) {
+    de_result.this &lt;- topTable(fit, n = Inf, adjust.method = &quot;BH&quot;, coef = the_coef) %&gt;%
+      rownames_to_column(&quot;target&quot;) %&gt;%
+      mutate(contrast=the_coef,
+             celltype=the_celltype) %&gt;%
+      select(celltype,contrast,target,everything()) %&gt;%
+      arrange(P.Value)
+    
+    
+      de_result_list[[paste(the_celltype, the_coef, sep=&quot;_&quot;)]] &lt;- de_result.this
+    
+  }
+
+}
+
+de_results_all &lt;- bind_rows(de_result_list)
+de_results_sig &lt;- filter(de_results_all, adj.P.Val &lt; 0.01)</code></pre>
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>
-<pre class="r"><code>head(de_results_all)</code></pre>
-<pre><code>  celltype contrast   target     logFC   AveExpr         t      P.Value
-1      epi    UCvHC      LYZ  3.567564 10.031581  7.232631 5.119345e-11
-2      epi    UCvHC    IGHG2  2.795073 10.088223  6.888272 2.923328e-10
-3      epi    UCvHC    IGHG1  2.879392 10.641837  6.887306 2.937509e-10
-4      epi    UCvHC HLA-DRB1  2.361549 10.492049  5.945283 2.867918e-08
-5      epi    UCvHC     SAA1  1.631196  9.280587  5.812177 5.340761e-08
-6      epi    UCvHC   B3GNT7 -2.229026 10.219657 -5.724733 8.004303e-08
-     adj.P.Val         B
-1 5.114226e-08 14.692385
-2 9.781906e-08 13.058667
-3 9.781906e-08 13.034269
-4 7.162625e-06  8.711642
-5 1.067084e-05  8.122865
-6 1.332717e-05  7.742637</code></pre>
+<pre class="r"><code>DT::datatable(head(de_results_all))</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-02919026514f0c819cc6" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-02919026514f0c819cc6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["epi","epi","epi","epi","epi","epi"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC"],["LYZ","IGHG2","IGHG1","HLA-DRB1","SAA1","B3GNT7"],[3.567564119296202,2.795073130682136,2.879391845164468,2.361549337874527,1.631196105042839,-2.22902616410666],[10.03158050151357,10.08822340923212,10.64183684123074,10.49204862077934,9.280586762672716,10.21965706852791],[7.232630638451168,6.888271579353455,6.887306136142595,5.945282521192369,5.812176889783621,-5.724733455355884],[5.119345362818246e-11,2.923327921764283e-10,2.937509365918907e-10,2.867917974831155e-08,5.340761465147169e-08,8.004303439047451e-08],[5.114226017455428e-08,9.781906188509959e-08,9.781906188509959e-08,7.16262514214081e-06,1.067084140736404e-05,1.332716522601401e-05],[14.69238513777382,13.05866703432359,13.03426921103388,8.711641595720597,8.122865305782181,7.742637380062929]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[4,5,6,7,8,9]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast","targets":2},{"name":"target","targets":3},{"name":"logFC","targets":4},{"name":"AveExpr","targets":5},{"name":"t","targets":6},{"name":"P.Value","targets":7},{"name":"adj.P.Val","targets":8},{"name":"B","targets":9}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 <p>This table is the typical output of <em>limma</em> tests; With a
 couple of extra columns added by our code.</p>
 <ul>
