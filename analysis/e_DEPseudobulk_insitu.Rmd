@@ -24,9 +24,7 @@ test
 
 # Overview
 
-
-
-<IMAGE HERE>
+![](assets/insitu_spatial_pseudobulk_de.png)
 
 This requires:
 
