@@ -13,6 +13,12 @@ editor_options:
   chunk_output_type: console
 ---
 
+
+```{r angrylibrarian, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 <!-- keywords
 
 insituspatial
@@ -24,6 +30,20 @@ test
 
 # Overview
 
+Once we have identified cell types present in the samples, its typical to test how
+gene expression changes between experimental conditions, within each different cell type. 
+Some cell types may be dramatically affected by the experimental conditions, while others are not. Likewise some genes may change only in a specific cell type, whereas others show a more general difference.
+
+
+This document describes how to apply a pseudobulk approach to test for differences between groups, accounting for biological replicates. This is very similar to how a non-spatial single cell experiment may be analysed.
+
+In a pseudobulk approach counts are obtaing by pooling together groups of cells; in this case cells from the of the same type from the same fov. These pooled counts can then be analysed more like a bulk RNAseq experiment. 
+
+Note that there are other approaches to calculate differential expression in this kind of data - including those that make use of individual cells. <LINK A REVIEW>
+
+
+
+
 ![](assets/insitu_spatial_pseudobulk_de.png)
 
 This requires:
@@ -33,7 +53,19 @@ This requires:
 * [Optionally] Multiple fovs measured per sample
 
 
+For example:
 
+* What genes are differentially expressed in epithelial cells in Crohn's disease vs healthy individuals?
+* How do genes change with treatment in each different cell type in my sample?
+
+
+Steps:
+
+1. Calculate pseudobulk
+2. Filter to testable pseudobulk groups (enough cells to pool)
+3. Filter to testable genes (enough expression to see changes)
+4. Test for changes in gene expression
+5. Plot DE results and individual genes. 
 
 
 # Worked example 
@@ -105,7 +137,7 @@ so<- so[,so$nCount_RNA >= min_reads_per_cell]
 
 
 
-We will pool each celltype within each fov (cluster_group). But there needs to be a certain number of cells for that to work.
+We will pool each celltype within each fov (cluster_group). But there needs to be a certain number of cells for that to work - less than a certain number of cells and a pseudobulk pool will be excluded.
 
 
 Note there are much fewer t-cells overall, but given that we have a high number of samples, there should still be enough to include.  Its typical that some of the less common cell types are difficult or impossible to reliably test.
