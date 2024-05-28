@@ -401,7 +401,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-05-22
+<strong>Last updated:</strong> 2024-05-28
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -532,15 +532,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree9c539650cb5d354033da71571e51d46d5948396atargetblank9c53965a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreedd0f0894499f4a75653f3a79cd14aebb507519c5targetblankdd0f089a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/9c539650cb5d354033da71571e51d46d5948396a" target="_blank">9c53965</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/dd0f0894499f4a75653f3a79cd14aebb507519c5" target="_blank">dd0f089</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree9c539650cb5d354033da71571e51d46d5948396atargetblank9c53965a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreedd0f0894499f4a75653f3a79cd14aebb507519c5targetblankdd0f089a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -550,7 +550,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/9c539650cb5d354033da71571e51d46d5948396a" target="_blank">9c53965</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/dd0f0894499f4a75653f3a79cd14aebb507519c5" target="_blank">dd0f089</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -565,12 +565,10 @@ were generated:
 </p>
 <pre><code>
 Ignored files:
+    Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    renv/library/
     Ignored:    renv/staging/
-
-Untracked files:
-    Untracked:  code/generate_diagram_plots.R
 
 </code></pre>
 <p>
@@ -616,6 +614,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/dd0f0894499f4a75653f3a79cd14aebb507519c5/analysis/e_DEPseudobulk_insitu.Rmd" target="_blank">dd0f089</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-28
+</td>
+<td>
+wflow_publish("analysis/e_DEPseudobulk_insitu.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/d6d841ac9e9d672749db653c8d7ae0b3e996690c/docs/e_DEPseudobulk_insitu.html" target="_blank">d6d841a</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -753,6 +785,23 @@ test
 -->
 <div id="overview" class="section level1">
 <h1>Overview</h1>
+<p>Once we have identified cell types present in the samples, its
+typical to test how gene expression changes between experimental
+conditions, within each different cell type. Some cell types may be
+dramatically affected by the experimental conditions, while others are
+not. Likewise some genes may change only in a specific cell type,
+whereas others show a more general difference.</p>
+<p>This document describes how to apply a pseudobulk approach to test
+for differences between groups, accounting for biological replicates.
+This is very similar to how a non-spatial single cell experiment may be
+analysed.</p>
+<p>In a pseudobulk approach counts are obtaing by pooling together
+groups of cells; in this case cells from the of the same type from the
+same fov. These pooled counts can then be analysed more like a bulk
+RNAseq experiment.</p>
+<p>Note that there are other approaches to calculate differential
+expression in this kind of data - including those that make use of
+individual cells. <LINK A REVIEW></p>
 <p><img src="assets/insitu_spatial_pseudobulk_de.png" /></p>
 <p>This requires:</p>
 <ul>
@@ -760,6 +809,21 @@ test
 <li>Assigned cell types</li>
 <li>[Optionally] Multiple fovs measured per sample</li>
 </ul>
+<p>For example:</p>
+<ul>
+<li>What genes are differentially expressed in epithelial cells in
+Crohn’s disease vs healthy individuals?</li>
+<li>How do genes change with treatment in each different cell type in my
+sample?</li>
+</ul>
+<p>Steps:</p>
+<ol style="list-style-type: decimal">
+<li>Calculate pseudobulk</li>
+<li>Filter to testable pseudobulk groups (enough cells to pool)</li>
+<li>Filter to testable genes (enough expression to see changes)</li>
+<li>Test for changes in gene expression</li>
+<li>Plot DE results and individual genes.</li>
+</ol>
 </div>
 <div id="worked-example" class="section level1">
 <h1>Worked example</h1>
@@ -767,44 +831,12 @@ test
 Ulcerative colitis or Crohn’s disease, and Healthy controls?</p>
 <div id="load-libraries-and-data" class="section level2">
 <h2>Load libraries and data</h2>
-<pre class="r"><code>library(Seurat)</code></pre>
-<pre><code>Loading required package: SeuratObject</code></pre>
-<pre><code>Loading required package: sp</code></pre>
-<pre><code>&#39;SeuratObject&#39; was built under R 4.3.0 but the current version is
-4.3.2; it is recomended that you reinstall &#39;SeuratObject&#39; as the ABI
-for R may have changed</code></pre>
-<pre><code>
-Attaching package: &#39;SeuratObject&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:base&#39;:
-
-    intersect</code></pre>
-<pre class="r"><code>library(speckle)</code></pre>
-<pre><code>Warning: replacing previous import &#39;S4Arrays::makeNindexFromArrayViewport&#39; by
-&#39;DelayedArray::makeNindexFromArrayViewport&#39; when loading &#39;SummarizedExperiment&#39;</code></pre>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.0     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     </code></pre>
-<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
-<pre class="r"><code>library(limma)
-library(DT)</code></pre>
-<pre><code>
-Attaching package: &#39;DT&#39;
-
-The following object is masked from &#39;package:Seurat&#39;:
-
-    JS
-
-The following object is masked from &#39;package:SeuratObject&#39;:
-
-    JS</code></pre>
-<pre class="r"><code>library(edgeR)</code></pre>
+<pre class="r"><code>library(Seurat)
+library(speckle)
+library(tidyverse)
+library(limma)
+library(DT)
+library(edgeR)</code></pre>
 <pre class="r"><code>data_dir              &lt;- file.path(&quot;~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data&quot;) 
 seurat_file_01_loaded &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_seurat_01_loaded.RDS&quot;)</code></pre>
 <pre class="r"><code>so &lt;- readRDS(seurat_file_01_loaded)</code></pre>
@@ -817,10 +849,9 @@ each individual). With multiple fovs on each physical tissue sample.</p>
 <pre class="r"><code>sample_table &lt;- select(as_tibble(so@meta.data), condition, individual_code, fov_name) %&gt;%
   unique() %&gt;% 
   group_by(condition, individual_code) %&gt;% 
-  summarise(n_fovs= n(), item = str_c(fov_name, collapse = &quot;, &quot;))</code></pre>
-<pre><code>`summarise()` has grouped output by &#39;condition&#39;. You can override using the
-`.groups` argument.</code></pre>
-<pre class="r"><code>DT::datatable(sample_table)</code></pre>
+  summarise(n_fovs= n(), item = str_c(fov_name, collapse = &quot;, &quot;))
+
+DT::datatable(sample_table)</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-8839f08f82529a5247be" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-8839f08f82529a5247be">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9"],["Crohn's disease","Crohn's disease","Crohn's disease","Healthy controls","Healthy controls","Healthy controls","Ulcerative colitis","Ulcerative colitis","Ulcerative colitis"],["CD_a","CD_b","CD_c","HC_a","HC_b","HC_c","UC_a","UC_b","UC_c"],[19,19,16,19,20,16,19,22,21],["CD_a_001, CD_a_002, CD_a_003, CD_a_004, CD_a_005, CD_a_006, CD_a_007, CD_a_008, CD_a_009, CD_a_010, CD_a_011, CD_a_012, CD_a_013, CD_a_014, CD_a_015, CD_a_016, CD_a_017, CD_a_018, CD_a_019","CD_b_002, CD_b_003, CD_b_004, CD_b_005, CD_b_006, CD_b_007, CD_b_008, CD_b_009, CD_b_010, CD_b_011, CD_b_012, CD_b_013, CD_b_014, CD_b_015, CD_b_016, CD_b_017, CD_b_018, CD_b_019, CD_b_020","CD_c_001, CD_c_002, CD_c_003, CD_c_004, CD_c_005, CD_c_006, CD_c_007, CD_c_008, CD_c_009, CD_c_010, CD_c_011, CD_c_012, CD_c_013, CD_c_014, CD_c_015, CD_c_017","HC_a_001, HC_a_002, HC_a_003, HC_a_004, HC_a_005, HC_a_006, HC_a_007, HC_a_008, HC_a_009, HC_a_010, HC_a_011, HC_a_012, HC_a_013, HC_a_014, HC_a_015, HC_a_016, HC_a_018, HC_a_019, HC_a_020","HC_b_001, HC_b_002, HC_b_003, HC_b_004, HC_b_005, HC_b_006, HC_b_007, HC_b_008, HC_b_009, HC_b_010, HC_b_011, HC_b_012, HC_b_013, HC_b_014, HC_b_015, HC_b_016, HC_b_017, HC_b_018, HC_b_019, HC_b_020","HC_c_001, HC_c_002, HC_c_003, HC_c_004, HC_c_005, HC_c_006, HC_c_007, HC_c_008, HC_c_009, HC_c_010, HC_c_011, HC_c_012, HC_c_013, HC_c_014, HC_c_015, HC_c_016","UC_a_001, UC_a_002, UC_a_005, UC_a_006, UC_a_007, UC_a_008, UC_a_009, UC_a_010, UC_a_012, UC_a_013, UC_a_014, UC_a_015, UC_a_016, UC_a_017, UC_a_018, UC_a_019, UC_a_020, UC_a_021, UC_a_022","UC_b_001, UC_b_002, UC_b_003, UC_b_004, UC_b_005, UC_b_006, UC_b_007, UC_b_008, UC_b_009, UC_b_010, UC_b_011, UC_b_012, UC_b_014, UC_b_015, UC_b_016, UC_b_017, UC_b_018, UC_b_020, UC_b_021, UC_b_022, UC_b_023, UC_b_024","UC_c_001, UC_c_002, UC_c_003, UC_c_004, UC_c_005, UC_c_006, UC_c_007, UC_c_008, UC_c_009, UC_c_010, UC_c_011, UC_c_012, UC_c_013, UC_c_014, UC_c_015, UC_c_016, UC_c_017, UC_c_018, UC_c_019, UC_c_020, UC_c_021"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>condition<\/th>\n      <th>individual_code<\/th>\n      <th>n_fovs<\/th>\n      <th>item<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"condition","targets":1},{"name":"individual_code","targets":2},{"name":"n_fovs","targets":3},{"name":"item","targets":4}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
@@ -883,7 +914,8 @@ swbioinf
 </div>
 <pre class="r"><code>so&lt;- so[,so$nCount_RNA &gt;= min_reads_per_cell]</code></pre>
 <p>We will pool each celltype within each fov (cluster_group). But there
-needs to be a certain number of cells for that to work.</p>
+needs to be a certain number of cells for that to work - less than a
+certain number of cells and a pseudobulk pool will be excluded.</p>
 <p>Note there are much fewer t-cells overall, but given that we have a
 high number of samples, there should still be enough to include. Its
 typical that some of the less common cell types are difficult or
@@ -947,10 +979,8 @@ swbioinf
 </div>
 <div id="calculate-pseudobulk" class="section level2">
 <h2>Calculate pseudobulk</h2>
-<pre class="r"><code>pseudobulk_counts &lt;- PseudobulkExpression(so, assays = &quot;RNA&quot;, layer=&quot;counts&quot;,  method = &#39;aggregate&#39;, group.by = &#39;fov_cluster&#39;)</code></pre>
-<pre><code>Names of identity class contain underscores (&#39;_&#39;), replacing with dashes (&#39;-&#39;)
-This message is displayed once every 8 hours.</code></pre>
-<pre class="r"><code>pseudobulk_counts_matrix &lt;- pseudobulk_counts[[&quot;RNA&quot;]]
+<pre class="r"><code>pseudobulk_counts &lt;- PseudobulkExpression(so, assays = &quot;RNA&quot;, layer=&quot;counts&quot;,  method = &#39;aggregate&#39;, group.by = &#39;fov_cluster&#39;)
+pseudobulk_counts_matrix &lt;- pseudobulk_counts[[&quot;RNA&quot;]]
 
 # CHange - back to _. Ideally we&#39;d have neither, but - will cause problems later
 colnames(pseudobulk_counts_matrix)&lt;-gsub(&quot;-&quot;,&quot;_&quot;,colnames(pseudobulk_counts_matrix))</code></pre>
