@@ -101,6 +101,10 @@ sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Crohn's dise
 ## Load data
 
 ```{r}
+
+
+#the_sample <- 'GSM7473682_HC_a'
+
 load_sample_into_seurat <- function(the_sample){
   
   metadata_cols <- c("fov","Area") 
@@ -108,6 +112,9 @@ load_sample_into_seurat <- function(the_sample){
   sample_metadata_file <- file.path(sample_dir, paste0(the_sample,'_metadata_file.csv.gz'))
   sample_mtx_file      <- file.path(sample_dir, paste0(the_sample,'_exprMat_file.csv.gz'))
   sample_molecules_file <- file.path(sample_dir, paste0(the_sample,'_tx_file.csv.gz'))
+  
+  # NB Are only loading centroids for this data, as we dont have files <sample>-polygons.csv
+  # in flat files. Also do not have original images to segment on.
   
   ns <- ReadNanostring(
                  data.dir           = sample_dir,
@@ -117,8 +124,11 @@ load_sample_into_seurat <- function(the_sample){
                  segmentations.file = NULL,
                  metadata           = metadata_cols , # Can only draw from selected feilds. So add later. Using ensures table-ness.
                  type="centroids"
+                 #type = c("centroids", "segmentations") #object 'segs' not found
+                 
         )
   
+
   # Add the rest of the metadata
   metadata_table <- read_csv(sample_metadata_file)
   
@@ -130,9 +140,22 @@ load_sample_into_seurat <- function(the_sample){
   rownames(ns$metadata) <- ns$metadata$cell
   
   cents  <- CreateCentroids(ns$centroids)
-  coords <- CreateFOV(coords = list("centroids" = cents), type = "centroids")
+  #coords <- CreateFOV(coords = list("centroids" = cents), type = "centroids")
+  coords <- CreateFOV(coords = list("centroids" = cents), molecules = ns$pixels,  assay='RNA')
+  
+  
   so     <- CreateSeuratObject(counts    = ns$matrix,
-                               meta.data = ns$metadata)
+                               meta.data = ns$metadata,
+                               assay = 'RNA')
+  
+  # Cells from counts matrix vs cells from centroid coordinates. 
+  # Can be different (presumbably cell with zero counts?)
+  cells <- intersect(Cells(so),  
+                     Cells(x = coords, boundary = "centroids") ) 
+  coords <- subset(x = coords, cells = cells)
+  
+  # FOV he
+  so[[the_sample]] <- coords
   
   # sample info
   so$orig.ident <- the_sample
