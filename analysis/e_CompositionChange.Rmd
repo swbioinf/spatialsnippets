@@ -55,7 +55,7 @@ For example:
 
 # Worked example 
 
-Using data from Using data from [@glynDigitalSpatialProfiling2024]
+Using data from [@garrido-trigoMacrophageNeutrophilHeterogeneity2023]
 
 
 Is there a difference in the celltype composition between individuals with Ulcerative colitis or Crohn's disease, and Healthy controls?
@@ -97,15 +97,7 @@ DT::datatable(sample_table)
 ```
 
 
-
-
-
-
-
-
-
 ## Count how many cells of each type in your data
-
 
 In this dataset there are actually two different levels of categorisation; 
 
@@ -384,10 +376,10 @@ This table is the typical output of _limma_ tests;
 
 # More information 
 
-* Speckle Vignette (https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html) : Comphrehensive details of how to use different tests for speckle. 
-* Propeller paper: (https://academic.oup.com/bioinformatics/article/38/20/4720/6675456)
-* [limma documentation](https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf)
-* Differential Expression with Limma-Voom UC davis bioinformatics training: (https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html) 
+* [Propellar Vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html) and [speckle paper](https://academic.oup.com/bioinformatics/article/38/20/4720/6675456) [@phipsonPropellerTestingDifferences2022]: Comprehensive details of how to use different tests for speckle. 
+* [limma documentation](https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf) [@Ritchie2015]: The complete manual to limma. 
+* [Differential Expression with Limma-Voom UC davis bioinformatics training](https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html) : A more accessible explanation of bulk RNAseq analyses using limma. 
+* [Interactions and contrasts](https://genomicsclass.github.io/book/pages/interactions_and_contrasts.html) : An excellent visual explanation of linear models for more complex multi-factor experimental designs (e.g. treatment and genotype). Part of a larger [Data Analysis for Genomics class](https://github.com/genomicsclass/book) resource.
 
 
 # References
