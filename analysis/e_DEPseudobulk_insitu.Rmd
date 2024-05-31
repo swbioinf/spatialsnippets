@@ -11,6 +11,7 @@ output:
     code_folding: hide
 editor_options:
   chunk_output_type: console
+bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 ---
 
 
@@ -39,7 +40,7 @@ This document describes how to apply a pseudobulk approach to test for differenc
 
 In a pseudobulk approach counts are obtaing by pooling together groups of cells; in this case cells from the of the same type from the same fov. These pooled counts can then be analysed more like a bulk RNAseq experiment. 
 
-Note that there are other approaches to calculate differential expression in this kind of data - including those that make use of individual cells. <LINK A REVIEW>
+Note that there are other approaches to calculate differential expression in this kind of data - including those that make use of individual cells [@Soneson2017].
 
 
 
@@ -71,6 +72,8 @@ Steps:
 # Worked example 
 
 How does gene expression change within each cell type between Ulcerative colitis or Crohn's disease, and Healthy controls?
+
+Using data from [@garrido-trigoMacrophageNeutrophilHeterogeneity2023]
 
 ## Load libraries and data
 
@@ -488,5 +491,14 @@ This table is the typical output of _limma_ tests; With a couple of extra column
 
 # More Information
 
+* ['Ochestrating single cell analysis with bioconductor' book chapter 'DE analyses between conditions'](https://bioconductor.org/books/release/OSCA/) : An explanation of the 'pseudobulk' approch to single cell differntial expression calculation.
+* [Bias, robustness and scalability in single-cell differential expression analysis](https://www.nature.com/articles/nmeth.4612) [@Soneson2017] : A review of single cell differential expression calculation methods. 
+* [Seurat Differntial expression Vignette](https://satijalab.org/seurat/articles/de_vignette) : How to run differential expression analyses using Seurat.
+* [limma documentation](https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf) [@Ritchie2015]: The complete manual to limma. 
+* [Differential Expression with Limma-Voom UC davis bioinformatics training](https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html) : A more accessible explanation of bulk RNAseq analyses using limma. 
+* [Interactions and contrasts](https://genomicsclass.github.io/book/pages/interactions_and_contrasts.html) : An excellent visual explanation of linear models for more complex multi-factor experimental designs (e.g. treatment and genotype). Part of a larger [Data Analysis for Genomics class](https://github.com/genomicsclass/book) resource.
 
-Todo
+
+
+# References
+
