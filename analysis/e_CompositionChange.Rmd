@@ -11,6 +11,7 @@ output:
     code_folding: hide
 editor_options:
   chunk_output_type: console
+bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 ---
  
 ```{r angrylibrarian, include=FALSE} 
@@ -34,7 +35,7 @@ With single cell spatial data, the frequency of each cell type can be tested bet
 
 Testing changes in proportions like this can be challenging, because an expansion in one cell type, will mean a reduction in all other cell types.
 
-This document describes how to use the [propeller]((https://academic.oup.com/bioinformatics/article/38/20/4720/6675456)) method from the speckle R package, and limma to test for differences in cell type proportions. This takes into account this linked relationship between cell type proportions, and can incorporate pseudoreplicate data from multiple FOVs (fields of view) from an insitu single cell spatial dataset. 
+This document describes how to use the propeller [@phipsonPropellerTestingDifferences2022] method from the [speckle](https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html) R package, and limma to test for differences in cell type proportions. This takes into account this linked relationship between cell type proportions, and can incorporate pseudoreplicate data from multiple FOVs (fields of view) from an insitu single cell spatial dataset. 
 
 ![](assets/cluster_prop_diff.png)
 
@@ -54,7 +55,11 @@ For example:
 
 # Worked example 
 
+Using data from Using data from [@glynDigitalSpatialProfiling2024]
+
+
 Is there a difference in the celltype composition between individuals with Ulcerative colitis or Crohn's disease, and Healthy controls?
+
 
 ## Load libraries and data
 
@@ -81,6 +86,7 @@ so <- readRDS(seurat_file_01_loaded)
 <!-- Move this to own page? --->
 
 There are three individuals per condition (one tissue sample from each individual). With multiple fovs on each physical tissue sample.
+
 ```{r}
 sample_table <- select(as_tibble(so@meta.data), condition, individual_code, fov_name) %>%
   unique() %>% 
@@ -104,7 +110,7 @@ DT::datatable(sample_table)
 In this dataset there are actually two different levels of categorisation; 
 
 * Celltype_subset: Some broad groupings of cell types.
-* celltype_SingleR2: Much more specific groupings, predicted with the singleR method.
+* celltype_SingleR2: Much more specific groupings, predicted with the singleR method [@aranReferencebasedAnalysisLung2019]
 
 Lets check the numbers of cells per category for both categories, to decide which we can use. We'd like to look at the celltype proportions at the most specific resolution - but we need to ensure there are enough cells of each type for meaningful statistics. 
 
@@ -150,7 +156,7 @@ ggplot(celltype_summary_table, aes(x=cells, col=celltype_subset)) +
 ```
 
 
-On the other hand, could we use the more fine-grained categoriesation in the 'celltype_SingleR2' grouping?
+On the other hand, could we use the more fine-grained categorisation in the 'celltype_SingleR2' grouping?
 
 In this case, there are just too many cell type categories, and we should stick with the broad categorisation.
 
@@ -220,7 +226,7 @@ DT::datatable(results_table.no_fov_info)
 -----
 
 It would be possible to counts cells at the sample level, and use the above method. 
-But - having seen the within sample heterogeneity across multiple fovs, we want to take that into account. This takes few more steps, using the limma duplicateCorrealation approach described in the speckle vignette [here](https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html#including-random-effects)
+But - having seen the within sample heterogeneity across multiple fovs, we want to take that into account. This takes few more steps, using the limma [@Ritchie2015] duplicateCorrealation approach described in the speckle vignette [here](https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html#including-random-effects)
 
 
 
@@ -376,7 +382,7 @@ This table is the typical output of _limma_ tests;
 
 
 
-# More information / References
+# More information 
 
 * Speckle Vignette (https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html) : Comphrehensive details of how to use different tests for speckle. 
 * Propeller paper: (https://academic.oup.com/bioinformatics/article/38/20/4720/6675456)
@@ -384,5 +390,5 @@ This table is the typical output of _limma_ tests;
 * Differential Expression with Limma-Voom UC davis bioinformatics training: (https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html) 
 
 
-
+# References
 
