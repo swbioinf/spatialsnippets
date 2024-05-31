@@ -82,6 +82,28 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 
 
@@ -401,7 +423,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-05-30
+<strong>Last updated:</strong> 2024-05-31
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -532,15 +554,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreef14901bfcb78e20914e86ed703b6c25c3d4d0482targetblankf14901ba">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree46429acb5bdc1831691784d603e50d8f96a6fa03targetblank46429aca">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/f14901bfcb78e20914e86ed703b6c25c3d4d0482" target="_blank">f14901b</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/46429acb5bdc1831691784d603e50d8f96a6fa03" target="_blank">46429ac</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreef14901bfcb78e20914e86ed703b6c25c3d4d0482targetblankf14901ba"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree46429acb5bdc1831691784d603e50d8f96a6fa03targetblank46429aca"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -550,7 +572,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/f14901bfcb78e20914e86ed703b6c25c3d4d0482" target="_blank">f14901b</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/46429acb5bdc1831691784d603e50d8f96a6fa03" target="_blank">46429ac</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -567,11 +589,17 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
+    Ignored:    analysis/site_libs/
     Ignored:    renv/library/
     Ignored:    renv/staging/
 
 Untracked files:
     Untracked:  analysis/e_spatiallyRestrictedGenes.Rmd
+
+Unstaged changes:
+    Modified:   analysis/d_cosmxIBD.Rmd
+    Modified:   analysis/e_DEPseudobulk_insitu.Rmd
 
 </code></pre>
 <p>
@@ -617,6 +645,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/46429acb5bdc1831691784d603e50d8f96a6fa03/analysis/e_CompositionChange.Rmd" target="_blank">46429ac</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-31
+</td>
+<td>
+wflow_publish("analysis/e_CompositionChange.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/697815489cd801e303185e38f2e764cb06d42d16/docs/e_CompositionChange.html" target="_blank">6978154</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1032,13 +1094,13 @@ tested between two different groups.</p>
 <p>Testing changes in proportions like this can be challenging, because
 an expansion in one cell type, will mean a reduction in all other cell
 types.</p>
-<p>This document describes how to use the <a
-href="(https://academic.oup.com/bioinformatics/article/38/20/4720/6675456)">propeller</a>
-method from the speckle R package, and limma to test for differences in
-cell type proportions. This takes into account this linked relationship
-between cell type proportions, and can incorporate pseudoreplicate data
-from multiple FOVs (fields of view) from an insitu single cell spatial
-dataset.</p>
+<p>This document describes how to use the propeller <span
+class="citation">(Phipson et al. 2022)</span> method from the <a
+href="https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html">speckle</a>
+R package, and limma to test for differences in cell type proportions.
+This takes into account this linked relationship between cell type
+proportions, and can incorporate pseudoreplicate data from multiple FOVs
+(fields of view) from an insitu single cell spatial dataset.</p>
 <p><img src="assets/cluster_prop_diff.png" /></p>
 <p>This requires:</p>
 <ul>
@@ -1055,6 +1117,8 @@ that’s failing to develop) between d3 and d7 in my mouse knockouts?</li>
 </div>
 <div id="worked-example" class="section level1">
 <h1>Worked example</h1>
+<p>Using data from Using data from <span class="citation">(Glyn et al.
+2024)</span></p>
 <p>Is there a difference in the celltype composition between individuals
 with Ulcerative colitis or Crohn’s disease, and Healthy controls?</p>
 <div id="load-libraries-and-data" class="section level2">
@@ -1090,7 +1154,7 @@ categorisation;</p>
 <ul>
 <li>Celltype_subset: Some broad groupings of cell types.</li>
 <li>celltype_SingleR2: Much more specific groupings, predicted with the
-singleR method.</li>
+singleR method <span class="citation">(Aran et al. 2019)</span></li>
 </ul>
 <p>Lets check the numbers of cells per category for both categories, to
 decide which we can use. We’d like to look at the celltype proportions
@@ -1151,6 +1215,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/697815489cd801e303185e38f2e764cb06d42d16/docs/figure/e_CompositionChange.Rmd/unnamed-chunk-7-1.png" target="_blank">6978154</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-30
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/22b7d61b800896efa692e917770381fec641c6e4/docs/figure/e_CompositionChange.Rmd/unnamed-chunk-7-1.png" target="_blank">22b7d61</a>
 </td>
 <td>
@@ -1197,7 +1272,7 @@ Sarah Williams
 </table>
 </div>
 </div>
-<p>On the other hand, could we use the more fine-grained categoriesation
+<p>On the other hand, could we use the more fine-grained categorisation
 in the ‘celltype_SingleR2’ grouping?</p>
 <p>In this case, there are just too many cell type categories, and we
 should stick with the broad categorisation.</p>
@@ -1230,6 +1305,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/697815489cd801e303185e38f2e764cb06d42d16/docs/figure/e_CompositionChange.Rmd/unnamed-chunk-8-1.png" target="_blank">6978154</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-30
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/e_CompositionChange.Rmd/unnamed-chunk-8-1.png" target="_blank">a722f36</a>
@@ -1390,8 +1476,9 @@ DT::datatable(results_table.no_fov_info)</code></pre>
 <p>It would be possible to counts cells at the sample level, and use the
 above method. But - having seen the within sample heterogeneity across
 multiple fovs, we want to take that into account. This takes few more
-steps, using the limma duplicateCorrealation approach described in the
-speckle vignette <a
+steps, using the limma <span class="citation">(Ritchie et al.
+2015)</span> duplicateCorrealation approach described in the speckle
+vignette <a
 href="https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html#including-random-effects">here</a></p>
 <p>Calculate the transformed proportion that speckle needs on each
 fov.</p>
@@ -1531,8 +1618,8 @@ p-value</li>
 documentation.</li>
 </ul>
 </div>
-<div id="more-information-references" class="section level1">
-<h1>More information / References</h1>
+<div id="more-information" class="section level1">
+<h1>More information</h1>
 <ul>
 <li>Speckle Vignette (<a
 href="https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html"
@@ -1549,6 +1636,41 @@ training: (<a
 href="https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html"
 class="uri">https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html</a>)</li>
 </ul>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-aranReferencebasedAnalysisLung2019" class="csl-entry">
+Aran, Dvir, Agnieszka P. Looney, Leqian Liu, Esther Wu, Valerie Fong,
+Austin Hsu, Suzanna Chak, et al. 2019. <span>“Reference-Based Analysis
+of Lung Single-Cell Sequencing Reveals a Transitional Profibrotic
+Macrophage.”</span> <em>Nature Immunology</em> 20 (2): 163–72. <a
+href="https://doi.org/10.1038/s41590-018-0276-y">https://doi.org/10.1038/s41590-018-0276-y</a>.
+</div>
+<div id="ref-glynDigitalSpatialProfiling2024" class="csl-entry">
+Glyn, Tamara, Sarah Williams, Martin Whitehead, Tim Eglinton, Nicholas
+West, and Rachel V. Purcell. 2024. <span>“Digital Spatial Profiling
+Identifies Molecular Changes Involved in Development of
+Colitis-Associated Colorectal Cancer.”</span> <em>Frontiers in
+Oncology</em> 14 (March): 1247106. <a
+href="https://doi.org/10.3389/fonc.2024.1247106">https://doi.org/10.3389/fonc.2024.1247106</a>.
+</div>
+<div id="ref-phipsonPropellerTestingDifferences2022" class="csl-entry">
+Phipson, Belinda, Choon Boon Sim, Enzo R Porrello, Alex W Hewitt, Joseph
+Powell, and Alicia Oshlack. 2022. <span>“Propeller: Testing for
+Differences in Cell Type Proportions in Single Cell Data.”</span>
+<em>Bioinformatics</em> 38 (20): 4720–26. <a
+href="https://doi.org/10.1093/bioinformatics/btac582">https://doi.org/10.1093/bioinformatics/btac582</a>.
+</div>
+<div id="ref-Ritchie2015" class="csl-entry">
+Ritchie, Matthew E., Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law,
+Wei Shi, and Gordon K. Smyth. 2015. <span>“Limma Powers Differential
+Expression Analyses for <span class="nocase">RNA-sequencing</span> and
+Microarray Studies.”</span> <em>Nucleic Acids Research</em> 43 (7): e47.
+<a
+href="https://doi.org/10.1093/nar/gkv007">https://doi.org/10.1093/nar/gkv007</a>.
+</div>
+</div>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
