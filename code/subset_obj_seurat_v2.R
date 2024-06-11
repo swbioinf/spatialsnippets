@@ -1,14 +1,8 @@
 #' @importFrom magrittr %>% %<>%
 NULL
 
-################################################################################
-# Script from: https://github.com/satijalab/seurat/issues/7462
-# by  @alikhuseynov github user; Alik Huseynov
-################################################################################
-
-
 # TODO:
-  # - edit args
+# - edit args
 
 #' Intermediate solution to \code{subset()}:
 #' subset FOVs/centroids if selected cells are NOT found in each FOV
@@ -34,6 +28,13 @@ subset_opt <- function(
     Update.object = TRUE,
     ...)
 {
+
+  ################################################################################
+  # Script from: https://github.com/satijalab/seurat/issues/7462
+  # by  @alikhuseynov github user; Alik Huseynov
+  ################################################################################
+
+
 
   if (Update.slots) {
     message("Updating object slots..")
