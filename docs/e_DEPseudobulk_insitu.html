@@ -36,7 +36,7 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/htmltools-fill-0.5.8/fill.css" rel="stylesheet" />
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
 <script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="site_libs/datatables-binding-0.33/datatables.js"></script>
@@ -423,7 +423,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-05-31
+<strong>Last updated:</strong> 2024-06-11
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -554,15 +554,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreecf7833a62768e1aaccdd5aa7488129a3e0891283targetblankcf7833aa">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree561981e55936411ec10aa4e1ef41667125140a72targetblank561981ea">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/cf7833a62768e1aaccdd5aa7488129a3e0891283" target="_blank">cf7833a</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/561981e55936411ec10aa4e1ef41667125140a72" target="_blank">561981e</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreecf7833a62768e1aaccdd5aa7488129a3e0891283targetblankcf7833aa"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree561981e55936411ec10aa4e1ef41667125140a72targetblank561981ea"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -572,7 +572,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/cf7833a62768e1aaccdd5aa7488129a3e0891283" target="_blank">cf7833a</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/561981e55936411ec10aa4e1ef41667125140a72" target="_blank">561981e</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -596,8 +596,7 @@ Untracked files:
     Untracked:  analysis/e_spatiallyRestrictedGenes.Rmd
 
 Unstaged changes:
-    Modified:   analysis/d_cosmxIBD.Rmd
-    Modified:   analysis/e_CompositionChange.Rmd
+    Modified:   analysis/index.Rmd
 
 </code></pre>
 <p>
@@ -643,6 +642,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/561981e55936411ec10aa4e1ef41667125140a72/analysis/e_DEPseudobulk_insitu.Rmd" target="_blank">561981e</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-11
+</td>
+<td>
+wflow_publish("analysis/e_DEPseudobulk_insitu.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/61d4499405299a157c0e938bfd243b0b9bcaa820/docs/e_DEPseudobulk_insitu.html" target="_blank">61d4499</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-31
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1069,22 +1102,37 @@ swbioinf
 </table>
 </div>
 </div>
+<p>Record the names of those fov_clusters that contain enough cells to
+be used. Will use this later to filter.</p>
 <pre class="r"><code>passed_fov_clusters &lt;- celltype_summary_table$fov_cluster[celltype_summary_table$cells &gt;= min_cells_per_fovcluster]</code></pre>
 </div>
 <div id="calculate-pseudobulk" class="section level2">
 <h2>Calculate pseudobulk</h2>
+<p>Now use the <em>PseudobulkExpression()</em> function to sum up each
+gene’s gene expression across each <em>fov_cluster</em>.</p>
 <pre class="r"><code>pseudobulk_counts &lt;- PseudobulkExpression(so, assays = &quot;RNA&quot;, layer=&quot;counts&quot;,  method = &#39;aggregate&#39;, group.by = &#39;fov_cluster&#39;)
 pseudobulk_counts_matrix &lt;- pseudobulk_counts[[&quot;RNA&quot;]]
 
-# CHange - back to _. Ideally we&#39;d have neither, but - will cause problems later
+# Change - back to _. Ideally we&#39;d have neither, but - will cause problems later
 colnames(pseudobulk_counts_matrix)&lt;-gsub(&quot;-&quot;,&quot;_&quot;,colnames(pseudobulk_counts_matrix))</code></pre>
-<p>Keep only the passed fovs</p>
-<pre class="r"><code>pseudobulk_counts_matrix &lt;- pseudobulk_counts_matrix[,passed_fov_clusters]
+<p>Keep only those passed fov_clusters we saw earlier - this is what
+we’ll use for calculating differential expression.</p>
+<p>We also need an annotation table to tell us what is in each
+fov_cluster (sample, celltype, condition…). Build this by filtering the
+celltype summary table made earlier. If we filter it to the same
+samples, in the same order as the pseudubulk matrix, it is much easier
+to build our differential expression model in the next step.</p>
+<pre class="r"><code># Filter the pseudobulk table
+pseudobulk_counts_matrix &lt;- pseudobulk_counts_matrix[,passed_fov_clusters]
 
+# And filter the celltype summary into an annotation table for only those fov_clusters
 # pull in relevant annotation in a matched order
 pseudobulk_anno_table &lt;- celltype_summary_table
 match_order &lt;- match(passed_fov_clusters, pseudobulk_anno_table$fov_cluster)
 pseudobulk_anno_table &lt;- pseudobulk_anno_table[match_order,]
+
+# Double check that the order of samples in the annotation table matches the pseudobulk table. 
+# If this is wrong then the results will be nonsense!
 stopifnot(all(colnames(pseudobulk_counts_matrix) == pseudobulk_anno_table$fov_cluster  ))</code></pre>
 </div>
 <div id="calculate-differential-expression" class="section level2">
@@ -1688,7 +1736,7 @@ documentation.</li>
 <li><a href="https://bioconductor.org/books/release/OSCA/">‘Ochestrating
 single cell analysis with bioconductor’ book chapter ‘DE analyses
 between conditions’</a> : An explanation of the ‘pseudobulk’ approch to
-single cell differntial expression calculation.</li>
+single cell differential expression calculation.</li>
 <li><a href="https://www.nature.com/articles/nmeth.4612">Bias,
 robustness and scalability in single-cell differential expression
 analysis</a> <span class="citation">(Soneson and Robinson 2018)</span> :
@@ -1707,9 +1755,9 @@ Expression with Limma-Voom UC davis bioinformatics training</a> : A more
 accessible explanation of bulk RNAseq analyses using limma.</li>
 <li><a
 href="https://genomicsclass.github.io/book/pages/interactions_and_contrasts.html">Interactions
-and contrasts</a> : An excellent visual explanation of linear models for
-more complex multi-factor experimental designs (e.g. treatment and
-genotype). Part of a larger <a
+and contrasts</a> : An excellent visual explanation of how to build
+linear models for more complex multi-factor experimental designs
+(e.g. treatment <em>and</em> genotype). Part of a larger <a
 href="https://github.com/genomicsclass/book">Data Analysis for Genomics
 class</a> resource.</li>
 </ul>
@@ -1826,7 +1874,7 @@ loaded via a namespace (and not attached):
  [87] whisker_0.4.1               uwot_0.1.16                
  [89] pkgconfig_2.0.3             gtable_0.3.4               
  [91] lmtest_0.9-40               SingleCellExperiment_1.24.0
- [93] XVector_0.42.0              htmltools_0.5.8            
+ [93] XVector_0.42.0              htmltools_0.5.8.1          
  [95] dotCall64_1.1-1             scales_1.3.0               
  [97] Biobase_2.62.0              png_0.1-8                  
  [99] knitr_1.45                  rstudioapi_0.16.0          
