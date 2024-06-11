@@ -1,0 +1,461 @@
+---
+title: "Dataset: Mouse Alzheimers Plaques cosMX Mallach et al 2024"
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+bibliography: /home/s.williams/zotero_export/MyLibrary.bib
+---
+
+Paper [Microglia-astrocyte crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse model, as revealed by spatial transcriptomics](https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub)
+[@mallachMicrogliaastrocyteCrosstalkAmyloid2024] explores the spatial transcritome of amaloid plaques in a mouse model.
+
+Their work includes an analysis of cosMX samples from of 4 mouse brain samples. 
+
+They have shared their full raw dataset via GEO; under accession [GSE263793](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE263793).
+
+----
+
+Note that the prepressing below makes no attempt to assign cell types or identify amyloid plaques. 
+
+
+# Data download
+
+
+The Cosmx dataset were downloaded from' https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE263791
+
+Consisting of two slides (AD2_AD3_CosMx/GSM8199188_ID61-ID62_S10 and AD4_AD5_CosMx/GSM8199189_ID67-ID68_S18) - the following files
+were downloaded;
+```{}
+GSM8199188_ID61-ID62_S10-polygons.csv.gz
+GSM8199188_ID61-ID62_S10_CellComposite.tar.gz
+GSM8199188_ID61-ID62_S10_CellLabels.tar.gz
+GSM8199188_ID61-ID62_S10_CellOverlay.tar.gz
+GSM8199188_ID61-ID62_S10_CompartmentLabels.tar.gz
+GSM8199188_ID61-ID62_S10_exprMat_file.csv.gz
+GSM8199188_ID61-ID62_S10_fov_positions_file.csv.gz
+GSM8199188_ID61-ID62_S10_metadata_file.csv.gz
+GSM8199188_ID61-ID62_S10_tx_file.csv.gz
+
+GSM8199189_ID67-ID68_S18-polygons.csv.gz
+GSM8199189_ID67-ID68_S18_CellComposite.tar.gz
+GSM8199189_ID67-ID68_S18_CellLabels.tar.gz 
+GSM8199189_ID67-ID68_S18_CellOverlay.tar.gz
+GSM8199189_ID67-ID68_S18_CompartmentLabels.tar.gz
+GSM8199189_ID67-ID68_S18_exprMat_file.csv.gz 
+GSM8199189_ID67-ID68_S18_fov_positions_file.csv.gz
+GSM8199189_ID67-ID68_S18_metadata_file.csv.gz 
+GSM8199189_ID67-ID68_S18_tx_file.csv.gz
+```
+
+
+# Setup
+
+```{r}
+library(Seurat)
+library(tidyverse)
+library(magrittr) # %<>% is used somewhere (assignment pipe)
+```
+
+
+```{r}
+dataset_dir      <- '~/projects/spatialsnippets/datasets/'
+project_data_dir <- file.path(dataset_dir,'GSE263793_Mallach2024_AlzPlaque')
+sample_dir            <- file.path(project_data_dir, "raw_data/") 
+#annotation_file       <-
+data_dir              <- file.path(project_data_dir, "processed_data/") 
+
+
+seurat_file_00_loaded <- file.path(data_dir, "GSE263793_AlzPlaque_seurat_00_loaded.RDS")
+seurat_file_01_preprocessed <- file.path(data_dir, "GSE263793_AlzPlaque_seurat_01_preprocessed.RDS")
+
+# config
+min_count_per_cell <- 100
+max_pc_negs        <- 0.5
+
+
+```
+
+
+
+## Load data
+
+
+```{r}
+
+load_sample_into_seurat <- function(the_slide){
+
+  fileroot <- slide2fileroot[the_slide]
+  
+  #https://github.com/satijalab/seurat/issues/5819
+  slide_with_dots <- gsub("_",".", the_slide)
+  
+  
+  #sample_metadata_file <- file.path(sample_dir, the_slide,  paste0(fileroot,'_metadata_file.csv.gz'))
+  #sample_mtx_file      <- file.path(sample_dir, the_slide,  paste0(fileroot,'_exprMat_file.csv.gz'))
+  #sample_molecules_file <- file.path(sample_dir, the_slide,  paste0(fileroot,'_tx_file.csv.gz'))
+  
+  #GSM8199188_ID61-ID62_S10_CellComposite.tar.gz  
+  #GSM8199188_ID61-ID62_S10_CompartmentLabels.tar.gz   
+  #GSM8199188_ID61-ID62_S10_metadata_file.csv.gz
+  #GSM8199188_ID61-ID62_S10_CellLabels.tar.gz     
+  #GSM8199188_ID61-ID62_S10_exprMat_file.csv.gz        
+  #GSM8199188_ID61-ID62_S10-polygons.csv.gz
+  #GSM8199188_ID61-ID62_S10_CellOverlay.tar.gz    
+  #GSM8199188_ID61-ID62_S10_fov_positions_file.csv.gz  
+  #GSM8199188_ID61-ID62_S10_tx_file.csv.gz
+  
+  so <- LoadNanostring(file.path(sample_dir, the_slide), fov=slide_with_dots, assay = "RNA")
+  
+  
+  so$slide_fov      <- slide_with_dots
+  so$slide_fov_orig <- the_slide
+  so$run_name       <-  as.character(slide2fileroot[the_slide])
+
+  
+  
+  # # Will probably not consider (ns) fovs as pseudoreplicates here, buecase its
+  # # tiled across two samples per slide.
+  # # And the composition of brain structure across fovs is very different, so they're 
+  # # not technical repicates. 
+  # # STILL want to record cell's FOV membership though!
+  # fov_pos_file <- file.path(sample_dir, the_slide, paste0(as.character(slide2fileroot[the_slide]),'_fov_positions_file.csv.gz'))
+  # # nanostring fov not Seurat fov!
+  # fov_pos <- read_csv(fov_pos_file)
+  # # Need to calculate outer edges of each fov, not just one corner (or centre?)
+  # # Get centroid of each cell
+  # coords <- GetTissueCoordinates(so, image=slide_with_dots)
+  # rownames(coords) <- coords$cell
+
+
+  return(so)
+}
+
+
+slide2fileroot <- list( AD2_AD3_CosMx= 'GSM8199188_ID61-ID62_S10',
+                        AD4_AD5_CosMx= 'GSM8199189_ID67-ID68_S18')
+
+```
+
+
+
+```{r eval=FALSE }
+
+slides <- c('AD2_AD3_CosMx', 'AD4_AD5_CosMx')
+sample_prefix <- gsub("_","",gsub("_CosMx","",slides))
+
+so.list <- lapply(FUN=load_sample_into_seurat, X=slides)
+
+#NB: merge is in SeuratObject packages, but must be called without :: 
+so.raw <- merge(so.list[[1]], y=so.list[2:length(so.list)], add.cell.ids=sample_prefix)
+#rm(so.list)
+
+saveRDS(so.raw, seurat_file_00_loaded)
+```
+
+```{r}
+so.raw <- readRDS(seurat_file_00_loaded)
+```
+
+# Negative probe handling
+
+```{r}
+
+# Join layers for some broad stats
+so.raw[["RNA"]] <- JoinLayers(so.raw[["RNA"]] )
+
+
+# Add gene names and tag negative probes in the RNA assay/feature metadata.
+gene_meta <- so.raw[['RNA']]@meta.data
+gene_meta$feature <- rownames(so.raw)
+gene_meta$CodeClass <- ifelse(substr(gene_meta$feature, 1,6) == "NegPrb", 
+                              "NegativeProbe", "RNAProbe" )
+# prioro to cell filtering
+gene_meta$total_count_unfiltered <- rowSums(GetAssayData(so.raw, assay="RNA", layer='counts'))
+gene_meta$mean_count_unfiltered <- gene_meta$total_count_unfiltered / ncol(so.raw)
+
+so.raw[['RNA']]<- AddMetaData(so.raw[['RNA']], gene_meta)
+
+
+# Count how many negatives/RNA probes detected per cell
+neg_matrix <- GetAssayData(so.raw, assay="RNA", layer='counts')[so.raw[['RNA']]@meta.data$CodeClass == "NegativeProbe",]
+
+so.raw$nCount_neg    <- colSums(neg_matrix)
+so.raw$nCount_nonneg <- so.raw$nCount_RNA - so.raw$nCount_neg
+so.raw$neg_pc        <- so.raw$nCount_neg / so.raw$nCount_RNA * 100
+
+
+
+# split layers back again 
+# Layers have new names, which seem better than counts.1, counts.2
+# counts.AD2_AD3_CosMx, counts.AD4_AD5_CosMx
+so.raw[["RNA"]] <- split(so.raw[["RNA"]], f = so.raw$slide_fov)
+
+```
+
+
+
+
+
+
+# Basic QC filter
+
+## Min count per cell
+
+```{r}
+ggplot(so.raw@meta.data, aes(x=nCount_RNA, col=slide_fov)) +
+  geom_density() + 
+  geom_vline(xintercept = min_count_per_cell, lty=3) +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle("Counts per cell")
+```
+
+
+```{r}
+ggplot(so.raw@meta.data, aes(x=nCount_RNA, y=nFeature_RNA, col=slide_fov)) +
+  geom_point(pch='.', alpha=0.5) + 
+  geom_smooth() + 
+  scale_x_log10() + scale_y_log10() + 
+  theme_bw() 
+```
+
+
+
+## Percent Negative probes
+
+```{r}
+ggplot(so.raw@meta.data, aes(x=neg_pc, col=slide_fov)) +
+  geom_density() +
+  geom_vline(xintercept = max_pc_negs, lty=3) +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle("Negative probe composition")
+```
+
+```{r}
+ggplot(so.raw@meta.data, aes(x=nCount_RNA, y=neg_pc, col=slide_fov)) +
+  geom_point(pch=3, alpha=0.3) +
+  scale_x_log10() +
+  geom_vline(xintercept = min_count_per_cell, lty=3) +
+  geom_hline(yintercept = max_pc_negs, lty=3) +
+  theme_bw() +
+  ggtitle("Negative probe composition")
+table(so.raw$neg_pc >= 0.5)
+```
+
+
+## Negative vs RNA probes
+
+```{r}
+gene_info <- so.raw[['RNA']]@meta.data
+
+
+ggplot(gene_info, aes(x=mean_count_unfiltered, col=CodeClass)) +
+  geom_density() +
+  geom_rug(data=filter(gene_info, CodeClass == "RNAProbe")) + 
+  geom_rug(data=filter(gene_info, CodeClass == "NegativeProbe")) +
+  scale_x_continuous(transform = 'log2') +
+  theme_bw() +
+  ggtitle("Negative Vs RNA Probe expression")
+```
+
+
+
+## Apply filteres
+
+From paper: _"To remove cells that may have still been contaminated with, we subclustered the microglial cells, identified a cluster of cells characterized by higher counts of negative probe counts, and removed this cluster (141 cells) from subsequent analysis. A total of 37,840 high-quality cells across all tissue sections were retained for subsequent analysis."_
+
+
+
+"_We discarded all transcripts that had a higher correlation than the top two negative probes (for a total of 56 probes) from further analysis, as likely candidates of nonspecific binding._"
+
+```{r}
+so <- so.raw[ ,so.raw$nCount_RNA >= min_count_per_cell &
+               so.raw$neg_pc<= max_pc_negs  ]
+ncol(so.raw)
+ncol(so)
+```
+
+
+
+# Basic preprocessing
+
+```{r eval=FALSE}
+num_dims <- 15
+
+# Run through preprocessing
+so <- NormalizeData(so)
+
+# With the two slides as layers, common features should be found..
+so <- FindVariableFeatures(so, nfeatures = 200) 
+so <- ScaleData(so) 
+so <- RunPCA(so, features = VariableFeatures(so))
+so <- RunUMAP(so, dims=1:num_dims)
+so <- FindNeighbors(so, dims = 1:num_dims)
+so <- FindClusters(so)
+
+
+so$cell <- colnames(so)
+```
+
+One we prepared earlier;
+```{r}
+so <- readRDS(seurat_file_01_preprocessed)
+```
+
+```{r}
+VariableFeaturePlot(so)
+ElbowPlot(so)
+```
+
+
+# Figure out samples
+
+There are two mice per slide - unsure of what they are though.
+
+```{r}
+ImageDimPlot(so, fov = "AD2.AD3.CosMx", cols = "polychrome", axes = TRUE)
+ImageDimPlot(so, fov = "AD4.AD5.CosMx", cols = "polychrome", axes = TRUE)
+```
+
+
+
+
+Define some sample names based on tissue slices. These do not correlate to original paper. 
+
+```{r}
+coords <- merge(x=so@meta.data, y=GetTissueCoordinates(so), by='cell')
+
+coords1 <- merge(x=so@meta.data, y=GetTissueCoordinates(so, image = "AD2.AD3.CosMx"), by='cell', all=FALSE)
+
+coords1$sample <- ifelse(coords1$y < 0, 'sample1', "sample2")
+
+coords2 <- merge(x=so@meta.data, y=GetTissueCoordinates(so, image = "AD4.AD5.CosMx"), by='cell', all=FALSE)
+coords2$sample <- ifelse(coords2$y < 0, 'sample3', "sample4")
+
+coord_lookup <- c(setNames(coords1$sample, nm=coords1$cell), setNames(coords2$sample, nm=coords2$cell))
+so$sample <-as.factor(as.character(coord_lookup[so$cell]))
+
+
+
+```
+
+Samples recorded
+```{r}
+ImageDimPlot(so, fov = "AD2.AD3.CosMx",group.by = 'sample', axes = TRUE)
+ImageDimPlot(so, fov = "AD4.AD5.CosMx",group.by = 'sample', axes = TRUE)
+```
+
+
+Edges of each sample for plotting
+```{r}
+
+cell2sample <- so$sample
+cell2slide  <- so$slide_fov
+cell_coords <- rbind(GetTissueCoordinates(so, image ='AD2.AD3.CosMx'),
+                     GetTissueCoordinates(so, image ='AD4.AD5.CosMx') ) 
+cell_coords$sample <- cell2sample[cell_coords$cell]
+cell_coords$slide_fov <- cell2slide[cell_coords$cell]
+sample_coords <- cell_coords %>% group_by(slide_fov, sample) %>%
+  summarise(min_x = min(x), 
+            max_x = max(x),
+            min_y = min(y), 
+            max_y = max(y) )
+cell_coords
+```
+
+
+
+```{r eval=FALSE}
+saveRDS(so, file = seurat_file_01_preprocessed)
+```
+
+# Basic plots
+
+## UMAP {.tabset .tabset-pills}
+
+### Slide
+
+
+```{r}
+DimPlot(so, group.by = 'slide_fov')
+```
+### Sample
+
+```{r}
+DimPlot(so, group.by = 'sample')
+```
+
+### Cluster
+
+```{r}
+DimPlot(so)
+```
+
+
+### Total read count
+
+```{r}
+so$log_nCountRNA <- log10(so$nCount_RNA)
+FeaturePlot(so, features = 'log_nCountRNA')
+```
+
+
+### Negative probe percentage
+
+```{r}
+FeaturePlot(so, features = 'neg_pc')
+```
+
+
+# Spatial example plot
+
+
+```{r}
+ImageDimPlot(so, fov = "AD2.AD3.CosMx",group.by = 'sample', axes = TRUE)
+```
+
+
+Just one sample?
+```{r}
+
+source("code/subset_obj_seurat_v2.R")
+so.s <- subset_opt(so, cells=so$cell[so$sample == 'sample2'])
+
+```
+
+```{r}
+ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",group.by = 'seurat_clusters', boundaries = "segmentation", border.color = 'black', axes = T, crop=TRUE)
+```
+
+```{r}
+ImageFeaturePlot(so.s,  features = 'Apoe',fov = "AD2.AD3.CosMx", boundaries = 'segmentation',border.color = 'black')
+ImageFeaturePlot(so.s,  features = 'Lpl',fov = "AD2.AD3.CosMx", boundaries = 'segmentation',border.color = 'black')
+
+```
+
+
+And with some interesting genes  (Needs SF package.)
+```{r eval=FALSE}
+genes <- c('Apoe', 'Lpl', 'Trem2') # DAM markers - disease-associated microglia
+ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",
+             molecules = genes, 
+             group.by = 'seurat_clusters', boundaries = "segmentation", 
+             border.color = 'black', axes = T, crop=TRUE)
+```
+
+
+
+
+
+# References
+
+
