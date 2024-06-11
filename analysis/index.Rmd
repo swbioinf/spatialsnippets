@@ -14,19 +14,22 @@ Examples use cosmx, should be valid on other platforms like xenium.
 Further details on the papers, tools, statistics and methods are linked from each page.
 
 
-Testing... few entries, and not yet organised.
 
 ## In situ spatial
 
 We have fovs and some ideas how to use them.
 
 * [Test for different cell type composition by group](e_CompositionChange.html)
-* [Differential Expresison by celltypes, between groups ](e_DEPseudobulk_insitu.html)
+* [Differential Expression by celltypes, between groups ](e_DEPseudobulk_insitu.html)
 
 
 
 # Data preparation
 
-* [IBD cosmx dataset](d_cosmxIBD.html) :  [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570) from Garrido-Trigo et al 2023. 
+* [IBD cosmx dataset](d_cosmxIBD.html) :  [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570) from Garrido-Trigo et al 2023. [@glynDigitalSpatialProfiling2024]
+* [Alzheimers Plaques cosmx ](d_cosmxAlzPlaque.html): [Microglia-astrocyte crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse model, as revealed by spatial transcriptomics](https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub)
+[@mallachMicrogliaastrocyteCrosstalkAmyloid2024]
 
 
+
+# References
