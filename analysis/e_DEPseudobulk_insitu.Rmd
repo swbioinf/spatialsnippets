@@ -185,13 +185,19 @@ pseudobulk_counts_matrix <- pseudobulk_counts[["RNA"]]
 
 # Change - back to _. Ideally we'd have neither, but - will cause problems later
 colnames(pseudobulk_counts_matrix)<-gsub("-","_",colnames(pseudobulk_counts_matrix))
-
 ```
 
 
-Keep only those passed fov_clusters we saw earlier - this is what we'll use for calculating differential expression.  
+Now instead of counts for each individual cell, we have our pseodubulk matrix 
+with the pooled sum of counts for each celltype within each fov region. So the numbers are much higher, fewer zeros. But each pool is a different size, which we will adress later with normalisation. 
+```{r}
+pseudobulk_counts_matrix[1:10,1:4]
+```
 
-We also need an annotation table to tell us what is in each fov_cluster (sample, celltype, condition...). Build this by filtering the celltype summary table made earlier. If we filter it to the same samples, in the same order as the pseudubulk matrix, it is much easier to build our differential expression model in the next step.
+
+Next, filter to only those passed fov_clusters we saw earlier - this is what we'll use for calculating differential expression.  
+
+We also need an annotation table to tell us what is in each fov_cluster (sample, celltype, condition...). Build this by filtering the celltype summary table made earlier. If we filter it to the same samples, in the same order as the pseudubulk matrix, we can then use those columns of data to build our differential expression model in the next step.
 
 ```{r}
 # Filter the pseudobulk table
@@ -211,7 +217,34 @@ stopifnot(all(colnames(pseudobulk_counts_matrix) == pseudobulk_anno_table$fov_cl
 
 ## Calculate Differential Expression
 
+We now have a counts matrix, and an annotation table that describes its samples. This looks very much like a bulk RNAseq experiment. 
 
+```{r}
+pseudobulk_counts_matrix[1:10,1:4]
+head(pseudobulk_anno_table)
+```
+
+We will use a fairly standard limma differential expression analysis. 
+
+We will process each celltype one at a time as follows:
+
+1) Subset the counts matrix and annotation table to the celltype
+2) Check that we have enough replicates for that celltype to run the test(s). We need to have fovs from at least 2 biological samples on each side of our test (e.g. 2treatment, 2 control). Even though we have enough tissue samples, if its a less common cell type we might have filtered them away!
+2) Build a model. In our case, a simple one that looks for variouat by disease group, blocked on individual.
+3) Run the test.
+
+
+
+How to build the model and run the test will need to be customised foryour experimental design. Online resources that describe approaches for bulk RNAseq analyses can be applied to pseubulk analyses - see the 'More Information' section of this document for suggestions. 
+
+
+In this case the line `model.matrix( ~0 + group)` builds a model where gene expression
+is expected to vary by group (UC/CD/HC). The ~0 part indicates a 'intercept', which is convenient becase it means we can include all 3 groups in our contrasts, rather than one of them being treated as the baseline. ( NB: Mathematically, you could use ~group alone without intercept, and define contrasts accordingly to get the same result. )
+
+But, we also need to tae into acoount our individuals. We do this by *blocking* on individual, and calculageing a intra duplicate correlation with _duplicateCorrelation()_. 
+
+
+If instead we didn't have multiple fovs per replicate, we might use a model like `~0 + group + individual`; no blocking or use of duplicateCorrelation(). That is more typical of a typical of a bulk rnaseq or single cell RNAseq pseuobulk analysis.
 
 
 ```{r}
@@ -277,6 +310,8 @@ for (the_celltype in levels(so$celltype_subset)) {
 
  
 }
+
+# Join together results for all celltypes, and pull out those with a singificant adjusted p-value
 de_results_all <- bind_rows(de_result_list)
 de_results_sig <- filter(de_results_all, adj.P.Val < 0.01)
 ```
@@ -290,8 +325,15 @@ DT::datatable(de_results_sig)
 ```
 
 
-
 ## DE plots
+
+The below plots show the logFC calculate for each gene versus its average expression across all samples. This is a useful diagnostic plot to evaluate your differential expression results.
+
+* Only big changes are significant at lower expressions, simply becuase higher expression means more statistical confidence.
+* A lopsided plot might indicate some oddness around the normalisation of your data (e.g. extremely differnet cell counts). 
+
+
+[[ADD pvalue plot?]]
 
 
 ```{r}
