@@ -62,6 +62,9 @@ GSM8199189_ID67-ID68_S18_tx_file.csv.gz
 library(Seurat)
 library(tidyverse)
 library(magrittr) # %<>% is used somewhere (assignment pipe)
+library(SingleR) # Cell refernce
+library(scRNAseq) # dataset
+library(scuttle) # sce normalisation
 ```
 
 
@@ -80,6 +83,19 @@ seurat_file_01_preprocessed <- file.path(data_dir, "GSE263793_AlzPlaque_seurat_0
 min_count_per_cell <- 100
 max_pc_negs        <- 0.5
 
+source("code/subset_obj_seurat_v2.R")
+
+
+
+cols_x30 <- c(
+  "#cec0e8","#343800","#ffa3ca","#381f00","#940029",
+  "#2cdbd9", "#7900da","#009c28","#002fe4","#2d0013",
+  "#b200cb","#00b367","#d06eff","#d78a00","#00256e",
+  "#cacb67","#ff7de5","#a1d38e","#fd0073","#006042",
+  "#ff4b2c","#0083b5","#b75200","#85a0ff","#7a5f00",
+  "#560047","#f0be69","#00406d","#ff917c","#009138"
+
+  )
 
 ```
 
@@ -378,6 +394,239 @@ cell_coords
 saveRDS(so, file = seurat_file_01_preprocessed)
 ```
 
+
+# Basic annotion
+
+Don't have the full analysis annotation to hand, and not interested in fully replicating the paper. Just add some very basic annotations to demonstrate downstream analyses.
+
+## Cell types
+
+
+### Cell typing
+
+Run singleR with a mouse brain reference to determine some cell types.
+
+The [@Zeisel2015] dataset from paper ['Cell types in the mouse cortex and hippocampus revealed by single-cell RNA-seq'](https://www.science.org/doi/10.1126/science.aaa1934)
+is a nice simple annotation that gives us a few basic cell types to work with. It is made easily accessible via the [scRNAseq](https://bioconductor.org/packages/release/data/experiment/html/scRNAseq.html) data package.
+
+```{r}
+available_ds <- as_tibble(scRNAseq::listDatasets() ) %>% dplyr::filter(Taxonomy == '10090', Part == 'brain')
+DT::datatable(available_ds)
+```
+<!-- ```{r} -->
+<!-- #all.ds <- listDatasets() -->
+<!-- #sce.tasic <- TasicBrainData() # tried,  too detailed? -->
+<!-- #sce.ref <- JessaBrainData() # tried, too detailed (also what brain part?) -->
+<!-- ``` -->
+
+
+<!-- tried others, too much detail for what we want -->
+
+<!--Follow : https://satijalab.org/seurat/articles/seurat5_spatial_vignette_2 --? 
+
+<!-- is RTCD good because it explicitly does two predictions per cell (spot), and you pick the primary? -->
+<!-- how is spatial data used??? --> 
+
+Download the reference dataset, see the cell types present.
+```{r}
+sce.ref <- scRNAseq::ZeiselBrainData()
+sce.ref <- logNormCounts(sce.ref) # lognorm reference data
+table(sce.ref$level1class)
+```
+
+Make cell type calls at the cell and cluster level.
+```{r}
+# cluster names
+so$cluster <- factor( paste0("c", so$seurat_clusters),
+                      levels=paste0("c",levels(so$seurat_clusters)))
+
+# Join layers for some broad stats
+so.joined   <- JoinLayers(so[["RNA"]] )
+norm_matrix <- GetAssayData(so.joined, assay= "RNA", layer='data')
+
+predictions <- SingleR( test   = norm_matrix, 
+                        ref    = sce.ref,
+                        labels = sce.ref$level1class    )
+
+
+predictions.cluster <- SingleR( test   = norm_matrix, 
+                        ref    = sce.ref,
+                        labels = sce.ref$level1class,
+                        clusters = so$cluster)
+
+```
+
+
+And store them
+
+ Store it
+
+```{r}
+
+
+# Cluster level predictions
+so$cluster_pred           <- factor(predictions.cluster[so$cluster, "pruned.labels"])
+so$cluster_pred_deltanext <- signif(predictions.cluster[so$cluster, "delta.next"],digits = 3)
+
+# c1 => c1: pyramidal SS
+cluster_lookup     <- 
+  setNames(predictions.cluster$pruned.labels,
+           nm=rownames(predictions.cluster))
+clustername_lookup <- 
+  setNames(paste0(names(cluster_lookup),": ", cluster_lookup ),
+           nm = names(cluster_lookup))
+so$cluster_name <- factor(as.character(clustername_lookup[so$cluster]), levels=clustername_lookup)
+
+
+# cell level predictons
+so$pred           <- factor(predictions[so$cell, "pruned.labels"])
+so$pred_deltanext <- factor(predictions[so$cell, "delta.next"])
+
+```
+
+<!-- # if less than this many cells, classify as other. -->
+<!-- min_considered_type <- 20 -->
+<!-- type_counts  <- table(so$pred) -->
+<!-- type_common  <- names(type_counts)[type_counts >= min_considered_type] -->
+<!-- so$pred_main <- as.character(so$pred) -->
+<!-- so$pred_main[ ! (so$pred_main %in% type_common) ] <- "Other" -->
+<!-- so$pred_main <- factor(so$pred_main) -->
+
+
+Relationship between predictions
+```{R}
+library(viridis)
+library(pheatmap)
+plotScoreHeatmap(predictions.cluster)
+
+```
+
+How do the cell level and cluster level assignments compare? - Clustered groupings are mostly matched to individual cell calls.
+
+```{r}
+plottable <- so@meta.data[,c('pred', "cluster_pred")] %>%
+  group_by(pred, cluster_pred) %>%
+  summarise(n=n())
+
+ggplot(plottable, aes(x=cluster_pred, y=n, fill=pred)) +
+  geom_bar(position="fill", stat="identity") + 
+  theme_bw() +
+  coord_flip() + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_fill_manual(values=cols_x30)
+
+
+plottable <- so@meta.data[,c('pred', "cluster_name")] %>%
+  group_by(pred, cluster_name) %>%
+  summarise(n=n())
+
+ggplot(plottable, aes(x=cluster_name, y=n, fill=pred)) +
+  geom_bar(position="fill", stat="identity") + 
+  theme_bw() +
+  coord_flip() + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(expand = c(0,0)) +
+  scale_fill_manual(values=cols_x30)
+
+
+```
+
+
+
+And how each level of cell typing looks spatially;
+
+```{r}
+so.s <- subset_opt(so, cells=so$cell[so$sample == 'sample2'])
+```
+
+```{r}
+cluster_cols <- c(
+  c0  = 'yellow',
+  c1  = 'royalblue',
+  c2  = 'turquoise4',
+  c3  = 'turquoise2',
+  c4  = 'red',
+  c5  = 'olivedrab1',
+  c6  = 'yellow3',
+  c7  = 'darkviolet',
+  c8  = 'tomato3',
+  c9  = 'navy',
+  c10 = 'olivedrab',
+  c11 = 'springgreen',
+  c12 = 'springgreen4',
+  c13 = 'blue',
+  c14 = 'plum3',
+  c15 = 'tomato',
+  c16 = 'lightblue2'
+)
+cluster_cols_names <- setNames(cluster_cols, nm=levels(so$cluster_name))
+
+
+```
+
+```{r fig.width=12}
+ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",group.by = 'pred', boundaries = "segmentation", border.color = 'black', axes = T, crop=TRUE)
+ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",group.by = 'cluster_pred', boundaries = "segmentation", border.color = 'black', axes = T, crop=TRUE)
+ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",group.by = 'cluster_name', boundaries = "segmentation", border.color = 'black', axes = T, crop=TRUE)
+```
+
+
+With better colours
+```{r}
+ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",group.by = 'cluster_name', boundaries = "segmentation", border.color = 'black', axes = T, crop=TRUE, cols = cluster_cols_names) 
+```
+
+
+
+
+
+
+
+
+
+
+
+<!-- ```{r} -->
+<!-- # remove CR cells because there aren't enough of them for annotation -->
+<!-- allen.cortex.ref <- subset(allen.cortex.ref, subset = subclass != "CR") -->
+<!-- counts <- GetAssayData(allen.cortex.ref, assay = "RNA", slot = "counts") -->
+<!-- cluster <- as.factor(allen.cortex.ref$subclass) -->
+<!-- names(cluster) <- colnames(allen.cortex.ref) -->
+<!-- nUMI <- allen.cortex.ref$nCount_RNA -->
+<!-- names(nUMI) <- colnames(allen.cortex.ref) -->
+<!-- nUMI <- colSums(counts) -->
+<!-- levels(cluster) <- gsub("/", "-", levels(cluster)) -->
+<!-- reference <- Reference(counts, cluster, nUMI) -->
+<!-- ``` -->
+
+
+<!-- ```{r} -->
+<!-- # run RCTD with many cores -->
+<!-- RCTD.1 <- create.RCTD(query.1, reference, max_cores = 8) -->
+<!-- RCTD.1 <- run.RCTD(RCTD.1, doublet_mode = "doublet") -->
+
+<!-- ``` -->
+
+
+
+
+
+
+
+
+## Neighbourhood niches
+
+```{r eval=FALSE}
+so.1 <- subset_opt(so, cells=so$cell[so$slide_fov == 'AD2.AD3.CosMx'])
+so.1 <- BuildNicheAssay(so.1, fov = "AD2.AD3.CosMx", group.by = "seurat_clusters", niches.k = 5, neighbors.k = 30)
+
+so.2 <- subset_opt(so, cells=so$cell[so$slide_fov  == 'AD4.AD5.CosMx'])
+so.2 <- BuildNicheAssay(so.2, fov = "AD4.AD5.CosMx", group.by = "seurat_clusters", niches.k = 5, neighbors.k = 30)
+```
+
+
+
 # Basic plots
 
 ## UMAP {.tabset .tabset-pills}
@@ -399,6 +648,21 @@ DimPlot(so, group.by = 'sample')
 ```{r}
 DimPlot(so)
 ```
+
+### Cluster labelled
+
+```{r}
+DimPlot(so, group.by = 'cluster_pred')
+```
+
+### Prediction
+
+```{r}
+DimPlot(so, group.by = 'pred_main')
+```
+
+
+
 
 
 ### Total read count
@@ -427,7 +691,7 @@ ImageDimPlot(so, fov = "AD2.AD3.CosMx",group.by = 'sample', axes = TRUE)
 Just one sample?
 ```{r}
 
-source("code/subset_obj_seurat_v2.R")
+
 so.s <- subset_opt(so, cells=so$cell[so$sample == 'sample2'])
 
 ```
@@ -435,6 +699,9 @@ so.s <- subset_opt(so, cells=so$cell[so$sample == 'sample2'])
 ```{r}
 ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",group.by = 'seurat_clusters', boundaries = "segmentation", border.color = 'black', axes = T, crop=TRUE)
 ```
+
+
+
 
 ```{r}
 ImageFeaturePlot(so.s,  features = 'Apoe',fov = "AD2.AD3.CosMx", boundaries = 'segmentation',border.color = 'black')
@@ -444,15 +711,24 @@ ImageFeaturePlot(so.s,  features = 'Lpl',fov = "AD2.AD3.CosMx", boundaries = 'se
 
 
 And with some interesting genes  (Needs SF package.)
-```{r eval=FALSE}
+```{r}
 genes <- c('Apoe', 'Lpl', 'Trem2') # DAM markers - disease-associated microglia
 ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",
              molecules = genes, 
-             group.by = 'seurat_clusters', boundaries = "segmentation", 
+             group.by = 'sample', boundaries = "segmentation",cols = c("grey30"),
              border.color = 'black', axes = T, crop=TRUE)
 ```
 
+```{r}
+ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",
+             molecules = genes[1], 
+             group.by = 'cluster_name', boundaries = "segmentation",
+             alpha=0.4,
+             cols = cluster_cols_names,
+             mols.size = 1,
+             border.color = 'black', axes = T, crop=TRUE)
 
+```
 
 
 

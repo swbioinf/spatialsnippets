@@ -6,6 +6,7 @@ output:
     toc: false
 editor_options:
   chunk_output_type: console
+bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 ---
 
 These examples are a sampler of tests that can be performed on an in-situ single cell spatial dataset.
