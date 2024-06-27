@@ -60,11 +60,16 @@ GSM8199189_ID67-ID68_S18_tx_file.csv.gz
 
 ```{r}
 library(Seurat)
-library(tidyverse)
+
 library(magrittr) # %<>% is used somewhere (assignment pipe)
 library(SingleR) # Cell refernce
 library(scRNAseq) # dataset
 library(scuttle) # sce normalisation
+
+library(viridis)
+library(pheatmap)
+
+library(tidyverse) # last filter should be tidyverse. Order of import matters.
 ```
 
 
@@ -79,6 +84,8 @@ data_dir              <- file.path(project_data_dir, "processed_data/")
 seurat_file_00_loaded <- file.path(data_dir, "GSE263793_AlzPlaque_seurat_00_loaded.RDS")
 seurat_file_01_preprocessed <- file.path(data_dir, "GSE263793_AlzPlaque_seurat_01_preprocessed.RDS")
 
+predictions_file         <- file.path(data_dir, "predictionsVsZeizel2015.RDS")
+predictions.cluster_file <- file.path(data_dir, "predictionsClusterVsZeizel2015.RDS")
 # config
 min_count_per_cell <- 100
 max_pc_negs        <- 0.5
@@ -390,11 +397,6 @@ cell_coords
 
 
 
-```{r eval=FALSE}
-saveRDS(so, file = seurat_file_01_preprocessed)
-```
-
-
 # Basic annotion
 
 Don't have the full analysis annotation to hand, and not interested in fully replicating the paper. Just add some very basic annotations to demonstrate downstream analyses.
@@ -435,7 +437,7 @@ table(sce.ref$level1class)
 ```
 
 Make cell type calls at the cell and cluster level.
-```{r}
+```{r eval=FALSE}
 # cluster names
 so$cluster <- factor( paste0("c", so$seurat_clusters),
                       levels=paste0("c",levels(so$seurat_clusters)))
@@ -444,6 +446,7 @@ so$cluster <- factor( paste0("c", so$seurat_clusters),
 so.joined   <- JoinLayers(so[["RNA"]] )
 norm_matrix <- GetAssayData(so.joined, assay= "RNA", layer='data')
 
+# Save it?
 predictions <- SingleR( test   = norm_matrix, 
                         ref    = sce.ref,
                         labels = sce.ref$level1class    )
@@ -453,17 +456,17 @@ predictions.cluster <- SingleR( test   = norm_matrix,
                         ref    = sce.ref,
                         labels = sce.ref$level1class,
                         clusters = so$cluster)
+saveRDS(predictions, predictions_file)
+saveRDS(predictions.cluster, predictions.cluster_file)
 
 ```
 
 
 And store them
 
- Store it
+Store it
 
-```{r}
-
-
+```{r eval=FALSE}
 # Cluster level predictions
 so$cluster_pred           <- factor(predictions.cluster[so$cluster, "pruned.labels"])
 so$cluster_pred_deltanext <- signif(predictions.cluster[so$cluster, "delta.next"],digits = 3)
@@ -482,6 +485,18 @@ so$cluster_name <- factor(as.character(clustername_lookup[so$cluster]), levels=c
 so$pred           <- factor(predictions[so$cell, "pruned.labels"])
 so$pred_deltanext <- factor(predictions[so$cell, "delta.next"])
 
+
+
+
+```
+
+Load saved interium results
+```{r}
+predictions         <- readRDS(predictions_file)
+predictions.cluster <- readRDS(predictions.cluster_file)
+
+
+so <- readRDS(seurat_file_01_preprocessed)
 ```
 
 <!-- # if less than this many cells, classify as other. -->
@@ -494,11 +509,8 @@ so$pred_deltanext <- factor(predictions[so$cell, "delta.next"])
 
 
 Relationship between predictions
-```{R}
-library(viridis)
-library(pheatmap)
+```{r}
 plotScoreHeatmap(predictions.cluster)
-
 ```
 
 How do the cell level and cluster level assignments compare? - Clustered groupings are mostly matched to individual cell calls.
@@ -617,12 +629,38 @@ ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",group.by = 'cluster_name', boundaries 
 
 ## Neighbourhood niches
 
-```{r eval=FALSE}
-so.1 <- subset_opt(so, cells=so$cell[so$slide_fov == 'AD2.AD3.CosMx'])
-so.1 <- BuildNicheAssay(so.1, fov = "AD2.AD3.CosMx", group.by = "seurat_clusters", niches.k = 5, neighbors.k = 30)
 
-so.2 <- subset_opt(so, cells=so$cell[so$slide_fov  == 'AD4.AD5.CosMx'])
-so.2 <- BuildNicheAssay(so.2, fov = "AD4.AD5.CosMx", group.by = "seurat_clusters", niches.k = 5, neighbors.k = 30)
+
+Once again, it is neccassary tho hack apart and fix the seurat function to make this work on objects with multiple slides.
+Should eventually be fixed.
+
+```{r eval=FALSE}
+source("code/multislide_niche.R")
+so <- BuildNicheAssay.using_all_fovs(so, group.by = "cluster",niches.k = 6)
+
+DefaultAssay(so) <- "RNA"
+# save it
+saveRDS(so, file=seurat_file_01_preprocessed )
+```
+
+```{r}
+celltype2niche <- table(so$niches, so$cluster_name)
+heatmap(t(celltype2niche))
+```
+
+<!-- ```{r} -->
+<!-- niche_names <- c( n1 = "n1: Astro Dendro Oligo", -->
+<!--      n2 = "n2: PyramidalCA1 Endo Intra", -->
+<!--      n3 = "n3: Micro Astro Pyramidal Inter Endo", -->
+<!--      n4 = "n4: Pyramidal SS" -->
+<!--      ) -->
+
+<!-- so$niche_names  <- factor(as.character(niche_names[paste0("n",so$niches)]), levels=niche_names) -->
+<!-- ``` -->
+
+```{r}
+ImageDimPlot(so, fov = "AD2.AD3.CosMx",group.by = 'niches', axes = TRUE)
+ImageDimPlot(so, fov = "AD4.AD5.CosMx",group.by = 'niches', axes = TRUE)
 ```
 
 
@@ -658,12 +696,16 @@ DimPlot(so, group.by = 'cluster_pred')
 ### Prediction
 
 ```{r}
-DimPlot(so, group.by = 'pred_main')
+DimPlot(so, group.by = 'pred')
 ```
 
 
 
+### Niches
 
+```{r}
+DimPlot(so, group.by = 'niches')
+```
 
 ### Total read count
 
@@ -690,10 +732,7 @@ ImageDimPlot(so, fov = "AD2.AD3.CosMx",group.by = 'sample', axes = TRUE)
 
 Just one sample?
 ```{r}
-
-
 so.s <- subset_opt(so, cells=so$cell[so$sample == 'sample2'])
-
 ```
 
 ```{r}
@@ -701,12 +740,14 @@ ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",group.by = 'seurat_clusters', boundari
 ```
 
 
+```{r}
+ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",group.by = 'niches', boundaries = "segmentation", border.color = 'black', axes = T, crop=TRUE)
+```
 
 
 ```{r}
 ImageFeaturePlot(so.s,  features = 'Apoe',fov = "AD2.AD3.CosMx", boundaries = 'segmentation',border.color = 'black')
 ImageFeaturePlot(so.s,  features = 'Lpl',fov = "AD2.AD3.CosMx", boundaries = 'segmentation',border.color = 'black')
-
 ```
 
 
@@ -730,6 +771,15 @@ ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",
 
 ```
 
+```{r}
+ImageDimPlot(so.s,  fov = "AD2.AD3.CosMx",
+             molecules = genes[1], 
+             group.by = 'niches', boundaries = "segmentation",
+             alpha=1,
+             mols.size = 0.5,
+             border.color = 'black', axes = T, crop=TRUE)
+
+```
 
 
 # References
