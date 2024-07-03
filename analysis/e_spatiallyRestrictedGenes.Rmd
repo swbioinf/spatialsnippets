@@ -15,6 +15,18 @@ bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 ---
 
 
+
+Should wait for this bug to be fixed; logged here: https://github.com/satijalab/seurat/issues/8226
+
+There's a workaround, but probably not suitable for this example doc.
+Consider a voyager example or similar, that might be more suited to these kinds of ~very spatial~ analyses.
+
+
+https://pachterlab.github.io/voyager/articles/vig4_cosmx.html#local-spatial-statistics-of-marker-genes
+
+
+
+
 ```{r angrylibrarian, include=FALSE} 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 knitr::opts_chunk$set(echo = TRUE)
@@ -44,95 +56,54 @@ library(DT)
 ```
 
 ```{r}
-data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
-seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
+dataset_dir      <- '~/projects/spatialsnippets/datasets/GSE263793_Mallach2024_AlzPlaque/processed_data/'
+seurat_file_01_preprocessed <- file.path(dataset_dir,  "GSE263793_AlzPlaque_seurat_01_preprocessed.RDS")
 ```
 
-
-Note, there's an issue with subsetting seurat objects with multiple fovs where 
-there are fovs that don't have any cells selected (e.g. when subsetting to one fov).
-For now, there's a workaround published here: https://github.com/satijalab/seurat/issues/6409
-
-```{r}
-library(magrittr) # %<>%
-source("code/subset_obj_seurat_v2.R")
-# does not work (ought to be fixed eventually)
-# so.fov <- subset(so, fov_name == "CD_a_001")
-# use instead:
-# Allgedly fixed??? in 5.0.2
-# https://github.com/satijalab/seurat/issues/8848
-
-```
 
 
 
 ```{r}
-so <- readRDS(seurat_file_01_loaded)
+so <- readRDS(seurat_file_01_preprocessed)
+
+# Tag fewer variable features
+length(VariableFeatures(so))
+so <-  FindVariableFeatures(so, nfeatures=10)
+
 ```
 
 
-# Spatially variable features???
+
+
+
+# Spatially variable features
 
 
 ```{r}
-
-#subset( so, cells = WhichCells(so, expression = fov_name == "CD_a_001"))
-#so.fov <- subset(so, fov_name == "CD_a_001")
-#so[,WhichCells(so, expression = fov_name == "CD_a_001")]
-
-# this shouldn't be neccesary for seurat 5.0.3
-#so.fov <- subset_opt(so, cells = WhichCells(so, expression = fov_name == "CD_a_014"))
-#so.fov <- subset_opt(so, cells = WhichCells(so, expression = tissue_sample == "CD_a"))
-
-# try integrated data
-
-
-so.two <- subset_opt(so, cells = WhichCells(so, expression = tissue_sample %in% c("CD_a", "CD_b")))
-
-so.two <- IntegrateLayers(
-  object = so.two , method = RPCAIntegration,
-  orig.reduction = "pca", new.reduction = "integrated.rpca"
-)
-so.two <- FindNeighbors(so.two, reduction = "integrated.rpca", dims = 1:30)
-so.two <- FindClusters(so.two, resolution = 2, cluster.name = "rpca_clusters")
-
-
-
-so.fov <- subset_opt(so, cells = WhichCells(so.two, expression = fov_name == "CD_a_014"))
-
-
+so.sample <- subset( so, cells = WhichCells(so, expression = sample == "sample1"))
 ```
 
 
 ```{r}
-ImageDimPlot(so.fov,  axes = TRUE, cols = "glasbey",size = 3, group.by = 'celltype_subset')
-```
-
-
-
-```{r}
-Layers(so.fov)
-
-so.fov[["negprobes"]]<- NULL
-so.fov <- FindSpatiallyVariableFeatures(so.fov, assay = "RNA", features = VariableFeatures(so.fov),    selection.method = "moransi",
-                                        layer = "counts")
-
-so.fov <- FindSpatiallyVariableFeatures.Seurat_EDITED(so.fov, assay = "RNA", 
-                                                      features = VariableFeatures(so.fov),    
-                                                      selection.method = "moransi",
-                                                      layer = "counts")
-
-
+source("code/spatially_variable_features_code.R")
+so.sample <- FindSpatiallyVariableFeatures.Seurat_EDITED(so.sample, 
+                                           assay = "RNA", 
+                                           features = VariableFeatures(so.sample),    
+                                           selection.method = "moransi",
+                                           layer = "counts")
 
 ```
+
+
 
 
 
 ```{r}
 # Can sorta get the top ones out.
-rownames(so.fov[['RNA']])[which(so.fov[['RNA']]@meta.data$moransi.spatially.variable.rank <10)]
+rownames(so.sample[['RNA']])[which(so.sample[['RNA']]@meta.data$moransi.spatially.variable.rank <10)]
 
-gene_metadata <- cbind(feature=rownames(so.fov[["RNA"]]), so.fov[["RNA"]]@meta.data)
+#gene_metadata <- cbind(feature=rownames(so.sample[["RNA"]]), so.sample[["RNA"]]@meta.data)
+gene_metadata <- so.sample[["RNA"]]@meta.data
 gene_metadata <- 
   filter(gene_metadata, !is.na(moransi.spatially.variable.rank)) %>%
   select(feature, 
@@ -146,39 +117,19 @@ head(gene_metadata)
 
 
 
-
-
-```{r}
-SpatiallyVariableFeatures(so.fov, method = "moransi")
-SpatiallyVariableFeatures(so.fov[['RNA']], method = "moransi")
-```
-
-```{r}
-## S3 method for class 'Assay5'
-HVFInfo(object, method = NULL, status = FALSE, layer = NULL, strip = TRUE, ...)
-
-```
-
-
-```{r}
-# https://github.com/satijalab/seurat-object/issues/25
-FindSpatiallyVariableFeatures(so.fov, assay = "RNA", 
-                                        method = "moransi", 
-                                        features = rownames(so.fov),
-                                        r.metric = 5, slot = "scale.data")
-
-```
-
-
-
 # plot it
 
-```{r}
-ImageDimPlot(so.fov,  axes = TRUE, cols = "glasbey",size = 3, group.by = 'celltype_subset')
-```
+Wow. Those top 3 are great.
 
 ```{r}
-SpatialFeaturePlot(so.fov, features = 'PIGR', )
+genes= gene_metadata$feature[1:3]
+
+ImageDimPlot(so.sample,  fov = "AD2.AD3.CosMx",
+             molecules = genes, 
+             group.by = 'sample', boundaries = "segmentation",cols = c("grey30"),
+             border.color = 'black', axes = T, crop=TRUE)
+
+
 ```
 
 
