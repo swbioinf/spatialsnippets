@@ -423,7 +423,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-06-12
+<strong>Last updated:</strong> 2024-07-05
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -554,15 +554,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree74dbb4ebce31ee5f5ab0f60baadf79e4c73d5a6etargetblank74dbb4ea">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree17067324bb63d83e280471b49bec08c3036326fctargetblank1706732a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/74dbb4ebce31ee5f5ab0f60baadf79e4c73d5a6e" target="_blank">74dbb4e</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/17067324bb63d83e280471b49bec08c3036326fc" target="_blank">1706732</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree74dbb4ebce31ee5f5ab0f60baadf79e4c73d5a6etargetblank74dbb4ea"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree17067324bb63d83e280471b49bec08c3036326fctargetblank1706732a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -572,7 +572,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/74dbb4ebce31ee5f5ab0f60baadf79e4c73d5a6e" target="_blank">74dbb4e</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/17067324bb63d83e280471b49bec08c3036326fc" target="_blank">1706732</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -589,14 +589,13 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/figure/
+    Ignored:    analysis/glossary.nb.html
     Ignored:    renv/library/
     Ignored:    renv/staging/
 
-Untracked files:
-    Untracked:  analysis/e_spatiallyRestrictedGenes.Rmd
-
 Unstaged changes:
-    Modified:   analysis/d_cosmxAlzPlaque.Rmd
+    Modified:   analysis/d_cosmxIBD.Rmd
     Modified:   analysis/index.Rmd
 
 </code></pre>
@@ -643,6 +642,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/17067324bb63d83e280471b49bec08c3036326fc/analysis/e_DEPseudobulk_insitu.Rmd" target="_blank">1706732</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-07-05
+</td>
+<td>
+wflow_publish("analysis/e_DEPseudobulk_insitu.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/b2fc2b069cc3c07acdc8212638f50092110b64ab/docs/e_DEPseudobulk_insitu.html" target="_blank">b2fc2b0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-12
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -923,6 +956,8 @@ wflow_publish(c("analysis/index.Rmd",
 </div>
 </div>
 </div>
+<p><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096346/"
+class="uri">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096346/</a></p>
 <!-- keywords
 
 insituspatial
@@ -933,26 +968,31 @@ test
 -->
 <div id="overview" class="section level1">
 <h1>Overview</h1>
-<p>Once we have identified cell types present in the samples, its
-typical to test how gene expression changes between experimental
-conditions, within each different cell type. Some cell types may be
-dramatically affected by the experimental conditions, while others are
-not. Likewise some genes may change only in a specific cell type,
-whereas others show a more general difference.</p>
-<p>This document describes how to apply a pseudobulk approach to test
-for differences between groups, accounting for biological replicates.
-This is very similar to how a non-spatial single cell experiment may be
-analysed.</p>
-<p>In a pseudobulk approach counts are obtaing by pooling together
-groups of cells; in this case cells from the of the same type from the
-same fov. These pooled counts can then be analysed more like a bulk
-RNAseq experiment.</p>
-<p>Note that there are other approaches to calculate differential
+<p>Once we have identified cell types present in the samples, its common
+to test how gene expression changes between experimental conditions,
+within each different cell type.</p>
+<p>Some cell types may be dramatically affected by the experimental
+conditions, while others are not. Likewise some genes may change only in
+a specific cell type, whereas others show a more general difference.</p>
+<p>This document describes how to apply a <em>pseudobulk</em> approach
+to test for differences between groups. In a pseudobulk approach counts
+are obtained by pooling together groups of cells; in this case cells
+from the of the same celltype from the same fov. These pooled counts can
+then be analysed more like a bulk RNAseq experiment.</p>
+<p>This is very similar to how a non-spatial single cell experiment may
+be analysed.</p>
+<p>However, unlike a non-spatial single cell experiment, this
+experimental design has multiple FOVs from the same tissue sample; these
+<em>pseudoreplicates</em> are informative but cannot be considered true
+biological replicates. They can be incorporated into the statistics with
+the correlate duplicates approach <span
+class="citation">(<strong>smythUseWithinarrayReplicate2005?</strong>)</span>.</p>
+<p>Note that there are many other approaches to calculate differential
 expression in this kind of data - including those that make use of
-individual cells <span class="citation">(Soneson and Robinson
-2018)</span>.</p>
+individual cells; see review <span class="citation">(Soneson and
+Robinson 2018)</span>.</p>
 <p><img src="assets/insitu_spatial_pseudobulk_de.png" /></p>
-<p>This requires:</p>
+<p>This test requires:</p>
 <ul>
 <li>Biological replicates for each group</li>
 <li>Assigned cell types</li>
@@ -978,8 +1018,17 @@ sample?</li>
 <h1>Worked example</h1>
 <p>How does gene expression change within each cell type between
 Ulcerative colitis or Crohn’s disease, and Healthy controls?</p>
-<p>Using data from <span class="citation">(Garrido-Trigo et al.
-2023)</span></p>
+<p>Using data from <a
+href="https://www.ncbi.nlm.nih.gov/pubmed/37495570"><em>Macrophage and
+neutrophil heterogeneity at single-cell spatial resolution in human
+inflammatory bowel disease</em></a> from <span
+class="citation">(Garrido-Trigo et al. 2023)</span>;</p>
+<p>The study included 9 cosmx slides of colonic biopsies</p>
+<ul>
+<li>3x HC - Healthy controls</li>
+<li>3x UC - Ulcerative colitis</li>
+<li>3x CD - Chrones’s disease</li>
+</ul>
 <div id="load-libraries-and-data" class="section level2">
 <h2>Load libraries and data</h2>
 <pre class="r"><code>library(Seurat)
@@ -995,8 +1044,15 @@ seurat_file_01_loaded &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_seurat
 <div id="experimental-design" class="section level2">
 <h2>Experimental design</h2>
 <!-- Move this to own page? --->
-<p>There are three individuals per condition (one tissue sample from
-each individual). With multiple fovs on each physical tissue sample.</p>
+<p>There are three individuals per condition, one tissue sample from
+each individual. 9 slides in total. Each tissue sample has multiple FOVs
+captured; these are our pseudoreplicates. Each ‘sample’ is listed
+below.</p>
+<p>NB: <em>‘FOV’ Feild Of View</em>: In the seurat package, an number of
+functions include an ‘fov’ parameter. This corresponds to the slide on
+which one or more samples are present on. In the cosMX output an ‘fov’
+refers to the rectangular regions on the slide that are measured; there
+are multiple fovs per slide. This document uses the latter.</p>
 <pre class="r"><code>sample_table &lt;- select(as_tibble(so@meta.data), condition, individual_code, fov_name) %&gt;%
   unique() %&gt;% 
   group_by(condition, individual_code) %&gt;% 
@@ -1006,17 +1062,37 @@ DT::datatable(sample_table)</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-8839f08f82529a5247be" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-8839f08f82529a5247be">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9"],["Crohn's disease","Crohn's disease","Crohn's disease","Ulcerative colitis","Ulcerative colitis","Ulcerative colitis","Healthy controls","Healthy controls","Healthy controls"],["CD_a","CD_b","CD_c","UC_a","UC_b","UC_c","HC_a","HC_b","HC_c"],[19,19,16,19,22,21,19,20,16],["CD_a_001, CD_a_002, CD_a_003, CD_a_004, CD_a_005, CD_a_006, CD_a_007, CD_a_008, CD_a_009, CD_a_010, CD_a_011, CD_a_012, CD_a_013, CD_a_014, CD_a_015, CD_a_016, CD_a_017, CD_a_018, CD_a_019","CD_b_002, CD_b_003, CD_b_004, CD_b_005, CD_b_006, CD_b_007, CD_b_008, CD_b_009, CD_b_010, CD_b_011, CD_b_012, CD_b_013, CD_b_014, CD_b_015, CD_b_016, CD_b_017, CD_b_018, CD_b_019, CD_b_020","CD_c_001, CD_c_002, CD_c_003, CD_c_004, CD_c_005, CD_c_006, CD_c_007, CD_c_008, CD_c_009, CD_c_010, CD_c_011, CD_c_012, CD_c_013, CD_c_014, CD_c_015, CD_c_017","UC_a_001, UC_a_002, UC_a_005, UC_a_006, UC_a_007, UC_a_008, UC_a_009, UC_a_010, UC_a_012, UC_a_013, UC_a_014, UC_a_015, UC_a_016, UC_a_017, UC_a_018, UC_a_019, UC_a_020, UC_a_021, UC_a_022","UC_b_001, UC_b_002, UC_b_003, UC_b_004, UC_b_005, UC_b_006, UC_b_007, UC_b_008, UC_b_009, UC_b_010, UC_b_011, UC_b_012, UC_b_014, UC_b_015, UC_b_016, UC_b_017, UC_b_018, UC_b_020, UC_b_021, UC_b_022, UC_b_023, UC_b_024","UC_c_001, UC_c_002, UC_c_003, UC_c_004, UC_c_005, UC_c_006, UC_c_007, UC_c_008, UC_c_009, UC_c_010, UC_c_011, UC_c_012, UC_c_013, UC_c_014, UC_c_015, UC_c_016, UC_c_017, UC_c_018, UC_c_019, UC_c_020, UC_c_021","HC_a_001, HC_a_002, HC_a_003, HC_a_004, HC_a_005, HC_a_006, HC_a_007, HC_a_008, HC_a_009, HC_a_010, HC_a_011, HC_a_012, HC_a_013, HC_a_014, HC_a_015, HC_a_016, HC_a_018, HC_a_019, HC_a_020","HC_b_001, HC_b_002, HC_b_003, HC_b_004, HC_b_005, HC_b_006, HC_b_007, HC_b_008, HC_b_009, HC_b_010, HC_b_011, HC_b_012, HC_b_013, HC_b_014, HC_b_015, HC_b_016, HC_b_017, HC_b_018, HC_b_019, HC_b_020","HC_c_001, HC_c_002, HC_c_003, HC_c_004, HC_c_005, HC_c_006, HC_c_007, HC_c_008, HC_c_009, HC_c_010, HC_c_011, HC_c_012, HC_c_013, HC_c_014, HC_c_015, HC_c_016"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>condition<\/th>\n      <th>individual_code<\/th>\n      <th>n_fovs<\/th>\n      <th>item<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"condition","targets":1},{"name":"individual_code","targets":2},{"name":"n_fovs","targets":3},{"name":"item","targets":4}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
-<div id="count-how-many-cells-of-each-type-in-your-data"
-class="section level2">
-<h2>Count how many cells of each type in your data</h2>
-<p>Using a pseudobulk approach.</p>
+<div id="cell-filtering-and-counting" class="section level2">
+<h2>Cell filtering and counting</h2>
+<p>We need to define the grouping that will make one pseudobulk sample
+for analysis. In this experiment, we can consider all FOVs within a
+tissue sample as somewhat equivalent. Therefore that is all cells of a
+particular celltype within an FOV region.</p>
+<p>If we only had one fov per sample, <em>celltype + sample</em> would
+be directly equivalent.</p>
+<p>If we had a tiled fovs across a tissue sample with distinct regions
+it would be necessary to group them by <em>subregion fov +
+celltype</em>. Alternatively pool the entire sample if each one is
+equivalent - it depends on where transcriptional differences are
+expected.</p>
+<p>Once the pseudobulk replicate grouping is decided, we need to check
+there will be enough cells to perform our analyses. Note there are
+several levels of filtering here!</p>
 <ul>
 <li>Need at least x reads in a cell to include it</li>
-<li>Need at least x cells of a celltype within an fov to include
-that</li>
+<li>Need at least x cells of a celltype within an fov to include a
+sample</li>
 <li>Can only test where we have at least 2 samples on each side of a
 contrast.</li>
 </ul>
+<p>What these thresholds should be needs to be determined for each
+experiment.</p>
+<div id="filter-counts-per-cell" class="section level3">
+<h3>Filter counts per cell</h3>
+<p>To start, check out the distribution of reads per cell. Here, we
+choose and apply a filter of 200 reads. This is low compared to what you
+might see in a single scRNAseq experiment, but we are working with only
+1000 genes.</p>
 <pre class="r"><code>min_reads_per_cell &lt;- 200
 
 ggplot(so@meta.data, aes(x=nCount_RNA)) +
@@ -1064,9 +1140,13 @@ swbioinf
 </div>
 </div>
 <pre class="r"><code>so&lt;- so[,so$nCount_RNA &gt;= min_reads_per_cell]</code></pre>
-<p>We will pool each celltype within each fov (cluster_group). But there
-needs to be a certain number of cells for that to work - less than a
-certain number of cells and a pseudobulk pool will be excluded.</p>
+</div>
+<div id="filter-cells-per-group" class="section level3">
+<h3>Filter cells per group</h3>
+<p>Next we pool each celltype within each fov (naming those groupings
+fov_cluster). But there needs to be a certain number of cells for that
+to work - less than a certain number of cells and a pseudobulk pool will
+be excluded. The table below shows the cells per grouping.</p>
 <p>Note there are much fewer t-cells overall, but given that we have a
 high number of samples, there should still be enough to include. Its
 typical that some of the less common cell types are difficult or
@@ -1139,7 +1219,33 @@ swbioinf
 </div>
 <p>Record the names of those fov_clusters that contain enough cells to
 be used. Will use this later to filter.</p>
-<pre class="r"><code>passed_fov_clusters &lt;- celltype_summary_table$fov_cluster[celltype_summary_table$cells &gt;= min_cells_per_fovcluster]</code></pre>
+<pre class="r"><code>celltype_summary_table.passed &lt;- celltype_summary_table[celltype_summary_table$cells &gt;= min_cells_per_fovcluster,]
+passed_fov_clusters &lt;- celltype_summary_table.passed$fov_cluster</code></pre>
+</div>
+<div id="samples-per-contrast." class="section level3">
+<h3>Samples per contrast.</h3>
+<p>Ignoring pseodureplicate fovs from a single sample, how many
+bioloical samples are represented in our filtered table?</p>
+<p>In this experiment, there are enough samples to run the contrasts for
+every cell type.</p>
+<pre class="r"><code>celltype_summary_table.passed %&gt;% select(condition, individual_code, celltype_subset) %&gt;%
+  unique() %&gt;%
+  group_by(condition, celltype_subset) %&gt;%
+  summarise(n=n()) %&gt;% 
+  pivot_wider( names_from=condition, values_from = n)</code></pre>
+<pre><code># A tibble: 5 × 4
+  celltype_subset `Crohn&#39;s disease` `Ulcerative colitis` `Healthy controls`
+  &lt;fct&gt;                       &lt;int&gt;                &lt;int&gt;              &lt;int&gt;
+1 epi                             3                    3                  3
+2 myeloids                        3                    3                  3
+3 plasmas                         3                    3                  3
+4 stroma                          3                    3                  3
+5 tcells                          3                    2                  2</code></pre>
+<p>NB: What if you do need to skip constrasts? Often its easiest to
+count your biological replicates at the differential expression step and
+skip them there. You might need to run contrasts between groups one at a
+time to do this.</p>
+</div>
 </div>
 <div id="calculate-pseudobulk" class="section level2">
 <h2>Calculate pseudobulk</h2>
@@ -1152,9 +1258,9 @@ pseudobulk_counts_matrix &lt;- pseudobulk_counts[[&quot;RNA&quot;]]
 colnames(pseudobulk_counts_matrix)&lt;-gsub(&quot;-&quot;,&quot;_&quot;,colnames(pseudobulk_counts_matrix))</code></pre>
 <p>Now instead of counts for each individual cell, we have our
 pseodubulk matrix with the pooled sum of counts for each celltype within
-each fov region. So the numbers are much higher, fewer zeros. But each
-pool is a different size, which we will adress later with
-normalisation.</p>
+each fov region. So the numbers are much higher, with fewer zeros. But
+note that each pool is a different size, so we can’t compare counts
+directly. We will address this later with normalisation.</p>
 <pre class="r"><code>pseudobulk_counts_matrix[1:10,1:4]</code></pre>
 <pre><code>10 x 4 sparse Matrix of class &quot;dgCMatrix&quot;
       CD_a_001_epi CD_a_001_myeloids CD_a_001_plasmas CD_a_001_stroma
@@ -1169,13 +1275,15 @@ ACKR4           36                 2                9               7
 ACTA2           23                 1                7              45
 ACTG2           32                 2               15              27</code></pre>
 <p>Next, filter to only those passed fov_clusters we saw earlier - this
-is what we’ll use for calculating differential expression.</p>
+filtered table is what we’ll use for calculating differential
+expression.</p>
 <p>We also need an annotation table to tell us what is in each
 fov_cluster (sample, celltype, condition…). Build this by filtering the
-celltype summary table made earlier. If we filter it to the same
-samples, in the same order as the pseudubulk matrix, we can then use
-those columns of data to build our differential expression model in the
-next step.</p>
+celltype summary table made earlier.</p>
+<p>For convenience we filter it to the same samples, in the same order
+as the pseudobulk matrix, so we can then use those columns of data to
+build our differential expression model in the next step. We need to be
+careful the order remains the same.</p>
 <pre class="r"><code># Filter the pseudobulk table
 pseudobulk_counts_matrix &lt;- pseudobulk_counts_matrix[,passed_fov_clusters]
 
@@ -1192,7 +1300,10 @@ stopifnot(all(colnames(pseudobulk_counts_matrix) == pseudobulk_anno_table$fov_cl
 <div id="calculate-differential-expression" class="section level2">
 <h2>Calculate Differential Expression</h2>
 <p>We now have a counts matrix, and an annotation table that describes
-its samples. This looks very much like a bulk RNAseq experiment.</p>
+its samples.</p>
+<p>This looks very much like a bulk RNAseq experiment. Except - instead
+of X samples across Y conditions, we have X samples of Y conditions for
+each of Z celltypes.</p>
 <pre class="r"><code>pseudobulk_counts_matrix[1:10,1:4]</code></pre>
 <pre><code>10 x 4 sparse Matrix of class &quot;dgCMatrix&quot;
       CD_a_001_epi CD_a_001_plasmas CD_a_001_stroma CD_a_002_myeloids
@@ -1220,79 +1331,101 @@ ACTG2           32               15              27                 3</code></pr
 analysis.</p>
 <p>We will process each celltype one at a time as follows:</p>
 <ol style="list-style-type: decimal">
-<li>Subset the counts matrix and annotation table to the celltype</li>
-<li>Check that we have enough replicates for that celltype to run the
-test(s). We need to have fovs from at least 2 biological samples on each
-side of our test (e.g. 2treatment, 2 control). Even though we have
-enough tissue samples, if its a less common cell type we might have
-filtered them away!</li>
-<li>Build a model. In our case, a simple one that looks for variouat by
-disease group, blocked on individual.</li>
+<li>Subset the counts matrix and annotation table to the celltype.</li>
+<li>Build and fit the model. In our case, a simple one that looks for
+various by disease group, blocked on individual.</li>
 <li>Run the test.</li>
 </ol>
 <p>How to build the model and run the test will need to be customised
-foryour experimental design. Online resources that describe approaches
-for bulk RNAseq analyses can be applied to pseubulk analyses - see the
+for your experimental design. Online resources that describe approaches
+for bulk RNAseq analyses can be applied to pseudobulk analyses - see the
 ‘More Information’ section of this document for suggestions.</p>
 <p>In this case the line <code>model.matrix( ~0 + group)</code> builds a
 model where gene expression is expected to vary by group (UC/CD/HC). The
-~0 part indicates a ‘intercept’, which is convenient becase it means we
+~0 part indicates a ‘intercept’, which is convenient because it means we
 can include all 3 groups in our contrasts, rather than one of them being
 treated as the baseline. ( NB: Mathematically, you could use ~group
 alone without intercept, and define contrasts accordingly to get the
 same result. )</p>
-<p>But, we also need to tae into acoount our individuals. We do this by
-<em>blocking</em> on individual, and calculageing a intra duplicate
-correlation with <em>duplicateCorrelation()</em>.</p>
-<p>If instead we didn’t have multiple fovs per replicate, we might use a
-model like <code>~0 + group + individual</code>; no blocking or use of
-duplicateCorrelation(). That is more typical of a typical of a bulk
-rnaseq or single cell RNAseq pseuobulk analysis.</p>
-<pre class="r"><code>min_samples_to_calc &lt;- 2 # require 2 samples on on either side of contrast
-
+<p>But, we also need to take into account our individuals. We do this by
+<em>blocking</em> on individual, and calculating a intra duplicate
+correlation with <em>duplicateCorrelation()</em><span
+class="citation">(<strong>smythUseWithinarrayReplicate2005?</strong>)</span>.
+That’s a method from microarray times, see <a
+href="https://support.bioconductor.org/p/125489/">discussion</a> for how
+it is applied to bulk RNAseq data.</p>
+<p>If instead we didn’t have multiple fovs per replicate, can skip
+blocking or use of duplicateCorrelation(). That is more typical of a
+typical of a bulk rnaseq or single cell RNAseq pseuobulk analysis.</p>
+<p>Some example models:</p>
+<ul>
+<li><strong>~0 + group, (blocked on individual with using duplicate
+Correlation)</strong> : Used here, takes into account pseodureplicate
+fovs from the same samples</li>
+<li><strong>~0 + group, (no blocking or duplicate correlation)</strong>
+: If there was only one pseudoreplicate per individual. Either from a
+single fov, or from pooling fovs.</li>
+<li><strong>~0 + group + individual (no blocking or duplicate
+correlation)</strong> : If this was a treatment / time point experiment
+with paired samples from individuals. But only one pseodureplicate per
+individual. If there were multiple fovs per tissue sample, you could add
+blocking and duplicate correlation on tissue ID.</li>
+<li><strong>~0 + group + celltype</strong> (with or without blocking +
+duplicate correlation) : Instead of subsetting to celltype, includes
+cell type in the model. This pulls more data into the stataticacs, but
+makes building the contrasts challenging! Not covered here.</li>
+</ul>
+<pre class="r"><code># Empty list to collect results
 de_result_list &lt;- list()
 
 # celltype_subset is a matrix
 for (the_celltype in levels(so$celltype_subset)) {
   
+  # Subset counts andn annotation to one cell type. 
+  # Ensure order remains identical!
+  print(the_celltype)
   anno_table.this   &lt;- pseudobulk_anno_table[pseudobulk_anno_table$celltype_subset == the_celltype,]
   count_matrix.this &lt;- pseudobulk_counts_matrix[,anno_table.this$fov_cluster]
- 
-  print(the_celltype)
+
   
-  # skip clusters with nothing 
+  ## Check for sufficient replicates ##
+  # To do any calculations, we need at least 2 pseudobulk groups per contrast.
+  # there are plenty in this experiemnt, but with less replicates and rare cell types
+  # it may be neccesary to check and skip certain contrasts. Here woudl be a good 
+  # if (not enouch samples to run test ) {next}
+  
+  # skip clusters with no samples after filtering
   if( nrow(anno_table.this) &lt; 1 ) {next}
+  
   
   # Setup objects for limma
   dge &lt;- DGEList(count_matrix.this)
   dge &lt;- calcNormFactors(dge)
   
+  
+  
   # Build model
   group           &lt;- anno_table.this$group
   individual_code &lt;- anno_table.this$individual_code
 
-  # To do any calculations, we need at least 2 pseudobulk groups per contrast.
-  # there are plenty in this experiemnt, but with less replicates and rare cell types
-  # it may be neccesary to check and skip certain contrasts
-
   # Model design 
   design    &lt;- model.matrix( ~0 + group)
-
+  
+  # Run Voom
   vm  &lt;- voom(dge, design = design, plot = FALSE)
   
   # Adding dupliate correlation to use individual fovs, rather than pooled per biosample
   corrfit &lt;- duplicateCorrelation(vm, design, block=individual_code)
   fit     &lt;- lmFit(vm, design, correlation = corrfit$consensus, block=individual_code) 
 
-  # Then fit contrasts and run ebayes
+  # Define and fit contrasts and run ebayes
   contrasts &lt;- makeContrasts(UCvHC  = groupUC - groupHC, 
                              CDvHC  = groupCD - groupHC,
                            levels=coef(fit))
-
   fit &lt;- contrasts.fit(fit, contrasts)
   fit &lt;- eBayes(fit)
 
-  
+  ## Look through each contrast, and extract a results table.
   for ( the_coef in colnames(contrasts) ) {
     de_result.this &lt;- topTable(fit, n = Inf, adjust.method = &quot;BH&quot;, coef = the_coef) %&gt;%
       rownames_to_column(&quot;target&quot;) %&gt;%
@@ -1319,9 +1452,9 @@ for (the_celltype in levels(so$celltype_subset)) {
 de_results_all &lt;- bind_rows(de_result_list)
 de_results_sig &lt;- filter(de_results_all, adj.P.Val &lt; 0.01)</code></pre>
 <p>Table of significant results.</p>
-<pre class="r"><code>DT::datatable(de_results_sig)</code></pre>
+<pre class="r"><code>DT::datatable(mutate(de_results_sig, across(is.numeric, signif, digits = 3)))</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-0b50cf44ed0c70fb0261" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-0b50cf44ed0c70fb0261">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90"],["epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","stroma","stroma","stroma","stroma","stroma","stroma","stroma","stroma","stroma","stroma","stroma","tcells","tcells","tcells","tcells","tcells","tcells","tcells"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC"],["LYZ","IGHG2","IGHG1","HLA-DRB1","SAA1","B3GNT7","LCN2","CD74","HLA-DQB1","HLA-DRB5","DUOXA2","FZD5","OLFM4","CXCL3","RPS4Y1","SERPINA1","S100P","MT1X","HLA-DPA1","CHGA","BST2","CIITA","IGHG2","S100P","IGHG1","HLA-DRB1","HLA-DPA1","NFKBIA","JCHAIN","IGHG1","PIGR","IGHA1","EZR","FCGR3A","IGHG2","STAT1","IGHG2","IGHG1","TNFRSF18","IGHG2","ADAMDEC1","PIGR","IGHG1","TNFRSF13B","CXCL14","CCL3","KRT8","BCL2","MPO","AQP8","CSF2RB","NFKBIA","IL10RA","BMP6","TSLP","IGHA1","DUSP5","CLDN4","IGFBP5","GSN","CD9","ADAMDEC1","PIGR","CFD","CCL3","BMP6","TYK2","TNFRSF18","NFKBIA","CSF2RB","TNFRSF13B","IGHG2","CHI3L1","IGHG2","PIGR","IGHG1","RGS2","ADIRF","NEAT1","THBS2","IGHG1","IGHG2","GSN","IGHG2","IGHG1","IGHG2","IGHG1","NKG7","IGFBP3","CCL5"],[3.567564119296184,2.795073130682114,2.879391845164456,2.361549337874552,1.631196105042843,-2.229026164106687,2.986098025933204,2.677411189005053,1.512103586119471,2.350496535521104,1.946177981090466,-1.376512784227598,3.225954573501609,1.439969698914739,1.618260434288173,1.523583054716664,1.647556307515799,-1.605970493588982,1.635540055819066,-2.428388704219675,1.187321072748091,1.776041545678076,1.830887485617209,1.638926426762792,1.731910236980948,1.679511886277691,1.72353070956791,-1.323530859914319,-3.055135338194191,2.626831673261186,-1.6561828160081,-2.504257536956217,-1.18208988638256,1.259345661385604,2.490625965927149,1.444024189469214,2.959214486069957,2.895197538495134,-1.551875547459229,2.801221266030982,-2.042545759264577,-1.719333849950322,2.43613382684789,-1.377993100947936,-1.561735394848498,-1.312671899149061,-1.247059668779736,-1.003574298926749,1.035748284455545,0.8638284635709983,-0.9813245550918843,-1.070030637058936,-0.8816870751737493,-1.235671222969335,1.032733391529828,-1.946599175585158,-1.157763846524944,-0.9386019983812233,1.017711609577489,-0.8306380731087284,-0.9255954411493708,-2.23104746576835,-1.736983082599812,-1.234176073759761,-1.308053769356771,-1.426543407705838,-1.553999828624493,-0.8592175719326072,-1.126440692191224,-0.9668214250948086,-1.007411905057381,1.571530944842941,1.717449126530916,2.392657245708097,-1.53413582799123,2.291347247631437,-1.052363849724969,-1.127049405740582,1.031574678330051,1.07282996576728,2.670784285849056,2.58331597982821,-1.468737864512629,3.762142871006784,3.756961086904459,3.135563790602868,2.824195244217334,1.754341898812726,-1.672256462920778,1.495756943713651],[10.03158050151357,10.08822340923212,10.64183684123074,10.49204862077934,9.280586762672716,10.21965706852791,9.819188792751048,11.0739699195851,9.717027813777538,8.99914742966644,9.266166959434551,10.99377115544704,11.58920055217826,10.53460812999346,8.163485904047038,10.90036096185432,10.90299566469834,11.03824378594429,9.383216924156001,9.831014457379553,8.675779119784458,9.006292693527007,10.08822340923212,10.90299566469834,10.64183684123074,10.49204862077934,9.383216924156001,10.75163886811029,11.57605197770097,12.7038035812418,9.492965372705058,13.40836899907759,9.528723480348708,10.53797953929835,12.17485116407275,10.44487553969692,12.17485116407275,12.7038035812418,9.860769732625343,14.2916407265515,9.643947460803444,9.370663859874281,14.72519515171609,9.334726352946706,9.790280729272755,9.250379846644684,10.75498269117512,9.838659184830153,8.976412435826091,9.213255382182449,9.723124920028235,10.19017774981531,9.798257678334519,9.227690542438465,8.432198190201893,15.9808948117601,11.86807935687188,8.724556749287968,9.523617410582409,9.826316187992772,8.852990530101223,9.643947460803444,9.370663859874281,9.841842559522757,9.250379846644684,9.227690542438465,11.99171417660733,9.860769732625343,10.19017774981531,9.723124920028235,9.334726352946706,14.2916407265515,9.671695326977723,11.97946364454942,9.514133607886265,12.5494684237014,10.45861719404181,9.755847063282133,12.82855389950085,9.650613590274645,12.5494684237014,11.97946364454942,11.72216107222022,12.79161423293002,13.3295094037593,12.79161423293002,13.3295094037593,10.15096070274869,9.003218595093237,11.91857001409501],[7.232630638451089,6.888271579353379,6.887306136142533,5.945282521192416,5.812176889783619,-5.724733455355875,5.527039987802273,5.328804651871303,5.252396917911123,4.989584057967243,4.944140327455856,-4.902413902067386,4.732053747074086,4.714972685239299,4.136114108992476,4.073711280722219,4.069453665490654,-4.044220391168544,3.933040304155534,-3.918784481221206,5.07187276403728,5.067494067382211,4.783752650890769,4.598841635398864,4.467468770218835,4.431291113475358,4.360751530459123,-5.664051396209849,-5.50148209893342,4.870486500417155,-4.791720222585989,-4.673835062816098,-4.650899541306731,4.628228862388802,4.627912594019215,5.269825402163728,5.112629150754534,5.001376066502673,-8.342410693179676,7.650725444382522,-6.840051126430564,-6.467168586060089,5.942123538428433,-5.613563748244123,-5.445977787410521,-5.251556323549634,-4.718218051768492,-4.711822851816329,4.643079099309074,4.414038038421189,-4.263384275158539,-4.251331626358533,-4.240852169118359,-4.137140782595335,4.070008981039952,-4.065412449100102,-3.961458382163283,-3.922046399092873,3.895802882582449,-3.839226383242271,-3.794647651305319,-7.340891481654211,-6.439885374118211,-5.440016834988503,-5.161958935233066,-4.7164229790078,-4.700432727125554,-4.450000894176346,-4.278749156708942,-4.061898975405812,-4.018194835834676,3.968111458363712,5.357873038996061,5.050095079520426,-4.887808232124206,4.745493940782006,-4.417545690936542,-4.31701744131724,4.124337621073494,4.042312497634033,5.497519322715426,5.394030116228853,-4.415274391617401,7.46369659087416,7.187127921255017,6.318604563809451,5.515429374855578,4.829322185128287,-4.617368950041259,4.518477246358227],[5.119345362820286e-11,2.923327921765407e-10,2.937509365919828e-10,2.867917974830531e-08,5.34076146514724e-08,8.004303439047801e-08,1.974629258295036e-07,4.800461154677644e-07,6.728368802399201e-07,2.103865438422827e-06,2.553471734465307e-06,3.047640514527137e-06,6.21729101009424e-06,6.672386064273156e-06,6.642101698670899e-05,8.41074702598964e-05,8.546582142727727e-05,9.395730911992169e-05,0.0001419576130960855,0.0001495885172048742,1.477635308546562e-06,1.505806696010878e-06,5.01571644751962e-06,1.074140524982699e-05,1.824342074241923e-05,2.107266228911497e-05,2.785302822961749e-05,7.460552570915316e-08,1.614780646718605e-07,2.829217322718149e-06,3.981371170412592e-06,6.593078966209219e-06,7.265816867493471e-06,7.995703791540074e-06,8.006370600826961e-06,4.738810765097724e-07,9.677902767881927e-07,1.590896834362927e-06,2.765227677948097e-14,1.578767989065899e-12,1.471273293747685e-10,1.084752512388249e-09,1.622924796387428e-08,8.225925434568596e-08,1.841084148031143e-07,4.596824050084012e-07,5.045689633084362e-06,5.187241600248198e-06,6.972488496154604e-06,1.827357293861525e-05,3.379662361008167e-05,3.547743527211613e-05,3.700369415639767e-05,5.591569449144553e-05,7.275762334526146e-05,7.407271255895037e-05,0.0001106361522926978,0.0001285572070873177,0.0001419865433407329,0.000175610855659834,0.0002072924249022327,9.193075078773502e-12,1.252485514489381e-09,1.894065844719215e-07,6.956932297971587e-07,5.085040644519567e-06,5.448909196048362e-06,1.574370012663571e-05,3.176434347662542e-05,7.509319816403788e-05,8.896234888496461e-05,0.0001078559343641301,2.689463529183243e-07,1.123802473376532e-06,2.334262482354119e-06,4.37187652158979e-06,1.766366039686641e-05,2.671610314376189e-05,5.791938663494198e-05,7.989021471140642e-05,1.380324423235037e-07,2.265297032981793e-07,1.783089780383907e-05,8.923785374150246e-11,3.06772784338984e-10,1.388536492391788e-08,4.130867582205871e-07,6.462233343887243e-06,1.459806440177521e-05,2.121715275998472e-05],[5.114226017457466e-08,9.781906188513027e-08,9.781906188513027e-08,7.162625142139252e-06,1.067084140736419e-05,1.332716522601459e-05,2.818078041481058e-05,5.994575866903707e-05,7.468489370663113e-05,0.0002101761572984404,0.0002319016602482583,0.0002537160728343842,0.0004761224055863488,0.0004761224055863488,0.004423639731314819,0.005022373859167647,0.005022373859167647,0.005214630656155654,0.00746398186752576,0.007471946434383467,0.0007521504446574336,0.0007521504446574336,0.001670233577024034,0.00268266596114429,0.003508598271137642,0.003508598271137642,0.003975025028769696,7.4530920183444e-05,8.065829330359432e-05,0.0009421293684651437,0.000994347449810545,0.0009997955287782668,0.0009997955287782668,0.0009997955287782668,0.0009997955287782668,0.0004734071954332626,0.0004834112432557023,0.0005297686458428547,2.762462450270149e-11,7.885946105384166e-10,4.89934006817979e-08,2.709169399689653e-07,3.242603743182081e-06,1.369616584855671e-05,2.627490091261588e-05,5.74028403254241e-05,0.000518205435864795,0.000518205435864795,0.0006332287279689499,0.00152127494713972,0.002464446030816085,0.002464446030816085,0.002464446030816085,0.00349123617480963,0.004111035547021745,0.004111035547021745,0.005817132428442373,0.006421432494011517,0.00675450270463772,0.007974329309280643,0.009003701412057844,9.18388200369473e-09,6.256165144874458e-07,6.307239262914985e-05,0.0001737493841418404,0.0009072433811420522,0.0009072433811420522,0.002246850918072725,0.003966572391643599,0.008335344996208204,0.008887338653607964,0.009795279857251454,0.000268677406565406,0.0005613393354515779,0.0007773094066239217,0.00109187616126705,0.003529199347293908,0.004448231173436354,0.008265923892615292,0.009976290562086876,0.0001131515867974405,0.0001131515867974405,0.00593768896867841,8.914861588776096e-08,1.532330057773225e-07,1.387147955899397e-05,0.0002063368357311832,0.002151923703514452,0.00364586658434336,0.004239187121444947],[14.69238513777344,13.05866703432322,13.03426921103358,8.711641595720824,8.122865305782174,7.742637380062877,6.88955905745062,6.061015340769399,5.73079920413489,4.655580287827486,4.473216650960961,4.341798489594474,3.687744622424118,3.595972418520328,1.433395664293707,1.255963818716304,1.255198044727703,1.17204188866553,0.7186912027126588,0.7035498422636559,5.005988546316956,4.984556703757668,3.878042928402111,3.180597548504741,2.702724355457987,2.572659594388308,2.31976663219573,7.761673649497129,7.029726280156016,4.390598048975459,4.080853389832678,3.613684445805879,3.528843621311125,3.441393063190542,3.439589433225051,5.970577512724024,5.315577637595571,4.872578075782442,21.99065253911654,17.89611038923412,13.66974618507701,11.7335678559392,9.179991820443309,7.562097595374419,6.798365671284129,5.912201834894241,3.657444798762375,3.600245919587431,3.336104021127388,2.417443217162015,1.821949844552764,1.792073907387783,1.736661548688817,1.351426512004989,1.139472692118558,1.423606313247225,0.7998729521523797,0.5804395727745204,0.4841531143625017,0.2745748219447748,0.1313779753271165,16.15852386325326,11.5764342285769,6.893013674084631,5.686575781080188,3.845449121719852,3.746863078424236,2.809122901290578,2.17100708918337,1.377709590428849,1.220779333341341,1.011380972078236,6.560297862254554,5.191980346738092,4.563084975135071,3.93515122588094,2.706318061824216,2.317915840505314,1.625317407348602,1.31844219283454,6.933194157132999,6.568393313885026,2.680102978119447,13.74603279856234,12.63176971324775,9.323864530291377,6.207635434093852,3.682200629419631,2.935436333483382,2.599751602209721]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[4,5,6,7,8,9]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast","targets":2},{"name":"target","targets":3},{"name":"logFC","targets":4},{"name":"AveExpr","targets":5},{"name":"t","targets":6},{"name":"P.Value","targets":7},{"name":"adj.P.Val","targets":8},{"name":"B","targets":9}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-0b50cf44ed0c70fb0261">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90"],["epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","stroma","stroma","stroma","stroma","stroma","stroma","stroma","stroma","stroma","stroma","stroma","tcells","tcells","tcells","tcells","tcells","tcells","tcells"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC"],["LYZ","IGHG2","IGHG1","HLA-DRB1","SAA1","B3GNT7","LCN2","CD74","HLA-DQB1","HLA-DRB5","DUOXA2","FZD5","OLFM4","CXCL3","RPS4Y1","SERPINA1","S100P","MT1X","HLA-DPA1","CHGA","BST2","CIITA","IGHG2","S100P","IGHG1","HLA-DRB1","HLA-DPA1","NFKBIA","JCHAIN","IGHG1","PIGR","IGHA1","EZR","FCGR3A","IGHG2","STAT1","IGHG2","IGHG1","TNFRSF18","IGHG2","ADAMDEC1","PIGR","IGHG1","TNFRSF13B","CXCL14","CCL3","KRT8","BCL2","MPO","AQP8","CSF2RB","NFKBIA","IL10RA","BMP6","TSLP","IGHA1","DUSP5","CLDN4","IGFBP5","GSN","CD9","ADAMDEC1","PIGR","CFD","CCL3","BMP6","TYK2","TNFRSF18","NFKBIA","CSF2RB","TNFRSF13B","IGHG2","CHI3L1","IGHG2","PIGR","IGHG1","RGS2","ADIRF","NEAT1","THBS2","IGHG1","IGHG2","GSN","IGHG2","IGHG1","IGHG2","IGHG1","NKG7","IGFBP3","CCL5"],[3.57,2.8,2.88,2.36,1.63,-2.23,2.99,2.68,1.51,2.35,1.95,-1.38,3.23,1.44,1.62,1.52,1.65,-1.61,1.64,-2.43,1.19,1.78,1.83,1.64,1.73,1.68,1.72,-1.32,-3.06,2.63,-1.66,-2.5,-1.18,1.26,2.49,1.44,2.96,2.9,-1.55,2.8,-2.04,-1.72,2.44,-1.38,-1.56,-1.31,-1.25,-1,1.04,0.864,-0.981,-1.07,-0.882,-1.24,1.03,-1.95,-1.16,-0.9389999999999999,1.02,-0.831,-0.926,-2.23,-1.74,-1.23,-1.31,-1.43,-1.55,-0.859,-1.13,-0.967,-1.01,1.57,1.72,2.39,-1.53,2.29,-1.05,-1.13,1.03,1.07,2.67,2.58,-1.47,3.76,3.76,3.14,2.82,1.75,-1.67,1.5],[10,10.1,10.6,10.5,9.279999999999999,10.2,9.82,11.1,9.720000000000001,9,9.27,11,11.6,10.5,8.16,10.9,10.9,11,9.380000000000001,9.83,8.68,9.01,10.1,10.9,10.6,10.5,9.380000000000001,10.8,11.6,12.7,9.49,13.4,9.529999999999999,10.5,12.2,10.4,12.2,12.7,9.859999999999999,14.3,9.640000000000001,9.369999999999999,14.7,9.33,9.789999999999999,9.25,10.8,9.84,8.98,9.210000000000001,9.720000000000001,10.2,9.800000000000001,9.23,8.43,16,11.9,8.720000000000001,9.52,9.83,8.85,9.640000000000001,9.369999999999999,9.84,9.25,9.23,12,9.859999999999999,10.2,9.720000000000001,9.33,14.3,9.67,12,9.51,12.5,10.5,9.76,12.8,9.65,12.5,12,11.7,12.8,13.3,12.8,13.3,10.2,9,11.9],[7.23,6.89,6.89,5.95,5.81,-5.72,5.53,5.33,5.25,4.99,4.94,-4.9,4.73,4.71,4.14,4.07,4.07,-4.04,3.93,-3.92,5.07,5.07,4.78,4.6,4.47,4.43,4.36,-5.66,-5.5,4.87,-4.79,-4.67,-4.65,4.63,4.63,5.27,5.11,5,-8.34,7.65,-6.84,-6.47,5.94,-5.61,-5.45,-5.25,-4.72,-4.71,4.64,4.41,-4.26,-4.25,-4.24,-4.14,4.07,-4.07,-3.96,-3.92,3.9,-3.84,-3.79,-7.34,-6.44,-5.44,-5.16,-4.72,-4.7,-4.45,-4.28,-4.06,-4.02,3.97,5.36,5.05,-4.89,4.75,-4.42,-4.32,4.12,4.04,5.5,5.39,-4.42,7.46,7.19,6.32,5.52,4.83,-4.62,4.52],[5.12e-11,2.92e-10,2.94e-10,2.87e-08,5.34e-08,8e-08,1.97e-07,4.8e-07,6.73e-07,2.1e-06,2.55e-06,3.05e-06,6.22e-06,6.67e-06,6.64e-05,8.41e-05,8.55e-05,9.399999999999999e-05,0.000142,0.00015,1.48e-06,1.51e-06,5.02e-06,1.07e-05,1.82e-05,2.11e-05,2.79e-05,7.460000000000001e-08,1.61e-07,2.83e-06,3.98e-06,6.59e-06,7.27e-06,8e-06,8.01e-06,4.74e-07,9.680000000000001e-07,1.59e-06,2.77e-14,1.58e-12,1.47e-10,1.08e-09,1.62e-08,8.23e-08,1.84e-07,4.6e-07,5.05e-06,5.19e-06,6.97e-06,1.83e-05,3.38e-05,3.55e-05,3.7e-05,5.59e-05,7.279999999999999e-05,7.41e-05,0.000111,0.000129,0.000142,0.000176,0.000207,9.189999999999999e-12,1.25e-09,1.89e-07,6.96e-07,5.09e-06,5.45e-06,1.57e-05,3.18e-05,7.51e-05,8.899999999999999e-05,0.000108,2.69e-07,1.12e-06,2.33e-06,4.37e-06,1.77e-05,2.67e-05,5.79e-05,7.99e-05,1.38e-07,2.27e-07,1.78e-05,8.92e-11,3.07e-10,1.39e-08,4.13e-07,6.46e-06,1.46e-05,2.12e-05],[5.11e-08,9.78e-08,9.78e-08,7.16e-06,1.07e-05,1.33e-05,2.82e-05,5.99e-05,7.47e-05,0.00021,0.000232,0.000254,0.000476,0.000476,0.00442,0.00502,0.00502,0.00521,0.00746,0.00747,0.000752,0.000752,0.00167,0.00268,0.00351,0.00351,0.00398,7.449999999999999e-05,8.07e-05,0.000942,0.0009940000000000001,0.001,0.001,0.001,0.001,0.000473,0.000483,0.00053,2.76e-11,7.89e-10,4.9e-08,2.71e-07,3.24e-06,1.37e-05,2.63e-05,5.74e-05,0.000518,0.000518,0.000633,0.00152,0.00246,0.00246,0.00246,0.00349,0.00411,0.00411,0.00582,0.00642,0.00675,0.00797,0.008999999999999999,9.18e-09,6.26e-07,6.31e-05,0.000174,0.000907,0.000907,0.00225,0.00397,0.00834,0.00889,0.0098,0.000269,0.000561,0.000777,0.00109,0.00353,0.00445,0.00827,0.009979999999999999,0.000113,0.000113,0.00594,8.91e-08,1.53e-07,1.39e-05,0.000206,0.00215,0.00365,0.00424],[14.7,13.1,13,8.710000000000001,8.119999999999999,7.74,6.89,6.06,5.73,4.66,4.47,4.34,3.69,3.6,1.43,1.26,1.26,1.17,0.719,0.704,5.01,4.98,3.88,3.18,2.7,2.57,2.32,7.76,7.03,4.39,4.08,3.61,3.53,3.44,3.44,5.97,5.32,4.87,22,17.9,13.7,11.7,9.18,7.56,6.8,5.91,3.66,3.6,3.34,2.42,1.82,1.79,1.74,1.35,1.14,1.42,0.8,0.58,0.484,0.275,0.131,16.2,11.6,6.89,5.69,3.85,3.75,2.81,2.17,1.38,1.22,1.01,6.56,5.19,4.56,3.94,2.71,2.32,1.63,1.32,6.93,6.57,2.68,13.7,12.6,9.32,6.21,3.68,2.94,2.6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[4,5,6,7,8,9]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast","targets":2},{"name":"target","targets":3},{"name":"logFC","targets":4},{"name":"AveExpr","targets":5},{"name":"t","targets":6},{"name":"P.Value","targets":7},{"name":"adj.P.Val","targets":8},{"name":"B","targets":9}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="de-plots" class="section level2">
 <h2>DE plots</h2>
@@ -1332,7 +1465,7 @@ to evaluate your differential expression results.</p>
 <li>Only big changes are significant at lower expressions, simply
 becuase higher expression means more statistical confidence.</li>
 <li>A lopsided plot might indicate some oddness around the normalisation
-of your data (e.g. extremely differnet cell counts).</li>
+of your data (e.g. extremely different cell counts).</li>
 </ul>
 <p>[[ADD pvalue plot?]]</p>
 <pre class="r"><code>library(ggrepel) # gg_repel, For non-overlapping gene labels
@@ -1352,71 +1485,12 @@ make_ma_style_plot &lt;- function(res_table, pval_threshold = 0.01, n_genes_to_l
 }</code></pre>
 <pre class="r"><code>#res_table.UCvHC.epi &lt;- filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;epi&quot;)
 
-make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;epi&quot;))</code></pre>
-<p><img src="figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
-Past versions of unnamed-chunk-16-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-16-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/697815489cd801e303185e38f2e764cb06d42d16/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-16-1.png" target="_blank">6978154</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-05-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/5a9d7e9002faa026640cfe522a79bcf86b1ad8bf/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-16-1.png" target="_blank">5a9d7e9</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-05-16
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;tcells&quot;))</code></pre>
-<p><img src="figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-16-2.png" width="672" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;stroma&quot;))</code></pre>
-<p><img src="figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-16-3.png" width="672" style="display: block; margin: auto;" /></p>
-</div>
-<div id="check-some-examples" class="section level2">
-<h2>Check some examples</h2>
-<p>Its always worth visualising how the expression of your
-differentially expressed genes really looks, with respect to your
-experimental design. How best to do this depends on your experiment.</p>
-<p>The results suggests that TNFRSF18 was significantly DE between
-individuals with Ulcerative Colitis and Healthy Controls in plasma
-cells. There’s some very convenient seurat plots below;</p>
-<pre class="r"><code>VlnPlot(subset(so, celltype_subset == &quot;plasmas&quot;), features = &quot;TNFRSF18&quot;, group.by = &#39;group&#39;, alpha = 0.1)</code></pre>
-<p><img src="figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+p1 &lt;- make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;epi&quot;)) + ggtitle(&quot;UC vs HC - epi&quot;)
+p2 &lt;- make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;tcells&quot;))+ ggtitle(&quot;UC vs HC - T-cells&quot;)
+p3 &lt;- make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;stroma&quot;)) + ggtitle(&quot;UC vs HC - stroma&quot;)
+
+p1 + p2 + p3</code></pre>
+<p><img src="figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-17-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
 Past versions of unnamed-chunk-17-1.png
@@ -1439,6 +1513,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/b2fc2b069cc3c07acdc8212638f50092110b64ab/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-17-1.png" target="_blank">b2fc2b0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-12
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/697815489cd801e303185e38f2e764cb06d42d16/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-17-1.png" target="_blank">6978154</a>
@@ -1465,16 +1550,62 @@ swbioinf
 </table>
 </div>
 </div>
-<pre class="r"><code>FeaturePlot(so, &quot;TNFRSF18&quot;, split.by = &quot;group&quot;)</code></pre>
-<p><img src="figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-17-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="check-some-examples" class="section level2">
+<h2>Check some examples</h2>
+<p>Its always worth visualising how the expression of your
+differentially expressed genes really looks, with respect to your
+experimental design. How best to do this depends on your experiment.</p>
+<p>The results suggests that TNFRSF18 was significantly DE between
+individuals with Ulcerative Colitis and Healthy Controls in plasma
+cells. As a first step, there’s some very convenient seurat plots
+below;</p>
+<pre class="r"><code>p1 &lt;- VlnPlot(subset(so, celltype_subset == &quot;plasmas&quot;), features = &quot;TNFRSF18&quot;, group.by = &#39;group&#39;, alpha = 0.1)
+p2 &lt;- FeaturePlot(so, &quot;TNFRSF18&quot;, split.by = &quot;group&quot;)
+p1 / p2</code></pre>
+<p><img src="figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-18-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
+Past versions of unnamed-chunk-18-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/b2fc2b069cc3c07acdc8212638f50092110b64ab/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-18-1.png" target="_blank">b2fc2b0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-12
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>But it gets difficult to summarise data at the single cell level. We
 can also use the the normalised pseudobulk expression to see how gene
 expression varies within each fov,individual,celltype and condition -
-The plot below shows an overview of TNFRSF18 across the entire
-experiment.</p>
-<p>NB: We have to plot normalised expression instead of the raw counts
-as there are vastly different numbers of cells in each fov+celltype
-grouping.</p>
+The plot below shows an overview of normalised TNFRSF18 expression
+across the entire experiment.</p>
 <pre class="r"><code># Get tmm normalised coutns for all pseudobulk
 # WHen we did the DE we calculated this a celltype at a time, so values might differ slightly!
 dge &lt;- DGEList(pseudobulk_counts_matrix)
@@ -1489,9 +1620,46 @@ ggplot(plottable, aes(x=individual_code, y=expression, col=condition )) +
   theme_bw() + 
   theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
   facet_wrap(~celltype_subset) </code></pre>
-<p><img src="figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>And you can compare that with IGHG1, which was flagged at
-differentially expressed across multiple cell types.</p>
+<p><img src="figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
+Past versions of unnamed-chunk-19-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/b2fc2b069cc3c07acdc8212638f50092110b64ab/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-19-1.png" target="_blank">b2fc2b0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-12
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Compared with IGHG1, which was flagged at differentially expressed
+across multiple cell types.</p>
 <pre class="r"><code>plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;IGHG1&quot;,])
 ggplot(plottable, aes(x=individual_code, y=expression, col=condition )) +
   geom_boxplot(outlier.shape = NA) +
@@ -1499,7 +1667,7 @@ ggplot(plottable, aes(x=individual_code, y=expression, col=condition )) +
   theme_bw() + 
   theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
   facet_wrap(~celltype_subset) </code></pre>
-<p><img src="figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="code-snippet" class="section level1">
@@ -1508,17 +1676,16 @@ ggplot(plottable, aes(x=individual_code, y=expression, col=condition )) +
 library(edgeR)
 library(limma)
 
-
+# Set threhoehsolds
 min_reads_per_cell       &lt;- 200
 min_cells_per_fovcluster &lt;- 20
-min_samples_to_calc      &lt;- 2 # require 2 samples on on either side of contrast
 
 
 # Remove cells with too few counts
 so &lt;- so[,so$nCount_RNA &gt;= min_reads_per_cell]
 
 
-# Define fov+cluster groups, with all relevant sample annotation
+# Define pseodoreplicate groups, with all relevant sample annotation
 # remove those with too few cells.
 so$fov_cluster &lt;- paste0(so$fov_name,&quot;_&quot;, so$celltype_subset)
 celltype_summary_table &lt;- so@meta.data %&gt;% 
@@ -1526,14 +1693,14 @@ celltype_summary_table &lt;- so@meta.data %&gt;%
   summarise(cells=n(), .groups = &#39;drop&#39;)
 
 
-# Calculate pseudobulk for each fov+cluster group
+## Calculate pseudobulk 
 pseudobulk_counts &lt;- PseudobulkExpression(so, assays = &quot;RNA&quot;, layer=&quot;counts&quot;,  method = &#39;aggregate&#39;, group.by = &#39;fov_cluster&#39;)
 pseudobulk_counts_matrix &lt;- pseudobulk_counts[[&quot;RNA&quot;]]
 # Change - back to _. Ideally have neither and skip this step
 colnames(pseudobulk_counts_matrix)&lt;-gsub(&quot;-&quot;,&quot;_&quot;,colnames(pseudobulk_counts_matrix))
 
 
-# Determin fov_clusters with eough cells
+# Determine fov_clusters with enough cells
 # Filter both pseudobulk matrix and pseudobulk annotation 
 passed_fov_clusters &lt;- celltype_summary_table$fov_cluster[celltype_summary_table$cells &gt;= min_cells_per_fovcluster]
 pseudobulk_counts_matrix &lt;- pseudobulk_counts_matrix[,passed_fov_clusters]
@@ -1541,47 +1708,57 @@ pseudobulk_anno_table    &lt;- celltype_summary_table[passed_fov_clusters,]
 
 
 # Calculate DE across every celltype
+# Empty list to collect results
 de_result_list &lt;- list()
 
+# celltype_subset is a matrix
 for (the_celltype in levels(so$celltype_subset)) {
   
+  # Subset counts andn annotation to one cell type. 
+  # Ensure order remains identical!
+  print(the_celltype)
   anno_table.this   &lt;- pseudobulk_anno_table[pseudobulk_anno_table$celltype_subset == the_celltype,]
   count_matrix.this &lt;- pseudobulk_counts_matrix[,anno_table.this$fov_cluster]
- 
-  print(the_celltype)
+
   
-  # skip clusters with nothing 
+  ## Check for sufficient replicates ##
+  # To do any calculations, we need at least 2 pseudobulk groups per contrast.
+  # there are plenty in this experiemnt, but with less replicates and rare cell types
+  # it may be neccesary to check and skip certain contrasts. Here woudl be a good 
+  # if (not enouch samples to run test ) {next}
+  
+  # skip clusters with no samples after filtering
   if( nrow(anno_table.this) &lt; 1 ) {next}
+  
   
   # Setup objects for limma
   dge &lt;- DGEList(count_matrix.this)
   dge &lt;- calcNormFactors(dge)
   
+  
+  
   # Build model
   group           &lt;- anno_table.this$group
   individual_code &lt;- anno_table.this$individual_code
 
-  # To do any calculations, we need at least 2 pseudobulk groups per contrast.
-  # there are plenty in this experiemnt, but with less replicates and rare cell types
-  # it may be neccesary to check and skip certain contrasts
-
   # Model design 
   design    &lt;- model.matrix( ~0 + group)
-
+  
+  # Run Voom
   vm  &lt;- voom(dge, design = design, plot = FALSE)
   
   # Adding dupliate correlation to use individual fovs, rather than pooled per biosample
   corrfit &lt;- duplicateCorrelation(vm, design, block=individual_code)
   fit     &lt;- lmFit(vm, design, correlation = corrfit$consensus, block=individual_code) 
 
-  # Then fit contrasts and run ebayes
-  contrasts &lt;- makeContrasts(UCvHC  = groupUC - groupHC
+  # Define and fit contrasts and run ebayes
+  contrasts &lt;- makeContrasts(UCvHC  = groupUC - groupHC, 
+                             CDvHC  = groupCD - groupHC,
                            levels=coef(fit))
-
   fit &lt;- contrasts.fit(fit, contrasts)
   fit &lt;- eBayes(fit)
 
-  
+  ## Look through each contrast, and extract a results table.
   for ( the_coef in colnames(contrasts) ) {
     de_result.this &lt;- topTable(fit, n = Inf, adjust.method = &quot;BH&quot;, coef = the_coef) %&gt;%
       rownames_to_column(&quot;target&quot;) %&gt;%
@@ -1595,16 +1772,20 @@ for (the_celltype in levels(so$celltype_subset)) {
     
   }
 
+  
+
+ 
 }
 
+# Join together results for all celltypes, and pull out those with a singificant adjusted p-value
 de_results_all &lt;- bind_rows(de_result_list)
 de_results_sig &lt;- filter(de_results_all, adj.P.Val &lt; 0.01)</code></pre>
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>
-<pre class="r"><code>DT::datatable(head(de_results_all))</code></pre>
+<pre class="r"><code>DT::datatable(mutate(head(de_results_sig), across(is.numeric, signif, digits = 3)))</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-02919026514f0c819cc6" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-02919026514f0c819cc6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["epi","epi","epi","epi","epi","epi"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC"],["LYZ","IGHG2","IGHG1","HLA-DRB1","SAA1","B3GNT7"],[3.567564119296184,2.795073130682114,2.879391845164456,2.361549337874552,1.631196105042843,-2.229026164106687],[10.03158050151357,10.08822340923212,10.64183684123074,10.49204862077934,9.280586762672716,10.21965706852791],[7.232630638451089,6.888271579353379,6.887306136142533,5.945282521192416,5.812176889783619,-5.724733455355875],[5.119345362820286e-11,2.923327921765407e-10,2.937509365919828e-10,2.867917974830531e-08,5.34076146514724e-08,8.004303439047801e-08],[5.114226017457466e-08,9.781906188513027e-08,9.781906188513027e-08,7.162625142139252e-06,1.067084140736419e-05,1.332716522601459e-05],[14.69238513777344,13.05866703432322,13.03426921103358,8.711641595720824,8.122865305782174,7.742637380062877]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[4,5,6,7,8,9]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast","targets":2},{"name":"target","targets":3},{"name":"logFC","targets":4},{"name":"AveExpr","targets":5},{"name":"t","targets":6},{"name":"P.Value","targets":7},{"name":"adj.P.Val","targets":8},{"name":"B","targets":9}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-02919026514f0c819cc6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["epi","epi","epi","epi","epi","epi"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC"],["LYZ","IGHG2","IGHG1","HLA-DRB1","SAA1","B3GNT7"],[3.57,2.8,2.88,2.36,1.63,-2.23],[10,10.1,10.6,10.5,9.279999999999999,10.2],[7.23,6.89,6.89,5.95,5.81,-5.72],[5.12e-11,2.92e-10,2.94e-10,2.87e-08,5.34e-08,8e-08],[5.11e-08,9.78e-08,9.78e-08,7.16e-06,1.07e-05,1.33e-05],[14.7,13.1,13,8.710000000000001,8.119999999999999,7.74]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[4,5,6,7,8,9]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast","targets":2},{"name":"target","targets":3},{"name":"logFC","targets":4},{"name":"AveExpr","targets":5},{"name":"t","targets":6},{"name":"P.Value","targets":7},{"name":"adj.P.Val","targets":8},{"name":"B","targets":9}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 <p>This table is the typical output of <em>limma</em> tests; With a
 couple of extra columns added by our code.</p>
 <ul>
@@ -1641,6 +1822,11 @@ documentation.</li>
 single cell analysis with bioconductor’ book chapter ‘DE analyses
 between conditions’</a> : An explanation of the ‘pseudobulk’ approch to
 single cell differential expression calculation.</li>
+<li><a
+href="https://bioconductor.org/packages/release/bioc/vignettes/glmGamPoi/inst/doc/pseudobulk.html">Pseudobulk
+and differential expression (glmGamPoi documentation)</a>: Part of the
+documentation for the glmGamPoi R package (not used here), that features
+another clear explanation of pseudobulking.</li>
 <li><a href="https://www.nature.com/articles/nmeth.4612">Bias,
 robustness and scalability in single-cell differential expression
 analysis</a> <span class="citation">(Soneson and Robinson 2018)</span> :
@@ -1653,6 +1839,17 @@ analyses using Seurat.</li>
 href="https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf">limma
 documentation</a> <span class="citation">(Ritchie et al. 2015)</span>:
 The complete manual to limma.</li>
+<li><a
+href="https://academic.oup.com/bioinformatics/article/21/9/2067/409024">Use
+of within-array replicate spots for assessing differential expression in
+microarray experiments</a><span
+class="citation">(<strong>smythUseWithinarrayReplicate2005?</strong>)</span>
+: Paper describing the duplicate correlation approach for
+pseudoreplicates (in the original context of micorarray analysis).</li>
+<li><a href="https://support.bioconductor.org/p/125489/">Bioconductor
+support: Further clarification on when not to use duplicateCorrelation
+with technical replicates (RNA-seq)</a> : A very helpful discussion
+about when to use correlateDuplicates for pseuodreplicates.</li>
 <li><a
 href="https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html">Differential
 Expression with Limma-Voom UC davis bioinformatics training</a> : A more
@@ -1728,8 +1925,8 @@ other attached packages:
  [1] ggrepel_0.9.5      edgeR_4.0.16       DT_0.33            limma_3.58.1      
  [5] lubridate_1.9.3    forcats_1.0.0      stringr_1.5.1      dplyr_1.1.4       
  [9] purrr_1.0.2        readr_2.1.5        tidyr_1.3.1        tibble_3.2.1      
-[13] ggplot2_3.5.0      tidyverse_2.0.0    speckle_1.2.0      Seurat_5.0.3      
-[17] SeuratObject_5.0.1 sp_2.1-3           workflowr_1.7.1   
+[13] ggplot2_3.5.0      tidyverse_2.0.0    speckle_1.2.0      Seurat_5.1.0      
+[17] SeuratObject_5.0.2 sp_2.1-3           workflowr_1.7.1   
 
 loaded via a namespace (and not attached):
   [1] RcppAnnoy_0.0.22            splines_4.3.2              
