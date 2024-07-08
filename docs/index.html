@@ -69,6 +69,28 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 
 
@@ -313,7 +335,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-06-11
+<strong>Last updated:</strong> 2024-07-08
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -360,15 +382,15 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree3d03c73ad9ce8e0b79d28105d36af6d7def56fa3targetblank3d03c73a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree7a19f22016c3c6426eec17b1d259ee0957d7d02etargetblank7a19f22a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/3d03c73ad9ce8e0b79d28105d36af6d7def56fa3" target="_blank">3d03c73</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/7a19f22016c3c6426eec17b1d259ee0957d7d02e" target="_blank">7a19f22</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree3d03c73ad9ce8e0b79d28105d36af6d7def56fa3targetblank3d03c73a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree7a19f22016c3c6426eec17b1d259ee0957d7d02etargetblank7a19f22a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -378,7 +400,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/3d03c73ad9ce8e0b79d28105d36af6d7def56fa3" target="_blank">3d03c73</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/7a19f22016c3c6426eec17b1d259ee0957d7d02e" target="_blank">7a19f22</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -395,14 +417,12 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/glossary.nb.html
     Ignored:    renv/library/
     Ignored:    renv/staging/
 
-Untracked files:
-    Untracked:  analysis/e_spatiallyRestrictedGenes.Rmd
-
 Unstaged changes:
-    Modified:   analysis/e_DEPseudobulk_insitu.Rmd
+    Modified:   analysis/d_cosmxIBD.Rmd
 
 </code></pre>
 <p>
@@ -447,6 +467,57 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/7a19f22016c3c6426eec17b1d259ee0957d7d02e/analysis/index.Rmd" target="_blank">7a19f22</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-07-08
+</td>
+<td>
+wflow_publish("analysis/index.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/fd64e3009d2a3284f3a5e43d572c953497246b13/analysis/index.Rmd" target="_blank">fd64e30</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-18
+</td>
+<td>
+new plots
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/9aa68dce61c14fe134d2fbd3d67541c8d34da682/docs/index.html" target="_blank">9aa68dc</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-11
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -746,37 +817,61 @@ adding
 </div>
 </div>
 <p>These examples are a sampler of tests that can be performed on an
-in-situ single cell spatial dataset. Examples use cosmx, should be valid
-on other platforms like xenium.</p>
+in-situ single cell spatial dataset. Current examples use cosMX, though
+approaches should be valid on other platforms like Xenium.</p>
 <p>Further details on the papers, tools, statistics and methods are
 linked from each page.</p>
-<div id="in-situ-spatial" class="section level2">
-<h2>In situ spatial</h2>
-<p>We have fovs and some ideas how to use them.</p>
+<p>Each example presents just one way of doing things (and currently
+only with Seurat) - there are many, many other approaches! These are
+intended as a starting point.</p>
 <ul>
 <li><a href="e_CompositionChange.html">Test for different cell type
 composition by group</a></li>
 <li><a href="e_DEPseudobulk_insitu.html">Differential Expression by
 celltypes, between groups</a></li>
 </ul>
-</div>
 <div id="data-preparation" class="section level1">
 <h1>Data preparation</h1>
+<p>These examples assume that the data has been loaded, preprocessed
+(e.g. QC-ed, UMAP) and annotated (e.g. sample names, cell types, cell
+niches). For information, the preprocessing applied here is included in
+data preparation below. Please note that these are not full annotations,
+and do not aim to reproduce the authors’ published analyses! These are
+much simplified simply as a way to run these tests.</p>
 <ul>
 <li><a href="d_cosmxIBD.html">IBD cosmx dataset</a> : <a
 href="https://www.ncbi.nlm.nih.gov/pubmed/37495570"><em>Macrophage and
 neutrophil heterogeneity at single-cell spatial resolution in human
 inflammatory bowel disease</em></a> from Garrido-Trigo et al 2023. <span
-class="citation">[@glynDigitalSpatialProfiling2024]</span></li>
+class="citation">(Glyn et al. 2024)</span></li>
 <li><a href="d_cosmxAlzPlaque.html">Alzheimers Plaques cosmx</a>: <a
 href="https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub">Microglia-astrocyte
 crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse
 model, as revealed by spatial transcriptomics</a> <span
-class="citation">[@mallachMicrogliaastrocyteCrosstalkAmyloid2024]</span></li>
+class="citation">(Mallach et al. 2024)</span></li>
 </ul>
 </div>
-<div id="references" class="section level1">
-<h1>References</h1>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-glynDigitalSpatialProfiling2024" class="csl-entry">
+Glyn, Tamara, Sarah Williams, Martin Whitehead, Tim Eglinton, Nicholas
+West, and Rachel V. Purcell. 2024. <span>“Digital Spatial Profiling
+Identifies Molecular Changes Involved in Development of
+Colitis-Associated Colorectal Cancer.”</span> <em>Frontiers in
+Oncology</em> 14 (March): 1247106. <a
+href="https://doi.org/10.3389/fonc.2024.1247106">https://doi.org/10.3389/fonc.2024.1247106</a>.
+</div>
+<div id="ref-mallachMicrogliaastrocyteCrosstalkAmyloid2024"
+class="csl-entry">
+Mallach, Anna, Magdalena Zielonka, Veerle van Lieshout, Yanru An, Jia
+Hui Khoo, Marisa Vanheusden, Wei-Ting Chen, et al. 2024.
+<span>“Microglia-Astrocyte Crosstalk in the Amyloid Plaque Niche of an
+<span>Alzheimer</span>’s Disease Mouse Model, as Revealed by Spatial
+Transcriptomics.”</span> <em>Cell Reports</em> 43 (6): 114216. <a
+href="https://doi.org/10.1016/j.celrep.2024.114216">https://doi.org/10.1016/j.celrep.2024.114216</a>.
+</div>
+</div>
 </div>
 
 
