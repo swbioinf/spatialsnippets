@@ -9,16 +9,15 @@ editor_options:
 bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 ---
 
-These examples are a sampler of tests that can be performed on an in-situ single cell spatial dataset.
-Examples use cosmx, should be valid on other platforms like xenium.
+These examples are a sampler of tests that can be performed on an in-situ single cell spatial dataset. Current examples use cosMX, though approaches should be valid on other platforms like Xenium. 
+
 
 Further details on the papers, tools, statistics and methods are linked from each page.
 
+Each example presents just one way of doing things (and currently only with Seurat) - there are many, many other approaches! These are intended as a starting point.
 
 
-## In situ spatial
 
-We have fovs and some ideas how to use them.
 
 * [Test for different cell type composition by group](e_CompositionChange.html)
 * [Differential Expression by celltypes, between groups ](e_DEPseudobulk_insitu.html)
@@ -26,6 +25,8 @@ We have fovs and some ideas how to use them.
 
 
 # Data preparation
+
+These examples assume that the data has been loaded, preprocessed (e.g. QC-ed, UMAP) and annotated (e.g. sample names, cell types, cell niches). For information, the preprocessing applied here is included in data preparation below. Please note that these are not full annotations, and do not aim to reproduce the authors' published analyses! These are much simplified simply as a way to run these tests. 
 
 * [IBD cosmx dataset](d_cosmxIBD.html) :  [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570) from Garrido-Trigo et al 2023. [@glynDigitalSpatialProfiling2024]
 * [Alzheimers Plaques cosmx ](d_cosmxAlzPlaque.html): [Microglia-astrocyte crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse model, as revealed by spatial transcriptomics](https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub)
