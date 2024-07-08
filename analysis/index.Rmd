@@ -28,7 +28,7 @@ Each example presents just one way of doing things (and currently only with Seur
 
 These examples assume that the data has been loaded, preprocessed (e.g. QC-ed, UMAP) and annotated (e.g. sample names, cell types, cell niches). For information, the preprocessing applied here is included in data preparation below. Please note that these are not full annotations, and do not aim to reproduce the authors' published analyses! These are much simplified simply as a way to run these tests. 
 
-* [IBD cosmx dataset](d_cosmxIBD.html) :  [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570) from Garrido-Trigo et al 2023. [@glynDigitalSpatialProfiling2024]
+* [IBD cosmx dataset](d_cosmxIBD.html) :  [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570) from Garrido-Trigo et al 2023.[@garrido-trigoMacrophageNeutrophilHeterogeneity2023]
 * [Alzheimers Plaques cosmx ](d_cosmxAlzPlaque.html): [Microglia-astrocyte crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse model, as revealed by spatial transcriptomics](https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub)
 [@mallachMicrogliaastrocyteCrosstalkAmyloid2024]
 
