@@ -1,0 +1,377 @@
+---
+title: "Neighbourhood changes"
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+bibliography: /home/s.williams/zotero_export/MyLibrary.bib
+---
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096346/
+
+
+```{r angrylibrarian, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<!-- keywords
+
+insituspatial
+seurat
+test
+neighbours
+-->
+
+
+# Overview
+
+## Load libraries and data
+
+```{r}
+library(Seurat)
+library(tidyverse)
+library(DT)
+library(patchwork)
+```
+
+```{r}
+data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
+seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
+seurat_file_02_niche <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_02_niche.RDS")
+```
+
+
+
+
+
+# Worked Example
+
+
+## Load Data
+
+
+
+```{r}
+so <- readRDS(seurat_file_01_loaded)
+```
+
+
+## Get cell neighbours
+
+
+When you compute neighbourhood niches, Seurat adds a 'niche' column to the cell metadata, 
+but in order to calculate that it also builds the 'niche' Assay within the object.
+
+This niche assay is a matrix of cell X celltype - counting how many cells 'neighbouring' each cell have which cell type. 
+
+
+So even if you don't want the defined niches, an easy way to find cell neighbours is to calculate the niches. If you haven't already. 
+
+
+NB:   neighbors.k = 20,
+
+```{r eval=FALSE}
+#NB Current version of Seurat doesn't build niche assay accross multiple slides.
+# This code will do so. Hope its fixed in future version of Seurat. 
+source("code/multislide_niche.R")
+so <- BuildNicheAssay.using_all_fovs(so, group.by = "celltype_subset",niches.k = 6)
+DefaultAssay(so) <- "RNA" # change default assay back to RNA to avoid confusion.
+
+
+saveRDS(so , seurat_file_02_niche)
+```
+```{r}
+# reload
+so <- readRDS(seurat_file_02_niche)
+```
+
+
+This can take some time to run. 
+
+Where the original *RNA* assay has ~1000 gene features, the *niche* assay has 5 features - one for each celltype. And that matrix contains for every cell the number of neighbouring cells it has of each cell type. 
+
+There are 20 neighbours for each cell, because the BuildNicheAssay parameter *neighbours.k* was the default of 20.
+
+```{r}
+dim(GetAssay(so, assay="RNA"))
+dim(GetAssay(so, assay="niche"))
+GetAssayData(so, assay="niche", layer='counts')[,1:4]
+```
+
+## Filter
+
+We might choose to exclude 'poor quality' fovs that have few cells. Plotted below, the remaining cells in those FOVs are spaced further apart, so the neighbourhood is less useful. The 200 here is arbitrary.
+
+(Using a method methods that can use maximal distances would avoid this issue)
+
+
+```{r}
+min_cells_per_fov <- 200
+
+cellcounts <- stack(table(so$fov_name))
+colnames(cellcounts) <- c('n_cells','fov_name')
+
+ggplot(cellcounts, aes(x=n_cells, ) )+
+  geom_density() +
+  geom_rug() + 
+  geom_vline(xintercept = min_cells_per_fov, lty=2, col='red')+
+  theme_bw() +
+  ggtitle("Cells per fov")
+
+```
+
+
+Make a table of the fovs that have low counts
+```{r}
+cellcount_fov_info <- so@meta.data %>% 
+  group_by(fov_name, orig.ident) %>%
+  summarise(n_cells = n()) %>%
+  arrange(n_cells)
+
+DT::datatable(cellcount_fov_info)       
+```
+
+```{r fig.width=12, fig.height=10}
+# A typical sample with reasonable cell counts;
+# 1855 cells
+so.this <- subset(so, fov_name == 'CD_c_006')
+p1 <- ImageDimPlot(so.this, 
+               fov = 'GSM7473690_CD_c', # seurat's fov is slide,
+               group.by = 'celltype_subset', axes = TRUE)
+
+# 1488 cells
+so.this <- subset(so, fov_name == 'HC_a_019')
+p2 <- ImageDimPlot(so.this, 
+               fov = 'GSM7473682_HC_a', # seurat's fov is slide,
+               group.by = 'celltype_subset', axes = TRUE)
+p1+p2
+  
+
+
+# Versus some of these low counts
+	
+# 95 cells
+so.this <- subset(so, fov_name == 'HC_c_012')
+p1 <- ImageDimPlot(so.this, 
+               fov = 'GSM7473684_HC_c', # seurat's fov is slide,
+               group.by = 'celltype_subset', axes = TRUE)
+
+# 194 cells
+so.this <- subset(so, fov_name == 'CD_a_016')
+p2 <-ImageDimPlot(so.this, 
+               fov = 'GSM7473688_CD_a', # seurat's fov is slide,
+               group.by = 'celltype_subset', axes = TRUE)
+
+p1 + p2
+```
+
+
+
+
+Apply filter
+
+```{r}
+#low_count_fov_info <- filter(cellcount_fov_info, n_cells < min_cells_per_fov) 
+keep_fov <- filter(cellcount_fov_info, n_cells >= min_cells_per_fov) %>% pull(fov_name)
+so <- subset(so, cells = colnames(so)[so$fov_name %in% keep_fov])
+```
+
+
+
+
+
+
+
+## Plotting
+
+
+
+### Just one relationship
+
+Are there more t-cells near epithelia in different conditions?
+
+
+```{r}
+plottable <- FetchData(so, vars=c('group', 'individual_code', 'fov_name', 'celltype_subset', "tcells")) %>% filter(celltype_subset == "stroma")
+head(plottable)
+```
+
+The distribution shown for individual cells.
+```{r}
+ggplot(plottable, aes(x=individual_code, y=niche_tcells, col=group)) +
+  geom_violin() +
+  facet_wrap(~group, scales = "free_x") +
+  theme_bw()
+```
+
+
+
+And showing averages per fov, grouped by individual sample.
+```{r}
+plottable2 <- plottable %>% 
+  group_by(group, individual_code, fov_name, celltype_subset) %>%
+  summarise(mean_t_cell_neighbour = mean(niche_tcells))
+```
+```{r}
+ggplot(plottable2, aes(x=individual_code, y=mean_t_cell_neighbour, col=group)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point() +
+  facet_wrap(~group, scales = "free_x") +
+  theme_bw()
+```
+
+### All vs All Celltypes
+
+Or, more broadly
+
+Note the warning, the FetchData function looks in the cell metadata for these columns, then the default assay (RNA), and then in other assays, finally finding tcells as a column there.
+```{r}
+celltypes <- levels(so$celltype_subset)
+plottable3 <- FetchData(so, vars=c('group', 'individual_code', 'fov_name', 'celltype_subset', celltypes)) %>%
+  pivot_longer(cols = starts_with("niche_"), names_to = "neighbour_celltype", values_to = "n_neighbours") %>%
+  mutate(neighbour_celltype = gsub("niche_","", neighbour_celltype))
+  
+
+plottable4<- plottable3 %>% 
+  group_by(group, individual_code, fov_name, celltype_subset, neighbour_celltype) %>%
+  summarise(mean_neighbours = mean(n_neighbours)) %>%
+  mutate(
+    celltype_subset    = paste0(celltype_subset, " cells"),
+    neighbour_celltype = paste0(neighbour_celltype, " neighbours"),
+  )
+
+# or by bio replicate
+plottable5<- plottable3 %>% 
+  group_by(group, individual_code, celltype_subset, neighbour_celltype) %>%
+  summarise(mean_neighbours = mean(n_neighbours)) %>%
+  mutate(
+    celltype_subset    = paste0(celltype_subset, " cells"),
+    neighbour_celltype = paste0(neighbour_celltype, " neighbours"),
+  )
+
+
+```
+
+
+```{r fig.width=12, fig.height=10}
+ggplot(plottable4, aes(x=group, y=mean_neighbours)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(mapping=aes(col=individual_code), shape=4) +
+  facet_grid(neighbour_celltype ~ celltype_subset) +
+  theme_bw()
+```
+
+
+```{r fig.width=12, fig.height=10}
+ggplot(plottable5, aes(x=group, y=mean_neighbours)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point() +
+  facet_grid(neighbour_celltype ~ celltype_subset) +
+  theme_bw()
+```
+
+## Test
+
+<!-- I should email and ask if this is a suitable application of propellar -->
+
+>❓**_NOTE:_**  Can you suggest a better approach? Please get in touch.
+
+
+To formally test this - Do we see more T cells near epithelial cells? 
+Or, conversly, more eipithelial cells near T cells? (Which might be a different question if the T cells are doing something else.)
+
+If so, we expect the proportions of cells in the neighbourhood to change.
+
+
+Propeller can be use to test changes in cell type proportions between groups.
+Its not a perfect test, since each cell will be counted as the neighbour of multiple other cells!
+
+
+
+```{r eval=FALSE}
+neighbour_counts <- AggregateExpression(so, 
+                                        assays = "niche", data="counts", group.by = "celltype_subset")
+
+
+# Because there were 20 neigbhbours, reported per cell, each cell is counted 20 times
+neighbours.k = 20
+sum(neighbour_counts$niche)
+sum(neighbour_counts$niche) / neighbours.k # should be n cells
+ncol(so)
+
+
+# Can we just divide by 20 to count each one once? Might reduce overconfidence on stats
+# Rounding to get back to integers.
+neighbour_count2 <- round(neighbour_counts$niche / neighbours.k)
+
+
+```
+
+
+
+
+
+```{r eval=FALSE}
+
+
+
+library(limma)
+library(speckle)
+
+# condition       : Experimental grouping
+# fov_name        : An unique fov identifier
+# individual_code : individual (sample)
+# cluster         : cell type
+
+props <- getTransformedProps(so$cluster, so$fov_name, transform="logit")
+
+# Make a table of relevant sample information, in same order as props, and check.
+sample_info_table <- unique( select(so@meta.data, fov_name, condition, individual_code) )
+row_order <- match(colnames(props$TransformedProps),sample_info_table$fov_name)
+sample_info_table <- sample_info_table[row_order,]
+stopifnot(all(sample_info_table$fov_name == colnames(props$TransformedProps))) # check it
+
+# Extract relevant factors in same order as props
+sample      <- sample_info_table$individual_code 
+condition   <- sample_info_table$condition
+
+design <- model.matrix( ~ 0 + condition)
+dupcor <- duplicateCorrelation(props$TransformedProps, design=design,  block=sample)
+
+fit <- lmFit(props$TransformedProps, design=design, block=sample, correlation=dupcor$consensus)
+
+# Contrast called 'test', measuring of test condition vs Control condition.
+contrasts <- makeContrasts(test   = conditionTest - conditionCon,  levels = coef(fit))
+fit <- contrasts.fit(fit, contrasts)
+fit <- eBayes(fit)
+
+results_table <- topTable(fit, coef='test')
+
+
+
+
+```
+
+
+
+
+# Code Snippet
+
+
+# Results
+
+
+# More Information
+
+
+# References
+
+
