@@ -290,74 +290,87 @@ Or, conversly, more eipithelial cells near T cells? (Which might be a different 
 
 If so, we expect the proportions of cells in the neighbourhood to change.
 
-
 Propeller can be use to test changes in cell type proportions between groups.
-Its not a perfect test, since each cell will be counted as the neighbour of multiple other cells!
 
 
+**NB: Work in progress - Needs statistical review.**
 
-```{r eval=FALSE}
+
+```{r}
+library(limma)
+library(speckle)
+
+# Unit
+so$fov_celltype <- paste0(so$fov_name, "_", so$celltype_subset)
+
+# Get counts of neighbourhood for each cluster+fov group
 neighbour_counts <- AggregateExpression(so, 
-                                        assays = "niche", data="counts", group.by = "celltype_subset")
+                                        assays = "niche", data="counts", group.by = "fov_celltype")
+neighbour_counts_matrix <- neighbour_counts$niche
+colnames(neighbour_counts_matrix) <- gsub("-","_", colnames(neighbour_counts_matrix))
+#"UC-c-015-epi vs HC_a_001_epi"
 
 
-# Because there were 20 neigbhbours, reported per cell, each cell is counted 20 times
-neighbours.k = 20
-sum(neighbour_counts$niche)
-sum(neighbour_counts$niche) / neighbours.k # should be n cells
-ncol(so)
+# Total number of neibhours of celltypes of celltype X per fov
+# (always 20 total)
+total_neighbour <- colSums(neighbour_counts_matrix)
+# Proportions of total
+neighbour_proportions <- t(t(neighbour_counts_matrix) / total_neighbour)
+
+# from the defulat of propeller.
+neighbour_proportions.arcsine <- asin(sqrt(neighbour_proportions ))
 
 
-# Can we just divide by 20 to count each one once? Might reduce overconfidence on stats
-# Rounding to get back to integers.
-neighbour_count2 <- round(neighbour_counts$niche / neighbours.k)
+
+# Make a table of relevant sample information, in same order as props, and check.
+sample_info_table <- so@meta.data %>% 
+  select(fov_celltype, fov_name, celltype_subset, tissue_sample, group) %>%
+  unique()
+
+
+
+row_order <- match(colnames(neighbour_proportions.arcsine),sample_info_table$fov_celltype)
+sample_info_table <- sample_info_table[row_order,]
+stopifnot(all(sample_info_table$fov_celltype == colnames(neighbour_proportions.arcsine))) # check it
 
 
 ```
 
 
+```{r}
 
+# Filter to just *t-cells*, in the sample table. 
+# where neibhours could be anything.
+celltype_to_test <- 'tcells'
+sample_info_table.this <- sample_info_table[sample_info_table$celltype_subset == celltype_to_test, ]
+#transformProps.this    <- props$TransformedProps[,sample_info_table.this$fov_celltype]
+neighbour_proportions.arcsine.this <- neighbour_proportions.arcsine[,sample_info_table.this$fov_celltype]
 
-
-```{r eval=FALSE}
-
-
-
-library(limma)
-library(speckle)
-
-# condition       : Experimental grouping
-# fov_name        : An unique fov identifier
-# individual_code : individual (sample)
-# cluster         : cell type
-
-props <- getTransformedProps(so$cluster, so$fov_name, transform="logit")
-
-# Make a table of relevant sample information, in same order as props, and check.
-sample_info_table <- unique( select(so@meta.data, fov_name, condition, individual_code) )
-row_order <- match(colnames(props$TransformedProps),sample_info_table$fov_name)
-sample_info_table <- sample_info_table[row_order,]
-stopifnot(all(sample_info_table$fov_name == colnames(props$TransformedProps))) # check it
 
 # Extract relevant factors in same order as props
-sample      <- sample_info_table$individual_code 
-condition   <- sample_info_table$condition
+sample          <- sample_info_table.this$tissue_sample
+group           <- sample_info_table.this$group
+design <- model.matrix( ~ 0 + group)
 
-design <- model.matrix( ~ 0 + condition)
-dupcor <- duplicateCorrelation(props$TransformedProps, design=design,  block=sample)
+dupcor <- duplicateCorrelation(neighbour_proportions.arcsine.this, design=design,  block=sample)
 
-fit <- lmFit(props$TransformedProps, design=design, block=sample, correlation=dupcor$consensus)
+fit <- lmFit(neighbour_proportions.arcsine.this, design=design, block=sample, correlation=dupcor$consensus)
 
 # Contrast called 'test', measuring of test condition vs Control condition.
-contrasts <- makeContrasts(test   = conditionTest - conditionCon,  levels = coef(fit))
+contrasts <- makeContrasts(
+  CDvsHC= groupCD - groupHC,
+  UCvsHC= groupUC - groupHC,
+  levels = coef(fit))
 fit <- contrasts.fit(fit, contrasts)
 fit <- eBayes(fit)
 
-results_table <- topTable(fit, coef='test')
+results_table <- topTable(fit, coef='CDvsHC')
 
 
+```
 
-
+```{r}
+DT::datatable(results_table )
 ```
 
 
