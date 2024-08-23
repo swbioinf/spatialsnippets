@@ -1,0 +1,117 @@
+---
+title: "Differential celltype composition between groups"
+author: 
+   - "Bessie Bioinformatician"
+   - "Robert DropTable-Students (User Review)"
+   - "Steph Stats (Statistical Review)"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+bibliography: /home/s.williams/zotero_export/MyLibrary.bib
+---
+
+_This is a loose template for making new examples. Adjust as needed._
+
+
+```{r angrylibrarian, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+<!-- keywords
+# Not yet used, but add keywords as appriopriate. 
+
+insituspatial
+seurat
+composition
+test
+
+-->
+
+
+# Overview
+
+A couple of paragraphs describing what this test is, why it is neccessary. 
+
+Citations formatted as [@phipsonPropellerTestingDifferences2022], and included in bibiliography json .bib file.
+
+
+_Include an image of what is being tested. Save it in docs/assets/, and link as below;_
+![](assets/cluster_prop_diff.png)
+
+
+
+
+This requires:
+
+* Dot points of required input data and information
+
+
+For example:
+
+* One or two examples of what is being tested in biological terms e.g. "What genes are differentially expressed in epithelial cells in Crohn's disease vs healthy individuals?"
+
+
+
+
+Steps:
+
+1. Breif description of steps involved in test
+2. If appropriate.
+
+
+
+
+
+# Worked example 
+
+Long example on real dataset. 
+
+
+
+# Code Snippet
+
+Copy and paste this bit into your own script to adatpt to your own data. 
+Make as generic as possible, just a framework.
+
+```{r eval=FALSE}
+
+# This code does not run
+
+```
+
+
+
+# Results
+
+```{r}
+# Display results table of stats
+```
+
+
+Have a dot point list of what _every_ field in the default output is. Refer to docs.
+
+* **Column name 1** : This is xyz
+* **Column name 2** : This is xyz
+
+
+
+# More information 
+
+List of useful resources. Papers, vignettes, pertinent forum posts 
+
+* [Propellar Vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html) and [speckle paper](https://academic.oup.com/bioinformatics/article/38/20/4720/6675456) [@phipsonPropellerTestingDifferences2022]:
+
+
+# Referneces
+
+<!-- nothing here, autopopulated from bibliography: in json -->
+

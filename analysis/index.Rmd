@@ -21,7 +21,9 @@ Each example presents just one way of doing things (and currently only with Seur
 
 * [Test for different cell type composition by group](e_CompositionChange.html)
 * [Differential Expression by celltypes, between groups ](e_DEPseudobulk_insitu.html)
-* [Changes in cell neighbourhood, between groups ](e_neighbourcellchanges.html): WIP
+
+
+<!-- * [Changes in cell neighbourhood, between groups ](e_neighbourcellchanges.html): WIP -->
 
 
 # Data preparation
