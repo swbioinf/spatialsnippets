@@ -1,7 +1,7 @@
 ---
 title: "Differential celltype composition between groups"
 author: 
-  - "Sarah Williams"
+  - "Sarah Williams (Author)"
   - "James Sinclair (User Review)"  
   - "Laurelle Jackson (User Review)"
 output:
