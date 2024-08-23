@@ -1,6 +1,9 @@
 ---
 title: "Differential celltype composition between groups"
-author: "Sarah Williams"
+author: 
+  - "Sarah Williams"
+  - "James Sinclair (User Review)"  
+  - "Laurelle Jackson (User Review)"
 output:
   html_notebook: 
     toc: yes
