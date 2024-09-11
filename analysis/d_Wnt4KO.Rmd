@@ -1,0 +1,107 @@
+---
+title: "Dataset: IBD cosMX GarridoTrigo2023"
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+bibliography: /home/s.williams/zotero_export/MyLibrary.bib
+---
+
+
+Data from paper [Forming nephrons promote nephron progenitor maintenance and branching morphogenesis via paracrine BMP4 signalling under the control of Wnt4](https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full)
+
+[@moreauFormingNephronsPromote2023a]
+
+
+
+
+
+# Libraries
+
+```{r}
+library(Seurat)
+#library(SeuratObject)
+library(tidyverse)
+```
+
+# Data load
+
+Loading data from a previously annotated object used in the analysis.
+
+```{r}
+dataset_dir      <- '~/projects/spatialsnippets/datasets'
+project_data_dir <- file.path(dataset_dir,'Wnt4KO_Moreau2023')
+
+
+seurat_file_loaded <- file.path(project_data_dir, "Wnt4KOE14.5_10_withdeconclust.rds")
+seurat_file_saved  <- file.path(project_data_dir,   "Wnt4KOE14.5_11_ss.rds")
+
+
+```
+
+
+
+# Load and tidy data
+
+```{r}
+so <- readRDS(seurat_file_loaded)
+
+# There's alot of historical/working feilds in the metadata. 
+# Slim down to just useful ones.
+keep_cols <- c(
+  "barcode","orig.ident","nCount_RNA","nFeature_RNA" ,"sample", # basic annotation/stats.
+  "Genotype","GTeffect", "GTshort" , # same info, 3 ways
+  "MT_pc", "cc" ,"G1" ,"S" ,"G2M", "doublet_score" , # was filtered on scrublet.
+  # "cluster_content","cluster_lab"    # More detailed groupings used in working  
+  "Celltype", "CelltypeCode",          # final types in paper
+  "CelltypeBroad", "CelltypeBroadCode" # broader groupings
+)
+
+so@meta.data <- so@meta.data[,keep_cols]
+
+
+# Reduce to a simple case - KO vs Het (WT)
+# Or keep these in to demo using all 4 in a model for 1 vs 1 (useful information)
+so <- so[,so$GTshort %in% c("Wnt4Het", "Wnt4KO")]
+so$Genotype <- droplevels(so$Genotype)
+so$GTeffect <- droplevels(so$GTeffect)
+so$GTshort  <- droplevels(so$GTshort)
+so$sample  <- droplevels(so$sample)
+```
+
+
+## Data tour
+
+```{r}
+DimPlot(so, group.by="CelltypeCode",label = TRUE) + NoLegend()
+DimPlot(so, group.by="CelltypeBroad",label = TRUE) + NoLegend()
+DimPlot(so, group.by="GTshort")
+DimPlot(so, group.by="cc")
+```
+
+```{r fig.width=10}
+FeaturePlot(so, c('nCount_RNA','MT_pc'))
+```
+
+
+4 Samples, n=1 per group.
+```{r}
+table(so$GTshort, so$sample)
+```
+
+
+
+
+
+
+
+
+
+# References
