@@ -1,5 +1,5 @@
 ---
-title: "Differential celltype composition between groups"
+title: "Example Title"
 author: 
    - "Bessie Bioinformatician"
    - "Robert DropTable-Students (User Review)"
@@ -79,7 +79,7 @@ Long example on real dataset.
 
 # Code Snippet
 
-Copy and paste this bit into your own script to adatpt to your own data. 
+Copy and paste this bit into your own script to adapt to your own data. 
 Make as generic as possible, just a framework.
 
 ```{r eval=FALSE}
@@ -97,7 +97,7 @@ Make as generic as possible, just a framework.
 ```
 
 
-Have a dot point list of what _every_ field in the default output is. Refer to docs.
+Have a dot point list of what _every_ field in the default output is. Refer to docs wherever possible.
 
 * **Column name 1** : This is xyz
 * **Column name 2** : This is xyz

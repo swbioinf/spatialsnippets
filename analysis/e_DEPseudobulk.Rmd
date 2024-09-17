@@ -13,25 +13,16 @@ editor_options:
   chunk_output_type: console
 ---
 
+TODO - redo this example on whichever dataset.
+
+
 
 ```{r}
 library(Seurat)
 #library(limma)
 #library(edgeR)
-```
 
 
-```{r}
-dataset_dir <- '/Users/s2992547/data_local/datasets/'
-
-#liver_cosmx_seurat_file <- file.path(dataset_dir, 'cosmx_smi_human_liver_ffpe_dataset','LiverDataReleaseSeurat_subset2.RDS')
-#liver_cosmx_seurat_file <- file.path(dataset_dir, 'cosmx_smi_human_liver_ffpe_dataset','LiverDataReleaseSeurat_subset_8fov.RDS')
-# No matter how few fovs, these are beeing subset large files.
-
-
-liver_cosmx_seurat_file <- file.path(dataset_dir, 'cosmx_smi_human_liver_ffpe_dataset','LiverDataReleaseSeurat_subset_notranscript.RDS')
-
-#full_metadata_file <- file.path(dataset_dir, #'cosmx_smi_human_liver_ffpe_dataset','/LiverData_metadata2.tsv.gz')
 ```
 
 
