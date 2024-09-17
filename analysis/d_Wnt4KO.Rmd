@@ -1,5 +1,5 @@
 ---
-title: "Dataset: IBD cosMX GarridoTrigo2023"
+title: "Dataset: Wnt4 KO in Developing mouse kidney"
 author: "Sarah Williams"
 output:
   html_notebook: 
@@ -15,12 +15,16 @@ bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 ---
 
 
-Data from paper [Forming nephrons promote nephron progenitor maintenance and branching morphogenesis via paracrine BMP4 signalling under the control of Wnt4](https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full)
+Data from paper [Forming nephrons promote nephron progenitor maintenance and branching morphogenesis via paracrine BMP4 signalling under the control of Wnt4](https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full) [@moreauFormingNephronsPromote2023a]
 
-[@moreauFormingNephronsPromote2023a]
+This study included 10X chromium single cell RNAseq data from 4 conditions, with 3-4 E14.5 mice pooled per group. 
 
+* Sample1 (Wnt4FloxKO):  Wnt4Flox/Flox Six2-Conditional Wnt4 Knockout
+* Sample2 (Wnt4FloxHet):  Wnt4Flox/+ Six2-Conditional Wnt4 Het
+* Sample3 (Wnt4Het): Wnt4 GCE/+ Control Wnt4 Het
+* Sample4 (Wnt4KO): Wnt4 GCE/GCE Knockout Wnt4
 
-
+In that paper they explain that complete or conditional homozygous knockout of Wnt4 gene results in abnormal kidney development, and they use scRNAseq data to explore effects at cellular level. [@moreauFormingNephronsPromote2023a]
 
 
 # Libraries
@@ -69,11 +73,11 @@ so@meta.data <- so@meta.data[,keep_cols]
 
 # Reduce to a simple case - KO vs Het (WT)
 # Or keep these in to demo using all 4 in a model for 1 vs 1 (useful information)
-so <- so[,so$GTshort %in% c("Wnt4Het", "Wnt4KO")]
-so$Genotype <- droplevels(so$Genotype)
-so$GTeffect <- droplevels(so$GTeffect)
-so$GTshort  <- droplevels(so$GTshort)
-so$sample  <- droplevels(so$sample)
+#so <- so[,so$GTshort %in% c("Wnt4Het", "Wnt4KO")]
+#so$Genotype <- droplevels(so$Genotype)
+#so$GTeffect <- droplevels(so$GTeffect)
+#so$GTshort  <- droplevels(so$GTshort)
+#so$sample  <- droplevels(so$sample)
 ```
 
 
@@ -91,9 +95,14 @@ FeaturePlot(so, c('nCount_RNA','MT_pc'))
 ```
 
 
-4 Samples, n=1 per group.
+
+4 Samples, n=1 per group. Can use 'GTshort' to identify the sample.
 ```{r}
-table(so$GTshort, so$sample)
+select(so@meta.data, sample, Genotype, GTeffect, GTshort) %>% 
+  as_tibble() %>% 
+  group_by( sample, Genotype, GTeffect, GTshort) %>%
+  summarise(num_cells=n(), .groups = 'drop') %>%
+  DT::datatable()
 ```
 
 
