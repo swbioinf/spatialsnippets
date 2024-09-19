@@ -1,7 +1,7 @@
 name: spatialsnippets
 output_dir: ../docs
 navbar:
-  title: spatialsnippets
+  title: Spatial Sampler
   left:
   - text: Tests
     href: index.html

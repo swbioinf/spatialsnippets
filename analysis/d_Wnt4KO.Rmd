@@ -71,13 +71,6 @@ keep_cols <- c(
 so@meta.data <- so@meta.data[,keep_cols]
 
 
-# Reduce to a simple case - KO vs Het (WT)
-# Or keep these in to demo using all 4 in a model for 1 vs 1 (useful information)
-#so <- so[,so$GTshort %in% c("Wnt4Het", "Wnt4KO")]
-#so$Genotype <- droplevels(so$Genotype)
-#so$GTeffect <- droplevels(so$GTeffect)
-#so$GTshort  <- droplevels(so$GTshort)
-#so$sample  <- droplevels(so$sample)
 ```
 
 
@@ -106,7 +99,11 @@ select(so@meta.data, sample, Genotype, GTeffect, GTshort) %>%
 ```
 
 
+Save it
 
+```{r eval=FALSE}
+saveRDS(so, seurat_file_saved)
+```
 
 
 
