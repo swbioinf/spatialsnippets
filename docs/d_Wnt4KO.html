@@ -358,7 +358,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">spatialsnippets</a>
+      <a class="navbar-brand" href="index.html">Spatial Sampler</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -423,7 +423,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-09-17
+<strong>Last updated:</strong> 2024-09-19
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -554,15 +554,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree42d871283f690180a066c65f8ec3581132ab881ftargetblank42d8712a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree511594fa32c4ab59aa41a582bc691aca9fde7e67targetblank511594fa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/42d871283f690180a066c65f8ec3581132ab881f" target="_blank">42d8712</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/511594fa32c4ab59aa41a582bc691aca9fde7e67" target="_blank">511594f</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree42d871283f690180a066c65f8ec3581132ab881ftargetblank42d8712a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree511594fa32c4ab59aa41a582bc691aca9fde7e67targetblank511594fa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -572,7 +572,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/42d871283f690180a066c65f8ec3581132ab881f" target="_blank">42d8712</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/511594fa32c4ab59aa41a582bc691aca9fde7e67" target="_blank">511594f</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -593,6 +593,9 @@ Ignored files:
     Ignored:    analysis/glossary.nb.html
     Ignored:    renv/library/
     Ignored:    renv/staging/
+
+Unstaged changes:
+    Modified:   .gitignore
 
 </code></pre>
 <p>
@@ -638,6 +641,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/511594fa32c4ab59aa41a582bc691aca9fde7e67/analysis/d_Wnt4KO.Rmd" target="_blank">511594f</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-09-19
+</td>
+<td>
+wflow_publish("analysis/")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/1549b6841d2199bb3811489c8b9cd9d21b35dd3b/docs/d_Wnt4KO.html" target="_blank">1549b68</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-09-17
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -763,16 +800,7 @@ keep_cols &lt;- c(
   &quot;CelltypeBroad&quot;, &quot;CelltypeBroadCode&quot; # broader groupings
 )
 
-so@meta.data &lt;- so@meta.data[,keep_cols]
-
-
-# Reduce to a simple case - KO vs Het (WT)
-# Or keep these in to demo using all 4 in a model for 1 vs 1 (useful information)
-#so &lt;- so[,so$GTshort %in% c(&quot;Wnt4Het&quot;, &quot;Wnt4KO&quot;)]
-#so$Genotype &lt;- droplevels(so$Genotype)
-#so$GTeffect &lt;- droplevels(so$GTeffect)
-#so$GTshort  &lt;- droplevels(so$GTshort)
-#so$sample  &lt;- droplevels(so$sample)</code></pre>
+so@meta.data &lt;- so@meta.data[,keep_cols]</code></pre>
 <div id="data-tour" class="section level2">
 <h2>Data tour</h2>
 <pre class="r"><code>DimPlot(so, group.by=&quot;CelltypeCode&quot;,label = TRUE) + NoLegend()</code></pre>
@@ -799,6 +827,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/1549b6841d2199bb3811489c8b9cd9d21b35dd3b/docs/figure/d_Wnt4KO.Rmd/unnamed-chunk-4-1.png" target="_blank">1549b68</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-09-17
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/2271297501f116385e850da0338620978bc6f0ca/docs/figure/d_Wnt4KO.Rmd/unnamed-chunk-4-1.png" target="_blank">2271297</a>
@@ -840,6 +879,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/1549b6841d2199bb3811489c8b9cd9d21b35dd3b/docs/figure/d_Wnt4KO.Rmd/unnamed-chunk-4-2.png" target="_blank">1549b68</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-09-17
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/2271297501f116385e850da0338620978bc6f0ca/docs/figure/d_Wnt4KO.Rmd/unnamed-chunk-4-2.png" target="_blank">2271297</a>
 </td>
 <td>
@@ -877,6 +927,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/1549b6841d2199bb3811489c8b9cd9d21b35dd3b/docs/figure/d_Wnt4KO.Rmd/unnamed-chunk-4-3.png" target="_blank">1549b68</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-09-17
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/2271297501f116385e850da0338620978bc6f0ca/docs/figure/d_Wnt4KO.Rmd/unnamed-chunk-4-3.png" target="_blank">2271297</a>
@@ -918,6 +979,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/1549b6841d2199bb3811489c8b9cd9d21b35dd3b/docs/figure/d_Wnt4KO.Rmd/unnamed-chunk-4-4.png" target="_blank">1549b68</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-09-17
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/2271297501f116385e850da0338620978bc6f0ca/docs/figure/d_Wnt4KO.Rmd/unnamed-chunk-4-4.png" target="_blank">2271297</a>
 </td>
 <td>
@@ -957,6 +1029,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/1549b6841d2199bb3811489c8b9cd9d21b35dd3b/docs/figure/d_Wnt4KO.Rmd/unnamed-chunk-5-1.png" target="_blank">1549b68</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-09-17
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/2271297501f116385e850da0338620978bc6f0ca/docs/figure/d_Wnt4KO.Rmd/unnamed-chunk-5-1.png" target="_blank">2271297</a>
 </td>
 <td>
@@ -979,6 +1062,8 @@ sample.</p>
   DT::datatable()</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-9a5247bea4d51c6334d8" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-9a5247bea4d51c6334d8">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4"],["Sample1","Sample2","Sample3","Sample4"],["Six2TGC/+, Wnt4 FLOX/FLOX","Six2TGC/+, Wnt4 FLOX/+","Wnt4GCE HET","Wnt4GCE KO"],["Six2-Conditional Wnt4 Knockout","Six2-Conditional Wnt4 Het","Control Wnt4 Het","Knockout Wnt4"],["Wnt4FloxKO","Wnt4FloxHet","Wnt4Het","Wnt4KO"],[10511,6836,8340,4103]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sample<\/th>\n      <th>Genotype<\/th>\n      <th>GTeffect<\/th>\n      <th>GTshort<\/th>\n      <th>num_cells<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":5},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sample","targets":1},{"name":"Genotype","targets":2},{"name":"GTeffect","targets":3},{"name":"GTshort","targets":4},{"name":"num_cells","targets":5}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<p>Save it</p>
+<pre class="r"><code>saveRDS(so, seurat_file_saved)</code></pre>
 </div>
 </div>
 <div id="references" class="section level1">
