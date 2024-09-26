@@ -9,12 +9,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Bessie Bioinformatician" />
-<meta name="author" content="Robert DropTable-Students (User Review)" />
-<meta name="author" content="Steph Stats (Statistical Review)" />
+<meta name="author" content="Sarah Williams" />
 
 
-<title>Example Title</title>
+<title>scRNAseq differential expression without replicates</title>
 
 <script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -394,10 +392,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Example Title</h1>
-<h4 class="author">Bessie Bioinformatician</h4>
-<h4 class="author">Robert DropTable-Students (User Review)</h4>
-<h4 class="author">Steph Stats (Statistical Review)</h4>
+<h1 class="title toc-ignore">scRNAseq differential expression without
+replicates</h1>
+<h4 class="author">Sarah Williams</h4>
 
 </div>
 
@@ -557,15 +554,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreea42f6d30a349a3f156a9347e8996bd75b1e7f128targetblanka42f6d3a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree4edfd350647b5f6026a3dde61385bc403c446072targetblank4edfd35a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/a42f6d30a349a3f156a9347e8996bd75b1e7f128" target="_blank">a42f6d3</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/4edfd350647b5f6026a3dde61385bc403c446072" target="_blank">4edfd35</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreea42f6d30a349a3f156a9347e8996bd75b1e7f128targetblanka42f6d3a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree4edfd350647b5f6026a3dde61385bc403c446072targetblank4edfd35a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -575,7 +572,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/a42f6d30a349a3f156a9347e8996bd75b1e7f128" target="_blank">a42f6d3</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/4edfd350647b5f6026a3dde61385bc403c446072" target="_blank">4edfd35</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -641,6 +638,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/4edfd350647b5f6026a3dde61385bc403c446072/analysis/e_DEWithoutReps.Rmd" target="_blank">4edfd35</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-09-26
+</td>
+<td>
+wflow_publish("analysis/e_DEWithoutReps.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/cd1b7adaf0bf112b7420314f5c4d44ea72689013/docs/e_DEWithoutReps.html" target="_blank">cd1b7ad</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-09-26
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -807,8 +838,9 @@ of my stromal clusters?</li>
 <p>Essentially the results we get will be testing the difference between
 <em>this</em> specific sample and <em>that</em> specific sample. The
 p-values for such a test can be very significant!</p>
-<p>We cannot claim for certain these results generalise to other
-samples, but they’re likely good candidates for further work!</p>
+<p>But those p-values can’t be compared to those using multiple samples,
+and we cannot tell if our results will generalise to other samples. They
+are likely good candidates for further work though!</p>
 <p><strong>But what about pooled samples? </strong></p>
 <p>Note that ‘pooling’ multiple unlabelled biological samples before
 library prep will still count as ‘one’ replicate no many how many
@@ -821,7 +853,7 @@ avoids this issue.</p>
 </div>
 <div id="worked-example" class="section level1">
 <h1>Worked example</h1>
-<p>Data from paper <a
+<p>The data for this example is from paper <a
 href="https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full">Forming
 nephrons promote nephron progenitor maintenance and branching
 morphogenesis via paracrine BMP4 signalling under the control of
@@ -862,6 +894,10 @@ so &lt;- readRDS(seurat_file)</code></pre>
 </div>
 <div id="experimental-design" class="section level2">
 <h2>Experimental Design</h2>
+<p>In this case the sample (sample 1-4), ‘genotype’ GT effect and GT
+short columns are just different labels for this same groups. We will
+use GTshort as our ‘sample’ names throughout.</p>
+<p>There are between 4000 and 10000 cells per sample.</p>
 <pre class="r"><code>select(so@meta.data, sample, Genotype, GTeffect, GTshort) %&gt;% 
   as_tibble() %&gt;% 
   group_by( sample, Genotype, GTeffect, GTshort) %&gt;%
@@ -888,11 +924,10 @@ test.</p>
 <p>How many is too few? 50 might be a good threshold. In this case
 however, we might consider being very permissive and allowing just 20
 cells to look at some celltypes that are clearly reduced or increased in
-number between conditions (e.g. c9,c10,c11) They’re interesting in this
-experiment, but have to keep in mind during interpretation that results
-may be less reliable.</p>
-<p>Using the ‘GTshort’ annotation for our sample names.</p>
-<p>We will apply that filter when running the differential
+number between conditions (e.g. c9,c10,c11).</p>
+<p>They’re interesting in this experiment, but have to keep in mind
+during interpretation that results may be less reliable.</p>
+<p>We will apply that filter later when running the differential
 expression.</p>
 <pre class="r"><code>min_cells_per_group &lt;- 20 # used later
 table(so$CelltypeCode, so$GTshort)</code></pre>
@@ -927,18 +962,38 @@ table(so$CelltypeCode, so$GTshort)</code></pre>
 <li>layer vs assay</li>
 <li>SCT vs RNA</li>
 <li>count vs data vs data scale</li>
+<li>subsampling</li>
+<li>min.pct</li>
 </ul>
+<pre class="r"><code>      de_result &lt;- FindMarkers(so.this, 
+                               ident.1  = contrast[1], 
+                               ident.2  = contrast[2],
+                               slot     = &#39;data&#39;,
+                               test.use = &quot;wilcox&quot;, # the default
+                               min.pct  = 0.01,   # Note 
+                               max.cells.per.ident = 100 # 1000 # if you have really big clusters, set this to subsample!
+                               )</code></pre>
 </div>
 <div id="run-differential-expression-for-every-cluster"
 class="section level2">
 <h2>Run differential expression for every cluster</h2>
+<p>We typically want to know about changes in every cluster. We can
+simply loop through and run them one-by-one. This can make for a lot of
+contrasts!</p>
+<pre><code>2x comparisons * 19x clusters = 38 sets of differential results </code></pre>
+<p>The below code makes a big table of all the tests - recording which
+contrast was being done in which cluster.</p>
+<p>NB: Note that the <em>FindMarkers()</em> function returns a table
+with feature names as a rowname. Rownames are expected to be unique. So
+while that is fine for one comparison, but when we want to put more
+together, we need to give it its own column. If we don’t, there’ll be
+gene names with ‘.1’ appended to the end!</p>
 <pre class="r"><code># Set threhoehsolds
 min_cells_per_group &lt;- 20
 
-
 # Calculate DE across every celltype
 # Empty list to collect results
-de_result_list &lt;- list()
+de_result_list     &lt;- list()
 de_result_sig_list &lt;- list()
 
 # the contrasts
@@ -953,7 +1008,7 @@ contrast_list &lt;-  list( # &#39;Test&#39;      vs  &#39;control&#39;
 #names(contrast_list) &lt;- contrast_names
 
 
-# note keeping all 4 samples before two contrasts. (actually does that matter)
+# note keeping all 4 samples before two contrasts. (actually does that matter for wilcox ranK sum - CHECK)
 
 #the_celltype = &#39;c15: Podocyte&#39;
 #the_celltype = &quot;c16: Blood&quot;
@@ -1065,6 +1120,16 @@ library(writexl)
 write_xlsx(de_result_list,      &quot;~/myproject/de_results_all.xlsx&quot;)
 write_xlsx(de_result_sig_list,  &quot;~/myproject/de_results_sig.xlsx&quot;)</code></pre>
 </div>
+<div id="check-individual-results" class="section level2">
+<h2>Check individual results</h2>
+<p>Plot some example genes.</p>
+<p>Discuss (how to pick stuff thats real)</p>
+<ul>
+<li>further filtering - where small significant changes dominate</li>
+<li>violin plots are hard to read</li>
+<li>MA style plots.</li>
+</ul>
+</div>
 </div>
 <div id="code-snippet" class="section level1">
 <h1>Code Snippet</h1>
@@ -1074,9 +1139,9 @@ data. Make as generic as possible, just a framework.</p>
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>
-<pre class="r"><code># Display results table of stats</code></pre>
-<p>Have a dot point list of what <em>every</em> field in the default
-output is. Refer to docs wherever possible.</p>
+<pre class="r"><code>DT::datatable(de_result.sig)</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-0b50cf44ed0c70fb0261" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-0b50cf44ed0c70fb0261">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],["c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma","c6: Stroma"],["TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet","TotalWnt4KOvsHet"],["Rpl37a","Rps29","Rpl39","Rpl35","Rps27","mt-Atp6","mt-Co3","mt-Nd3","mt-Nd2","Rps19","Rpl38","mt-Co2","Rpl36","mt-Co1","Rps21","Rpl26","Rps28"],[2.488338674586129,1.863642060957809,2.585742828795498,1.813777694497535,1.513478523027756,2.391843601267614,2.99456296450354,0.8403799732007338,1.290402650002949,2.240138054656031,2.075103067305055,2.411489244389692,1.622532128683959,2.293624721551673,1.981164299244372,1.812787294344475,1.466509176248433],[4.784481575886007e-16,6.858895400746634e-15,3.310090458945686e-13,3.905917207200575e-13,1.88244791169419e-12,1.027413191363535e-10,3.586302177754488e-10,4.207432280250576e-10,4.712466702971352e-10,1.012768024888691e-09,1.506828959264027e-09,3.770729353662937e-09,4.885250307278317e-09,6.134913015058846e-09,1.287002519678654e-08,1.986447817193334e-08,4.590777015180355e-08],[1.007655053779498,1.294464162922242,0.8345039946205319,0.9017612287792538,1.378036366281451,1.450475002829461,1.344801371993817,1.751623127480153,1.503402563216979,0.7542880411882429,0.6623794558344129,1.16695110552077,0.8073222697090814,0.9413200963449602,0.692239490892514,0.6381366429245934,0.9523716056045473],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,0.985,1,1,0.9360000000000001,0.985,1,0.6909999999999999,0.872,1,0.995,0.992,0.957,0.982,0.992,1,0.9409999999999999],[9.262756330915309e-12,1.327882149584549e-10,6.408335128518847e-09,7.561855713140314e-09,3.644419157039953e-08,1.989071938479804e-06,6.94308101613269e-06,8.145588894565115e-06,9.123335536952537e-06,1.960718896184505e-05,2.917220865135157e-05,7.300132028691446e-05,9.457844594890821e-05,0.0001187719159715392,0.0002491636878097874,0.0003845762974086294,0.0008887744301389166]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>avg_expression<\/th>\n      <th>p_val<\/th>\n      <th>avg_log2FC<\/th>\n      <th>pct.1<\/th>\n      <th>pct.2<\/th>\n      <th>p_val_adj<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[4,5,6,7,8,9]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast","targets":2},{"name":"target","targets":3},{"name":"avg_expression","targets":4},{"name":"p_val","targets":5},{"name":"avg_log2FC","targets":6},{"name":"pct.1","targets":7},{"name":"pct.2","targets":8},{"name":"p_val_adj","targets":9}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 <ul>
 <li><strong>celltype</strong>: The cluster or celltype the contrat is
 within. Added by running code.</li>
