@@ -39,18 +39,10 @@ test
 # Overview
 
 
-Sometimes there are no biological replicates, yet you still want to make a comparison. 
-While not ideal, its possible. Individual cells may be treated as 'replicates' to explore the 
-difference between two samples.
+Sometimes there are no biological replicates, yet you still want to make a comparison. While not ideal, its possible. Individual cells may be treated as 'replicates' to explore the difference between two samples.
 
 
-Note that 'pooling' multiple unlabelled biological samples before library prep will still 
-count as 'one' replicate no many how many samples are in the pool - because
-we have no way to tell what sample a cell comes from. (NB: Using cell hashing approaches to tag samples before pooling avoids this issue.)
-
-
-
-<!--![](assets/cluster_prop_diff.png)-->
+![](assets/de_1v1.png)
 
 
 This requires:
@@ -70,6 +62,23 @@ Steps:
 1. Filter to testable genes (enough expression to see changes)
 2. Test for changes in gene expression
 3. Plot DE results and individual genes. 
+
+
+## Gotchas
+
+
+**Caveat on 1 vs 1 comparisons!**
+
+Essentially the results we get will be testing the difference between *this* specific sample and *that* specific sample. The p-values for such a test can be very significant!
+
+We cannot claim for certain these results generalise to other samples, but they're likely good candidates for further work!
+
+**But what about pooled samples? **
+
+Note that 'pooling' multiple unlabelled biological samples before library prep will still count as 'one' replicate no many how many samples are in the pool - because we have no way to tell what sample a cell comes from. A change in gene expression could be from a single outlier sample.
+
+NB: Using cell hashing approaches to tag samples before pooling avoids this issue.
+
 
 
 
@@ -200,7 +209,7 @@ contrast_list <-  list( # 'Test'      vs  'control'
 #the_celltype = "c16: Blood"
 #contrast_name <- 'TotalWnt4KOvsHet'
   
-for (the_celltype in levels(so$CelltypeCode)[5:10]) {
+for (the_celltype in levels(so$CelltypeCode)[5:7]) {
   
   # Subset to one cell type. 
   print(the_celltype)
@@ -258,7 +267,7 @@ for (the_celltype in levels(so$CelltypeCode)[5:10]) {
       arrange(p_val)
   
       # Filter to just significant results, optionally by log2FC.
-      de_result.sig <- filter(de_result, 
+      de_result.sig <- filter(de_result.formatted, 
                          p_val_adj < 0.01,
                          abs(avg_log2FC) > log2(1.5) )
 
@@ -283,8 +292,6 @@ Check out the full set of significant DE genes
 ```{r}
 DT::datatable(de_results_sig)
 ```
-
-
 
 Save the results.
 
@@ -327,8 +334,16 @@ Make as generic as possible, just a framework.
 
 Have a dot point list of what _every_ field in the default output is. Refer to docs wherever possible.
 
-* **Column name 1** : This is xyz
-* **Column name 2** : This is xyz
+* **celltype**: The cluster or celltype the contrat is within. Added by running code.
+* **contrast**: The name of what is being compared. Added by running code.
+* **target** : Gene name. (NB: Added by our running code, in the direct output of  FindMarkers(), these are row names instead)
+* **avg_expression** : Average expression of target within celltype group. (Added by running code)
+* **p_val** : P value without multiple hypothesis correction - see *p_val_adj* 
+* **avg_log2FC** : Average log 2 fold change of the comparison. Is calculated as: _log2(test expression) - log2(control expression)_ A value of 0 represents no change, +1 is a doubling, and -1 is a halving of expression.
+* **pct.1** : Percent of cells in group 1 (generally test) that express the gene at all.
+* **pct.2** : Percent of cells in group 2 (generally control/WT/reference) that express the gene at all.
+* **p_val_adj** : Pvalue with multiple hypothesis correction. This may be used for filtering.
+
 
 
 
@@ -336,7 +351,15 @@ Have a dot point list of what _every_ field in the default output is. Refer to d
 
 List of useful resources. Papers, vignettes, pertinent forum posts 
 
-* [Wnt4 KO in developing mouse kidney - 10X Chromium scRNAseq](d_Wnt4KO.Rmd): [Forming nephrons promote nephron progenitor maintenance and branching morphogenesis via paracrine BMP4 signalling under the control of Wnt4](https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full) [@moreauFormingNephronsPromote2023a] : The paper with this data.
+* [Wnt4 KO in developing mouse kidney - 10X Chromium scRNAseq](d_Wnt4KO.html): [Forming nephrons promote nephron progenitor maintenance and branching morphogenesis via paracrine BMP4 signalling under the control of Wnt4](https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full) [@moreauFormingNephronsPromote2023a] : The paper with this data.
+
+
+
+* [Seurat Differential Expression Vignette](https://satijalab.org/seurat/articles/de_vignette) : How to do differential expression with the seurat package. Tells you how to use the multiple statistical tests that seurat offers.
+* [OSCA Differntial Expression](https://bioconductor.org/books/3.19/OSCA.multisample/multi-sample-comparisons.html): The excellent book [Orchestrating single cell analysis](https://bioconductor.org/books/release/OSCA/book-contents.html#multi-sample) includes a section on differential expression, it focusses on pseuboulk approaches with replicates (which can't be used for a 1 vs 1) using the bioconductor toolkit, but provides useful background.
+
+
+
 
 
 # Refereneces
