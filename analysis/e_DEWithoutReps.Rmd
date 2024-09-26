@@ -1,9 +1,7 @@
 ---
-title: "Example Title"
+title: "scRNAseq differential expression without replicates"
 author: 
-   - "Bessie Bioinformatician"
-   - "Robert DropTable-Students (User Review)"
-   - "Steph Stats (Statistical Review)"
+   - "Sarah Williams"
 output:
   html_notebook: 
     toc: yes
@@ -71,7 +69,7 @@ Steps:
 
 Essentially the results we get will be testing the difference between *this* specific sample and *that* specific sample. The p-values for such a test can be very significant!
 
-We cannot claim for certain these results generalise to other samples, but they're likely good candidates for further work!
+But those p-values can't be compared to those using multiple samples, and we cannot tell if our results will generalise to other samples. They are likely good candidates for further work though!
 
 **But what about pooled samples? **
 
@@ -84,7 +82,7 @@ NB: Using cell hashing approaches to tag samples before pooling avoids this issu
 
 # Worked example 
 
-Data from paper [Forming nephrons promote nephron progenitor maintenance and branching morphogenesis via paracrine BMP4 signalling under the control of Wnt4](https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full) [@moreauFormingNephronsPromote2023a]
+The data for this example is from paper [Forming nephrons promote nephron progenitor maintenance and branching morphogenesis via paracrine BMP4 signalling under the control of Wnt4](https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full) [@moreauFormingNephronsPromote2023a]
 
 This study included 10X chromium single cell RNAseq data from 4 conditions, with 3-4 E14.5 mice pooled per group. 
 
@@ -121,6 +119,11 @@ so <- readRDS(seurat_file)
 
 ## Experimental Design
 
+
+In this case the sample (sample 1-4), 'genotype' GT effect and GT short columns are just different labels for this same groups.  We will use GTshort as our 'sample' names throughout.
+
+There are between 4000 and 10000 cells per sample. 
+
 ```{r}
 select(so@meta.data, sample, Genotype, GTeffect, GTshort) %>% 
   as_tibble() %>% 
@@ -131,7 +134,6 @@ select(so@meta.data, sample, Genotype, GTeffect, GTshort) %>%
 
 
 ## Filter
-
 
 
 ### Counts per cell
@@ -151,15 +153,11 @@ How many cells are there for each celltype for each sample? If there are too few
 
 
 How many is too few? 50 might be a good threshold. In this case however, we might 
-consider being very permissive and allowing just 20 cells to look at some celltypes
-that are clearly reduced or increased in number between conditions (e.g. c9,c10,c11)
-They're interesting in this experiment, but have to keep in mind during interpretation
-that results may be less reliable.
+consider being very permissive and allowing just 20 cells to look at some celltypes that are clearly reduced or increased in number between conditions (e.g. c9,c10,c11). 
 
-Using the 'GTshort' annotation for our sample names.
+They're interesting in this experiment, but have to keep in mind during interpretation that results may be less reliable. 
 
-We will apply that filter when running the differential expression.
-
+We will apply that filter later when running the differential expression.
 
 ```{r}
 min_cells_per_group <- 20 # used later
@@ -176,19 +174,46 @@ Talk about options. ...
 * layer vs assay
 * SCT vs RNA 
 * count vs data vs data scale
+* subsampling
+* min.pct
+
+```{r eval=FALSE}
+      de_result <- FindMarkers(so.this, 
+                               ident.1  = contrast[1], 
+                               ident.2  = contrast[2],
+                               slot     = 'data',
+                               test.use = "wilcox", # the default
+                               min.pct  = 0.01,   # Note 
+                               max.cells.per.ident = 100 # 1000 # if you have really big clusters, set this to subsample!
+                               )
+  
+
+```
+
 
 
 ## Run differential expression for every cluster
+
+We typically want to know about changes in every cluster. We can simply loop through and run them one-by-one. This can make for a lot of contrasts!
+
+```
+2x comparisons * 19x clusters = 38 sets of differential results 
+```
+
+The below code makes a big table of all the tests - recording which contrast was being done in which cluster.
+
+
+
+NB: Note that the _FindMarkers()_ function returns a table with feature names as a rowname. Rownames are expected to be unique. So while that is fine for one comparison, but when we want to put more together, we need to give it its own column. If we don't, there'll be gene names with '.1' appended to the end!
 
 
 ```{r}
 # Set threhoehsolds
 min_cells_per_group <- 20
 
-
 # Calculate DE across every celltype
 # Empty list to collect results
-de_result_list <- list()
+de_result_list     <- list()
 de_result_sig_list <- list()
 
 # the contrasts
@@ -203,7 +228,7 @@ contrast_list <-  list( # 'Test'      vs  'control'
 #names(contrast_list) <- contrast_names
 
 
-# note keeping all 4 samples before two contrasts. (actually does that matter)
+# note keeping all 4 samples before two contrasts. (actually does that matter for wilcox ranK sum - CHECK)
 
 #the_celltype = 'c15: Podocyte'
 #the_celltype = "c16: Blood"
@@ -310,6 +335,24 @@ write_xlsx(de_result_sig_list,  "~/myproject/de_results_sig.xlsx")
 
 
 
+## Check individual results
+
+Plot some example genes.
+
+
+Discuss (how to pick stuff thats real)
+
+* further filtering - where small significant changes dominate
+* violin plots are hard to read
+* MA style plots.
+
+
+
+
+
+
+
+
 
 
 # Code Snippet
@@ -328,11 +371,8 @@ Make as generic as possible, just a framework.
 # Results
 
 ```{r}
-# Display results table of stats
+DT::datatable(de_result.sig)
 ```
-
-
-Have a dot point list of what _every_ field in the default output is. Refer to docs wherever possible.
 
 * **celltype**: The cluster or celltype the contrat is within. Added by running code.
 * **contrast**: The name of what is being compared. Added by running code.
