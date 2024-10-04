@@ -165,30 +165,175 @@ table(so$CelltypeCode, so$GTshort)
 ```
 
 
+## What data/assay/layer do we actually need?
+
+
+In short - we want to run this differential expression on the normalised data,
+and typically that's in the *data* layer of the *RNA* assay.
+
+
+-----
+
+The longer explaination:
+
+From seurat v5, a Seruat object has mutiple _assays_ (but usually just one, called RNA), each of which has multiple _layers_.
+
+Each _assay_ generally has some or all of the following layers:
+
+* **counts** :  Just the plain old counts matrix.
+* **data** : A normalised counts matrix 
+* **scale.data** : A normalised and scaled counts matrix, which often only contains a subset of the highly variable genes. (Used for PCA e.t.c)
+
+Depending on how you setup your object, you might have one set of counts/data/scale.data layers per sample. (e.g. counts.sample1, counts.sample2 ...). In that case you'll want to proceed with differential expression on a merged layer - which you can produce with the JoinLayers() function. See how that's used in [seurats v5 integration tutorial](https://satijalab.org/seurat/articles/seurat5_integration#layers-in-the-seurat-v5-object)
+
+
+Multiple assays come into play more often with multimodal data - a different assay per modality (RNA, ADT, e.t.c). See [multimodal vigette](https://satijalab.org/seurat/articles/multimodal_vignette) for details.
+
+
+Beware: The notation around Layers and Assays has changed between Seurat v4 and v5! In older seurat objects ‘assay’ is used to refer to v5 layers.
+
+--------
+
+This dataset however is a little different.It was analysed with an earlier version of Seurat, and has ended up with two assays; an RNA and an SCT assay. 
+NB: The newer [seurat 5 integration workflow](https://satijalab.org/seurat/articles/seurat5_integration#layers-in-the-seurat-v5-object) behaves differently now, and doesn't make that assay like that.
+
+
+
+```{r}
+Assays(so)
+DefaultAssay(so)
+```
+
+Alternatively the seurat summary tells us the assasy, and layers in the default assay
+```{r}
+so
+```
+
+In any case, we want the unintegrated 'RNA' assay for calculating differential expression, not our integrated SCT assay (This is the reccomendation of the Seurat developers, see [discussion](https://github.com/satijalab/seurat/discussions/4032) )
+The between sample integration was useful for visualising the cell-cell relationships together (e.g. superimposing samples on a UMAP layout), but for differential expression, we need to look at the variation between samples.
+
+
+
+```{r}
+DefaultAssay(so) <- 'RNA'
+so
+```
+
+Update: seem to have counts in rna data, chuck a normalisation on.
+```{r}
+so <- NormalizeData(so)
+```
+
+
+```{r}
+GetAssayData(so, assay = "RNA", layer = "counts")[1:10,1:3]
+GetAssayData(so, assay = "RNA", layer = "data")[1:10,1:3]
+GetAssayData(so, assay = "SCT", layer = "data")[1:10,1:3]
+GetAssayData(so, assay = "SCT", layer = "scale.data")[1:10,1:3]
+```
+
+
+
+
+
+
+
 ## Run just one differential expression
 
+Lets say we want to test the differnece between samples Wnt4KO and Wnt4Het within Nephron progenitors (NP),
 
-Talk about options. ...
 
+We first need to setup our object for use with the _FindMarkers_ function that runs differential expression.
 
-* layer vs assay
-* SCT vs RNA 
-* count vs data vs data scale
-* subsampling
-* min.pct
-
-```{r eval=FALSE}
-de_result <- FindMarkers(so.this, 
-                               ident.1  = 'Wnt4KO', 
-                               ident.2  = 'Wnt4Het',
-                               slot     = 'data',
-                               test.use = "wilcox", # the default
-                               min.pct  = 0.01,   # Note 
-                               max.cells.per.ident = 100 # 1000 # if you have really big clusters, set this to subsample!
-                               )
-  
-
+Though we can specify our layer with the slot parameter, there's no parameter for assay in FindMarkers, you need to make sure your assay is the one you want to use.
+```{r}
+DefaultAssay(so)
+DefaultAssay(so) <- "RNA"
 ```
+
+Likewise, there's no paremeter to specify which column of the metadata out groups may be found in. We 
+instead set Indents()
+```{r}
+Idents(so) <- so$GTshort
+levels(Idents(so))
+```
+
+Now make a subset of our seurat object that's just the NP cells.
+
+```{r}
+so.np <- subset(so, CelltypeCode == "c3: NP")
+table(so$GTshort)
+```
+
+
+Finally - run findmarkers. We will stick with the default method that uses a wilcoxon rank-sum test (but to explore other tests see the (seurat DE vignette)[https://satijalab.org/seurat/articles/de_vignette]). 
+
+```{r}
+de_result <- FindMarkers(so.np, 
+                         ident.1  = 'Wnt4KO', 
+                         ident.2  = 'Wnt4Het',
+                         slot     = 'data',   # This is the default
+                         test.use = "wilcox",  # This is the default
+                         max.cells.per.ident = 40 # subset for speed.
+)
+```
+
+Check out those p-values! They're so significant because each cell is treated as its own replicate.
+```{r}
+DT::datatable(de_result[1:100,])
+```
+
+
+Some improvements/changes can be made:
+
+* **This is slow**: Add the *max.cells.per.ident* parameter to subsample down to a specified maximum number of cells per group. It can be useful to set a very low number when testing (e.g 20), then a much higher one (e.g. 500, or no limit at all) for your real run.
+
+* **Adjust filtering**: 
+   * By default the results are filtered by a *logfc.threshold* of 0.1. Consider removing this threshold (set it to 0) if you want to get stats for genes that are present but unchanging.
+   * *min.cells.pct* by default 0.01, genes with very low expression in both groups will be ignored. You might consider disabling this test if you've already done your onw filtering.
+
+
+```{r}
+de_result <- FindMarkers(so.np, 
+                         ident.1  = 'Wnt4KO', 
+                         ident.2  = 'Wnt4Het',
+                         slot     = 'data',   # This is the default
+                         test.use = "wilcox",  # This is the default
+                         logfc.threshold = 0, 
+                         max.cells.per.ident = 40 # subset for speed.
+)
+```
+
+Same contrast with fewer cells.
+
+```{r}
+DT::datatable(de_result[1:100,])
+```
+
+
+Its quite common practice, especially with so many highly significant genes, to 
+filter our results by fold-change. Its important threshold on 'absolute' values,
+so we don't accidentally exclude downregulation; like that Wnt4 being downregulated in its knockout!
+```{r}
+DT::datatable(filter(de_result, abs(avg_log2FC) > 2 ))
+```
+
+
+
+
+
+
+   
+   
+
+
+
+
+
+
+
+
+
 
 
 
@@ -398,7 +543,7 @@ List of useful resources. Papers, vignettes, pertinent forum posts
 * [Seurat Differential Expression Vignette](https://satijalab.org/seurat/articles/de_vignette) : How to do differential expression with the seurat package. Tells you how to use the multiple statistical tests that seurat offers.
 * [OSCA Differntial Expression](https://bioconductor.org/books/3.19/OSCA.multisample/multi-sample-comparisons.html): The excellent book [Orchestrating single cell analysis](https://bioconductor.org/books/release/OSCA/book-contents.html#multi-sample) includes a section on differential expression, it focusses on pseuboulk approaches with replicates (which can't be used for a 1 vs 1) using the bioconductor toolkit, but provides useful background.
 
-
+* ['The Seurat Object' in scRNAseq analysis with R](https://swbioinf.github.io/scRNAseqInR_Doco/preprocessing.html#the-seurat-object) Small section of this document 'the Seurat object' has some explanation of the seurat object format.
 
 
 
