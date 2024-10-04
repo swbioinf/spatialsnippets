@@ -178,9 +178,9 @@ Talk about options. ...
 * min.pct
 
 ```{r eval=FALSE}
-      de_result <- FindMarkers(so.this, 
-                               ident.1  = contrast[1], 
-                               ident.2  = contrast[2],
+de_result <- FindMarkers(so.this, 
+                               ident.1  = 'Wnt4KO', 
+                               ident.2  = 'Wnt4Het',
                                slot     = 'data',
                                test.use = "wilcox", # the default
                                min.pct  = 0.01,   # Note 
@@ -207,7 +207,7 @@ The below code makes a big table of all the tests - recording which contrast was
 NB: Note that the _FindMarkers()_ function returns a table with feature names as a rowname. Rownames are expected to be unique. So while that is fine for one comparison, but when we want to put more together, we need to give it its own column. If we don't, there'll be gene names with '.1' appended to the end!
 
 
-```{r}
+```{r eval=FALSE}
 # Set threhoehsolds
 min_cells_per_group <- 20
 
@@ -314,7 +314,7 @@ de_results_sig <- bind_rows(de_result_sig_list)
 
 Check out the full set of significant DE genes
 
-```{r}
+```{r eval=FALSE}
 DT::datatable(de_results_sig)
 ```
 
@@ -370,7 +370,7 @@ Make as generic as possible, just a framework.
 
 # Results
 
-```{r}
+```{r eval=FALSE}
 DT::datatable(de_result.sig)
 ```
 
