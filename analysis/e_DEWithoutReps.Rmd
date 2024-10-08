@@ -273,8 +273,9 @@ de_result <- FindMarkers(so.np,
                          ident.1  = 'Wnt4KO', 
                          ident.2  = 'Wnt4Het',
                          slot     = 'data',   # This is the default
-                         test.use = "wilcox",  # This is the default
-                         max.cells.per.ident = 40 # subset for speed.
+                         max.cells.per.ident = 40, # subset for speed. <<<<<<< remove
+                         test.use = "wilcox"  # This is the default
+
 )
 ```
 
@@ -286,8 +287,7 @@ DT::datatable(de_result[1:100,])
 
 Some improvements/changes can be made:
 
-* **This is slow**: Add the *max.cells.per.ident* parameter to subsample down to a specified maximum number of cells per group. It can be useful to set a very low number when testing (e.g 20), then a much higher one (e.g. 500, or no limit at all) for your real run.
-
+* **This is slow**: Add the *max.cells.per.ident* parameter to subsample down to a specified maximum number of cells per group. It can be useful to set a very low number when testing (e.g 20), then a much higher one (e.g. 500, or no limit at all) for your real run. NB: If Seurat suggests you install a library called presto to speed this up, its well worth doing!
 * **Adjust filtering**: 
    * By default the results are filtered by a *logfc.threshold* of 0.1. Consider removing this threshold (set it to 0) if you want to get stats for genes that are present but unchanging.
    * *min.cells.pct* by default 0.01, genes with very low expression in both groups will be ignored. You might consider disabling this test if you've already done your onw filtering.
@@ -311,11 +311,13 @@ DT::datatable(de_result[1:100,])
 ```
 
 
-Its quite common practice, especially with so many highly significant genes, to 
-filter our results by fold-change. Its important threshold on 'absolute' values,
-so we don't accidentally exclude downregulation; like that Wnt4 being downregulated in its knockout!
+Its quite common practice, especially with so many highly significant genes
+(some of which have a small log2FC), to filter our results by fold-change. 
+Common thresholds are 1 (log2(2) - a doubling or halving of expression), or
+log2(1.5) for 1.5fold-changes.
+Note that threshold is on 'absolute' values, so we don't accidentally exclude downregulation; like that Wnt4 being downregulated in its knockout!
 ```{r}
-DT::datatable(filter(de_result, abs(avg_log2FC) > 2 ))
+DT::datatable(filter(de_result, abs(avg_log2FC) >= log2(2) ))
 ```
 
 
@@ -324,35 +326,22 @@ DT::datatable(filter(de_result, abs(avg_log2FC) > 2 ))
 
 
    
-   
-
-
-
-
-
-
-
-
-
-
 
 
 ## Run differential expression for every cluster
 
-We typically want to know about changes in every cluster. We can simply loop through and run them one-by-one. This can make for a lot of contrasts!
+We typically want to know about changes in every cluster. This can make for a lot of contrasts!
 
 ```
 2x comparisons * 19x clusters = 38 sets of differential results 
 ```
 
-The below code makes a big table of all the tests - recording which contrast was being done in which cluster.
-
-
+We can simply loop through and run them one-by-one. The code below makes a big table of all the tests - recording which contrast was being done in which cluster.
 
 NB: Note that the _FindMarkers()_ function returns a table with feature names as a rowname. Rownames are expected to be unique. So while that is fine for one comparison, but when we want to put more together, we need to give it its own column. If we don't, there'll be gene names with '.1' appended to the end!
 
 
-```{r eval=FALSE}
+```{r}
 # Set threhoehsolds
 min_cells_per_group <- 20
 
@@ -378,8 +367,10 @@ contrast_list <-  list( # 'Test'      vs  'control'
 #the_celltype = 'c15: Podocyte'
 #the_celltype = "c16: Blood"
 #contrast_name <- 'TotalWnt4KOvsHet'
-  
-for (the_celltype in levels(so$CelltypeCode)[5:7]) {
+
+
+# Loop through every celltype/cluster
+for (the_celltype in levels(so$CelltypeCode)) {
   
   # Subset to one cell type. 
   print(the_celltype)
@@ -395,7 +386,7 @@ for (the_celltype in levels(so$CelltypeCode)[5:7]) {
   # SUbset to only those samples (might be all cells, might be no cells)
   so.this <- subset(so.this, GTshort %in% samples_with_enough_cells)
   
-
+  ## Loop through every contrast 
   # For each listed contrast, do both sides of the contrast have enough cells?
   # This is of course much simpler if you only have one contrast!
   for (contrast_name in names(contrast_list)) {
@@ -414,10 +405,11 @@ for (the_celltype in levels(so$CelltypeCode)[5:7]) {
       
       de_result <- FindMarkers(so.this, 
                                ident.1  = contrast[1], 
-                               ident.2 = contrast[2],
+                               ident.2  = contrast[2],
                                slot     = 'data',
                                test.use = "wilcox", # the default
                                min.pct  = 0.01,   # Note 
+                               logfc.threshold = 0, 
                                max.cells.per.ident = 100 # 1000 # if you have really big clusters, set this to subsample!
                                )
   
@@ -439,7 +431,7 @@ for (the_celltype in levels(so$CelltypeCode)[5:7]) {
       # Filter to just significant results, optionally by log2FC.
       de_result.sig <- filter(de_result.formatted, 
                          p_val_adj < 0.01,
-                         abs(avg_log2FC) > log2(1.5) )
+                         abs(avg_log2FC) >= log2(1.5) )
 
       # Record these results in a list to combine
       full_name <- paste(contrast_name, the_celltype)
@@ -480,16 +472,130 @@ write_xlsx(de_result_sig_list,  "~/myproject/de_results_sig.xlsx")
 
 
 
-## Check individual results
+## Visualising DE results for a contrast
 
-Plot some example genes.
+Plotting an overview
+
+```{r}
+
+library(ggrepel) #library for non-overlapping plot text
+
+# Get the results of Wnt4KO vs Het , within the c6 Stromal cluster.
+de_result <- filter(de_results_all, celltype == "c3: NP", contrast == "TotalWnt4KOvsHet")
+
+# Would like to show a few genes on the plot - the top 5 most significant with 2-fold change.
+#top5_genes <- arrange(de_result, p_val_adj) %>% head(n=5)
+top5_genes.2fc <- arrange(de_result, p_val_adj) %>% filter( abs(avg_log2FC ) > 1) %>% head(n=5)
 
 
-Discuss (how to pick stuff thats real)
+DT::datatable(filter(de_result, p_val_adj < 0.01))
 
-* further filtering - where small significant changes dominate
-* violin plots are hard to read
-* MA style plots.
+```
+
+```{r}
+ggplot(de_result, aes(x=avg_expression, y=avg_log2FC, col=p_val_adj < 0.01)) +
+  geom_hline(yintercept = 0, col='grey30') +
+  geom_point(pch=3) +
+  geom_point(data=top5_genes.2fc) +
+  geom_text_repel(data=top5_genes.2fc, mapping=aes(label=`target`)) + 
+  scale_colour_manual(values=c('FALSE'='black', 'TRUE'= 'red')) +
+  theme_bw() +
+  theme(legend.position = "None") +
+  ggtitle("Differential expression within c3: NP, Wnt4KO vs Het")
+```
+
+And a volcano plot
+
+```{r}
+ggplot(de_result, aes(x=avg_log2FC, y=-log10(p_val) ,col=p_val_adj < 0.01)) +
+  geom_hline(yintercept = 0, col='grey30') +
+  geom_point(pch=3) +
+  geom_point(data=top5_genes.2fc) +
+  geom_text_repel(data=top5_genes.2fc, mapping=aes(label=`target`)) + 
+  scale_colour_manual(values=c('FALSE'='black', 'TRUE'= 'red')) +
+  theme_bw() +
+  theme(legend.position = "None") +
+  ggtitle("DE volcano plot within c3: NP, Wnt4KO vs Het")
+
+```
+
+
+## Plot some individual genes
+
+
+
+```{r}
+# for plotting, make a subset with just that cluster
+so.cluster <- subset(so, CelltypeCode == 'c3: NP')
+
+
+# Subset the results
+de_result.sig <- filter(de_results_all, 
+                        celltype == "c3: NP", 
+                        contrast == "TotalWnt4KOvsHet",
+                        p_val_adj <= 0.01
+                        )
+
+filter( de_result, p_val_adj < 0.01) %>% DT::datatable()
+
+```
+
+
+
+
+First step would be a violin plot. Rps29 has very high expresison, and is in practically every cell. Stc1 is more typical low expression, but still quite informative. The black line at the bottom of these violin plots is typical - that's cells with zero copies of the gene dominating the plot. 
+```{r}
+VlnPlot(so.cluster, features=c('Rps29', 'Stc1'))
+```
+
+
+
+Normalised expression across the umap can give a good overview of how specific your DE gene is expressed. Can see that there's alot more expression of Rps29 overall, and its pretty ubiquitous. 
+
+```{r}
+FeaturePlot(so, features='Rps29') 
+FeaturePlot(so, features='Stc1')
+```
+
+It can also be worth checking how high counts are - note that Stc1 maxes out at 8 copies in a cell. Rps29 looks more specific now - but many of the low counts are in the grey (this isn't a good visualisation for that reason).
+```{r}
+FeaturePlot(so, features='Rps29', slot = 'counts')
+FeaturePlot(so, features='Stc1', slot = 'counts')
+```
+
+
+
+If the Seurat default plots aren't giving enough control for plotting your experiment; The 'fetchData' function builds a table from the various sources in the seurat data (since gene expression or UMAP coordinates arne't in the metadata). You can build your own pretty plots from there.
+```{r}
+plottable <- 
+  FetchData(so, c('GTshort', 'CelltypeCode', # From metadata table
+                  'UMAP_1','UMAP_2',         # From dimensional reductions
+                  'Rps29','Stc1'                   # Genes from default assay 
+                ),
+          slot = 'data' #layer to get (slot is pre seurat 5 termnology)
+  )
+head(plottable)
+```
+
+```{r}
+ggplot(plottable, aes(x=UMAP_1, y=UMAP_2, col=Stc1)) +
+  geom_point(pch=3) +
+  theme_bw() +
+  scale_colour_viridis_c(direction=-1) +
+  facet_wrap(~GTshort)
+```
+
+
+```{r}
+ggplot(plottable, aes(x=CelltypeCode, y=Stc1, fill=GTshort)) +
+  geom_boxplot( outlier.alpha = .5, outlier.shape = 3) + 
+  xlab("") +
+  coord_flip() + 
+  theme_bw() 
+```
+
+
+
 
 
 
