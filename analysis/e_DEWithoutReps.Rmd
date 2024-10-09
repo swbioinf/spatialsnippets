@@ -68,7 +68,7 @@ Steps:
 This vignette describes a default approach using Seurat built-in methods. It is by no means the only way. 
 
 
-It's highly recommended to check out the paper [Confronting false discoveries in single-cell differential expression](https://www.nature.com/articles/s41467-021-25960-2)[@squairConfrontingFalseDiscoveries2021], which outlines the importance of replicates, benchmarking of different scRNAseq differenetial expression tools and common biases in results.
+It's highly recommended to check out the paper [Confronting false discoveries in single-cell differential expression](https://www.nature.com/articles/s41467-021-25960-2)[@squair_confronting_2021], which outlines the importance of replicates, benchmarking of different scRNAseq differenetial expression tools and common biases in results.
 
 
 
@@ -94,7 +94,7 @@ NB: Using cell hashing approaches to tag samples before pooling avoids this issu
 
 # Worked example 
 
-The data for this example is from paper [Forming nephrons promote nephron progenitor maintenance and branching morphogenesis via paracrine BMP4 signalling under the control of Wnt4](https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full) [@moreauFormingNephronsPromote2023a]
+The data for this example is from paper [Forming nephrons promote nephron progenitor maintenance and branching morphogenesis via paracrine BMP4 signalling under the control of Wnt4](https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full) [@moreau_forming_2023]
 
 This study included 10X chromium single cell RNAseq data from 4 conditions, with 3-4 E14.5 mice pooled per group. 
 
