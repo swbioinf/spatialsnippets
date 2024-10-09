@@ -104,8 +104,6 @@ In this vignette, we will test for differential expression in each cell type for
 
 ```{r}
 library(Seurat)
-library(edgeR)
-library(limma)
 library(DT)
 library(tidyverse)
 
@@ -219,18 +217,18 @@ DefaultAssay(so) <- 'RNA'
 so
 ```
 
-Update: seem to have counts in rna data, chuck a normalisation on.
+We don't have the normalised RNA  data assay, so create it now.
 ```{r}
 so <- NormalizeData(so)
 ```
 
 
-```{r}
-GetAssayData(so, assay = "RNA", layer = "counts")[1:10,1:3]
-GetAssayData(so, assay = "RNA", layer = "data")[1:10,1:3]
-GetAssayData(so, assay = "SCT", layer = "data")[1:10,1:3]
-GetAssayData(so, assay = "SCT", layer = "scale.data")[1:10,1:3]
-```
+<!-- ```{r} -->
+<!-- GetAssayData(so, assay = "RNA", layer = "counts")[1:10,1:3] -->
+<!-- GetAssayData(so, assay = "RNA", layer = "data")[1:10,1:3] -->
+<!-- GetAssayData(so, assay = "SCT", layer = "data")[1:10,1:3] -->
+<!-- GetAssayData(so, assay = "SCT", layer = "scale.data")[1:10,1:3] -->
+<!-- ``` -->
 
 
 
@@ -290,8 +288,7 @@ Some improvements/changes can be made:
 * **This is slow**: Add the *max.cells.per.ident* parameter to subsample down to a specified maximum number of cells per group. It can be useful to set a very low number when testing (e.g 20), then a much higher one (e.g. 500, or no limit at all) for your real run. NB: If Seurat suggests you install a library called presto to speed this up, its well worth doing!
 * **Adjust filtering**: 
    * By default the results are filtered by a *logfc.threshold* of 0.1. Consider removing this threshold (set it to 0) if you want to get stats for genes that are present but unchanging.
-   * *min.cells.pct* by default 0.01, genes with very low expression in both groups will be ignored. You might consider disabling this test if you've already done your onw filtering.
-
+   * *min.cells.pct* by default 0.01, genes with very low expression in both groups will be ignored. You can't find differences when there is that little expression, and  keeping them in makes your multiple hypothesis correction more aggressive. You might consider disabling this test if you've already done your one filtering. But this default is good enough.
 
 ```{r}
 de_result <- FindMarkers(so.np, 
@@ -299,8 +296,9 @@ de_result <- FindMarkers(so.np,
                          ident.2  = 'Wnt4Het',
                          slot     = 'data',   # This is the default
                          test.use = "wilcox",  # This is the default
-                         logfc.threshold = 0, 
-                         max.cells.per.ident = 40 # subset for speed.
+                         logfc.threshold     = 0, 
+                         min.pct             = 0.1, # this is the default.
+                         max.cells.per.ident = 500  # subset for speed e.g 500, 200, or even less for testing.
 )
 ```
 
@@ -383,9 +381,7 @@ for (the_celltype in levels(so$CelltypeCode)) {
   print(cells_per_sample)
   samples_with_enough_cells <- names(cells_per_sample)[cells_per_sample > min_cells_per_group]
   
-  # SUbset to only those samples (might be all cells, might be no cells)
-  so.this <- subset(so.this, GTshort %in% samples_with_enough_cells)
-  
+
   ## Loop through every contrast 
   # For each listed contrast, do both sides of the contrast have enough cells?
   # This is of course much simpler if you only have one contrast!
@@ -464,9 +460,13 @@ write_tsv(x = de_results_all, "~/myproject/de_results_all.tsv")
 
 # If you don't have too many contrasts and celltypes, 
 # you can save it as an excel file, with each contrast in a seprate tab.
+# In this canse, excel can't have ':'symbols in the sheet names (which are drawn from the list names), so we replace them.
+# Also consider keeping names short, use a cluster code instead of cell type. 
 library(writexl)
-write_xlsx(de_result_list,      "~/myproject/de_results_all.xlsx")
-write_xlsx(de_result_sig_list,  "~/myproject/de_results_sig.xlsx")
+de_result_list.excel <- setNames(de_result_list, nm=gsub(": ","_",names(de_result_list)))
+de_result_sig_list.excel <- setNames(de_result_sig_list, nm=gsub(": ","_",names(de_result_sig_list)))
+write_xlsx(de_result_list.excel,      "~/myproject/de_results_all.xlsx")
+write_xlsx(de_result_sig_list.excel,  "~/myproject/de_results_sig.xlsx")
 ```
 
 
@@ -612,9 +612,126 @@ Copy and paste this bit into your own script to adapt to your own data.
 Make as generic as possible, just a framework.
 
 ```{r eval=FALSE}
+# Libraries
+library(Seurat)
+library(tidyverse)
+library(writexl)
 
-# This code does not run
+## Seurat object
+# Have seurat object loaded into so.
+# And the following metadata columns
+# * cluster    - the cluster or celltype
+# * samplename - the sample / group to compare (n=1).
+#              - for the snippet, these are called 'Test' and 'Control'
 
+# Ensure that both are set as factors
+so$samplename  <- factor(so$samplename) # levels are 'Test' and 'Control'
+so$cluster     <- factor(so$cluster) 
+
+## Set default assay
+DefaultAssay(so) <- "RNA"
+
+
+## Set thresholds
+min_cells_per_group <- 20 # Skip comparisons, when fewer than this many cells in one side of the comparison.
+p_value_threshold   <- 0.01 # threshold for significance (after correction)
+log_fc_threshold    <- 0    # threshold for sitnificange (0=none), log2(1.5), log2(2) also options.
+
+
+
+## Define contrasts
+# Note this is a list of pairs of samplenames from 'samplename' column.
+# There can be multiple contrasts.
+# This will build names for each contrast
+contrast_list <-  list(c('Test','Control'))
+make_contrast_name <- function(contrast_parts){paste0(contrast_parts[1],"vs",contrast_parts[1])}
+contrast_names <- sapply(FUN=make_contrast_name, X=contrast_list) 
+names(contrast_list) <- contrast_names
+
+
+
+## Prepare empty lists to store results.
+de_result_list     <- list()
+de_result_sig_list <- list()
+
+## Loop through each cluster / celltype
+for (the_celltype in levels(so$cluster)) {
+  
+  ## Subset to the cluster/celltype
+  print(the_celltype)
+  so.this <- subset(so, CelltypeCode == the_celltype)
+
+  # Count how many cells within each sample
+  # And list which samples have more than the minimum
+  cells_per_sample <- table(so.this$samplename)
+  print(cells_per_sample)
+  samples_with_enough_cells <- names(cells_per_sample)[cells_per_sample > min_cells_per_group]
+
+  ## Loop through every contrast 
+  # For each listed contrast, do both sides of the contrast have enough cells?
+  # This is of course much simpler if you only have one contrast!
+  for (contrast_name in names(contrast_list)) {
+    
+    # from contrast list pull out list of the two samples involved;
+    # contrast_name is 'TestvsControl'  
+    # c('Test', 'Control')
+    contrast <- contrast_list[[contrast_name]]
+    
+    # Only run this contrast if both sides pass!
+    if (all(contrast %in% samples_with_enough_cells)) {
+      print(contrast_name) 
+
+      # We need to tell Seurat to group by _sample_ not cluster.
+      Idents(so.this) <- so.this$samplename
+  
+      # Finally, calculate the DE!      
+      de_result <- FindMarkers(so.this, 
+                               ident.1  = contrast[1], 
+                               ident.2  = contrast[2],
+                               slot     = 'data',
+                               test.use = "wilcox", # the default
+                               min.pct  = 0.01,     # Note 
+                               logfc.threshold     = 0,  # Report all, filter later 
+                               max.cells.per.ident = 500 # Optional - if you have really big clusters, set this to subsample!
+                               )
+  
+      
+      # It can be helpful to know the average expression of a gene
+      # This will give us the average (per cell) within this cluster.
+      avg_expression <- rowMeans(GetAssayData(so.this, assay = 'RNA', layer="data"))
+      
+      # Format the results with extra info, record the contrast run.
+      de_result.formatted <- de_result %>%
+        rownames_to_column("target") %>%
+        mutate(contrast=contrast_name,
+               celltype=the_celltype,
+               avg_expression=avg_expression[target]) %>%
+        select(celltype,contrast,target,avg_expression, everything()) %>%
+        arrange(p_val)
+  
+      # Filter to just significant results, optionally by log2FC.
+      de_result.sig <- filter(de_result.formatted, 
+                         p_val_adj       <  p_value_threshold,
+                         abs(avg_log2FC) >= log_fc_threshold )
+
+      # Record these results in a list 
+      full_name <- paste(contrast_name, the_celltype)
+      de_result_list[[full_name]]     <- de_result.formatted
+      de_result_sig_list[[full_name]] <- de_result.sig
+      
+    }
+  }
+}
+# And combine all and significant results into two big tables.
+de_results_all <- bind_rows(de_result_list)
+de_results_sig <- bind_rows(de_result_sig_list)
+
+
+# Save the full set of results as a tab-deliminated text file
+# for processing, and excel files for browsing.
+write_tsv(de_results_all,       "~/myproject/de_results_all.tsv")
+write_xlsx(de_result_list,      "~/myproject/de_results_all.xlsx")
+write_xlsx(de_result_sig_list,  "~/myproject/de_results_sig.xlsx")
 ```
 
 
