@@ -1,0 +1,21 @@
+---
+title: "Contributing"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+---
+
+Main repo: https://github.com/swbioinf/spatialsnippets
+
+Contributions welcome.
+
+Template availble here
+* [New example template](e_template.html) : https://github.com/swbioinf/spatialsnippets/blob/main/analysis/e_template.Rmd
+

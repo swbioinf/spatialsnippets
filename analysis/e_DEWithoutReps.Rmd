@@ -37,39 +37,51 @@ test
 # Overview
 
 
-Sometimes there are no biological replicates, yet you still want to make a comparison. While not ideal, its possible. Individual cells may be treated as 'replicates' to explore the difference between two samples.
+Sometimes there are no biological replicates, yet you still want to compare gene expression between groups. While not ideal, its possible. Individual cells may be treated as 'replicates' to explore the difference between two samples.
+
+Commonly, this can be done for each cluster or celltype in your experiment. But in a single-sample pilot you could compare clusters to each other
+
 
 
 ![](assets/de_1v1.png)
 
-
 This requires:
 
-* Cell clusters
+* Cell clusters / cell types
 * 2 or more samples (or grouping to compare)
-
 
 For example:
 
 * What genes are differentially expressed between the knockout (n=1) and control(n=1), for every cell type.
 * In my n=1 pilot study - what is differentially expressed between two of my stromal clusters?
 
-
+<!--  Not really helpful
 Steps:
 
-1. Filter to testable genes (enough expression to see changes)
-2. Test for changes in gene expression
-3. Plot DE results and individual genes. 
+1. Test for changes in gene expression
+2. Plot DE results 
+3. Check individual genes of interest
+-->
+
+---------
+
+This vignette describes a default approach using Seurat built-in methods. It is by no means the only way. 
 
 
-## Gotchas
+It's highly recommended to check out the paper [Confronting false discoveries in single-cell differential expression](https://www.nature.com/articles/s41467-021-25960-2)[@squairConfrontingFalseDiscoveries2021], which outlines the importance of replicates, benchmarking of different scRNAseq differenetial expression tools and common biases in results.
 
+
+
+
+**Not suitable for replicates**
+
+The approach described in this document is really only useful when there are no replicates - using your replicates will proved much more biologically relevant results! If you were to use this approach you will loose the individual information!
 
 **Caveat on 1 vs 1 comparisons!**
 
 Essentially the results we get will be testing the difference between *this* specific sample and *that* specific sample. The p-values for such a test can be very significant!
 
-But those p-values can't be compared to those using multiple samples, and we cannot tell if our results will generalise to other samples. They are likely good candidates for further work though!
+But those p-values can't be compared to those using multiple samples, and we cannot tell if our results will generalise to other samples. They are likely good candidates for further work though! 
 
 **But what about pooled samples? **
 
@@ -153,28 +165,29 @@ How many cells are there for each celltype for each sample? If there are too few
 How many is too few? 50 might be a good threshold. In this case however, we might 
 consider being very permissive and allowing just 20 cells to look at some celltypes that are clearly reduced or increased in number between conditions (e.g. c9,c10,c11). 
 
-They're interesting in this experiment, but have to keep in mind during interpretation that results may be less reliable. 
+They're interesting in this experiment, but we have to keep in mind during interpretation that results may be less reliable. 
 
-We will apply that filter later when running the differential expression.
+We will apply that filter later ('min_cells_per_group') when running the differential expression.
 
 ```{r}
-min_cells_per_group <- 20 # used later
 table(so$CelltypeCode, so$GTshort)
 ```
 
 
-## What data/assay/layer do we actually need?
+
+## What data is used to calculate differential expression?
 
 
-In short - we want to run this differential expression on the normalised data,
-and typically that's in the *data* layer of the *RNA* assay.
+
+
+In short - we want to run this differential expression on the normalised data (which is on a log scale), and typically that's in the *data* layer of the *RNA* assay. 
 
 
 -----
 
-The longer explaination:
+The longer explanation:
 
-From seurat v5, a Seruat object has mutiple _assays_ (but usually just one, called RNA), each of which has multiple _layers_.
+From Seurat v5, a Seruat object has mutiple _assays_ (but usually just one, called RNA), each of which has multiple _layers_.
 
 Each _assay_ generally has some or all of the following layers:
 
@@ -182,19 +195,19 @@ Each _assay_ generally has some or all of the following layers:
 * **data** : A normalised counts matrix 
 * **scale.data** : A normalised and scaled counts matrix, which often only contains a subset of the highly variable genes. (Used for PCA e.t.c)
 
-Depending on how you setup your object, you might have one set of counts/data/scale.data layers per sample. (e.g. counts.sample1, counts.sample2 ...). In that case you'll want to proceed with differential expression on a merged layer - which you can produce with the JoinLayers() function. See how that's used in [seurats v5 integration tutorial](https://satijalab.org/seurat/articles/seurat5_integration#layers-in-the-seurat-v5-object)
+Depending on how you setup your object, you might instead have one set of counts/data/scale.data layers per sample. (e.g. counts.sample1, counts.sample2 ...). In that case you'll want to proceed with differential expression on a merged layer - which you can produce with the JoinLayers() function. See how that's used in [seurats v5 integration tutorial](https://satijalab.org/seurat/articles/seurat5_integration#layers-in-the-seurat-v5-object)
 
 
 Multiple assays come into play more often with multimodal data - a different assay per modality (RNA, ADT, e.t.c). See [multimodal vigette](https://satijalab.org/seurat/articles/multimodal_vignette) for details.
 
 
-Beware: The notation around Layers and Assays has changed between Seurat v4 and v5! In older seurat objects ‘assay’ is used to refer to v5 layers.
+Beware: The notation around Layers and Assays has changed between Seurat v4 and v5!
+Layers were called 'slots' before v5, and there was no concept of joining and splitting layers with different samples.
 
 --------
 
 This dataset however is a little different.It was analysed with an earlier version of Seurat, and has ended up with two assays; an RNA and an SCT assay. 
-NB: The newer [seurat 5 integration workflow](https://satijalab.org/seurat/articles/seurat5_integration#layers-in-the-seurat-v5-object) behaves differently now, and doesn't make that assay like that.
-
+NB: The newer [seurat 5 integration workflow](https://satijalab.org/seurat/articles/seurat5_integration#layers-in-the-seurat-v5-object) behaves differently now, and doesn't make that assay like that (NB: to be confirmed).
 
 
 ```{r}
@@ -207,7 +220,7 @@ Alternatively the seurat summary tells us the assasy, and layers in the default 
 so
 ```
 
-In any case, we want the unintegrated 'RNA' assay for calculating differential expression, not our integrated SCT assay (This is the reccomendation of the Seurat developers, see [discussion](https://github.com/satijalab/seurat/discussions/4032) )
+In any case, we want the unintegrated 'RNA' assay for calculating differential expression, not our integrated SCT assay (This is the reccomendation of the Seurat developers, see [discussion](https://github.com/satijalab/seurat/discussions/4032) ).
 The between sample integration was useful for visualising the cell-cell relationships together (e.g. superimposing samples on a UMAP layout), but for differential expression, we need to look at the variation between samples.
 
 
@@ -236,27 +249,27 @@ so <- NormalizeData(so)
 
 
 
-## Run just one differential expression
+## Run a single differential expression test
 
-Lets say we want to test the differnece between samples Wnt4KO and Wnt4Het within Nephron progenitors (NP),
+Lets say we want to test the difference between samples Wnt4KO and Wnt4Het within Nephron progenitors (NP),
 
 
-We first need to setup our object for use with the _FindMarkers_ function that runs differential expression.
+We can use Seurat's _FindMarkers_ function to find differential expression between two groups. Its the same method used by the convenience function _FindAllMarkers_ used for finding celltype markers.
 
-Though we can specify our layer with the slot parameter, there's no parameter for assay in FindMarkers, you need to make sure your assay is the one you want to use.
+Bt we first need to configure our Seuruat object for use with this function. Though we can specify our layer with the slot parameter, there's no parameter for assay in FindMarkers, you need to make sure your 'Default' assay is the one you want to use. 
 ```{r}
 DefaultAssay(so)
-DefaultAssay(so) <- "RNA"
+DefaultAssay(so) <- "RNA" # Set it to RNA
 ```
 
-Likewise, there's no paremeter to specify which column of the metadata out groups may be found in. We 
-instead set Indents()
+Likewise, there's no parameter to specify which column of the metadata out groups may be found in. We 
+instead set Idents()
 ```{r}
 Idents(so) <- so$GTshort
 levels(Idents(so))
 ```
 
-Now make a subset of our seurat object that's just the NP cells.
+Now make a subset of our Seurat object that's just the NP cells.
 
 ```{r}
 so.np <- subset(so, CelltypeCode == "c3: NP")
@@ -264,20 +277,20 @@ table(so$GTshort)
 ```
 
 
-Finally - run findmarkers. We will stick with the default method that uses a wilcoxon rank-sum test (but to explore other tests see the (seurat DE vignette)[https://satijalab.org/seurat/articles/de_vignette]). 
+Finally - run FindMarkers. We will stick with the default method that uses a wilcoxon rank-sum test (but to explore other tests see the [seurat DE vignette](https://satijalab.org/seurat/articles/de_vignette). 
 
 ```{r}
 de_result <- FindMarkers(so.np, 
                          ident.1  = 'Wnt4KO', 
                          ident.2  = 'Wnt4Het',
                          slot     = 'data',   # This is the default
-                         max.cells.per.ident = 40, # subset for speed. <<<<<<< remove
                          test.use = "wilcox"  # This is the default
 
 )
 ```
 
 Check out those p-values! They're so significant because each cell is treated as its own replicate.
+
 ```{r}
 DT::datatable(de_result[1:100,])
 ```
@@ -285,9 +298,11 @@ DT::datatable(de_result[1:100,])
 
 Some improvements/changes can be made:
 
-* **This is slow**: Add the *max.cells.per.ident* parameter to subsample down to a specified maximum number of cells per group. It can be useful to set a very low number when testing (e.g 20), then a much higher one (e.g. 500, or no limit at all) for your real run. NB: If Seurat suggests you install a library called presto to speed this up, its well worth doing!
+* **Speed**: 
+   * Add the *max.cells.per.ident* parameter to subsample down to a specified maximum number of cells per group. It can be useful to set a very low number when testing (e.g 20), then a much higher one (e.g. 500, or no limit at all) for your real run. 
+  * If Seurat suggests you install a library called _presto_ to speed this up, do so.
 * **Adjust filtering**: 
-   * By default the results are filtered by a *logfc.threshold* of 0.1. Consider removing this threshold (set it to 0) if you want to get stats for genes that are present but unchanging.
+   * By default the results are filtered by a *logfc.threshold* of 0.1. Consider removing this threshold (set it to 0) to get stats for genes that are present but unchanging. 
    * *min.cells.pct* by default 0.01, genes with very low expression in both groups will be ignored. You can't find differences when there is that little expression, and  keeping them in makes your multiple hypothesis correction more aggressive. You might consider disabling this test if you've already done your one filtering. But this default is good enough.
 
 ```{r}
@@ -298,11 +313,11 @@ de_result <- FindMarkers(so.np,
                          test.use = "wilcox",  # This is the default
                          logfc.threshold     = 0, 
                          min.pct             = 0.1, # this is the default.
-                         max.cells.per.ident = 500  # subset for speed e.g 500, 200, or even less for testing.
+                         max.cells.per.ident = 50  # subset for speed e.g 500, 200, or even less for testing.
 )
 ```
 
-Same contrast with fewer cells.
+Below is the same contrast with fewer cells - notice the change in p-values.
 
 ```{r}
 DT::datatable(de_result[1:100,])
@@ -310,12 +325,12 @@ DT::datatable(de_result[1:100,])
 
 
 Its quite common practice, especially with so many highly significant genes
-(some of which have a small log2FC), to filter our results by fold-change. 
+(some of which have a small log2FC), to filter our results by fold change. 
 Common thresholds are 1 (log2(2) - a doubling or halving of expression), or
-log2(1.5) for 1.5fold-changes.
+log2(1.5) for 1.5 fold-changes.
 Note that threshold is on 'absolute' values, so we don't accidentally exclude downregulation; like that Wnt4 being downregulated in its knockout!
 ```{r}
-DT::datatable(filter(de_result, abs(avg_log2FC) >= log2(2) ))
+filter(de_result, abs(avg_log2FC) >= log2(2) ) %>% head(100) %>% DT::datatable()
 ```
 
 
@@ -358,13 +373,6 @@ contrast_list <-  list( # 'Test'      vs  'control'
 #make_contrast_name <- function(contrast_parts){ paste0(contrast_parts[1],"vs",contrast_parts[1])}
 #contrast_names <- sapply(FUN=make_contrast_name, X=contrast_list) 
 #names(contrast_list) <- contrast_names
-
-
-# note keeping all 4 samples before two contrasts. (actually does that matter for wilcox ranK sum - CHECK)
-
-#the_celltype = 'c15: Podocyte'
-#the_celltype = "c16: Blood"
-#contrast_name <- 'TotalWnt4KOvsHet'
 
 
 # Loop through every celltype/cluster
@@ -472,24 +480,21 @@ write_xlsx(de_result_sig_list.excel,  "~/myproject/de_results_sig.xlsx")
 
 
 
-## Visualising DE results for a contrast
+## Visualising DE results 
 
-Plotting an overview
+### Contrast level visualisation
+
+
+Lets get some contrast-level visualisations of our differential expression results.
 
 ```{r}
-
 library(ggrepel) #library for non-overlapping plot text
 
 # Get the results of Wnt4KO vs Het , within the c6 Stromal cluster.
 de_result <- filter(de_results_all, celltype == "c3: NP", contrast == "TotalWnt4KOvsHet")
 
 # Would like to show a few genes on the plot - the top 5 most significant with 2-fold change.
-#top5_genes <- arrange(de_result, p_val_adj) %>% head(n=5)
 top5_genes.2fc <- arrange(de_result, p_val_adj) %>% filter( abs(avg_log2FC ) > 1) %>% head(n=5)
-
-
-DT::datatable(filter(de_result, p_val_adj < 0.01))
-
 ```
 
 ```{r}
@@ -520,14 +525,19 @@ ggplot(de_result, aes(x=avg_log2FC, y=-log10(p_val) ,col=p_val_adj < 0.01)) +
 ```
 
 
-## Plot some individual genes
+### Plot some individual genes
 
+For the above differential expression, there were alot of ribosomal and mitochondrial genes listed as differentially expressed. This can occur because they generally have high expression, therefore high statistical power to detect even small changes. These aren't neccessarily the most interesting genes in the experiment. 
+
+It is worth plotting the expression of individual genes of particular interest, particuarly if you're planning downstream work! Plotting two of these results below.
+
+* Rps29 : The most significantly DE gene (adjusted pval 6.5 * 10^-28)
+* Stc1 : At an average expression of 0.0926, log2FC of 1.5 and a p-value of 0.0057, its much less statiticaly confident, but might be interesting experimentally
 
 
 ```{r}
 # for plotting, make a subset with just that cluster
 so.cluster <- subset(so, CelltypeCode == 'c3: NP')
-
 
 # Subset the results
 de_result.sig <- filter(de_results_all, 
@@ -536,8 +546,7 @@ de_result.sig <- filter(de_results_all,
                         p_val_adj <= 0.01
                         )
 
-filter( de_result, p_val_adj < 0.01) %>% DT::datatable()
-
+DT::datatable(filter(de_result.sig, p_val_adj < 0.01))
 ```
 
 
@@ -557,7 +566,7 @@ FeaturePlot(so, features='Rps29')
 FeaturePlot(so, features='Stc1')
 ```
 
-It can also be worth checking how high counts are - note that Stc1 maxes out at 8 copies in a cell. Rps29 looks more specific now - but many of the low counts are in the grey (this isn't a good visualisation for that reason).
+It can also be worth checking how high counts are - note that Stc1 maxes out at 8 copies in a cell. Rps29 looks more specific now - but many of the low counts are in the grey (This isn't a good visualisation, its just for checking counts).
 ```{r}
 FeaturePlot(so, features='Rps29', slot = 'counts')
 FeaturePlot(so, features='Stc1', slot = 'counts')
@@ -570,13 +579,14 @@ If the Seurat default plots aren't giving enough control for plotting your exper
 plottable <- 
   FetchData(so, c('GTshort', 'CelltypeCode', # From metadata table
                   'UMAP_1','UMAP_2',         # From dimensional reductions
-                  'Rps29','Stc1'                   # Genes from default assay 
+                  'Rps29','Stc1'             # Genes from default assay 
                 ),
           slot = 'data' #layer to get (slot is pre seurat 5 termnology)
   )
 head(plottable)
 ```
 
+Get some finer control on a UMAP plot.
 ```{r}
 ggplot(plottable, aes(x=UMAP_1, y=UMAP_2, col=Stc1)) +
   geom_point(pch=3) +
@@ -585,7 +595,7 @@ ggplot(plottable, aes(x=UMAP_1, y=UMAP_2, col=Stc1)) +
   facet_wrap(~GTshort)
 ```
 
-
+A compact view of gene expression across all clusters (is the change specific to a cluster, or global?)
 ```{r}
 ggplot(plottable, aes(x=CelltypeCode, y=Stc1, fill=GTshort)) +
   geom_boxplot( outlier.alpha = .5, outlier.shape = 3) + 
@@ -608,8 +618,12 @@ ggplot(plottable, aes(x=CelltypeCode, y=Stc1, fill=GTshort)) +
 
 # Code Snippet
 
-Copy and paste this bit into your own script to adapt to your own data. 
-Make as generic as possible, just a framework.
+The following code assumes your seruat object is called so, and has the following metadata columns;
+
+* cluster : The cluster or celltype
+* samplename: The samples to compare (n=1). For the snippet, these are called 'Test' and 'Control'
+
+Update as needed.
 
 ```{r eval=FALSE}
 # Libraries
@@ -617,14 +631,7 @@ library(Seurat)
 library(tidyverse)
 library(writexl)
 
-## Seurat object
-# Have seurat object loaded into so.
-# And the following metadata columns
-# * cluster    - the cluster or celltype
-# * samplename - the sample / group to compare (n=1).
-#              - for the snippet, these are called 'Test' and 'Control'
-
-# Ensure that both are set as factors
+# Ensure that relevant metadata are set as factors
 so$samplename  <- factor(so$samplename) # levels are 'Test' and 'Control'
 so$cluster     <- factor(so$cluster) 
 
@@ -760,12 +767,9 @@ DT::datatable(de_result.sig)
 List of useful resources. Papers, vignettes, pertinent forum posts 
 
 * [Wnt4 KO in developing mouse kidney - 10X Chromium scRNAseq](d_Wnt4KO.html): [Forming nephrons promote nephron progenitor maintenance and branching morphogenesis via paracrine BMP4 signalling under the control of Wnt4](https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full) [@moreauFormingNephronsPromote2023a] : The paper with this data.
-
-
-
+* [Confronting false discoveries in single-cell differential expression](https://www.nature.com/articles/s41467-021-25960-2)[@squairConfrontingFalseDiscoveries2021] : This is an excellent paper benchmarking and exploring differental expression methods for single cell expression data.
 * [Seurat Differential Expression Vignette](https://satijalab.org/seurat/articles/de_vignette) : How to do differential expression with the seurat package. Tells you how to use the multiple statistical tests that seurat offers.
 * [OSCA Differntial Expression](https://bioconductor.org/books/3.19/OSCA.multisample/multi-sample-comparisons.html): The excellent book [Orchestrating single cell analysis](https://bioconductor.org/books/release/OSCA/book-contents.html#multi-sample) includes a section on differential expression, it focusses on pseuboulk approaches with replicates (which can't be used for a 1 vs 1) using the bioconductor toolkit, but provides useful background.
-
 * ['The Seurat Object' in scRNAseq analysis with R](https://swbioinf.github.io/scRNAseqInR_Doco/preprocessing.html#the-seurat-object) Small section of this document 'the Seurat object' has some explanation of the seurat object format.
 
 

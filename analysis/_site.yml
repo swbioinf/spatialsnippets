@@ -7,6 +7,8 @@ navbar:
     href: index.html
   - text: Data
     href: index_data.html
+  - text: Contributing
+    href: contributing.html
   - text: About
     href: about.html
   - text: License
