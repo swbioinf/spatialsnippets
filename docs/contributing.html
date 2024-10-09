@@ -11,7 +11,7 @@
 
 
 
-<title>Home</title>
+<title>Contributing</title>
 
 <script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -231,6 +234,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -238,6 +304,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -287,7 +363,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">Contributing</h1>
 
 </div>
 
@@ -420,10 +496,11 @@ have uncommitted changes.
 
 <p>
 These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/index.Rmd</code>) and HTML
-(<code>docs/index.html</code>) files. If you’ve configured a remote Git
-repository (see <code>?wflow_git_remote</code>), click on the hyperlinks
-in the table below to view the files as they were in that past version.
+made to the R Markdown (<code>analysis/contributing.Rmd</code>) and HTML
+(<code>docs/contributing.html</code>) files. If you’ve configured a
+remote Git repository (see <code>?wflow_git_remote</code>), click on the
+hyperlinks in the table below to view the files as they were in that
+past version.
 </p>
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
@@ -452,7 +529,7 @@ Message
 Rmd
 </td>
 <td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/7c61fe814d26b9ba1212bf979e85e13744c46090/analysis/index.Rmd" target="_blank">7c61fe8</a>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/7c61fe814d26b9ba1212bf979e85e13744c46090/analysis/contributing.Rmd" target="_blank">7c61fe8</a>
 </td>
 <td>
 swbioinf
@@ -464,501 +541,6 @@ swbioinf
 wflow_publish("analysis/")
 </td>
 </tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/534709345e5051a7ef8c1b57ddd999df89f72de8/docs/index.html" target="_blank">5347093</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-09-17
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/7eec54738f58be5220af7a7cfbdaefc80482d1d2/analysis/index.Rmd" target="_blank">7eec547</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-09-17
-</td>
-<td>
-wflow_publish("analysis/")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/2383812cf55d1fc8c1b5baebf612e8d85457d597/docs/index.html" target="_blank">2383812</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-08-23
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/eba1dadf030de5da1e1f5dd7210595be642f6a5d/analysis/index.Rmd" target="_blank">eba1dad</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-08-23
-</td>
-<td>
-wflow_publish(c("analysis/e_template.Rmd", "analysis/index.Rmd"))
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/8c920e59e2c81b386b7b9cd8896f6ec9d7490f4e/docs/index.html" target="_blank">8c920e5</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-07-29
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/275b84259c11c2d44b898aa62726d0992f9780f8/analysis/index.Rmd" target="_blank">275b842</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-07-29
-</td>
-<td>
-wflow_publish("analysis/")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/409ff8d9c66a1110466718aa25fb0ebb12c33a7a/docs/index.html" target="_blank">409ff8d</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-07-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/1dc7e4984cbb584ba307f72103c4ed80ae9ba59f/analysis/index.Rmd" target="_blank">1dc7e49</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-07-08
-</td>
-<td>
-wflow_publish("analysis/index.Rmd")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/65f94fa7aa870189d9dd4584f4ce8892e3a39d26/docs/index.html" target="_blank">65f94fa</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-07-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/7a19f22016c3c6426eec17b1d259ee0957d7d02e/analysis/index.Rmd" target="_blank">7a19f22</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-07-08
-</td>
-<td>
-wflow_publish("analysis/index.Rmd")
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/fd64e3009d2a3284f3a5e43d572c953497246b13/analysis/index.Rmd" target="_blank">fd64e30</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-06-18
-</td>
-<td>
-new plots
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/9aa68dce61c14fe134d2fbd3d67541c8d34da682/docs/index.html" target="_blank">9aa68dc</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-06-11
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/3d03c73ad9ce8e0b79d28105d36af6d7def56fa3/analysis/index.Rmd" target="_blank">3d03c73</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-06-11
-</td>
-<td>
-wflow_publish("analysis/index.Rmd")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/c77f76cecb74337321d877773789d8703b9bdb89/docs/index.html" target="_blank">c77f76c</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-05-07
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/7b0be9369f7a0cb0fcae8df07cef531fb2fbe732/analysis/index.Rmd" target="_blank">7b0be93</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-05-07
-</td>
-<td>
-wflow_publish(c("analysis/index.Rmd",
-"analysis/e_DEPseudobulk_insitu.Rmd",
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/a722f3633532c1313b267999809c48b047d27fbe/docs/index.html" target="_blank">a722f36</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-04-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/1dc67305f712b38bbf7a54ed3cd0eb96b284d0e0/analysis/index.Rmd" target="_blank">1dc6730</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-04-18
-</td>
-<td>
-wflow_publish(c("analysis/index.Rmd",
-"analysis/e_CompositionChange.Rmd",
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/456dd2f955696fed28a4c4bb2924c137b8044899/docs/index.html" target="_blank">456dd2f</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-04-10
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/8ef9cd960e26c52301da405c8e2f7be0777f127b/analysis/index.Rmd" target="_blank">8ef9cd9</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-04-10
-</td>
-<td>
-wflow_publish("analysis/")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/30da140477fe00b8c95007a88e0b54e9f0e5c122/docs/index.html" target="_blank">30da140</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-22
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/89c3371760221645926a2337889f1571bfaa8801/analysis/index.Rmd" target="_blank">89c3371</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-22
-</td>
-<td>
-wflow_publish(c("analysis/index_data.Rmd", "analysis/index.Rmd",
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/index.html" target="_blank">cf8a2ee</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/6295b7d314030df2d6cbc32d1c08ab215a1c8389/analysis/index.Rmd" target="_blank">6295b7d</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-08
-</td>
-<td>
-wflow_publish(c("analysis/index.Rmd", "analysis/d_cosmxIBD.Rmd"))
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/e7a4c1232709d2520c307c758f907eb9005812a0/docs/index.html" target="_blank">e7a4c12</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2023-10-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/507ead4d3149a8703afa56cbf10bf74e5cefafa7/analysis/index.Rmd" target="_blank">507ead4</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2023-10-18
-</td>
-<td>
-wflow_publish("analysis/")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/cfe5b98be6a5512be1c53ec665dfa355dd05e05f/docs/index.html" target="_blank">cfe5b98</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2023-10-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/6ab63fe290937e08ad3afe3b1ccc25433f39d0fe/analysis/index.Rmd" target="_blank">6ab63fe</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2023-10-18
-</td>
-<td>
-wflow_publish("analysis/")
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/584cf7388ac5d6a551b4245bd6116c4eec38f733/analysis/index.Rmd" target="_blank">584cf73</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2023-10-17
-</td>
-<td>
-adding
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/584cf7388ac5d6a551b4245bd6116c4eec38f733/docs/index.html" target="_blank">584cf73</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2023-10-17
-</td>
-<td>
-adding
-</td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -966,35 +548,13 @@ adding
 </div>
 </div>
 </div>
-<p>These examples are a sampler of tests that can be performed on an
-in-situ single cell spatial datasets. Initial examples use cosMX, though
-approaches should be valid on other platforms like Xenium.</p>
-<p>Further details on the papers, tools, statistics and methods are
-linked from each page.</p>
-<p>Each example presents just one way of doing things (and currently
-only with Seurat) - there are many, many other approaches! These are
-intended as a starting point.</p>
-<ul>
-<li><a href="e_CompositionChange.html">Test for different cell type
-composition by group</a>: Looking at proportions of celltypes, within
-in-situ spatial single cell datasets (cosmx).</li>
-<li><a href="e_DEPseudobulk_insitu.html">Differential Expression by
-celltypes, between groups</a>: Looking at differential expression,
-celltype by celltype, within in-situ spatial single cell datasets
-(cosmx)</li>
-<li><a href="e_DEWithoutReps.html">Differtial expression without
-replicates with scRNAseq</a> : For scRNAseq data, compare gene
-expresison cluster by cluster, between two samples, where no replicates
-are available.</li>
-</ul>
-<!-- * [Changes in cell neighbourhood, between groups ](e_neighbourcellchanges.html): WIP -->
-<p>These examples assume that the data has been loaded, preprocessed
-(e.g. QC-ed, UMAP) and annotated (e.g. sample names, cell types, cell
-niches). For information on how each dataset was prepared, see the data
-tab.</p>
-<div id="references" class="section level1">
-<h1>References</h1>
-</div>
+<p>Main repo: <a href="https://github.com/swbioinf/spatialsnippets"
+class="uri">https://github.com/swbioinf/spatialsnippets</a></p>
+<p>Contributions welcome.</p>
+<p>Template availble here * <a href="e_template.html">New example
+template</a> : <a
+href="https://github.com/swbioinf/spatialsnippets/blob/main/analysis/e_template.Rmd"
+class="uri">https://github.com/swbioinf/spatialsnippets/blob/main/analysis/e_template.Rmd</a></p>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -1012,6 +572,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -1044,6 +606,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
