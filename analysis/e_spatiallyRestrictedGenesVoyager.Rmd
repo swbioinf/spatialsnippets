@@ -238,3 +238,132 @@ ImageDimPlot(so.sample,  fov = "AD2.AD3.CosMx",
 
 
 
+
+
+## Using Voyager
+
+
+```{r}
+#renv::install('bioc::Voyager')
+library(Voyager)
+```
+
+
+
+```{r}
+# CODE FROM 
+# https://github.com/drighelli/SpatialExperiment/issues/115
+
+library(SpatialExperiment)
+library(Seurat)
+#library(SeuratData)
+# BiocManager::iBiocManager::install("SpatialExperiment")nstall("SpatialExperiment")
+library(dplyr)
+
+# SeuratData::InstallData(ds = "stxBrain")
+#SeuratData::LoadData(ds = "tonsilref")
+#se1 <- SeuratData::LoadData(ds = "stxBrain", type = "posterior1")
+#se2 <- SeuratData::LoadData(ds = "stxBrain", type = "anterior1")
+
+## Function
+#seu <- so
+#sample_id <- image
+#img_id <- image
+
+
+
+seurat_to_spe <- function(seu, sample_id, img_id) {
+    ## Convert to SCE
+    sce <- Seurat::as.SingleCellExperiment(seu)
+    
+    ## Extract spatial coordinates
+    spatialCoords <- as.matrix(
+        seu@images[[img_id]]@coordinates[, c("imagecol", "imagerow")])
+    
+    ## Extract and process image data
+    img <- SpatialExperiment::SpatialImage(
+        x = as.raster(seu@images[[img_id]]@image))
+    
+    imgData <- DataFrame(
+        sample_id = sample_id,
+        image_id = img_id,
+        data = I(list(img)),
+        scaleFactor = seu@images[[img_id]]@scale.factors$lowres)
+    
+    # Convert to SpatialExperiment
+    spe <- SpatialExperiment(
+        assays = assays(sce),
+        rowData = rowData(sce),
+        colData = colData(sce),
+        metadata = metadata(sce),
+        reducedDims = reducedDims(sce),
+        altExps = altExps(sce),
+        sample_id = sample_id,
+        spatialCoords = spatialCoords,
+        imgData = imgData
+    )
+    # indicate all spots are on the tissue
+    spe$in_tissue <- 1
+    spe$sample_id <- sample_id
+    # Return Spatial Experiment object
+    spe
+}
+
+#se_ls <- list("posterior1" = se1, "anterior1" = se2)
+#spe_ls <- lapply(names(se_ls), function(i) {
+#    seurat_to_spatialexperiment(seu = se_ls[[i]], sample_id = i, img_id = i)
+#})
+#
+#spe <- Reduce(cbind, spe_ls)
+#spe
+
+```
+
+
+
+```{r}
+images <- Images(so)
+image<- images[1]
+#
+#spe <- seurat_to_spe(seu = so, sample_id = image, img_id = image)
+seu <- JoinLayers(so)
+
+# remove niche assay.
+seu[["niche"]]$data <- NULL
+#seu[["niche"]]$counts <-NULL
+seu[['niche']]<-NULL
+
+
+
+# JUST convert RNA assay. Niche causes error.
+sce <- Seurat::as.SingleCellExperiment(seu)
+
+seurat_to_spe(seu, sample_id=image, img_id=image) 
+
+
+
+
+
+```
+
+
+
+```{r}
+
+
+## Extract spatial coordinates
+spatialCoords <- as.matrix(
+        seu@images[[img_id]]@coordinates[, c("imagecol", "imagerow")])
+
+
+
+#t. For spot-based data, assays contains a table named counts containing the gene counts, while for molecule-based data, assays may contain two tables named counts and molecules containing total gene counts per cell as well as molecule-level information such as spatial coordinates per molecule [formatted as a BumpyMatrix (Lun, 2021)]. 
+#https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9154247/
+  
+
+molecules(seu) <- #XYZ.
+```
+
+
+
+

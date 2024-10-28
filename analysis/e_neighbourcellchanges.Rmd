@@ -17,6 +17,9 @@ bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096346/
 
 
+https://github.com/lfranzen/scwat-st.git
+
+
 ```{r angrylibrarian, include=FALSE} 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 knitr::opts_chunk$set(echo = TRUE)
@@ -46,13 +49,16 @@ library(patchwork)
 data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
 seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
 seurat_file_02_niche <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_02_niche.RDS")
+
+seurat_file_02_niche.mini <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_02_niche_mini.RDS")
+
 ```
 
 
 
 
 
-# Worked Example
+# Worked Example (1)
 
 
 ## Load Data
@@ -383,6 +389,247 @@ DT::datatable(results_table )
 
 
 # More Information
+
+
+# Scratch
+
+
+```{r eval=FALSE}
+
+so <- readRDS(seurat_file_01_loaded)
+
+so <- subset(so, fov_name %in% c("HC_a_001", 'HC_b_001','HC_c_001',
+                                 "CD_a_001", "CD_b_016","CD_c_001"))
+
+
+#NB Current version of Seurat doesn't build niche assay accross multiple slides.
+# This code will do so. Hope its fixed in future version of Seurat. 
+source("code/multislide_niche.R")
+so <- BuildNicheAssay.using_all_fovs(so, group.by = "celltype_subset",
+                                     niches.k    = 6,
+                                     neighbors.k = 5) #only 5 neighbour cells.
+DefaultAssay(so) <- "RNA" # change default assay back to RNA to avoid confusion.
+
+
+#saveRDS(so , seurat_file_02_niche.mini)
+```
+```{r}
+# reload
+so <- readRDS(seurat_file_02_niche)
+```
+
+
+Here we have neightoubing cell types per cell.
+
+Will we be able to run a nighbouring cell type assy per cell or will we need to do ig 
+```{r}
+GetAssayData(so, assay="niche", layer='counts')[,1:4]
+```
+
+
+Semla (successor of STutility) is the framework. Doesn't seem to have an explicity funciton for neighberhood, so adapt the methods provided by the paper [Spatial mapping reveals human adipocyte subpopulations with distinct sensitivities to insulin](https://www.sciencedirect.com/science/article/pii/S1550413121003636) (@backdahlSpatialMappingReveals2021), in their repo: https://github.com/lfranzen/scwat-st.git
+
+
+Their heterotypic score algorithm is here:
+https://github.com/lfranzen/scwat-st/blob/master/scripts/visium_nbs_analysis.between-clusters.R 
+
+```{r}
+# Adapting here.
+source('code/scwat-at_betweenClusters_heterotypic_score_functions.R')
+```
+
+```{r}
+#' "EXPECTED" VALUES: RegionNeighbours() with permuted cluster IDs for each sample
+n_perm <- 3 # 50
+perm_adj_mat_list <- list()
+c_include <- levels(so$celltype_subset)
+#i=1
+for(i in 1:n_perm){
+  so <- RandomiseClusteringIDs(se.object = so, 
+                               column.cluster.id = "celltype_subset", 
+                               column.sample.id  = "tissue_sample", 
+                               random.seed = i)
+  so <- SetIdent(so, value = "clusters_perm")
+  #for(column_rm in grep(pattern = "nbs_", colnames(so[[]]), value = T)){
+  #  so[[column_rm]] <- NULL
+  #}
+  for(c in c_include){
+    so <- RegionNeighbours(so, id = c, keep.within.id = T, verbose = TRUE)
+  }
+  perm_nbs_df <- so[[]][, c("clusters_perm", grep(pattern = "nbs_", colnames(so[[]]), value = T))]
+  perm_adj_mat <- CreateAdjMatrix(nbs.df = perm_nbs_df, cluster.include = c_include, column.clusters.id = "clusters_perm")
+  perm_adj_mat_list[[i]] <- perm_adj_mat
+}
+
+
+```
+
+
+
+
+
+```{r}
+library(igraph)
+
+neighbors.k <- 5
+
+
+## Get neigherest neibhtours Graph
+
+fov <- names(so@images)[1]
+
+coords <- SeuratObject::GetTissueCoordinates(so, image=fov, which = "centroids")
+rownames(coords) <- coords$cell
+coords      <- as.matrix(coords[ , c("x", "y")])
+neighbors    <- Seurat::FindNeighbors(coords, k.param = neighbors.k, return.neighbor=TRUE)
+
+
+knn <- BiocNeighbors::findKNN(coords, k=5)
+class(knn[["index"]])
+ 
+ 
+ 
+## Get Cell type adjacency 
+
+## Use label shuffling to generate the randomised cell tyep adjacencies
+
+
+
+
+
+cell_adj_matrix <- neighbors$nn
+cluster_lookup <- so$celltype_subset
+cluster_list <- levels(so$celltype_subset)
+
+
+
+# Designed to be called 50 times with shuffled labels, it only recounts. 
+celltype_adjmatrix_from_cell_adjmatrix_and_labels <- c(cell_adj_matrix, cluster_list, clusters_lookup) {
+  #clust_name <- 'epi'
+  
+  sum_rows_by_type <- function(clust_name) {
+    rowSums(cell_adj_matrix[,cluster_lookup[colnames(cell_adj_matrix)] %in% clust_name])
+  }
+
+  # have csll X cell adjacentcy matrix
+  # For row cells, summarise columns into sums by cell type
+  celltype_neighbours.1 <- sapply(sum_rows_by_type, X=cluster_list )
+  
+  # Have cell X celltype matrix
+  # For column celltypes, summarise rows into sums by cell type.
+  sum_cols_by_type <- function(clust_name) {
+    colSums(celltype_neighbours.1[cluster_lookup[rownames(celltype_neighbours.1)] %in% clust_name,])
+  }
+
+  celltype_adj_matrix <- sapply(sum_cols_by_type, X=cluster_list )
+  return(celltype_adj_matrix)
+}
+
+
+
+
+
+```
+
+
+
+Get adjacency matrix? Of celltype => celltype.
+From cell => adjcent celtype.
+```{r}
+library(igraph)
+ neighbors.k <- 5
+
+
+ 
+ 
+  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ get_nn_spatial_graph <- function(object) {
+ 
+  for (fov in names(object@images)) {
+    coords <- GetTissueCoordinates(object[[fov]], which = "centroids")
+    rownames(coords) <- coords$cell
+    
+    coords <- as.matrix(coords[ , c("x", "y")])
+    neighbors    <- FindNeighbors(coords, k.param = neighbors.k)
+    neighbors$nn <- neighbors$nn[Cells(object[[fov]]), Cells(object[[fov]])]
+
+    # Need a list of all those cells, used later.
+    # put all cells into one list (being sure order matches network, might not match object order.)
+    cells <- colnames(neighbors$nn)
+    
+    
+  }
+}
+
+   
+   
+class(neighbors$nn)
+#make_adjmatrix_graph(neighbors$nn, directed = FALSE)
+
+ 
+ 
+ 
+ 
+#Just change labels and use the same matrix
+# no can't use niche because that's the right  celltypess
+#celltype_adjmatrix_from_niche_assay <- function(so, cluster_col) {
+#  GetAssayData(so, "niche")
+#}
+
+
+ 
+ 
+ 
+
+#niche_assay <- GetAssayData(so, assay="niche", layer='counts')
+ 
+ fov <- "GSM7473684_HC_c"
+so.this <- subset(so, fov==fov)
+
+#for (fov in names(so@images)) {
+  coords <- GetTissueCoordinates(so.this[[fov]], which = "centroids")
+  rownames(coords) <- coords$cell
+  coords <- as.matrix(coords[ , c("x", "y")])
+#}
+
+
+
+
+neighbors    <- FindNeighbors(coords, k.param = neighbors.k)
+#neighbors$nn <- neighbors$nn[Cells(object[[fov]]), Cells(object[[fov]])]
+
+
+# rows and columns are cells.
+
+
+# the nn graph is based on cell cell adjacency. 
+# The snn graph is not, that's transcriptomic similarity?
+adj_matrix <- neighbors$nn 
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 # References

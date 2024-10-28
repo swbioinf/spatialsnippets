@@ -1,0 +1,54 @@
+---
+title: "Toolkits & Analysis Ecosystems"
+output: html_notebook
+---
+
+
+## Seurat
+
+Widely used. 
+
+From a single cell background.
+
+
+## Bioconductor family SpatiaExperiment
+
+An ecosystem 
+
+
+## Giotto
+
+R
+
+## Squidpy
+
+python
+
+## Semla  
+
+https://academic.oup.com/bioinformatics/article/39/10/btad626/7319366
+
+For visium data. No official cosmx support?
+
+* Successor to STutility
+* Looks to be exfcellent for extracting sets of cells making up spatial features
+   - Distance from a feature
+   - Cells bordering on a region
+   - gene's spatial autocorrelation (faster alternative to moransI)
+
+
+
+## Voyager
+
+Within bioconductor / SpatialExperiment ecocsystem.
+
+A focus on spatial tests, as drawn from geospatial methods.
+
+
+
+
+
+
+
+
+
