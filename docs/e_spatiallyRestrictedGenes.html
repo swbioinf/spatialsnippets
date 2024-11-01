@@ -36,7 +36,6 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
 <script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
 <script src="site_libs/datatables-binding-0.33/datatables.js"></script>
@@ -556,15 +555,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree6cf65ff5b2702f1ec8a3209fffb576099129462atargetblank6cf65ffa">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreeda09a66f0eaa5bf6bbb0dd4a4c73d417dca6b8a2targetblankda09a66a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/6cf65ff5b2702f1ec8a3209fffb576099129462a" target="_blank">6cf65ff</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/da09a66f0eaa5bf6bbb0dd4a4c73d417dca6b8a2" target="_blank">da09a66</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree6cf65ff5b2702f1ec8a3209fffb576099129462atargetblank6cf65ffa"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreeda09a66f0eaa5bf6bbb0dd4a4c73d417dca6b8a2targetblankda09a66a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -574,7 +573,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/6cf65ff5b2702f1ec8a3209fffb576099129462a" target="_blank">6cf65ff</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/da09a66f0eaa5bf6bbb0dd4a4c73d417dca6b8a2" target="_blank">da09a66</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -594,7 +593,6 @@ Ignored files:
     Ignored:    analysis/contributions.nb.html
     Ignored:    analysis/e_neighbourcellchanges.nb.html
     Ignored:    analysis/e_spatiallyRestrictedGenesVoyager.nb.html
-    Ignored:    analysis/figure/
     Ignored:    analysis/g_toolkits.nb.html
     Ignored:    analysis/glossary.nb.html
     Ignored:    renv/library/
@@ -649,6 +647,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/da09a66f0eaa5bf6bbb0dd4a4c73d417dca6b8a2/analysis/e_spatiallyRestrictedGenes.Rmd" target="_blank">da09a66</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-11-01
+</td>
+<td>
+wflow_publish("analysis")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/0ce06a8fe9e3d0354b4cca882c8978ff95d0f1bf/docs/e_spatiallyRestrictedGenes.html" target="_blank">0ce06a8</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-11-01
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -755,17 +787,22 @@ find spatially restricted genes.</p>
 <p>This requires:</p>
 <ul>
 <li>X,Y coordinates of individual transcripts, or their cells.</li>
+<li>Annotation of the tissue samples in the cell metadata (if multiple
+samples)</li>
 </ul>
 <p>There is no need for celltype annotation.</p>
 <p>For example:</p>
 <ul>
-<li>What cells are sptially restricted in this tissue, are they in a
-layer of epithelial or elsewhere.</li>
+<li>What cells are saptially restricted in this tissue, are they in a
+layer of epithelial cells, some structure or elsewhere.</li>
+<li>Are some cancer-related genes showing a restricted spatial
+expression (and does this align with tumour-dense regions?)</li>
 </ul>
 <p>Steps:</p>
 <ol style="list-style-type: decimal">
-<li>Breif description of steps involved in test</li>
-<li>If appropriate.</li>
+<li>Subset each tissue</li>
+<li>Calculate moransI for each sample</li>
+<li>Join and inspect results.</li>
 </ol>
 </div>
 <div id="worked-example" class="section level1">
@@ -773,53 +810,82 @@ layer of epithelial or elsewhere.</li>
 <p>Paper <a
 href="https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub">Microglia-astrocyte
 crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse
-model, as revealed by spatial transcriptomics</a> <span
-class="citation">(<strong>mallachMicrogliaastrocyteCrosstalkAmyloid2024?</strong>)</span>
-explores the spatial transcritome of amaloid plaques in a mouse
-model.</p>
+model, as revealed by spatial transcriptomics</a><span
+class="citation">(Mallach et al. 2024)</span> <span
+class="citation">(Mallach et al. 2024)</span> explores the spatial
+transcritome of amaloid plaques in a mouse model.</p>
 <p>Their work includes an analysis of cosMX samples from of 4 mouse
 brain samples.</p>
-<p>This example will test which genes are expressed in a spatially
-restricted pattern; e.g. along the boarder of a feature, in clumps or in
-some way non-random. This will be done for each sample, independently of
-any celltype annotations.</p>
+<p>Those sections show a very distinct spatial patterning of the
+different brain structures. This example will test which genes are
+expressed in a spatially restricted pattern, independently of any
+celltype annotations. e.g.</p>
+<ul>
+<li>Present within or nearby a given structure</li>
+<li>Existing in ‘clumps’ e.g. high expression on a small subset of
+cells</li>
+</ul>
 <div id="load-libraries-and-data" class="section level3">
 <h3>Load libraries and data</h3>
-<pre class="r"><code>library(Seurat)
-library(tidyverse)
-library(DT)
+<p>Load relevant libraries</p>
+<pre class="r"><code># NB: The Rfast2 and ape packages may need to be installed
+# to use the moransI test (in addition to Seurat)
+# The GSL system library might also need to be installed, if it isn&#39;t already.
+# install.packages(&#39;Rfast2&#39;)
+# install.packages(&#39;ape&#39;)
 
-# Needed for moransI
-#renv::install(&#39;Rfast2&#39;) # needs GSL installed on system
-#renv::install(&#39;ape&#39;)</code></pre>
+library(Seurat)
+library(tidyverse)
+library(DT)</code></pre>
+<p>And load the preprocessed Seurat object.</p>
 <pre class="r"><code>dataset_dir      &lt;- &#39;~/projects/spatialsnippets/datasets/GSE263793_Mallach2024_AlzPlaque/processed_data/&#39;
-seurat_file_01_preprocessed &lt;- file.path(dataset_dir,  &quot;GSE263793_AlzPlaque_seurat_01_preprocessed.RDS&quot;)</code></pre>
-<pre class="r"><code>so &lt;- readRDS(seurat_file_01_preprocessed)</code></pre>
+seurat_file_01_preprocessed &lt;- file.path(dataset_dir,  &quot;GSE263793_AlzPlaque_seurat_01_preprocessed.RDS&quot;)
+
+so &lt;- readRDS(seurat_file_01_preprocessed)</code></pre>
 </div>
 <div id="spatially-variable-features" class="section level3">
 <h3>Spatially variable features</h3>
 <p>Morans test can be slow to run, so save time by only running it on
-VariableFeatures (non variable features are unlikely to be spatially
-restricted anyway!).</p>
-<p>For the purpose of this demo, only test the top 10. The actual number
-for a real experiment could be judged from the variable features plot
-below, e.g. 100-200 (or more, depending on your panel!).</p>
+variable features. Variable features are those with a non-even
+distribution across cells, and are routinely deteced with
+<em>FindVariableFeatures()</em> during preprocessing. Non variable
+features are unlikely to be spatially restricted.</p>
+<p>For the purpose of this demo, recalculate just the top 10 variable
+features. The actual number for a real experiment could be judged from
+the variable features plot below, e.g. 100-200-2000 (it really depends
+on your panel!).</p>
 <pre class="r"><code>num_variable_features = 10 # Test only, Would be 100+ in real life
 so &lt;-  FindVariableFeatures(so, nfeatures=num_variable_features)
 VariableFeaturePlot(so)</code></pre>
-<p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>We will look for variable features on each of our slides. X and Y
-coordinates from each slide are entirely separate. With a larger number
-of slides, this could be done in a for loop.</p>
+<p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>We will look for <em>spatially</em> variable features on each of our
+tissue samples indenedantly; in this case 4 samples across 2 slides. But
+first, just test one.</p>
+<p>We do this because all probes are essentially going to be restricted
+to the tissue itself, not the surrounding empty slide. This might be
+particularly noticeable on a panel of many small cores.</p>
+<p>First, subset to just one tissue sample.</p>
 <pre class="r"><code>so.sample &lt;- subset( so, subset= sample == &#39;sample1&#39;)</code></pre>
-<p>Right now, there is a bug with the current
-FindSpatiallyVariableFeatures function. <a
-href="https://github.com/satijalab/seurat/issues/8226"
-class="uri">https://github.com/satijalab/seurat/issues/8226</a></p>
-<p>As a temporary workaround, using a customised version of this that
-avoids the issue in just this dataset. NB: The edit simply changes the
-way the data is stored in the metadata:
-<code>object[[names(x = svf.info)]] &lt;- svf.info</code></p>
+<p>Then find the spatially variable genes with
+<em>FindSpatiallyVariableFeatures()</em> function.</p>
+<p>That code <em>should</em> look like this:</p>
+<pre class="r"><code>so.sample &lt;- FindSpatiallyVariableFeatures(
+  so.sample, 
+  assay = &quot;RNA&quot;, 
+  features = VariableFeatures(so.sample),    
+  selection.method = &quot;moransi&quot;,
+  layer = &quot;counts&quot;)</code></pre>
+<p>However, right now, there is a bug with the current
+FindSpatiallyVariableFeatures function, described <a
+href="https://github.com/satijalab/seurat/issues/8226">here</a>. Likely
+that issue will be closed when this is fixed!</p>
+<p>If you see the following error - try a workaround, using a customised
+version of this that avoids the issue in just this dataset. The custom
+version, may be found <a
+href="https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R">here</a></p>
+<pre><code>Error in `LayerData&lt;-`:
+! &#39;layer&#39; must be a single non-empty string</code></pre>
+<p>The adjusted function is called as:</p>
 <pre class="r"><code># Workaround 
 # Available: https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R
 source(&quot;code/spatially_variable_features_code.R&quot;)
@@ -830,22 +896,14 @@ so.sample &lt;- FindSpatiallyVariableFeatures.Seurat_EDITED(
   selection.method = &quot;moransi&quot;,
   layer = &quot;counts&quot;)</code></pre>
 <pre><code>[1] &quot;&gt;&gt;&gt;&gt; USING EDITED FUNCTION!!!! &lt;&lt;&lt;&quot;</code></pre>
-<pre class="r"><code>## What it should be:
-## Try this command first!
-#so.sample &lt;- FindSpatiallyVariableFeatures(
-#  so.sample, 
-#  assay = &quot;RNA&quot;, 
-#  features = VariableFeatures(so.sample),    
-#  selection.method = &quot;moransi&quot;,
-#  layer = &quot;counts&quot;)</code></pre>
-<p>FindSpatiallyVariableFeatures returns a seurat object with the
-moransI scores embedded in the feature metatdata of the ‘RNA’ assay.</p>
+<p><em>FindSpatiallyVariableFeatures()</em> should return a seurat
+object with the moransI scores embedded in the feature metatdata of the
+‘RNA’ assay.</p>
 <pre class="r"><code>gene_metadata &lt;- so.sample[[&quot;RNA&quot;]]@meta.data
-#NB: This is a seperate table to the *cell* metadata found at so.sample@meta.data
+#NB: This is geme metadata, different to the usual *cell* metadata found at so.sample@meta.data
 # so.sample[[&#39;RNA&#39;]]  retreives the &#39;RNA&#39; assay.
-
-DT::datatable(head(gene_metadata))</code></pre>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-90b70f07a5c348cdd0a6" style="width:100%;height:auto;"></div>
+DT::datatable(head(gene_metadata), width=&#39;100%&#39;)</code></pre>
+<div id="htmlwidget-90b70f07a5c348cdd0a6" style="width:100%;height:auto;" class="datatables html-widget"></div>
 <script type="application/json" data-for="htmlwidget-90b70f07a5c348cdd0a6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["Chrna4","Slc6a1","Cd109","Ldha","Aldoc","Drd1"],["RNAProbe","RNAProbe","RNAProbe","RNAProbe","RNAProbe","RNAProbe"],[20278,41055,8140,35695,188086,8103],[0.4703017371338451,0.9521766356657467,0.1887886448500591,0.8278637196465432,4.362223716863418,0.1879305146461952],[0.5198235818514522,1.07159949326702,0.1891803124853376,0.9039084127058603,5.650448083329423,0.1967343874630507],[1.199130749655941,5.429370269015958,0.2345732441844675,1.546603060680439,82.24698940600416,0.3816672632022888],[0.9334658184326288,2.594828661199474,0.2615785654487797,2.099963124092061,45.11653708903471,0.2750117479755442],[1.284600599162089,2.092381030856228,0.8967601905072201,0.7364905806853842,1.822989854999171,1.387821669481007],[false,false,false,false,false,false],[null,null,null,null,null,null],[0.3660380970613573,0.856705274241409,0.1915861012730928,0.7687852972145114,3.182684024121758,0.1817746721546856],[0.6582367603347562,4.07107526880193,0.2393184720530114,1.187479144729904,24.537390278082,0.2636107689253243],[0.6134307422177253,1.927255109491727,0.2619282154153541,1.710812015747839,17.2546218750321,0.245481816291253],[1.073041690012283,2.112369685129758,0.9136796189502528,0.6941026447087406,1.422076383695691,1.07385049087524],[false,false,false,false,false,false],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>feature<\/th>\n      <th>CodeClass<\/th>\n      <th>total_count_unfiltered<\/th>\n      <th>mean_count_unfiltered<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_mean<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_variance<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_variance.expected<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_variance.standardized<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_variable<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_rank<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_mean<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_variance<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_variance.expected<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_variance.standardized<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_variable<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_rank<\/th>\n      <th>var.features<\/th>\n      <th>var.features.rank<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,5,6,7,8,10,11,12,13,14,16,18,19,20,22]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"feature","targets":1},{"name":"CodeClass","targets":2},{"name":"total_count_unfiltered","targets":3},{"name":"mean_count_unfiltered","targets":4},{"name":"vf_vst_counts.AD2.AD3.CosMx_mean","targets":5},{"name":"vf_vst_counts.AD2.AD3.CosMx_variance","targets":6},{"name":"vf_vst_counts.AD2.AD3.CosMx_variance.expected","targets":7},{"name":"vf_vst_counts.AD2.AD3.CosMx_variance.standardized","targets":8},{"name":"vf_vst_counts.AD2.AD3.CosMx_variable","targets":9},{"name":"vf_vst_counts.AD2.AD3.CosMx_rank","targets":10},{"name":"vf_vst_counts.AD4.AD5.CosMx_mean","targets":11},{"name":"vf_vst_counts.AD4.AD5.CosMx_variance","targets":12},{"name":"vf_vst_counts.AD4.AD5.CosMx_variance.expected","targets":13},{"name":"vf_vst_counts.AD4.AD5.CosMx_variance.standardized","targets":14},{"name":"vf_vst_counts.AD4.AD5.CosMx_variable","targets":15},{"name":"vf_vst_counts.AD4.AD5.CosMx_rank","targets":16},{"name":"var.features","targets":17},{"name":"var.features.rank","targets":18},{"name":"MoransI_observed","targets":19},{"name":"MoransI_p.value","targets":20},{"name":"moransi.spatially.variable","targets":21},{"name":"moransi.spatially.variable.rank","targets":22}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 <p>The whole gene-metadata includes other columns, and in fact the
 columns we are interested in only have values for the ‘variable’ genes
@@ -857,21 +915,9 @@ data.</p>
          MoransI_observed, MoransI_p.value, moransi.spatially.variable,moransi.spatially.variable.rank) %&gt;% 
   arrange(moransi.spatially.variable.rank)
   
-head(gene_metadata_morans)</code></pre>
-<pre><code>  feature MoransI_observed MoransI_p.value moransi.spatially.variable
-1   Ptgds       0.32296951    0.0009756098                       TRUE
-2    Penk       0.15905615    0.0009756098                       TRUE
-3    Drd4       0.08720462    0.0009756098                       TRUE
-4  Lilra5       0.08718934    0.0009756098                       TRUE
-5     Vtn       0.05282752    0.0009756098                       TRUE
-6   Acta2       0.02569337    0.0009756098                       TRUE
-  moransi.spatially.variable.rank
-1                               1
-2                               2
-3                               3
-4                               4
-5                               5
-6                               6</code></pre>
+DT::datatable(gene_metadata_morans, width = &#39;100%&#39;)</code></pre>
+<div id="htmlwidget-fcbdfde5eeb925643261" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-fcbdfde5eeb925643261">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Ptgds","Penk","Drd4","Lilra5","Vtn","Acta2","Cnr1","Ttr","Sst","Npy"],[0.3229695055639554,0.1590561524926949,0.08720462499499981,0.08718933646160711,0.05282752140827351,0.02569336530082773,0.02362886716393527,0.01266743839515891,0.04844601413882734,0.01902939103935176],[0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.001951219512195122,0.001951219512195122],[true,true,true,true,true,true,true,true,true,true],[1,2,3,4,5,6,7,8,9,10]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>feature<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"feature","targets":1},{"name":"MoransI_observed","targets":2},{"name":"MoransI_p.value","targets":3},{"name":"moransi.spatially.variable","targets":4},{"name":"moransi.spatially.variable.rank","targets":5}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="plot-results" class="section level3">
 <h3>Plot results</h3>
@@ -881,27 +927,55 @@ top_genes</code></pre>
 <pre><code>[1] &quot;Ptgds&quot; &quot;Penk&quot;  &quot;Drd4&quot; </code></pre>
 <p>Here we are plotting the top 3 genes on that slide. Each has a
 different but clear reasons for being spatially restricted. Ptgds and
-Penk seem to be restricted to differnet regions of the tissue. Drd4 is a
-little different; it seems to have high expression in a subset of cells
-- its proximity to itself also triggers the significance n the morans
-test.</p>
-<p>NB: Genes without any sort of spatial pattern might still have some
-sort of morans test significance - since they’re still restricted to the
-tissue itself it isn’t random.</p>
+Penk seem to be restricted to specific regions of the tissue. Wherease
+Drd4 seems to have high expression in a subset of cells - its proximity
+to itself also triggers the significance n the moransI test.</p>
+<p>NB: Genes without any sort of spatial pattern (e.g negative controls)
+might still have some sort of moransI test significance - since they’re
+still restricted to the tissue itself, it isn’t random.</p>
 <pre class="r"><code>ImageDimPlot(so.sample,  fov = &quot;AD2.AD3.CosMx&quot;,
              molecules = top_genes, 
              group.by = &#39;sample&#39;, cols = c(&quot;grey30&quot;), # Make all cells grey.
              boundaries = &quot;segmentation&quot;,
              border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
 <p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-10-1.png" width="960" style="display: block; margin: auto;" /></p>
-<p>Can also show the celltypes present at those locations, though it can
-be hard to read.</p>
-<pre class="r"><code>ImageDimPlot(so.sample,  fov = &quot;AD2.AD3.CosMx&quot;,
-             molecules = top_genes, 
-             group.by = &#39;cluster_name&#39;, 
-             boundaries = &quot;segmentation&quot;,
-             border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
-<p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
+Past versions of unnamed-chunk-10-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/0ce06a8fe9e3d0354b4cca882c8978ff95d0f1bf/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-10-1.png" target="_blank">0ce06a8</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-11-01
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <!-- ```{r} -->
 <!-- # get averages of these 3 genes in  -->
 <!-- norm_matrix_means <- FetchData(so.sample, c('cluster_name', 'Ptgds', 'Penk', 'Drd4')) %>% -->
@@ -923,9 +997,8 @@ be hard to read.</p>
 </div>
 <div id="run-across-all-samples" class="section level2">
 <h2>Run across all samples</h2>
-<p>We just ran that over one sample. Realistically, we would want to
-test multiple samples. Here we run the test on each tissue sample
-separately.</p>
+<p>Realistically, we would want to test all samples. Here we run the
+test on each tissue sample separately.</p>
 <pre class="r"><code>samples &lt;- levels(so@meta.data$sample)
 results_list &lt;- list()
 
@@ -943,12 +1016,6 @@ for (the_sample in samples) {
     layer = &quot;counts&quot;
   )
 
-  
-  
-  
-  
-  
-  
   gene_metadata &lt;- so.sample[[&quot;RNA&quot;]]@meta.data
   results &lt;- 
   select(gene_metadata, 
@@ -970,12 +1037,13 @@ for (the_sample in samples) {
 [1] &quot;&gt;&gt;&gt;&gt; USING EDITED FUNCTION!!!! &lt;&lt;&lt;&quot;
 [1] &quot;&gt;&gt;&gt;&gt; USING EDITED FUNCTION!!!! &lt;&lt;&lt;&quot;</code></pre>
 <pre class="r"><code>results_all &lt;- bind_rows(results_list)</code></pre>
-<p>Display results for variable genes.</p>
-<pre class="r"><code>DT::datatable(results_all) </code></pre>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-fcbdfde5eeb925643261" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-fcbdfde5eeb925643261">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40"],["sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4"],["Ptgds","Penk","Drd4","Lilra5","Vtn","Acta2","Cnr1","Ttr","Sst","Npy","Ttr","Penk","Ptgds","Lilra5","Drd4","Acta2","Cnr1","Sst","Npy","Vtn","Ttr","Penk","Ptgds","Lilra5","Drd4","Acta2","Sst","Vtn","Cnr1","Npy","Ttr","Ptgds","Drd4","Penk","Lilra5","Acta2","Sst","Npy","Cnr1","Vtn"],[0.3229695055639554,0.1590561524926949,0.08720462499499981,0.08718933646160711,0.05282752140827351,0.02569336530082773,0.02362886716393527,0.01266743839515891,0.04844601413882734,0.01902939103935176,0.3728454799388959,0.1466038049287352,0.1224925545450483,0.09091210714592868,0.08363449281579936,0.03678956364445252,0.0277001335719391,0.02115759343775087,0.01988063216026358,0.01278082783592561,0.5195494965118608,0.1511118241235551,0.1425199586828255,0.09155962979698748,0.08776290200400122,0.05324483809413939,0.0414617262356598,0.03179844426917366,0.03079903927019299,0.02070981737900819,0.6042436378674948,0.1254127115631302,0.1087605254637382,0.1034361004316954,0.1017928004816937,0.05254541191339321,0.033958104426764,0.03103475845295824,0.0243497538943351,0.02054798872420385],[0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.001951219512195122,0.001951219512195122,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561],[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],[1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sample<\/th>\n      <th>feature<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sample","targets":1},{"name":"feature","targets":2},{"name":"MoransI_observed","targets":3},{"name":"MoransI_p.value","targets":4},{"name":"moransi.spatially.variable","targets":5},{"name":"moransi.spatially.variable.rank","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<p>Display results for variable genes</p>
+<pre class="r"><code>DT::datatable(results_all, width=&#39;100%&#39;) </code></pre>
+<div id="htmlwidget-423a02c40977061eb4d3" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-423a02c40977061eb4d3">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40"],["sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4"],["Ptgds","Penk","Drd4","Lilra5","Vtn","Acta2","Cnr1","Ttr","Sst","Npy","Ttr","Penk","Ptgds","Lilra5","Drd4","Acta2","Cnr1","Sst","Npy","Vtn","Ttr","Penk","Ptgds","Lilra5","Drd4","Acta2","Sst","Vtn","Cnr1","Npy","Ttr","Ptgds","Drd4","Penk","Lilra5","Acta2","Sst","Npy","Cnr1","Vtn"],[0.3229695055639554,0.1590561524926949,0.08720462499499981,0.08718933646160711,0.05282752140827351,0.02569336530082773,0.02362886716393527,0.01266743839515891,0.04844601413882734,0.01902939103935176,0.3728454799388959,0.1466038049287352,0.1224925545450483,0.09091210714592868,0.08363449281579936,0.03678956364445252,0.0277001335719391,0.02115759343775087,0.01988063216026358,0.01278082783592561,0.5195494965118608,0.1511118241235551,0.1425199586828255,0.09155962979698748,0.08776290200400122,0.05324483809413939,0.0414617262356598,0.03179844426917366,0.03079903927019299,0.02070981737900819,0.6042436378674948,0.1254127115631302,0.1087605254637382,0.1034361004316954,0.1017928004816937,0.05254541191339321,0.033958104426764,0.03103475845295824,0.0243497538943351,0.02054798872420385],[0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.001951219512195122,0.001951219512195122,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561],[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],[1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sample<\/th>\n      <th>feature<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sample","targets":1},{"name":"feature","targets":2},{"name":"MoransI_observed","targets":3},{"name":"MoransI_p.value","targets":4},{"name":"moransi.spatially.variable","targets":5},{"name":"moransi.spatially.variable.rank","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 <p>Ttr had a higher MoransI score in sample4 than sample1. Plotting its
-distribution in both shows the difference.</p>
+distribution in both demonstrates the difference - a very high
+expression region in sample4.</p>
 <pre class="r"><code>ImageDimPlot(
   subset( so, subset = sample == &#39;sample1&#39;),  
              fov          = &quot;AD2.AD3.CosMx&quot;,
@@ -983,7 +1051,7 @@ distribution in both shows the difference.</p>
              group.by     = &#39;sample&#39;, cols = c(&quot;grey30&quot;), # Make all cells grey.
              boundaries   = &quot;segmentation&quot;,
              border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
-<p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-14-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-13-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>ImageDimPlot(
   subset( so, subset = sample == &#39;sample4&#39;),  
              fov          = &quot;AD4.AD5.CosMx&quot;, # note the slide it is on.
@@ -991,7 +1059,7 @@ distribution in both shows the difference.</p>
              group.by     = &#39;sample&#39;, cols = c(&quot;grey30&quot;), # Make all cells grey.
              boundaries   = &quot;segmentation&quot;,
              border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
-<p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-14-2.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-13-2.png" width="1152" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="code-snippet" class="section level1">
@@ -1053,22 +1121,12 @@ results_all &lt;- bind_rows(results_list)</code></pre>
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>
-<pre class="r"><code>head(results_all)</code></pre>
-<pre><code>   sample feature MoransI_observed MoransI_p.value moransi.spatially.variable
-1 sample1   Ptgds       0.32296951    0.0009756098                       TRUE
-2 sample1    Penk       0.15905615    0.0009756098                       TRUE
-3 sample1    Drd4       0.08720462    0.0009756098                       TRUE
-4 sample1  Lilra5       0.08718934    0.0009756098                       TRUE
-5 sample1     Vtn       0.05282752    0.0009756098                       TRUE
-6 sample1   Acta2       0.02569337    0.0009756098                       TRUE
-  moransi.spatially.variable.rank
-1                               1
-2                               2
-3                               3
-4                               4
-5                               5
-6                               6</code></pre>
+<pre class="r"><code>DT::datatable(results_all, width=&#39;100%&#39;)</code></pre>
+<div id="htmlwidget-07a7c656fb218458b363" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-07a7c656fb218458b363">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40"],["sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4"],["Ptgds","Penk","Drd4","Lilra5","Vtn","Acta2","Cnr1","Ttr","Sst","Npy","Ttr","Penk","Ptgds","Lilra5","Drd4","Acta2","Cnr1","Sst","Npy","Vtn","Ttr","Penk","Ptgds","Lilra5","Drd4","Acta2","Sst","Vtn","Cnr1","Npy","Ttr","Ptgds","Drd4","Penk","Lilra5","Acta2","Sst","Npy","Cnr1","Vtn"],[0.3229695055639554,0.1590561524926949,0.08720462499499981,0.08718933646160711,0.05282752140827351,0.02569336530082773,0.02362886716393527,0.01266743839515891,0.04844601413882734,0.01902939103935176,0.3728454799388959,0.1466038049287352,0.1224925545450483,0.09091210714592868,0.08363449281579936,0.03678956364445252,0.0277001335719391,0.02115759343775087,0.01988063216026358,0.01278082783592561,0.5195494965118608,0.1511118241235551,0.1425199586828255,0.09155962979698748,0.08776290200400122,0.05324483809413939,0.0414617262356598,0.03179844426917366,0.03079903927019299,0.02070981737900819,0.6042436378674948,0.1254127115631302,0.1087605254637382,0.1034361004316954,0.1017928004816937,0.05254541191339321,0.033958104426764,0.03103475845295824,0.0243497538943351,0.02054798872420385],[0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.001951219512195122,0.001951219512195122,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561],[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],[1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sample<\/th>\n      <th>feature<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sample","targets":1},{"name":"feature","targets":2},{"name":"MoransI_observed","targets":3},{"name":"MoransI_p.value","targets":4},{"name":"moransi.spatially.variable","targets":5},{"name":"moransi.spatially.variable.rank","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 <ul>
+<li><strong>sample</strong>: <em>(not a default column, added by
+code)</em>: What tissue sample the test was run on.</li>
 <li><strong>feature</strong> : The gene being tested</li>
 <li><strong>MoransI_observed</strong> : The moransI statistic
 calculated. Higher values indicate more spatial correlation, 0 is
@@ -1081,8 +1139,6 @@ restricted? True or false value.</li>
 <li><strong>moransi.spatially.variable.rank</strong> : Ranking of the
 genes by spatial correlation, where 1 is the most distincly spatially
 restricted.</li>
-<li><strong>sample</strong>: (not a default column, added by code): What
-tissue sample the test was run on.</li>
 </ul>
 </div>
 <div id="more-information" class="section level1">
@@ -1092,7 +1148,7 @@ tissue sample the test was run on.</li>
 href="https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub">Microglia-astrocyte
 crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse
 model, as revealed by spatial transcriptomics</a>: Data used in this
-example.</li>
+example. <span class="citation">(Mallach et al. 2024)</span></li>
 <li><a href="https://en.wikipedia.org/wiki/Moran%27s_I">MoransI
 wikipedia</a>: What is MoransI test, with pictures.</li>
 <li><a
@@ -1106,16 +1162,25 @@ Bug report</a> : Link to the bug report on the Seurat repo in github.
 Can check the status of this issue here.</li>
 <li><a
 href="https://pachterlab.github.io/voyager/articles/vig4_cosmx.html#local-spatial-statistics-of-marker-genes">Voyager
-toolkit - spatial vignette</a> : Here is a more focussed and detailed
-vignette on calculating spatial statistics for gene expression using the
-Voyager package. It does not use Seurat objects, it is rather using the
-bioconductor compatible SpatialExperiment class.</li>
+toolkit - spatial statistics for cosmx vignette</a> : Here is a more
+focussed and detailed vignette on calculating spatial statistics for
+gene expression using the Voyager package. It does not use Seurat
+objects, it is rather using the bioconductor-compatible
+SpatialExperiment class.</li>
 </ul>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
-<div id="refs">
-
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-mallachMicrogliaastrocyteCrosstalkAmyloid2024"
+class="csl-entry">
+Mallach, Anna, Magdalena Zielonka, Veerle van Lieshout, Yanru An, Jia
+Hui Khoo, Marisa Vanheusden, Wei-Ting Chen, et al. 2024.
+<span>“Microglia-Astrocyte Crosstalk in the Amyloid Plaque Niche of an
+<span>Alzheimer</span>’s Disease Mouse Model, as Revealed by Spatial
+Transcriptomics.”</span> <em>Cell Reports</em> 43 (6): 114216. <a
+href="https://doi.org/10.1016/j.celrep.2024.114216">https://doi.org/10.1016/j.celrep.2024.114216</a>.
+</div>
 </div>
 <br>
 <p>
