@@ -14,38 +14,56 @@ editor_options:
 bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 ---
 
-
-
-## Using Seurat
-
-Should wait for this bug to be fixed; logged here: https://github.com/satijalab/seurat/issues/8226
-
-Maybe a fix?: https://github.com/satijalab/seurat/commit/038e98fc51369204ad4369e22337c176f1939dad#diff-9cc358405149db607ff830a16f0b4b21f7366e3c99ec00d52800acebe21b231cR5
-
-
-
-There's a workaround, but probably not suitable for this example doc.
-Consider a voyager example or similar, that might be more suited to these kinds of ~very spatial~ analyses.
-
-
-https://pachterlab.github.io/voyager/articles/vig4_cosmx.html#local-spatial-statistics-of-marker-genes
-
-
-
-
 ```{r angrylibrarian, include=FALSE} 
 knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<!-- keywords
 
-insituspatial
-seurat
-de
-test
+# Overview
 
--->
+
+It is possible to test for genes that are expressed in a spatially non-random pattern. These might be restricted to regions of a tissu (e.g. epithelia), with a very punctate expression in selected cells only (e.g. immunoglobulins in plasma cells). 
+
+One popular approach to find these genes is the MoransI test of spatial autocorrelation.
+
+![](assets/spatiallyrestricted.png)
+
+
+This example will show how to use the morans test within seurat to find spatially restricted genes.
+
+
+This requires:
+
+* X,Y coordinates of individual transcripts, or their cells.
+
+There is no need for celltype annotation. 
+
+
+For example:
+
+* What cells are sptially restricted in this tissue, are they in a layer of epithelial or elsewhere. 
+
+
+Steps:
+
+1. Breif description of steps involved in test
+2. If appropriate.
+
+
+
+
+
+# Worked example 
+
+Paper [Microglia-astrocyte crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse model, as revealed by spatial transcriptomics](https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub)
+[@mallachMicrogliaastrocyteCrosstalkAmyloid2024] explores the spatial transcritome of amaloid plaques in a mouse model.
+
+Their work includes an analysis of cosMX samples from of 4 mouse brain samples. 
+
+
+This example will test which genes are expressed in a spatially restricted pattern;
+e.g. along the boarder of a feature, in clumps or in some way non-random. This will be done for each sample, independently of any celltype annotations.
 
 
 ### Load libraries and data
@@ -67,14 +85,10 @@ seurat_file_01_preprocessed <- file.path(dataset_dir,  "GSE263793_AlzPlaque_seur
 ```
 
 
-
-
 ```{r}
 so <- readRDS(seurat_file_01_preprocessed)
 
-# Tag fewer variable features
-length(VariableFeatures(so))
-so <-  FindVariableFeatures(so, nfeatures=10)
+
 
 ```
 
@@ -84,157 +98,300 @@ so <-  FindVariableFeatures(so, nfeatures=10)
 
 ### Spatially variable features
 
+Morans test can be slow to run, so save time by only running it on VariableFeatures (non variable features are unlikely to be spatially restricted anyway!).
+
+For the purpose of this demo, only test the top 10. The actual number for a real experiment could be judged from the variable features plot below, e.g. 100-200 (or more, depending on your panel!). 
 
 ```{r}
-so.sample <- subset( so, cells = WhichCells(so, expression = sample == "sample1"))
-
-so.sample.assay <- GetAssay(so.sample, assay = "RNA")
+num_variable_features = 10 # Test only, Would be 100+ in real life
+so <-  FindVariableFeatures(so, nfeatures=num_variable_features)
+VariableFeaturePlot(so)
 ```
 
-```{r}
-renv::install("Rfast2")
-```
 
-```{r}
-so.sample <- FindSpatiallyVariableFeatures(so.sample, 
-                                           assay = "RNA", 
-                                           features = VariableFeatures(so.sample),    
-                                           selection.method = "moransi",
-                                           layer = "counts")
+We will look for variable features on each of our slides. X and Y coordinates from each slide are entirely separate. With a larger number of slides, this could be done in a for loop. 
 
-```
 
 ```{r}
-
-tc <- GetTissueCoordinates(object = so.sample[['AD2.AD3.CosMx']])
-
-x <- FindSpatiallyVariableFeatures(so.sample.assay, 
-                                  features = VariableFeatures(so.sample)[1:2],    
-                                  spatial.location = tc,
-                                  selection.method = "moransi",
-                                  layer = "counts.AD2.AD3.CosMx")
-
-
-x = FindSpatiallyVariableFeatures(so.sample.assay, 
-                                  features = VariableFeatures(so.sample)[1:2],    
-                                  spatial.location = tc,
-                                  selection.method = "moransi",
-                                  #layer = "counts.AD2.AD3.CosMx",
-                                  slot='scale.data')
+so.sample <- subset( so, subset= sample == 'sample1')
 ```
 
 
 
 
-```{r}
-  object = so.sample.assay
-  slot = "scale.data"
-  spatial.location = tc
-  selection.method = 'moransi'
-  #selection.method = c('markvariogram', 'moransi'),
-  features = VariableFeatures(so.sample)[1:2]
-  r.metric = 5
-  x.cuts = NULL
-  y.cuts = NULL
-  nfeatures = 2
-  verbose = TRUE
+Right now, there is a bug with the current FindSpatiallyVariableFeatures function. https://github.com/satijalab/seurat/issues/8226 
 
-) {
-  features <- features %||% rownames(x = object)
-  if (selection.method == "markvariogram" && "markvariogram" %in% names(x = Misc(object = object))) {
-    features.computed <- names(x = Misc(object = object, slot = "markvariogram"))
-    features <- features[! features %in% features.computed]
-  }
-  data <- GetAssayData(object = object, slot = slot)
-  data <- as.matrix(x = data[features, ])
-  data <- data[Seurat:::RowVar(x = data) > 0, ]
-  if (nrow(x = data) != 0) {
-    svf.info <- FindSpatiallyVariableFeatures(
-      object = data,
-      spatial.location = spatial.location,
-      selection.method = selection.method,
-      r.metric = r.metric,
-      x.cuts = x.cuts,
-      y.cuts = y.cuts#,
-      #verbose = verbose,
-      #...
-    )
-  } else {
-    svf.info <- c()
-  }
-  if (selection.method == "markvariogram") {
-    if ("markvariogram" %in% names(x = Misc(object = object))) {
-      svf.info <- c(svf.info, Misc(object = object, slot = "markvariogram"))
-    }
-    suppressWarnings(expr = Misc(object = object, slot = "markvariogram") <- svf.info)
-    svf.info <- ComputeRMetric(mv = svf.info, r.metric)
-    svf.info <- svf.info[order(svf.info[, 1]), , drop = FALSE]
-  }
-  if (selection.method == "moransi") {
-    colnames(x = svf.info) <- paste0("MoransI_", colnames(x = svf.info))
-    svf.info <- svf.info[order(svf.info[, 2], -abs(svf.info[, 1])), , drop = FALSE]
-  }
-  var.name <- paste0(selection.method, ".spatially.variable")
-  var.name.rank <- paste0(var.name, ".rank")
-  svf.info[[var.name]] <- FALSE
-  svf.info[[var.name]][1:(min(nrow(x = svf.info), nfeatures))] <- TRUE
-  svf.info[[var.name.rank]] <- 1:nrow(x = svf.info)
-  object[[names(x = svf.info)]] <- svf.info
-  return(object)
-}
-```
-
-
-
-
+As a temporary workaround, using a customised version of this that avoids the issue in just this dataset. 
+NB: The edit simply changes the way the data is stored in the metadata: `object[[names(x = svf.info)]] <- svf.info`
 
 ```{r}
+# Workaround 
+# Available: https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R
 source("code/spatially_variable_features_code.R")
-so.sample <- FindSpatiallyVariableFeatures.Seurat_EDITED(so.sample, 
-                                           assay = "RNA", 
-                                           features = VariableFeatures(so.sample),    
-                                           selection.method = "moransi",
-                                           layer = "counts")
+so.sample <- FindSpatiallyVariableFeatures.Seurat_EDITED(
+  so.sample, 
+  assay = "RNA", 
+  features = VariableFeatures(so.sample),    
+  selection.method = "moransi",
+  layer = "counts")
+
+## What it should be:
+## Try this command first!
+#so.sample <- FindSpatiallyVariableFeatures(
+#  so.sample, 
+#  assay = "RNA", 
+#  features = VariableFeatures(so.sample),    
+#  selection.method = "moransi",
+#  layer = "counts")
+
 
 ```
 
 
-
+FindSpatiallyVariableFeatures returns a seurat object with the moransI scores embedded in the feature metatdata of the 'RNA' assay.
 
 
 ```{r}
-# Can sorta get the top ones out.
-rownames(so.sample[['RNA']])[which(so.sample[['RNA']]@meta.data$moransi.spatially.variable.rank <10)]
-
-#gene_metadata <- cbind(feature=rownames(so.sample[["RNA"]]), so.sample[["RNA"]]@meta.data)
 gene_metadata <- so.sample[["RNA"]]@meta.data
-gene_metadata <- 
+#NB: This is a seperate table to the *cell* metadata found at so.sample@meta.data
+# so.sample[['RNA']]  retreives the 'RNA' assay.
+
+DT::datatable(head(gene_metadata))
+```
+
+The whole gene-metadata includes other columns, and in fact the columns we are interested in only have values for the 'variable' genes that we tested. So, make a summary table with just the relevant data.
+```{r}
+gene_metadata_morans <- 
   filter(gene_metadata, !is.na(moransi.spatially.variable.rank)) %>%
   select(feature, 
          MoransI_observed, MoransI_p.value, moransi.spatially.variable,moransi.spatially.variable.rank) %>% 
   arrange(moransi.spatially.variable.rank)
   
-                        
-head(gene_metadata)
+head(gene_metadata_morans)
 ```
 
 
+### Plot results
 
-
-### plot it
-
-Wow. Those top 3 are great.
+We can pull out the most significant genes from that table.
 
 ```{r}
-genes= gene_metadata$feature[1:3]
+top_genes = gene_metadata_morans$feature[1:3]
+top_genes
+```
 
+Here we are plotting the top 3 genes on that slide. Each has a different but clear reasons for being spatially restricted. Ptgds and Penk seem to be restricted to differnet regions of the tissue. Drd4 is a little different; it seems to have high expression in a subset of cells - its proximity to itself also triggers the significance n the morans test. 
+
+NB: Genes without any sort of spatial pattern might still have some sort of morans test significance - since they're still restricted to the tissue itself it isn't random.
+
+
+```{r fig.width=10}
 ImageDimPlot(so.sample,  fov = "AD2.AD3.CosMx",
-             molecules = genes, 
-             group.by = 'sample', boundaries = "segmentation",cols = c("grey30"),
+             molecules = top_genes, 
+             group.by = 'sample', cols = c("grey30"), # Make all cells grey.
+             boundaries = "segmentation",
+             border.color = 'black', axes = T, crop=TRUE)
+```
+
+Can also show the celltypes present at those locations, though it can be hard to read.
+
+```{r}
+ImageDimPlot(so.sample,  fov = "AD2.AD3.CosMx",
+             molecules = top_genes, 
+             group.by = 'cluster_name', 
+             boundaries = "segmentation",
+             border.color = 'black', axes = T, crop=TRUE)
+```
+
+
+<!-- ```{r} -->
+<!-- # get averages of these 3 genes in  -->
+<!-- norm_matrix_means <- FetchData(so.sample, c('cluster_name', 'Ptgds', 'Penk', 'Drd4')) %>% -->
+<!--   group_by(cluster_name) %>% -->
+<!--   summarise(Ptgds = mean(Ptgds), -->
+<!--             Penk  = mean(Penk), -->
+<!--             Drd4  = mean(Drd4)) %>% -->
+<!--   column_to_rownames(var = 'cluster_name') %>% # turn it into a matrix -->
+<!--   as.matrix() -->
+
+<!-- ``` -->
+<!-- ```{r} -->
+<!-- heatmap(norm_matrix_means, -->
+<!--         scale = "none",     # plot normalised expression, no scaling. -->
+<!--         Rowv = NA, Colv=NA, # no heirachical clustering -->
+<!--         cexCol = 1.5,       # adjust gene name sizes  -->
+<!--         margin = c(5,10)    # make window wide enough for labels. -->
+<!--         ) -->
+<!-- ``` -->
+
+## Run across all samples
+
+We just ran that over one sample. Realistically, we would want to test multiple samples. Here we run the test on each tissue sample separately. 
+
+
+
+
+```{r}
+samples <- levels(so@meta.data$sample)
+results_list <- list()
+
+for (the_sample in samples) {
+  
+  so.sample <- subset( so, subset= sample == the_sample)
+  
+  # Again, this should be: 
+  #so.sample <- FindSpatiallyVariableFeatures(
+  so.sample <- FindSpatiallyVariableFeatures.Seurat_EDITED(
+    so.sample, 
+    assay = "RNA", 
+    features = VariableFeatures(so.sample),    
+    selection.method = "moransi",
+    layer = "counts"
+  )
+
+  
+  
+  
+  
+  
+  
+  gene_metadata <- so.sample[["RNA"]]@meta.data
+  results <- 
+  select(gene_metadata, 
+         feature, 
+         MoransI_observed, 
+         MoransI_p.value, 
+         moransi.spatially.variable,
+         moransi.spatially.variable.rank) %>% 
+    filter(!is.na(moransi.spatially.variable.rank)) %>% # only tested
+    arrange(moransi.spatially.variable.rank) %>%
+    mutate(sample = the_sample) %>%
+    select(sample, everything())
+
+  
+  results_list[[the_sample]] <- results
+}
+
+results_all <- bind_rows(results_list)
+```
+
+Display results for variable genes.
+```{r}
+DT::datatable(results_all) 
+```
+
+
+Ttr had a higher  MoransI score in sample4 than sample1. Plotting its distribution in both shows the difference.
+
+```{r fig.width=12}
+ImageDimPlot(
+  subset( so, subset = sample == 'sample1'),  
+             fov          = "AD2.AD3.CosMx",
+             molecules    = 'Ttr', 
+             group.by     = 'sample', cols = c("grey30"), # Make all cells grey.
+             boundaries   = "segmentation",
              border.color = 'black', axes = T, crop=TRUE)
 
+ImageDimPlot(
+  subset( so, subset = sample == 'sample4'),  
+             fov          = "AD4.AD5.CosMx", # note the slide it is on.
+             molecules    = 'Ttr', 
+             group.by     = 'sample', cols = c("grey30"), # Make all cells grey.
+             boundaries   = "segmentation",
+             border.color = 'black', axes = T, crop=TRUE)
+```
+
+
+# Code Snippet
+
+Assumes that tissue samples are in a metadata column data called 'sample'.
+If there are multiple slides, it may be neccessary to call joinlayers.
+
+```{r eval=FALSE}
+
+library(Seurat)
+library(tidyverse)
+library(DT)
+
+# Load edited function, see https://github.com/satijalab/seurat/issues/8226
+# Available here: https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R
+source("spatially_variable_features_code.R")
+
+
+# If not alread run, find variable features
+num_variable_features = 1000 # Choose based on likely results and acceptable runtime
+so <-  FindVariableFeatures(so, nfeatures=num_variable_features)
+
+
+# Record moransI results fore ach sample one by one.
+samples <- levels(so@meta.data$sample)
+results_list <- list()
+for (the_sample in samples) {
+  
+  so.sample <- subset( so, subset= sample == the_sample)
+  
+  # Again, this should be: 
+  #so.sample <- FindSpatiallyVariableFeatures(
+  so.sample <- FindSpatiallyVariableFeatures.Seurat_EDITED(
+    so.sample, 
+    assay = "RNA", 
+    features = VariableFeatures(so.sample),    
+    selection.method = "moransi",
+    layer = "counts"
+  )
+  
+  # Format output table
+  gene_metadata <- so.sample[["RNA"]]@meta.data
+  results <- 
+  select(gene_metadata, 
+         feature, 
+         MoransI_observed, 
+         MoransI_p.value, 
+         moransi.spatially.variable,
+         moransi.spatially.variable.rank) %>% 
+    filter(!is.na(moransi.spatially.variable.rank)) %>% # only tested
+    arrange(moransi.spatially.variable.rank) %>%
+    mutate(sample = the_sample) %>%
+    select(sample, everything())
+
+  
+  results_list[[the_sample]] <- results
+}
+
+# Collect output result 
+results_all <- bind_rows(results_list)
 
 ```
+
+
+
+# Results
+
+```{r}
+head(results_all)
+```
+
+* **feature** : The gene being tested
+* **MoransI_observed** : The moransI statistic calculated. Higher values indicate more spatial correlation, 0 is completely random, and negative values indicate anti-correlation (ie repulsion).
+* **MoransI_p.value** : P-value for the moransI test.
+* **moransi.spatially.variable** : Is this gene spatially restricted? True or false value. 
+* **moransi.spatially.variable.rank** : Ranking of the genes by spatial correlation, where 1 is the most distincly spatially restricted.
+* **sample**: (not a default column, added by code): What tissue sample the test was run on.
+
+
+
+# More information 
+
+
+* [Microglia-astrocyte crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse model, as revealed by spatial transcriptomics](https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub): Data used in this example.
+* [MoransI wikipedia](https://en.wikipedia.org/wiki/Moran%27s_I): What is MoransI test, with pictures. 
+* [Seurat Spatially variable features](https://satijalab.org/seurat/articles/spatial_vignette): This is actually the sequencing based technology vignette (for visium data), but it covers the FindSpatiallyVariableFeatures function
+* [FindSpatiallyVariableFeatures() Bug report](https://github.com/satijalab/seurat/issues/8226) : Link to the bug report on the Seurat repo in github. Can check the status of this issue here.
+* [Voyager toolkit - spatial vignette](https://pachterlab.github.io/voyager/articles/vig4_cosmx.html#local-spatial-statistics-of-marker-genes) : Here is a more focussed and detailed vignette on calculating spatial statistics for gene expression using the Voyager package. It does not use Seurat objects, it is rather using the bioconductor compatible SpatialExperiment class.
+
+# References
+
+
 
 
 
