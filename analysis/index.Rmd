@@ -16,14 +16,22 @@ Further details on the papers, tools, statistics and methods are linked from eac
 Each example presents just one way of doing things (and currently only with Seurat) - there are many, many other approaches! These are intended as a starting point.
 
 
-* [Test for different cell type composition by group](e_CompositionChange.html):  Looking at proportions of celltypes, within in-situ spatial single cell datasets (cosmx). 
-* [Differential Expression by celltypes, between groups ](e_DEPseudobulk_insitu.html): Looking at differential expression, celltype by celltype, within in-situ spatial single cell datasets (cosmx)
-* [Differential expression without replicates with scRNAseq](e_DEWithoutReps.html) : For scRNAseq data, compare gene expresison cluster by cluster, between two samples, where no replicates are available. 
+
+**Single cell spatial**
+
+* [Test for different cell type composition by group](e_CompositionChange.html):  Looking at proportions of celltypes, within in-situ spatial single cell datasets 
+* [Differential Expression by celltypes, between groups ](e_DEPseudobulk_insitu.html): Looking at differential expression, celltype by celltype, within in-situ spatial single cell datasets 
+* [Find genes with spatial pattern](e_spatiallyRestrictedGenes.html): Find genes that are expressed in distinct patterns on the samples
+
+
+**single cell RNAseq**
+
+* [Differential expression without replicates with scRNAseq](e_DEWithoutReps.html) : For scRNAseq data, compare gene expression cluster by cluster, between two samples, where no replicates are available. 
+
+
 
 <!-- * [Changes in cell neighbourhood, between groups ](e_neighbourcellchanges.html): WIP -->
 
 
 These examples assume that the data has been loaded, preprocessed (e.g. QC-ed, UMAP) and annotated (e.g. sample names, cell types, cell niches). For information on how each dataset was prepared, see the data tab. 
 
-
-# References

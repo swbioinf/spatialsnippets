@@ -14,8 +14,22 @@ editor_options:
 
 Main repo: https://github.com/swbioinf/spatialsnippets
 
-Contributions welcome.
+Contributions welcome! The goal is to develop this into a community resource. 
 
-Template availble here
+Currently the main focus is on 
+
+* In-situ single cell spatial technologies, or scRNAseq
+* Tests for comparing groups, rather than QC or preprocessing.
+* That that aren't already covered in one place by one single vignette 
+   + e.g. No need to repeat the proportion tests in single cell data, since that's exactly covered in the [original propellar vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html#finding-significant-differences-in-cell-type-proportions-using-propeller)
+* Seurat - The only reason for this is familiarity!
+
+
+Template for writing new test examples available here. And some preprocessed datasets are linked above (data isn't hosted yet, but can be shared).
+
 * [New example template](e_template.html) : https://github.com/swbioinf/spatialsnippets/blob/main/analysis/e_template.Rmd
+
+
+Any feedback on usability or statistics of these methods is gratefully received, and can be cited in the authorship of each page. 
+
 

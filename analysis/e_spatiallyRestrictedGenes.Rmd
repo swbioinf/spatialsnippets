@@ -23,14 +23,14 @@ knitr::opts_chunk$set(echo = TRUE)
 # Overview
 
 
-It is possible to test for genes that are expressed in a spatially non-random pattern. These might be restricted to regions of a tissu (e.g. epithelia), with a very punctate expression in selected cells only (e.g. immunoglobulins in plasma cells). 
+It is possible to test for genes that are expressed in a non-random spatial pattern. These might be restricted to regions of a tissue (e.g. epithelia), near structures or simply having very high expression in selected cells only (e.g. immunoglobulins in plasma cells). 
 
 One popular approach to find these genes is the MoransI test of spatial autocorrelation.
 
 ![](assets/spatiallyrestricted.png)
 
 
-This example will show how to use the morans test within seurat to find spatially restricted genes.
+This example will show how to use the morans test within Seurat to find spatially restricted genes.
 
 
 This requires:
@@ -43,28 +43,27 @@ There is no need for celltype annotation.
 
 For example:
 
-* What cells are saptially restricted in this tissue, are they in a layer of epithelial cells, some structure or elsewhere. 
+* What cells are spatially restricted in this tissue due to some structure?
 * Are some cancer-related genes showing a restricted spatial expression (and does this align with tumour-dense regions?)
 
 
 
 Steps:
 
-1. Subset each tissue 
-2. Calculate moransI for each sample
-3. Join and inspect results.
+1. Subset experiment to each tissue 
+2. Calculate Moran's I for each sample
+3. Join and inspect results
 
 
 
 
 # Worked example 
 
-Paper [Microglia-astrocyte crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse model, as revealed by spatial transcriptomics](https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub)[@mallachMicrogliaastrocyteCrosstalkAmyloid2024]
-[@mallachMicrogliaastrocyteCrosstalkAmyloid2024] explores the spatial transcritome of amaloid plaques in a mouse model.
+Paper [Microglia-astrocyte crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse model, as revealed by spatial transcriptomics](https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub)[@mallachMicrogliaastrocyteCrosstalkAmyloid2024] explores the spatial transcription of amyloid plaques in a mouse model.
 
-Their work includes an analysis of cosMX samples from of 4 mouse brain samples. 
+Their work includes an analysis of cosMx samples from of 4 mouse brain samples. 
 
-Those sections show a very distinct spatial patterning of the different brain structures. This example will test which genes are expressed in a spatially restricted pattern, independently of any celltype annotations. e.g.
+Those sections show very distinct spatial patterning of gene expression due to the different brain structures. This example will test which genes are expressed in a spatially restricted pattern, independently of any celltype annotations. e.g.
 
 * Present within or nearby a given structure
 * Existing in 'clumps' e.g. high expression on a small subset of cells
@@ -102,16 +101,16 @@ Morans test can be slow to run, so save time by only running it on variable feat
 routinely deteced with _FindVariableFeatures()_ during preprocessing. Non variable features are unlikely to be spatially restricted.
 
 
-For the purpose of this demo, recalculate just the top 10 variable features. The actual number for a real experiment could be judged from the variable features plot below, e.g. 100-200-2000 (it really depends on your panel!). 
+For the purpose of this demo, recalculate just the top 10 variable features. The actual number for a real experiment could be judged from the variable features plot below, e.g. 100-200-2000 (or whatever you use for PCA - it really depends on your panel!). 
 
 ```{r}
-num_variable_features = 10 # Test only, Would be 100+ in real life
+num_variable_features = 10 # Test only! Should be much larger.
 so <-  FindVariableFeatures(so, nfeatures=num_variable_features)
 VariableFeaturePlot(so)
 ```
 
 
-We will look for _spatially_ variable features on each of our tissue samples indenedantly; in this case 4 samples across 2 slides. But first, just test one.
+We will look for _spatially_ variable features on each of our tissue samples independently; in this case 4 samples across 2 slides. But first, just test one.
 
 
 We do this because all probes are essentially going to be restricted to the tissue itself, not the surrounding empty slide. This might be particularly noticeable on a panel of many small cores.
@@ -140,7 +139,7 @@ so.sample <- FindSpatiallyVariableFeatures(
 
 However, right now, there is a bug with the current FindSpatiallyVariableFeatures function, described [here](https://github.com/satijalab/seurat/issues/8226). Likely that issue will be closed when this is fixed!
 
-If you see the following error - try a workaround, using a customised version of this that avoids the issue in just this dataset. The custom version, may be found [here](https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R)
+If you see the following error - try a workaround, using a customised version of this that avoids the issue in this dataset. The custom version, may be found [here](https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R)
 
 ```
 Error in `LayerData<-`:
@@ -274,7 +273,7 @@ DT::datatable(results_all, width='100%')
 ```
 
 
-Ttr had a higher  MoransI score in sample4 than sample1. Plotting its distribution in both demonstrates the difference - a very high expression region in sample4. 
+Ttr had a much higher Moran's I in sample4 than sample1. Plotting its distribution in both demonstrates the difference - there's a very high expression region in sample4 not seen in sample1.
 
 ```{r fig.width=12}
 ImageDimPlot(
@@ -311,12 +310,12 @@ library(DT)
 source("spatially_variable_features_code.R")
 
 
-# If not alread run, find variable features
-num_variable_features = 1000 # Choose based on likely results and acceptable runtime
-so <-  FindVariableFeatures(so, nfeatures=num_variable_features)
+## If not alread run, find variable features
+#num_variable_features = 1000 # Choose based on likely results and acceptable runtime
+#so <-  FindVariableFeatures(so, nfeatures=num_variable_features)
 
 
-# Record moransI results fore ach sample one by one.
+# Record moransI results for each sample, one by one.
 samples <- levels(so@meta.data$sample)
 results_list <- list()
 for (the_sample in samples) {
