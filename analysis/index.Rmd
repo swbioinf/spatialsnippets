@@ -24,7 +24,7 @@ Each example presents just one way of doing things (and currently only with Seur
 * [Find genes with spatial pattern](e_spatiallyRestrictedGenes.html): Find genes that are expressed in distinct patterns on the samples
 
 
-**single cell RNAseq**
+**Single cell RNAseq**
 
 * [Differential expression without replicates with scRNAseq](e_DEWithoutReps.html) : For scRNAseq data, compare gene expression cluster by cluster, between two samples, where no replicates are available. 
 
