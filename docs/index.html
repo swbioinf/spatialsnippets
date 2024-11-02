@@ -316,7 +316,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-10-09
+<strong>Last updated:</strong> 2024-11-02
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -363,15 +363,15 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree012dc7a6aab751be36f3e6649b983ecd6d438aa0targetblank012dc7aa">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree17499500a37463101db790d7b17b694442edabfetargetblank1749950a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/012dc7a6aab751be36f3e6649b983ecd6d438aa0" target="_blank">012dc7a</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/17499500a37463101db790d7b17b694442edabfe" target="_blank">1749950</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree012dc7a6aab751be36f3e6649b983ecd6d438aa0targetblank012dc7aa"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree17499500a37463101db790d7b17b694442edabfetargetblank1749950a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -381,7 +381,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/012dc7a6aab751be36f3e6649b983ecd6d438aa0" target="_blank">012dc7a</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/17499500a37463101db790d7b17b694442edabfe" target="_blank">1749950</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -400,9 +400,15 @@ Ignored files:
     Ignored:    .Rproj.user/
     Ignored:    analysis/contributions.nb.html
     Ignored:    analysis/e_neighbourcellchanges.nb.html
+    Ignored:    analysis/e_spatiallyRestrictedGenesVoyager.nb.html
+    Ignored:    analysis/g_toolkits.nb.html
     Ignored:    analysis/glossary.nb.html
     Ignored:    renv/library/
     Ignored:    renv/staging/
+
+Untracked files:
+    Untracked:  code/scwat-at_betweenClusters_heterotypic_score_functions.R
+    Untracked:  other/
 
 </code></pre>
 <p>
@@ -447,6 +453,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/17499500a37463101db790d7b17b694442edabfe/analysis/index.Rmd" target="_blank">1749950</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-11-02
+</td>
+<td>
+wflow_publish("analysis/")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/98faa66727c39c13d048d8b5c95edeaf9252fb79/docs/index.html" target="_blank">98faa66</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-10-09
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1008,17 +1048,23 @@ linked from each page.</p>
 <p>Each example presents just one way of doing things (and currently
 only with Seurat) - there are many, many other approaches! These are
 intended as a starting point.</p>
+<p><strong>Single cell spatial</strong></p>
 <ul>
 <li><a href="e_CompositionChange.html">Test for different cell type
 composition by group</a>: Looking at proportions of celltypes, within
-in-situ spatial single cell datasets (cosmx).</li>
+in-situ spatial single cell datasets</li>
 <li><a href="e_DEPseudobulk_insitu.html">Differential Expression by
 celltypes, between groups</a>: Looking at differential expression,
-celltype by celltype, within in-situ spatial single cell datasets
-(cosmx)</li>
+celltype by celltype, within in-situ spatial single cell datasets</li>
+<li><a href="e_spatiallyRestrictedGenes.html">Find genes with spatial
+pattern</a>: Find genes that are expressed in distinct patterns on the
+samples</li>
+</ul>
+<p><strong>single cell RNAseq</strong></p>
+<ul>
 <li><a href="e_DEWithoutReps.html">Differential expression without
 replicates with scRNAseq</a> : For scRNAseq data, compare gene
-expresison cluster by cluster, between two samples, where no replicates
+expression cluster by cluster, between two samples, where no replicates
 are available.</li>
 </ul>
 <!-- * [Changes in cell neighbourhood, between groups ](e_neighbourcellchanges.html): WIP -->
@@ -1026,9 +1072,6 @@ are available.</li>
 (e.g. QC-ed, UMAP) and annotated (e.g. sample names, cell types, cell
 niches). For information on how each dataset was prepared, see the data
 tab.</p>
-<div id="references" class="section level1">
-<h1>References</h1>
-</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
