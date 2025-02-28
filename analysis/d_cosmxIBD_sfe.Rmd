@@ -1,0 +1,205 @@
+---
+title: "Dataset: IBD cosMX GarridoTrigo2023"
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+bibliography: /home/s.williams/zotero_export/MyLibrary.bib
+---
+
+
+Data is from paper [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570)
+from Garrido-Trigo et al 2023, [@garrido-trigoMacrophageNeutrophilHeterogeneity2023]
+
+The study included 9 cosmx slides of colonic biopsies
+
+* 3x HC - Healthy controls
+* 3x UC - Ulcerative colitis
+* 3x CD - Chrones's disease
+
+
+Fastantically - not only have they made their raw and annotated data available, but have also shared their analysis code; https://github.com/HelenaLC/CosMx-SMI-IBD
+
+
+They have also shared browseable interface here: https://servidor2-ciberehd.upc.es/external/garrido/app/
+
+
+# Libraries
+
+```{r}
+library(SingleCellExperiment)
+library(tidyverse)
+```
+
+# Data download
+
+From the project description:
+
+Raw data on GEO here; https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE234713
+
+_Inflammatory bowel diseases (IBDs) including ulcerative colitis (UC) and Crohn’s disease (CD) are chronic inflammatory diseases with increasing worldwide prevalence that show a perplexing heterogeneity in manifestations and response to treatment. We applied spatial transcriptomics at single-cell resolution (CosMx Spatial Molecular Imaging) to human inflamed and uninflamed intestine._
+
+
+The following files were download from GEO
+
+* GSE234713_CosMx_annotation.csv.gz
+* GSE234713_CosMx_normalized_matrix.txt.gz
+* GSE234713_RAW.tar: RAW data was downloaded via custom downlod in 3 batches, one per group
+  * GSE234713_RAW_CD.tar
+  * GSE234713_RAW_HC.tar
+  * GSE234713_RAW_UC.tar
+* GSE234713_ReadMe_SMI_Data_File.html
+
+```{sh eval=FALSE}
+cd raw_data
+tar -xf GSE234713_RAW_CD.tar
+tar -xf GSE234713_RAW_HC.tar
+tar -xf GSE234713_RAW_UC.tar
+```
+
+
+
+# Data load
+
+
+```{r}
+dataset_dir      <- '~/projects/spatialsnippets/datasets/'
+project_data_dir <- file.path(dataset_dir,'GSE234713_IBDcosmx_GarridoTrigo2023')
+sample_dir            <- file.path(project_data_dir, "raw_data/") 
+annotation_file       <- file.path(project_data_dir,"GSE234713_CosMx_annotation.csv.gz")
+data_dir              <- file.path(project_data_dir, "processed_data/") 
+
+
+seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
+
+# config
+min_count_per_cell <- 100
+max_pc_negs        <- 1.5
+max_avg_neg        <- 0.5
+
+
+
+sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Crohn's disease")
+
+ 
+
+```
+
+
+
+```{r}
+################################################################################
+# SFE
+
+
+
+load_and_save_initial_sfe_to_disk <- function(sfe_data_dirs, the_samples, sfe_out_dir) {
+  
+  if (dir.exists(sfe_out_dir)) {
+    stop("SFE out directory already exists, please remove")
+  }
+  stopifnot(length(sfe_data_dirs) == length(the_samples))
+  
+  # Setup first or only slide
+  sfe <- load_sfe_with_molecules(sfe_data_dirs[1], the_samples[1]) 
+  sfe <- add_basic_qc_annontation(sfe)
+  
+  
+  
+  # Handle multiple samples
+  if (length(sfe_data_dirs) > 1) {
+    for (n in 2:length(sfe_data_dirs) ) {
+      sfe2 <- load_sfe_with_molecules(sfe_data_dirs[n], the_samples[n]) 
+      sfe2 <- add_basic_qc_annontation(sfe2) # Qc per slide.
+      # There's gotta be a more effient way than cbind? But we only have 2.
+      sfe <- cbind(sfe, sfe2)
+    }
+  }
+  
+  # Add probe stats After merge, since there's one stat per probe.
+  sfe <- add_basic_probe_stats(sfe)
+  
+  # Save using the method from alabaster.spatioal.
+  #library(alabaster.bumpy)
+  saveObject(sfe, sfe_out_dir )
+  return(sfe_out_dir)
+  
+}
+
+load_sfe_with_molecules <- function (sfe_data_dir, the_sample, sfe_out_dir) {
+  
+
+  # Where add_molecules=TRUE.
+  #Error: Capacity error: array cannot contain more than 2147483646 bytes, have 2148177769
+  # Pulls cell ids from cell_id
+  #"1_1" "2_1" "3_1" "4_1" "5_1" "6_1"
+  # "165_349" "166_349" "167_349" "168_349" "169_349" "170_349"
+  # <cellnum>_<fov>
+  sfe  <- readCosMX.edit(data_dir=sfe_data_dir, 
+                    sample_id = the_sample,
+                      add_molecules = FALSE # True yeilds errors.
+                      )
+  ###sfe$sample_id  <- the_sample #its not really a sample_id,  but this is added in load
+  sfe$slide_name <- the_sample # its a nice slide name.
+  
+  
+  # the tx file within the data dir
+  tx_file <- file.path(sfe_data_dir, paste0(the_sample,"_tx_file.csv"))
+  # Read in transcript coordinates, but only keep cellular tx (strips out alot)
+  #fov cell_ID      cell x_local_px y_local_px x_global_px y_global_px     z target  CellComp
+  #1       1   c_1_1_1       4255        140   10366.964    126795.1     2   Cd74 Cytoplasm
+  #1       1   c_1_1_1       4255        140   10366.944    126795.5     7 Ifitm3 Cytoplasm
+  #1       1   c_1_1_1       4252        139   10363.784    126796.5     6  Acta2 Cytoplasm
+  #1       1   c_1_1_1       4250        150   10362.394    126785.8     3  Ifit1 Cytoplasm
+  mol_table <- fread(tx_file, 
+                     #nrow=100000,
+                     select=c('cell_ID', 'fov', 'target', 'x_global_px', 'y_global_px', 'CellComp')) 
+  dim(mol_table)
+  mol_table <- mol_table[CellComp != 'None', ] # Assigned to cells only
+  mol_table <- mol_table[,cell_id:=paste0(cell_ID,"_",fov)]
+  mol_table <- mol_table[,!c('CellComp', "fov","cell_ID")]
+  dim(mol_table)
+  
+  
+  # construct BumpyMatrix
+  mol_bm <- splitAsBumpyMatrix(
+    mol_table[, c("x_global_px", "y_global_px")], 
+    row = mol_table$target, col = mol_table$cell_id,
+    sparse =TRUE) # sparse=TRUE is important, and not default !! 10fold less ram.
+  rm(mol_table)
+  
+  
+  # there may be more 'cells' from the tx file than in the object, but these 
+  # are quietly ignored. But everything in sft should be in mol_bm!
+  stopifnot(all(rownames(sfe) %in% rownames(mol_bm) ))
+  stopifnot(all( colnames(sfe) %in% colnames(mol_bm) ))
+  #mol_bm <- mol_bm[,colnames(sfe)] # match order and drop cells not in sfe
+  #mol_bm <- mol_bm[rownames(sfe),] # ditto genes
+  mol_bm <- mol_bm[rownames(sfe),colnames(sfe)] # match order and drop cells not in sfe, ditto genes
+  
+ 
+  # now save the molecules in the object
+  assay(sfe, 'molecules') <- mol_bm
+  # molecules(sfe)['Sell',1])
+
+  # Where there is missing polygon data for sfe, 
+  # remove the corresponding cell
+  # Otherwise you end up with spatial annotations instead of segmentations,
+  # which means files cant be joined (and probably other issues!)
+  # Affects one (1!) cell in MulscleX110, I do not care to see why.
+  # Should do nothing otherwise.
+  sfe<-check_and_rm_cells_without_polygons(sfe)
+  
+  return(sfe)  
+}
+
+
+
+```

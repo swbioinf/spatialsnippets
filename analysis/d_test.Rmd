@@ -1,0 +1,72 @@
+---
+title: "Dataset: TESt"
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+bibliography: /home/s.williams/zotero_export/MyLibrary.bib
+---
+
+
+```{r}
+
+library(ExperimentHub)
+
+library(SpatialFeatureExperiment)
+
+library(SFEData)
+```
+
+
+## Sfe data
+```{r}
+
+#sfe.lung <- HeNSCLCData()
+
+sfe.breast <-JanesickBreastData()
+
+```
+
+
+
+
+
+## Subcellular spatial data
+
+```{r}
+library(SubcellularSpatialData) # not userulf
+eh = ExperimentHub()
+query(eh, "SubcellularSpatialData")
+```
+
+
+Ok, by the looks the data just x/y coordinates of genes. That is not useful.
+(This started as merfish didnt it?)
+```{r}
+Sys.time()
+cosmx.lung <- eh[["EH8232"]]
+Sys.time()
+dim(cosmx.lung)
+
+#sample_id cell     gene genetype          x         y counts region technology                  Level1
+#1    Lung12 <NA>     IL7R     Gene   402.0722 -157988.8      1 Tumour      CosMx Tumour area with stroma
+#2    Lung12 <NA>   SEC61G     Gene -2389.5576 -158081.7      1 Tumour      CosMx Tumour area with stroma
+#3    Lung12 <NA>    IGHA1     Gene -3865.9444 -158703.6      1 Tumour      CosMx Tumour area with stroma
+#4    Lung12 <NA>    CD164     Gene -2885.5976 -158748.9      1 Tumour      CosMx Tumour area with stroma
+#5    Lung12 <NA> NegPrb15   NegPrb  -356.0778 -158799.1      1 Tumour      CosMx Tumour area with stroma
+#6    Lung12 <NA>      IL6     Gene  -399.7973 -158839.7      1 Tumour      CosMx Tumour area with stroma
+#               Level2 fov
+#1 Epithelium - panCK+   1
+#2              Stroma   1
+#3              Stroma   1
+```
+
+
+
