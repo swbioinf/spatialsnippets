@@ -16,7 +16,7 @@
 
 <title>Differential celltype composition between groups</title>
 
-<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -47,8 +47,8 @@
 <script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
 <link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
 <script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -360,7 +360,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">spatialsnippets</a>
+      <a class="navbar-brand" href="index.html">Spatial Sampler</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -369,6 +369,9 @@ div.tocify {
 </li>
 <li>
   <a href="index_data.html">Data</a>
+</li>
+<li>
+  <a href="contributing.html">Contributing</a>
 </li>
 <li>
   <a href="about.html">About</a>
@@ -427,7 +430,7 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-08-23
+<strong>Last updated:</strong> 2025-03-13
 </p>
 <p>
 <strong>Checks:</strong> <span
@@ -558,15 +561,15 @@ project makes it easier to run your code on other machines.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree5cae056ae4fdd0cd915916dd34f4b33c2c08c70etargetblank5cae056a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree499267390e6f425ef86017fc2f55e65ff63c0db3targetblank4992673a">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/5cae056ae4fdd0cd915916dd34f4b33c2c08c70e" target="_blank">5cae056</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/499267390e6f425ef86017fc2f55e65ff63c0db3" target="_blank">4992673</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree5cae056ae4fdd0cd915916dd34f4b33c2c08c70etargetblank5cae056a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree499267390e6f425ef86017fc2f55e65ff63c0db3targetblank4992673a"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -576,7 +579,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/5cae056ae4fdd0cd915916dd34f4b33c2c08c70e" target="_blank">5cae056</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/499267390e6f425ef86017fc2f55e65ff63c0db3" target="_blank">4992673</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -593,10 +596,25 @@ were generated:
 Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
+    Ignored:    analysis/contributions.nb.html
+    Ignored:    analysis/d_cosmxIBD_sfe.nb.html
+    Ignored:    analysis/d_test.nb.html
     Ignored:    analysis/e_neighbourcellchanges.nb.html
+    Ignored:    analysis/e_spatiallyRestrictedGenesVoyager.nb.html
+    Ignored:    analysis/g_toolkits.nb.html
     Ignored:    analysis/glossary.nb.html
     Ignored:    renv/library/
     Ignored:    renv/staging/
+
+Untracked files:
+    Untracked:  code/scwat-at_betweenClusters_heterotypic_score_functions.R
+    Untracked:  other/
+
+Unstaged changes:
+    Modified:   analysis/d_cosmxIBD_sfe.Rmd
+    Modified:   renv.lock
+    Modified:   renv/activate.R
+    Modified:   spatialsnippets.Rproj
 
 </code></pre>
 <p>
@@ -642,6 +660,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/499267390e6f425ef86017fc2f55e65ff63c0db3/analysis/e_CompositionChange.Rmd" target="_blank">4992673</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-03-13
+</td>
+<td>
+wflow_publish("analysis/e_CompositionChange.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/9989fa8e357d1ec52f0295476122d24b83f0a9f8/docs/e_CompositionChange.html" target="_blank">9989fa8</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-08-23
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1216,8 +1268,17 @@ that’s failing to develop) between d3 and d7 in my mouse knockouts?</li>
 </div>
 <div id="worked-example" class="section level1">
 <h1>Worked example</h1>
-<p>Using data from <span class="citation">(Garrido-Trigo et al.
-2023)</span></p>
+<p>This example uses the data from paper <a
+href="https://www.ncbi.nlm.nih.gov/pubmed/37495570"><em>Macrophage and
+neutrophil heterogeneity at single-cell spatial resolution in human
+inflammatory bowel disease</em></a> from Garrido-Trigo et al 2023, <span
+class="citation">(Garrido-Trigo et al. 2023)</span></p>
+<p>The study included 9 cosmx slides of colonic biopsies</p>
+<ul>
+<li>3x HC - Healthy controls</li>
+<li>3x UC - Ulcerative colitis</li>
+<li>3x CD - Chrones’s disease</li>
+</ul>
 <p>Is there a difference in the celltype composition between individuals
 with Ulcerative colitis or Crohn’s disease, and Healthy controls?</p>
 <div id="load-libraries-and-data" class="section level2">
@@ -1570,7 +1631,7 @@ results_table.no_fov_info &lt;- propeller(clusters = so$celltype_subset,
                            group    = so$condition)
 DT::datatable(results_table.no_fov_info)</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-02919026514f0c819cc6" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-02919026514f0c819cc6">{"x":{"filter":"none","vertical":false,"data":[["epi","myeloids","stroma","plasmas","tcells"],[0.2336112436510245,0.1242436990211496,0.239743528209356,0.3692386311340491,0.03316289798442083],[0.2588477341640966,0.1293396472008881,0.2112091354166983,0.3668089465299898,0.03379453668832739],[0.2180317355493965,0.1067869933878069,0.2741290749861598,0.3851529708575356,0.01589922521910116],[0.4052842293855675,0.06414522251832389,0.247610813639156,0.2507610386426946,0.03219869581425814],[1.286172386850694,0.4468304986211351,0.4228438339081834,0.3440366412742025,0.2920339741917931],[0.3216824691386565,0.6528237049342819,0.6672889143960041,0.717642011513493,0.7534123004538436],[0.7534123004538436,0.7534123004538436,0.7534123004538436,0.7534123004538436,0.7534123004538436]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>BaselineProp<\/th>\n      <th>PropMean.Crohn.s.disease<\/th>\n      <th>PropMean.Ulcerative.colitis<\/th>\n      <th>PropMean.Healthy.controls<\/th>\n      <th>Fstatistic<\/th>\n      <th>P.Value<\/th>\n      <th>FDR<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"BaselineProp","targets":1},{"name":"PropMean.Crohn.s.disease","targets":2},{"name":"PropMean.Ulcerative.colitis","targets":3},{"name":"PropMean.Healthy.controls","targets":4},{"name":"Fstatistic","targets":5},{"name":"P.Value","targets":6},{"name":"FDR","targets":7}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-02919026514f0c819cc6">{"x":{"filter":"none","vertical":false,"data":[["epi","myeloids","stroma","plasmas","tcells"],[0.2336112436510245,0.1242436990211496,0.239743528209356,0.3692386311340491,0.03316289798442083],[0.2588477341640966,0.1293396472008881,0.2112091354166983,0.3668089465299898,0.03379453668832739],[0.2180317355493965,0.1067869933878069,0.2741290749861598,0.3851529708575356,0.01589922521910116],[0.4052842293855675,0.06414522251832389,0.247610813639156,0.2507610386426946,0.03219869581425814],[1.286172386850694,0.4468304986211344,0.4228438339081823,0.3440366412742021,0.2920339741917928],[0.3216824691386566,0.6528237049342822,0.667288914396005,0.7176420115134934,0.7534123004538438],[0.7534123004538438,0.7534123004538438,0.7534123004538438,0.7534123004538438,0.7534123004538438]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>BaselineProp<\/th>\n      <th>PropMean.Crohn.s.disease<\/th>\n      <th>PropMean.Ulcerative.colitis<\/th>\n      <th>PropMean.Healthy.controls<\/th>\n      <th>Fstatistic<\/th>\n      <th>P.Value<\/th>\n      <th>FDR<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"BaselineProp","targets":1},{"name":"PropMean.Crohn.s.disease","targets":2},{"name":"PropMean.Ulcerative.colitis","targets":3},{"name":"PropMean.Healthy.controls","targets":4},{"name":"Fstatistic","targets":5},{"name":"P.Value","targets":6},{"name":"FDR","targets":7}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 <hr />
 <p>It would be possible to counts cells at the sample level, and use the
 above method. But - having seen the within sample heterogeneity across
@@ -1632,7 +1693,7 @@ vs Healthy control (‘UCvsHC’) test</p>
 <pre class="r"><code>results_table.UCvsHC &lt;- topTable(fit, coef=&#39;UCvHC&#39;)
 DT::datatable(results_table.UCvsHC)</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-33e8fa5db7297a737495" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-33e8fa5db7297a737495">{"x":{"filter":"none","vertical":false,"data":[["epi","myeloids","plasmas","tcells","stroma"],[-2.706722698198122,0.4964112084907,0.5803362079172052,-0.1088987586146155,0.006443349694189582],[-2.441245430688619,-2.31578727621975,-1.090207515887416,-4.077875649320515,-0.9671844357460492],[-1.647504165143258,1.188049750647491,0.6648390657132887,-0.1657418709602792,0.007498967962473737],[0.1012925376408454,0.2364628598022434,0.5070499041498667,0.8685560720830153,0.9940254949966962],[0.5064626882042268,0.5911571495056085,0.8450831735831112,0.9940254949966962,0.9940254949966962],[-4.576517380695057,-4.590715643155433,-4.60141953088679,-4.60603321172746,-4.606339101259351]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"logFC","targets":1},{"name":"AveExpr","targets":2},{"name":"t","targets":3},{"name":"P.Value","targets":4},{"name":"adj.P.Val","targets":5},{"name":"B","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-33e8fa5db7297a737495">{"x":{"filter":"none","vertical":false,"data":[["epi","myeloids","plasmas","tcells","stroma"],[-2.706722698198122,0.4964112084907,0.5803362079172052,-0.1088987586146155,0.006443349694189582],[-2.441245430688619,-2.31578727621975,-1.090207515887416,-4.077875649320515,-0.9671844357460492],[-1.647504165143258,1.188049750647491,0.6648390657132887,-0.1657418709602792,0.007498967962473737],[0.1012925376408454,0.2364628598022436,0.5070499041498667,0.8685560720830153,0.9940254949966962],[0.5064626882042268,0.5911571495056089,0.8450831735831112,0.9940254949966962,0.9940254949966962],[-4.576517380695057,-4.590715643155433,-4.60141953088679,-4.60603321172746,-4.606339101259351]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"logFC","targets":1},{"name":"AveExpr","targets":2},{"name":"t","targets":3},{"name":"P.Value","targets":4},{"name":"adj.P.Val","targets":5},{"name":"B","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="code-snippet" class="section level1">
@@ -1787,9 +1848,9 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.3.2 (2023-10-31)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Ubuntu 22.04.4 LTS
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.5 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -1810,87 +1871,85 @@ attached base packages:
 [1] stats     graphics  grDevices datasets  utils     methods   base     
 
 other attached packages:
- [1] DT_0.33            limma_3.58.1       lubridate_1.9.3    forcats_1.0.0     
+ [1] DT_0.33            limma_3.62.2       lubridate_1.9.4    forcats_1.0.0     
  [5] stringr_1.5.1      dplyr_1.1.4        purrr_1.0.2        readr_2.1.5       
- [9] tidyr_1.3.1        tibble_3.2.1       ggplot2_3.5.0      tidyverse_2.0.0   
-[13] speckle_1.2.0      Seurat_5.1.0       SeuratObject_5.0.2 sp_2.1-3          
+ [9] tidyr_1.3.1        tibble_3.2.1       ggplot2_3.5.1      tidyverse_2.0.0   
+[13] speckle_1.6.0      Seurat_5.2.1       SeuratObject_5.0.2 sp_2.2-0          
 [17] workflowr_1.7.1   
 
 loaded via a namespace (and not attached):
-  [1] RcppAnnoy_0.0.22            splines_4.3.2              
-  [3] later_1.3.2                 bitops_1.0-7               
-  [5] polyclip_1.10-6             fastDummies_1.7.3          
-  [7] lifecycle_1.0.4             edgeR_4.0.16               
-  [9] rprojroot_2.0.4             globals_0.16.3             
- [11] processx_3.8.4              lattice_0.22-6             
- [13] MASS_7.3-60.0.1             crosstalk_1.2.1            
- [15] magrittr_2.0.3              plotly_4.10.4              
- [17] sass_0.4.9                  rmarkdown_2.26             
- [19] jquerylib_0.1.4             yaml_2.3.8                 
- [21] httpuv_1.6.15               sctransform_0.4.1          
- [23] spam_2.10-0                 spatstat.sparse_3.0-3      
- [25] reticulate_1.35.0           cowplot_1.1.3              
- [27] pbapply_1.7-2               RColorBrewer_1.1-3         
- [29] abind_1.4-5                 zlibbioc_1.48.2            
- [31] Rtsne_0.17                  GenomicRanges_1.54.1       
- [33] BiocGenerics_0.48.1         RCurl_1.98-1.14            
- [35] git2r_0.33.0                GenomeInfoDbData_1.2.11    
- [37] IRanges_2.36.0              S4Vectors_0.40.2           
- [39] ggrepel_0.9.5               irlba_2.3.5.1              
- [41] listenv_0.9.1               spatstat.utils_3.0-4       
- [43] goftest_1.2-3               RSpectra_0.16-1            
- [45] spatstat.random_3.2-3       fitdistrplus_1.1-11        
- [47] parallelly_1.37.1           leiden_0.4.3.1             
- [49] codetools_0.2-20            DelayedArray_0.28.0        
- [51] tidyselect_1.2.1            farver_2.1.1               
- [53] matrixStats_1.2.0           stats4_4.3.2               
- [55] spatstat.explore_3.2-7      jsonlite_1.8.8             
- [57] progressr_0.14.0            ggridges_0.5.6             
- [59] survival_3.5-8              tools_4.3.2                
- [61] ica_1.0-3                   Rcpp_1.0.12                
- [63] glue_1.7.0                  gridExtra_2.3              
- [65] SparseArray_1.2.4           xfun_0.43                  
- [67] MatrixGenerics_1.14.0       GenomeInfoDb_1.38.8        
- [69] withr_3.0.0                 BiocManager_1.30.22        
- [71] fastmap_1.1.1               fansi_1.0.6                
- [73] callr_3.7.6                 digest_0.6.35              
- [75] timechange_0.3.0            R6_2.5.1                   
- [77] mime_0.12                   colorspace_2.1-0           
- [79] scattermore_1.2             tensor_1.5                 
- [81] spatstat.data_3.0-4         utf8_1.2.4                 
- [83] generics_0.1.3              renv_1.0.5                 
- [85] data.table_1.15.4           httr_1.4.7                 
- [87] htmlwidgets_1.6.4           S4Arrays_1.2.1             
- [89] whisker_0.4.1               uwot_0.1.16                
- [91] pkgconfig_2.0.3             gtable_0.3.4               
- [93] lmtest_0.9-40               SingleCellExperiment_1.24.0
- [95] XVector_0.42.0              htmltools_0.5.8.1          
- [97] dotCall64_1.1-1             scales_1.3.0               
- [99] Biobase_2.62.0              png_0.1-8                  
-[101] knitr_1.45                  rstudioapi_0.16.0          
-[103] tzdb_0.4.0                  reshape2_1.4.4             
-[105] nlme_3.1-164                cachem_1.0.8               
-[107] zoo_1.8-12                  KernSmooth_2.23-22         
-[109] parallel_4.3.2              miniUI_0.1.1.1             
-[111] pillar_1.9.0                grid_4.3.2                 
-[113] vctrs_0.6.5                 RANN_2.6.1                 
-[115] promises_1.2.1              xtable_1.8-4               
-[117] cluster_2.1.6               evaluate_0.23              
-[119] cli_3.6.2                   locfit_1.5-9.9             
-[121] compiler_4.3.2              rlang_1.1.3                
-[123] crayon_1.5.2                future.apply_1.11.2        
-[125] labeling_0.4.3              ps_1.7.6                   
-[127] getPass_0.2-4               plyr_1.8.9                 
-[129] fs_1.6.3                    stringi_1.8.3              
-[131] viridisLite_0.4.2           deldir_2.0-4               
-[133] munsell_0.5.1               lazyeval_0.2.2             
-[135] spatstat.geom_3.2-9         Matrix_1.6-5               
-[137] RcppHNSW_0.6.0              hms_1.1.3                  
-[139] patchwork_1.2.0             future_1.33.2              
-[141] statmod_1.5.0               shiny_1.8.1.1              
-[143] highr_0.10                  SummarizedExperiment_1.32.0
-[145] ROCR_1.0-11                 igraph_2.0.3               
-[147] bslib_0.7.0                </code></pre>
+  [1] RcppAnnoy_0.0.22            splines_4.4.0              
+  [3] later_1.4.1                 polyclip_1.10-7            
+  [5] fastDummies_1.7.5           lifecycle_1.0.4            
+  [7] edgeR_4.4.2                 rprojroot_2.0.4            
+  [9] globals_0.16.3              processx_3.8.5             
+ [11] lattice_0.22-6              MASS_7.3-64                
+ [13] crosstalk_1.2.1             magrittr_2.0.3             
+ [15] plotly_4.10.4               sass_0.4.9                 
+ [17] rmarkdown_2.29              jquerylib_0.1.4            
+ [19] yaml_2.3.10                 httpuv_1.6.15              
+ [21] sctransform_0.4.1           spam_2.11-1                
+ [23] spatstat.sparse_3.1-0       reticulate_1.40.0          
+ [25] cowplot_1.1.3               pbapply_1.7-2              
+ [27] RColorBrewer_1.1-3          abind_1.4-8                
+ [29] zlibbioc_1.52.0             Rtsne_0.17                 
+ [31] GenomicRanges_1.58.0        BiocGenerics_0.52.0        
+ [33] git2r_0.33.0                GenomeInfoDbData_1.2.13    
+ [35] IRanges_2.40.1              S4Vectors_0.44.0           
+ [37] ggrepel_0.9.6               irlba_2.3.5.1              
+ [39] listenv_0.9.1               spatstat.utils_3.1-2       
+ [41] goftest_1.2-3               RSpectra_0.16-2            
+ [43] spatstat.random_3.3-2       fitdistrplus_1.2-2         
+ [45] parallelly_1.42.0           codetools_0.2-20           
+ [47] DelayedArray_0.32.0         tidyselect_1.2.1           
+ [49] UCSC.utils_1.2.0            farver_2.1.2               
+ [51] matrixStats_1.5.0           stats4_4.4.0               
+ [53] spatstat.explore_3.3-4      jsonlite_1.8.9             
+ [55] progressr_0.15.1            ggridges_0.5.6             
+ [57] survival_3.8-3              tools_4.4.0                
+ [59] ica_1.0-3                   Rcpp_1.0.14                
+ [61] glue_1.8.0                  gridExtra_2.3              
+ [63] SparseArray_1.6.1           xfun_0.50                  
+ [65] MatrixGenerics_1.18.1       GenomeInfoDb_1.42.1        
+ [67] withr_3.0.2                 BiocManager_1.30.25        
+ [69] fastmap_1.2.0               callr_3.7.6                
+ [71] digest_0.6.37               timechange_0.3.0           
+ [73] R6_2.5.1                    mime_0.12                  
+ [75] colorspace_2.1-1            scattermore_1.2            
+ [77] tensor_1.5                  spatstat.data_3.1-4        
+ [79] generics_0.1.3              renv_1.0.5                 
+ [81] data.table_1.16.4           httr_1.4.7                 
+ [83] htmlwidgets_1.6.4           S4Arrays_1.6.0             
+ [85] whisker_0.4.1               uwot_0.2.2                 
+ [87] pkgconfig_2.0.3             gtable_0.3.6               
+ [89] lmtest_0.9-40               SingleCellExperiment_1.28.1
+ [91] XVector_0.46.0              htmltools_0.5.8.1          
+ [93] dotCall64_1.2               scales_1.3.0               
+ [95] Biobase_2.66.0              png_0.1-8                  
+ [97] spatstat.univar_3.1-1       knitr_1.49                 
+ [99] rstudioapi_0.17.1           tzdb_0.4.0                 
+[101] reshape2_1.4.4              nlme_3.1-166               
+[103] cachem_1.1.0                zoo_1.8-12                 
+[105] KernSmooth_2.23-26          parallel_4.4.0             
+[107] miniUI_0.1.1.1              pillar_1.10.1              
+[109] grid_4.4.0                  vctrs_0.6.5                
+[111] RANN_2.6.2                  promises_1.3.2             
+[113] xtable_1.8-4                cluster_2.1.8              
+[115] evaluate_1.0.3              cli_3.6.3                  
+[117] locfit_1.5-9.11             compiler_4.4.0             
+[119] rlang_1.1.5                 crayon_1.5.3               
+[121] future.apply_1.11.3         labeling_0.4.3             
+[123] ps_1.8.1                    getPass_0.2-4              
+[125] plyr_1.8.9                  fs_1.6.5                   
+[127] stringi_1.8.4               viridisLite_0.4.2          
+[129] deldir_2.0-4                munsell_0.5.1              
+[131] lazyeval_0.2.2              spatstat.geom_3.3-5        
+[133] Matrix_1.7-1                RcppHNSW_0.6.0             
+[135] hms_1.1.3                   patchwork_1.3.0            
+[137] future_1.34.0               statmod_1.5.0              
+[139] shiny_1.10.0                SummarizedExperiment_1.36.0
+[141] ROCR_1.0-11                 igraph_2.1.4               
+[143] bslib_0.9.0                </code></pre>
 </div>
 </div>
 
