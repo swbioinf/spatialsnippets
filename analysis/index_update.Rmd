@@ -1,0 +1,117 @@
+---
+title: "Home"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: false
+editor_options:
+  chunk_output_type: console
+bibliography: /home/s.williams/zotero_export/MyLibrary.bib
+---
+
+
+
+These examples are a sampler of tests that can be performed on an in-situ single cell spatial datasets. Initial  examples use cosMX, though approaches should be valid on other platforms like Xenium. 
+
+Further details on the papers, tools, statistics and methods are linked from each page.
+
+Each example presents just one way of doing things (and currently only with Seurat) - there are many, many other approaches! These are intended as a starting point.
+
+These examples assume that the data has been loaded, preprocessed (e.g. QC-ed, UMAP) and annotated (e.g. sample names, cell types, cell niches). For information on how each dataset was prepared, see the data tab. 
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(reactable)
+library(htmltools)
+library(dplyr)
+
+howto_info_file <- '/home/s.williams/projects/spatialsnippets/spatialsnippets/data/howto_info.tsv'
+howto_info <- read.delim(howto_info_file, sep="\t")
+howto_info$image <- paste0("assets/",howto_info$image)
+```
+
+
+```{r echo=FALSE}
+#Defaine column widths;
+#https://glin.github.io/reactable/articles/examples.html#column-widths
+
+# reactable leaves col order as is.
+data <- select(howto_info, image, howto, Description,  Technology, Toolkit, url, everything() )
+
+reactable(
+  data,
+  
+  searchable = TRUE, # filtering is also possible, but at this stage, a simple search box is enough.
+  
+  columns = list(
+    
+    image = colDef(
+      name = "",
+      minWidth = 250,
+      cell = function(value, index) {
+        
+        image <- img(src = value, 
+                     #style = "object-fit: contain",  
+                     alt = value
+                     ) #
+        link_with_image <- tags$a(
+            href = data$url[index],
+            image
+        )
+        
+        
+        tagList(
+          tags$a(style = "font-weight: 600; color:black;", href = data$url[index], target = "_blank",  data$howto[index]),
+          div(style = "display: inline-block;", link_with_image)
+
+        )
+        
+      }),
+    
+    howto       = colDef(show = FALSE),
+    
+    Description = colDef(minWidth = 200),
+
+    # By default hidden columns aren't searched, even though the content is copied
+    # into a different column. 
+    # Searchable=TREU  enables search of specific tech, e.g. 'cosmx' to work
+    SpecificTech     = colDef(show = FALSE, 
+                              searchable = TRUE), 
+    
+
+    #Combine broad and specific tech    
+    Technology = colDef(
+      cell = function(value, index) {
+          specificTech <- data$SpecificTech[index]
+          div(
+            div(value),
+            div(style = "font-style: italic", specificTech)
+          )
+    }),
+    
+    Toolkit = colDef(minWidth = 50),
+    
+    
+    url = colDef(
+      name = "",
+      width = 50,
+        cell = function(value) {
+          tags$a(href = value, target = "_blank",  "▶️")
+      }
+      
+    )
+  )
+    
+)
+
+
+
+```
+
+
+
+
+
+
+
+
