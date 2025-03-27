@@ -13,7 +13,7 @@
 
 <title>Home</title>
 
-<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -32,8 +32,16 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<script src="site_libs/core-js-2.5.3/shim.min.js"></script>
+<script src="site_libs/react-18.2.0/react.min.js"></script>
+<script src="site_libs/react-18.2.0/react-dom.min.js"></script>
+<script src="site_libs/reactwidget-2.0.0/react-tools.js"></script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/reactable-0.4.4/reactable.css" rel="stylesheet" />
+<script src="site_libs/reactable-binding-0.4.4/reactable.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -69,6 +77,28 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 
 
@@ -295,7 +325,7 @@ $(document).ready(function () {
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
 <span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
+workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger"
 aria-hidden="true"></span>
 </button>
 </p>
@@ -306,8 +336,8 @@ aria-hidden="true"></span>
 </li>
 <li>
 <a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
+class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -316,13 +346,13 @@ class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2024-11-02
+<strong>Last updated:</strong> 2025-03-27
 </p>
 <p>
 <strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
+class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6
 <span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
+aria-hidden="true"></span> 1
 </p>
 <p>
 <strong>Knit directory:</strong> <code>spatialsnippets/</code> <span
@@ -363,15 +393,125 @@ results.</p>
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree9715a09ca7736f1a69d36074f948487219e56f71targetblank9715a09a">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the
+global environment can affect the analysis in your R Markdown file in
+unknown ways. For reproduciblity it’s best to always run the code in an
+empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20231017code">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Seed:</strong>
+<code>set.seed(20231017)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20231017code"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20231017)</code> was run prior to running
+the code in the R Markdown file. Setting a seed ensures that any results
+that rely on randomness, e.g. subsampling or permutations, are
+reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Session information:</strong>
+recorded </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongrecorded"
+class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Recording the operating system, R version, and package
+versions is critical for reproducibility.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
+<span class="glyphicon glyphicon-ok text-success"
+aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be
+confident that you successfully produced the results during this
+run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongabsolute">
+<span class="glyphicon glyphicon-exclamation-sign text-danger"
+aria-hidden="true"></span> <strong>File paths:</strong> absolute </a>
+</p>
+</div>
+<div id="strongFilepathsstrongabsolute" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Using absolute paths to the files within your workflowr project makes it
+difficult for you and others to run your code on a different machine.
+Change the absolute path(s) below to the suggested relative path(s) to
+make your code more reproducible.
+</p>
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th style="text-align:left;">
+absolute
+</th>
+<th style="text-align:left;">
+relative
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+/home/s.williams/projects/spatialsnippets/spatialsnippets/data/howto_info.tsv
+</td>
+<td style="text-align:left;">
+data/howto_info.tsv
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreefc5d26fce5a28fd874e91f8c8ececc45d3cdf95dtargetblankfc5d26fa">
 <span class="glyphicon glyphicon-ok text-success"
 aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/9715a09ca7736f1a69d36074f948487219e56f71" target="_blank">9715a09</a>
+<a href="https://github.com/swbioinf/spatialsnippets/tree/fc5d26fce5a28fd874e91f8c8ececc45d3cdf95d" target="_blank">fc5d26f</a>
 </a>
 </p>
 </div>
 <div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree9715a09ca7736f1a69d36074f948487219e56f71targetblank9715a09a"
+id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstreefc5d26fce5a28fd874e91f8c8ececc45d3cdf95dtargetblankfc5d26fa"
 class="panel-collapse collapse">
 <div class="panel-body">
 <p>
@@ -381,7 +521,7 @@ reproducibility.
 </p>
 <p>
 The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/9715a09ca7736f1a69d36074f948487219e56f71" target="_blank">9715a09</a>.
+<a href="https://github.com/swbioinf/spatialsnippets/tree/fc5d26fce5a28fd874e91f8c8ececc45d3cdf95d" target="_blank">fc5d26f</a>.
 See the <em>Past versions</em> tab to see a history of the changes made
 to the R Markdown and HTML files.
 </p>
@@ -399,6 +539,8 @@ Ignored files:
     Ignored:    .Rhistory
     Ignored:    .Rproj.user/
     Ignored:    analysis/contributions.nb.html
+    Ignored:    analysis/d_cosmxIBD_sfe.nb.html
+    Ignored:    analysis/d_test.nb.html
     Ignored:    analysis/e_neighbourcellchanges.nb.html
     Ignored:    analysis/e_spatiallyRestrictedGenesVoyager.nb.html
     Ignored:    analysis/g_toolkits.nb.html
@@ -407,8 +549,16 @@ Ignored files:
     Ignored:    renv/staging/
 
 Untracked files:
-    Untracked:  code/scwat-at_betweenClusters_heterotypic_score_functions.R
+    Untracked:  analysis/e_DEPseudobulk_insitu_sfe.Rmd
+    Untracked:  data/howto_info.tsv
     Untracked:  other/
+
+Unstaged changes:
+    Modified:   analysis/d_cosmxIBD_sfe.Rmd
+    Modified:   analysis/e_DEPseudobulk_insitu.Rmd
+    Modified:   renv.lock
+    Modified:   renv/activate.R
+    Modified:   spatialsnippets.Rproj
 
 </code></pre>
 <p>
@@ -453,6 +603,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/fc5d26fce5a28fd874e91f8c8ececc45d3cdf95d/analysis/index.Rmd" target="_blank">fc5d26f</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-03-27
+</td>
+<td>
+wflow_publish("analysis/index.Rmd")
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/09c62ce80638cfa5969ad20697d8a1507066a189/docs/index.html" target="_blank">09c62ce</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-11-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1074,38 +1258,76 @@ adding
 </div>
 </div>
 </div>
-<p>These examples are a sampler of tests that can be performed on an
-in-situ single cell spatial datasets. Initial examples use cosMX, though
-approaches should be valid on other platforms like Xenium.</p>
-<p>Further details on the papers, tools, statistics and methods are
-linked from each page.</p>
-<p>Each example presents just one way of doing things (and currently
-only with Seurat) - there are many, many other approaches! These are
-intended as a starting point.</p>
-<p><strong>Single cell spatial</strong></p>
-<ul>
-<li><a href="e_CompositionChange.html">Test for different cell type
-composition by group</a>: Looking at proportions of celltypes, within
-in-situ spatial single cell datasets</li>
-<li><a href="e_DEPseudobulk_insitu.html">Differential Expression by
-celltypes, between groups</a>: Looking at differential expression,
-celltype by celltype, within in-situ spatial single cell datasets</li>
-<li><a href="e_spatiallyRestrictedGenes.html">Find genes with spatial
-pattern</a>: Find genes that are expressed in distinct patterns on the
-samples</li>
-</ul>
-<p><strong>Single cell RNAseq</strong></p>
-<ul>
-<li><a href="e_DEWithoutReps.html">Differential expression without
-replicates with scRNAseq</a> : For scRNAseq data, compare gene
-expression cluster by cluster, between two samples, where no replicates
-are available.</li>
-</ul>
-<!-- * [Changes in cell neighbourhood, between groups ](e_neighbourcellchanges.html): WIP -->
-<p>These examples assume that the data has been loaded, preprocessed
-(e.g. QC-ed, UMAP) and annotated (e.g. sample names, cell types, cell
-niches). For information on how each dataset was prepared, see the data
+<p>Below is a sampler of tests that can be performed on an in-situ
+single cell spatial datasets. Each example presents just one way of
+doing things - there are many, many other approaches! These are simply a
+starting point.</p>
+<div class="reactable html-widget html-fill-item" id="htmlwidget-8839f08f82529a5247be" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-8839f08f82529a5247be">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"image":["assets/cluster_prop_diff.png","assets/insitu_spatial_pseudobulk_de_fovs.png","assets/spatiallyrestricted.png","assets/de_1v1.png"],"howto":["Test for different cell type composition by group","Differential Expression by celltypes, between groups","Find genes with spatial pattern","Differential expression without replicates with scRNAseq"],"Description":["Looking at proportions of celltypes, within in-situ spatial single cell datasets ","Looking at differential expression, celltype by celltype, within in-situ spatial single cell datasets","Find genes that are expressed in distinct patterns on the samples","For scRNAseq data, compare gene expression cluster by cluster, between two samples, where no replicates are available."],"Technology":["single cell spatial transcriptomics","single cell spatial transcriptomics","single cell spatial transcriptomics","single cell RNAseq"],"Toolkit":["seurat","seurat","seurat","seurat"],"url":["e_CompositionChange.html","e_DEPseudobulk_insitu.html","e_spatiallyRestrictedGenes.html","e_DEWithoutReps.html"],"SpecificTech":["cosmx","cosmx","cosmx","10X chromium"]},"columns":[{"id":"image","name":"","type":"character","cell":[{"name":"Fragment","attribs":[],"children":[{"name":"a","attribs":{"style":{"font-weight":"600","color":"black"},"href":"e_CompositionChange.html","target":"_blank"},"children":["Test for different cell type composition by group"]},{"name":"div","attribs":{"style":{"display":"inline-block"}},"children":[{"name":"a","attribs":{"href":"e_CompositionChange.html"},"children":[{"name":"img","attribs":{"src":"assets/cluster_prop_diff.png","alt":"assets/cluster_prop_diff.png"},"children":[]}]}]}]},{"name":"Fragment","attribs":[],"children":[{"name":"a","attribs":{"style":{"font-weight":"600","color":"black"},"href":"e_DEPseudobulk_insitu.html","target":"_blank"},"children":["Differential Expression by celltypes, between groups"]},{"name":"div","attribs":{"style":{"display":"inline-block"}},"children":[{"name":"a","attribs":{"href":"e_DEPseudobulk_insitu.html"},"children":[{"name":"img","attribs":{"src":"assets/insitu_spatial_pseudobulk_de_fovs.png","alt":"assets/insitu_spatial_pseudobulk_de_fovs.png"},"children":[]}]}]}]},{"name":"Fragment","attribs":[],"children":[{"name":"a","attribs":{"style":{"font-weight":"600","color":"black"},"href":"e_spatiallyRestrictedGenes.html","target":"_blank"},"children":["Find genes with spatial pattern"]},{"name":"div","attribs":{"style":{"display":"inline-block"}},"children":[{"name":"a","attribs":{"href":"e_spatiallyRestrictedGenes.html"},"children":[{"name":"img","attribs":{"src":"assets/spatiallyrestricted.png","alt":"assets/spatiallyrestricted.png"},"children":[]}]}]}]},{"name":"Fragment","attribs":[],"children":[{"name":"a","attribs":{"style":{"font-weight":"600","color":"black"},"href":"e_DEWithoutReps.html","target":"_blank"},"children":["Differential expression without replicates with scRNAseq"]},{"name":"div","attribs":{"style":{"display":"inline-block"}},"children":[{"name":"a","attribs":{"href":"e_DEWithoutReps.html"},"children":[{"name":"img","attribs":{"src":"assets/de_1v1.png","alt":"assets/de_1v1.png"},"children":[]}]}]}]}],"minWidth":250},{"id":"howto","name":"howto","type":"character","show":false},{"id":"Description","name":"Description","type":"character","minWidth":200},{"id":"Technology","name":"Technology","type":"character","cell":[{"name":"div","attribs":{},"children":[{"name":"div","attribs":{},"children":["single cell spatial transcriptomics"]},{"name":"div","attribs":{"style":{"font-style":"italic"}},"children":["cosmx"]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{},"children":["single cell spatial transcriptomics"]},{"name":"div","attribs":{"style":{"font-style":"italic"}},"children":["cosmx"]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{},"children":["single cell spatial transcriptomics"]},{"name":"div","attribs":{"style":{"font-style":"italic"}},"children":["cosmx"]}]},{"name":"div","attribs":{},"children":[{"name":"div","attribs":{},"children":["single cell RNAseq"]},{"name":"div","attribs":{"style":{"font-style":"italic"}},"children":["10X chromium"]}]}]},{"id":"Toolkit","name":"Toolkit","type":"character","minWidth":50},{"id":"url","name":"","type":"character","cell":[{"name":"a","attribs":{"href":"e_CompositionChange.html","target":"_blank"},"children":["▶️"]},{"name":"a","attribs":{"href":"e_DEPseudobulk_insitu.html","target":"_blank"},"children":["▶️"]},{"name":"a","attribs":{"href":"e_spatiallyRestrictedGenes.html","target":"_blank"},"children":["▶️"]},{"name":"a","attribs":{"href":"e_DEWithoutReps.html","target":"_blank"},"children":["▶️"]}],"width":50},{"id":"SpecificTech","name":"SpecificTech","type":"character","searchable":true,"show":false}],"searchable":true,"dataKey":"b98330955524ad60717b60488f192879"},"children":[]},"class":"reactR_markup"},"evals":[],"jsHooks":[]}</script>
+<div id="further-information" class="section level2">
+<h2>Further information</h2>
+<p>More information on the source datasets may be found on the data
 tab.</p>
+<p>Initial examples use cosMX data, though approaches should be valid on
+other platforms like Xenium.</p>
+<p>Initial examples use the seurat toolkit, but single feature
+experiment (bioconductor) examples are in active development.</p>
+<div id="refs">
+
+</div>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.5 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0
+
+locale:
+ [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8    
+ [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
+ [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Etc/UTC
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices datasets  utils     methods   base     
+
+other attached packages:
+[1] dplyr_1.1.4       htmltools_0.5.8.1 reactable_0.4.4   workflowr_1.7.1  
+
+loaded via a namespace (and not attached):
+ [1] jsonlite_1.8.9      compiler_4.4.0      BiocManager_1.30.25
+ [4] renv_1.0.5          promises_1.3.2      tidyselect_1.2.1   
+ [7] Rcpp_1.0.14         stringr_1.5.1       git2r_0.33.0       
+[10] callr_3.7.6         later_1.4.1         jquerylib_0.1.4    
+[13] yaml_2.3.10         fastmap_1.2.0       R6_2.5.1           
+[16] generics_0.1.3      knitr_1.49          htmlwidgets_1.6.4  
+[19] tibble_3.2.1        rprojroot_2.0.4     bslib_0.9.0        
+[22] pillar_1.10.1       rlang_1.1.5         cachem_1.1.0       
+[25] stringi_1.8.4       reactR_0.6.1        httpuv_1.6.15      
+[28] xfun_0.50           getPass_0.2-4       fs_1.6.5           
+[31] sass_0.4.9          cli_3.6.3           withr_3.0.2        
+[34] magrittr_2.0.3      crosstalk_1.2.1     ps_1.8.1           
+[37] digest_0.6.37       processx_3.8.5      rstudioapi_0.17.1  
+[40] lifecycle_1.0.4     vctrs_0.6.5         evaluate_1.0.3     
+[43] glue_1.8.0          whisker_0.4.1       rmarkdown_2.29     
+[46] httr_1.4.7          tools_4.4.0         pkgconfig_2.0.3    </code></pre>
+</div>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
