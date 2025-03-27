@@ -18,7 +18,7 @@ library(reactable)
 library(htmltools)
 library(dplyr)
 
-howto_info_file <- '/home/s.williams/projects/spatialsnippets/spatialsnippets/data/howto_info.tsv'
+howto_info_file <- 'data/howto_info.tsv'
 howto_info <- read.delim(howto_info_file, sep="\t")
 howto_info$image <- paste0("assets/",howto_info$image)
 ```
