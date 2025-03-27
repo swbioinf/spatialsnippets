@@ -34,8 +34,48 @@ They have also shared browseable interface here: https://servidor2-ciberehd.upc.
 # Libraries
 
 ```{r}
-library(SingleCellExperiment)
+
 library(tidyverse)
+library(patchwork)
+library(SpatialExperiment)
+library(SpatialExperimentIO) #reading functions
+library(alabaster.spatial) # SaveObject
+library(scran)  
+library(scater)
+library(scuttle)
+library(bluster) # clustering parameters, needed for passing htreads to NNGraphParam
+library(BiocParallel)
+
+
+#library(SpatialFeatureExperiment)
+#library(alabaster.sfe)
+# Requires v1.9.3 to use alabaster.sfe to save object.
+# alabaster.sfe not yet in bioconductor production March 2025
+#renv::install('pachterlab/SpatialFeatureExperiment@devel')
+#renv::install('pachterlab/alabaster.sfe')
+
+```
+
+# Config
+
+```{r}
+dataset_dir      <- '~/projects/spatialsnippets/datasets/'
+project_data_dir <- file.path(dataset_dir,'GSE234713_IBDcosmx_GarridoTrigo2023')
+sample_dir            <- file.path(project_data_dir, "raw_data_for_sfe/") 
+annotation_file       <- file.path(project_data_dir,"GSE234713_CosMx_annotation.csv.gz")
+data_dir              <- file.path(project_data_dir, "processed_data/") 
+
+
+sfe_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_sfe_01_loaded")
+
+# config
+min_count_per_cell <- 50 # previusly 100
+min_detected_genes_per_cell <- 20 # from paper.
+max_pc_negs        <- 1.5
+max_avg_neg        <- 0.5
+
+sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Crohn's disease")
+
 ```
 
 # Data download
@@ -64,142 +104,426 @@ tar -xf GSE234713_RAW_HC.tar
 tar -xf GSE234713_RAW_UC.tar
 ```
 
+Construct a folder with each slide's info.
+
+NB: Also due to limited temp directory space, I need to gunzip the files (this really shouldn't be needed)
+that get read by the efficient DT reading functions. Symptom of that is silently incomplete file reads.
+https://www.linkedin.com/pulse/trivial-fix-after-3-hours-debugging-kirill-tsyganov/
+
+
+```{sh eval=FALSE}
+mkdir raw_data_for_sfe
+cp raw_data/*tar.gz raw_data_for_sfe/
+cd raw_data_for_sfe/
+tar -xzf *.tar.gz
+
+
+cd /home/s.williams/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/raw_data_for_sfe
+for sample in GSM7473682_HC_a  GSM7473685_UC_a  GSM7473688_CD_a GSM7473683_HC_b  GSM7473686_UC_b  GSM7473689_CD_b GSM7473684_HC_c  GSM7473687_UC_c  GSM7473690_CD_c; do
+  echo $sample
+  #cd /home/s.williams/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/raw_data_for_sfe
+  
+  mkdir raw_data_for_sfe/${sample}
+  cp raw_data/${sample}_* raw_data_for_sfe/${sample}
+  gunzip raw_data_for_sfe/${sample}/*
+  
+  # Separately copy in the polygons files (supplied by authors)
+  samplecode=${sample: -4}
+  echo $samplecode
+  cp /home/s.williams/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/polygons/${samplecode}.csv ${sample}/${sample}-polygons.csv
+  
+  
+  
+done 
+
+
+```
+
+
+Read in each sample as a 'SpatialExperiment' using a function from the *SpatialExperimentIO* package.
+
+We don't have polygon files for this dataset, otherwise would load a a SpatialFeatureExperiment. A spatialFeatureExperiment object *is a* SpatialExperiment object with extra features (ie. it inherits from it).
+
+
+
+
 
 
 # Data load
 
 
+Function to load and annotate one sample
 ```{r}
-dataset_dir      <- '~/projects/spatialsnippets/datasets/'
-project_data_dir <- file.path(dataset_dir,'GSE234713_IBDcosmx_GarridoTrigo2023')
-sample_dir            <- file.path(project_data_dir, "raw_data/") 
-annotation_file       <- file.path(project_data_dir,"GSE234713_CosMx_annotation.csv.gz")
-data_dir              <- file.path(project_data_dir, "processed_data/") 
+#the_sample   = 'GSM7473682_HC_a'
+#sfe_data_dir = file.path(sample_dir, the_sample )
+
+load_one_sample_as_spe <- function(sfe_data_dir, the_sample) {
+  # Note there is no polygon file.
+  # Can't real with readCosmX function in this case. (there's no 'feature')
+  #GSM7473682_HC_a_exprMat_file.csv  
+  #GSM7473682_HC_a_fov_positions_file.csv  
+  #GSM7473682_HC_a_metadata_file.csv
+  #GSM7473682_HC_a_tx_file.csv
+    
+  spe <- readCosmxSXE(sfe_data_dir, addPolygon=FALSE, addTx = TRUE)
+  
+  # sample code nice and short, and may be inferred
+  sample_code <- substr(the_sample,12,16)
+  spe$sample_id  <- the_sample
+  spe$slide_name <- the_sample
+
+  # and some experimental info
+  spe$individual_code <- substr(the_sample,12,16)
+  spe$tissue_sample   <- substr(the_sample,12,16)
+  spe$group           <- factor(substr(the_sample, 12,13), levels=names(sample_codes))
+  spe$condition       <- factor(as.character(sample_codes[spe$group]), levels=sample_codes)
+  spe$fov_name        <- paste0(spe$individual_code,"_", str_pad(spe$fov, 3, 'left',pad='0'))
+  
+  # cell labels: need to match that of the annotation file:
+  #                id   subset             SingleR2
+  # HC_c_2_1 HC_c_2_1   stroma            Pericytes
+  # HC_c_3_1 HC_c_3_1   stroma          Endothelium
+  # HC_c_4_1 HC_c_4_1   stroma            Pericytes
+  
+  
+  #Have this:
+
+  #      fov   cell_ID      Area AspectRatio CenterX_local_px
+  #1         1         1      6153        0.67             2119
+  #2         1        10      5971        0.63             1265
+  #3         1       100      1785        1.11             2954
+  #4         1      1000      3946        0.59             2959
+  
+  #     individual_code tissue_sample    group        condition    fov_name
+  #                HC_a          HC_a       HC Healthy controls    HC_a_001
+  #                HC_a          HC_a       HC Healthy controls    HC_a_001
+  #                HC_a          HC_a       HC Healthy controls    HC_a_001
+  
+  #> table(table(spe$cell_ID))
+  #   1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19 
+  # 699  110   56   78   79  110  100  165   21    4   24   38   24    5   66  265   36  190 1451 
+  
+  
+  # HC_c_4_1
+  # <>>sample code>_<cell_ID>_<fov
+  spe$cell <- paste0(spe$tissue_sample, "_",spe$cell_ID, "_",spe$fov)  
+
+  spe$total_count <- colSums(counts(spe))
+  spe$distinct_genes <- colSums(counts(spe)!=0)
+  spe$total_count_log10 <- log10(spe$total_count)
+  
+
+  #Negative probes  
+  spe$neg_count   <- colSums(counts(altExp(spe,'NegPrb')))
+  spe$avg_neg     <- colMeans(counts(altExp(spe,'NegPrb')))
+  spe$pc_neg<- spe$neg_count / (spe$neg_count + spe$total_count) * 100
+
+  
+  return(spe)
+}
 
 
-seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
-
-# config
-min_count_per_cell <- 100
-max_pc_negs        <- 1.5
-max_avg_neg        <- 0.5
+```
 
 
+Load an annotate all samples in the directory full of samples (each as flatfiles)
+```{r}
+# Get list of samples
+sample_names <- list.files(sample_dir)
+sample_dirs  <- file.path(sample_dir, sample_names)
 
-sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Crohn's disease")
+# Use multiple apply to run each with corresponding path.
+spe_list <- mapply(FUN=load_one_sample_as_spe , 
+                   sfe_data_dir=sample_dirs, 
+                   the_sample= sample_names) 
 
- 
+# This is ineffient, but it works - cbind can join pairs of spe object.
+spe <- do.call(cbind, spe_list)
+
+#################################
+######## SUBSET 
+#spe.full <- spe
+#spe <- spe.full[, sample(ncol(spe), size=2000)]
+##############################
+```
+
+
+Add the cell annotation from the paper.
+
+```{r}
+anno_table <- read_csv(annotation_file)
+anno_table <- as.data.frame(anno_table)
+rownames(anno_table) <- anno_table$id
+
+head(colData(spe))
+head(anno_table)
+
+
+spe$celltype_subset   <- factor(anno_table[spe$cell,]$subset)
+spe$celltype_SingleR2 <- factor(anno_table[spe$cell,]$SingleR2)
+
+# and foactorise a few things now we've got the full table
+spe$fov_name          <- factor(spe$fov_name)
+spe$individual_code   <- factor(spe$individual_code)
+spe$tissue_sample     <- factor(spe$tissue_sample)
+
+
+
+# There are a few unannotted, will remove
+table(is.na(spe$celltype_subset))
+```
+
+
+
+# Basic QC filter
+
+## Min count per cell
+
+For interest, not filtering on total counts.
+```{r}
+ggplot(colData(spe), aes(x=total_count, col=sample_id)) +
+  geom_density() + 
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle("Counts per cell")
+```
+
+## Min detected genes per cell
+
+Distinct genes observed per cell (number of detected genes per cell)
+
+```{r}
+ggplot(colData(spe), aes(x=distinct_genes, col=sample_id)) +
+  geom_density() + 
+  geom_vline(xintercept = min_detected_genes_per_cell, lty=3) +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle("Counts per cell")
+```
+
+
+## Percent Negative probes
+
+```{r}
+ggplot(colData(spe), aes(x=pc_neg, col=sample_id)) +
+  geom_density() + 
+  geom_vline(xintercept = max_pc_negs, lty=3) +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle("Negative probe composition")
+```
+
+```{r}
+ggplot(colData(spe), aes(x=avg_neg, col=sample_id)) +
+  geom_density() + 
+  geom_vline(xintercept = max_avg_neg, lty=3) +
+  theme_bw() +
+  ggtitle("Negative probe average")
+```
+
+
+Use bottom right corner;
+```{r}
+ggplot(colData(spe), aes(y=avg_neg, x=total_count)) +
+  geom_point(pch=3, alpha=0.1) + 
+  geom_hline(yintercept = max_avg_neg, lty=3) +
+  geom_vline(xintercept = min_count_per_cell, lty=3) +
+  scale_x_log10() + 
+  theme_bw() +
+  ggtitle("Negative probes vs counts")
+```
+
+
+## Apply filteres
+
+From paper: _"Cells with an average negative control count greater than 0.5 and less than 20 detected features were filtered out."_
+
+Applying a different threshold (arbitrarily), results will differ.
+
+
+Also remove cell with no cell type annotations.
+```{r}
+ncol(spe)
+spe <- spe[ ,spe$distinct_genes >= min_detected_genes_per_cell &
+               spe$avg_neg <= max_avg_neg &
+               !(is.na(spe$celltype_subset) )]
+ncol(spe)
 
 ```
 
 
 
+## How many cells per sample?
+
 ```{r}
-################################################################################
-# SFE
+table(spe$tissue_sample)
+```
 
 
 
-load_and_save_initial_sfe_to_disk <- function(sfe_data_dirs, the_samples, sfe_out_dir) {
+# Basic preprocessing
+
+```{r eval=FALSE}
+#hvg_prop=0.3
+#num_pcs=20
+#sampleblock = 'tissue_sample'
+#BPPARAM = MulticoreParam(16)
+#spe.full <- spe
+#spe <- spe[,sample(ncol(spe),size=5000)]
+
+do_basic_preprocessing <- function(spe, 
+                                   hvg_prop = 0.3, 
+                                   num_pcs  = 20,
+                                   sampleblock = NULL,
+                                   num_threads = 16, # used by cluster cells
+                                   BPPARAM  = MulticoreParam(num_threads) # and everything else others
+                                   ) {
   
-  if (dir.exists(sfe_out_dir)) {
-    stop("SFE out directory already exists, please remove")
+
+  
+  # Normalization.
+  print('Normalise...')
+  spe <- logNormCounts(spe, BPPARAM=BPPARAM)
+  
+  # Highly variable genes, but ignoring individual level data.
+  # Attempts to model technival vs bio variation
+  # Choosing 30% of genes, since we've only got 1000, and they are selected for cell type discernment.
+  # 30% is arbitrary!
+  print("Model gene variance...")
+  
+  if (is.null(sampleblock)) {
+    gene_variances <- modelGeneVar(spe, BPPARAM=BPPARAM) 
+  } else {
+    to_block <- as.factor(colData(spe)[,sampleblock])
+    gene_variances <- modelGeneVar(spe, BPPARAM=BPPARAM, block=to_block) 
   }
-  stopifnot(length(sfe_data_dirs) == length(the_samples))
   
-  # Setup first or only slide
-  sfe <- load_sfe_with_molecules(sfe_data_dirs[1], the_samples[1]) 
-  sfe <- add_basic_qc_annontation(sfe)
+  print("get top hvg...")
+  hvg <- getTopHVGs(gene_variances, prop=hvg_prop)
+  print("run pca...")
+  spe <- fixedPCA(spe, subset.row = hvg)
+  print("run UMAP...")
+  spe <- runUMAP(spe, pca=num_pcs, BPPARAM=BPPARAM)
+  
+  print("cluster...")
+  set.seed(12) # set seed for consistant clustering.
+  spe$nn.cluster <- clusterCells(spe, use.dimred="PCA", BLUSPARAM = bluster::NNGraphParam(num.threads=16))
   
   
   
-  # Handle multiple samples
-  if (length(sfe_data_dirs) > 1) {
-    for (n in 2:length(sfe_data_dirs) ) {
-      sfe2 <- load_sfe_with_molecules(sfe_data_dirs[n], the_samples[n]) 
-      sfe2 <- add_basic_qc_annontation(sfe2) # Qc per slide.
-      # There's gotta be a more effient way than cbind? But we only have 2.
-      sfe <- cbind(sfe, sfe2)
-    }
-  }
   
-  # Add probe stats After merge, since there's one stat per probe.
-  sfe <- add_basic_probe_stats(sfe)
+  spe$cluster_code <- factor(paste0("c",spe$nn.cluster), levels=paste0("c",levels(spe$nn.cluster)))
   
-  # Save using the method from alabaster.spatioal.
-  #library(alabaster.bumpy)
-  saveObject(sfe, sfe_out_dir )
-  return(sfe_out_dir)
+  print("Done")
+  return(spe)
   
 }
 
-load_sfe_with_molecules <- function (sfe_data_dir, the_sample, sfe_out_dir) {
-  
-
-  # Where add_molecules=TRUE.
-  #Error: Capacity error: array cannot contain more than 2147483646 bytes, have 2148177769
-  # Pulls cell ids from cell_id
-  #"1_1" "2_1" "3_1" "4_1" "5_1" "6_1"
-  # "165_349" "166_349" "167_349" "168_349" "169_349" "170_349"
-  # <cellnum>_<fov>
-  sfe  <- readCosMX.edit(data_dir=sfe_data_dir, 
-                    sample_id = the_sample,
-                      add_molecules = FALSE # True yeilds errors.
-                      )
-  ###sfe$sample_id  <- the_sample #its not really a sample_id,  but this is added in load
-  sfe$slide_name <- the_sample # its a nice slide name.
-  
-  
-  # the tx file within the data dir
-  tx_file <- file.path(sfe_data_dir, paste0(the_sample,"_tx_file.csv"))
-  # Read in transcript coordinates, but only keep cellular tx (strips out alot)
-  #fov cell_ID      cell x_local_px y_local_px x_global_px y_global_px     z target  CellComp
-  #1       1   c_1_1_1       4255        140   10366.964    126795.1     2   Cd74 Cytoplasm
-  #1       1   c_1_1_1       4255        140   10366.944    126795.5     7 Ifitm3 Cytoplasm
-  #1       1   c_1_1_1       4252        139   10363.784    126796.5     6  Acta2 Cytoplasm
-  #1       1   c_1_1_1       4250        150   10362.394    126785.8     3  Ifit1 Cytoplasm
-  mol_table <- fread(tx_file, 
-                     #nrow=100000,
-                     select=c('cell_ID', 'fov', 'target', 'x_global_px', 'y_global_px', 'CellComp')) 
-  dim(mol_table)
-  mol_table <- mol_table[CellComp != 'None', ] # Assigned to cells only
-  mol_table <- mol_table[,cell_id:=paste0(cell_ID,"_",fov)]
-  mol_table <- mol_table[,!c('CellComp', "fov","cell_ID")]
-  dim(mol_table)
-  
-  
-  # construct BumpyMatrix
-  mol_bm <- splitAsBumpyMatrix(
-    mol_table[, c("x_global_px", "y_global_px")], 
-    row = mol_table$target, col = mol_table$cell_id,
-    sparse =TRUE) # sparse=TRUE is important, and not default !! 10fold less ram.
-  rm(mol_table)
-  
-  
-  # there may be more 'cells' from the tx file than in the object, but these 
-  # are quietly ignored. But everything in sft should be in mol_bm!
-  stopifnot(all(rownames(sfe) %in% rownames(mol_bm) ))
-  stopifnot(all( colnames(sfe) %in% colnames(mol_bm) ))
-  #mol_bm <- mol_bm[,colnames(sfe)] # match order and drop cells not in sfe
-  #mol_bm <- mol_bm[rownames(sfe),] # ditto genes
-  mol_bm <- mol_bm[rownames(sfe),colnames(sfe)] # match order and drop cells not in sfe, ditto genes
-  
- 
-  # now save the molecules in the object
-  assay(sfe, 'molecules') <- mol_bm
-  # molecules(sfe)['Sell',1])
-
-  # Where there is missing polygon data for sfe, 
-  # remove the corresponding cell
-  # Otherwise you end up with spatial annotations instead of segmentations,
-  # which means files cant be joined (and probably other issues!)
-  # Affects one (1!) cell in MulscleX110, I do not care to see why.
-  # Should do nothing otherwise.
-  sfe<-check_and_rm_cells_without_polygons(sfe)
-  
-  return(sfe)  
-}
+spe <- do_basic_preprocessing(spe, num_pcs = 15)
+saveObject(spe, sfe_01_loaded)
+```
 
 
+
+
+Load one we prepared earlier.
+```{r}
+spe <- readObject(sfe_01_loaded)
+```
+
+
+
+# Basic plots
+
+
+
+## UMAP {.tabset .tabset-pills}
+
+### Sample
+
+```{r}
+plotUMAP(spe, colour_by = 'tissue_sample', point_shape='.') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+```
+
+
+### Condition
+
+```{r}
+plotUMAP(spe, colour_by = 'condition', point_shape='.') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+```
+
+
+
+### Condition X Sample
+
+```{r fig.width=12, fig.height=3}
+p1 <- plotUMAP(spe[,spe$group=='HC'], colour_by = 'tissue_sample', point_shape='.') + ggtitle ("Healthy Controls") + 
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+p2 <- plotUMAP(spe[,spe$group=='UC'], colour_by = 'tissue_sample', point_shape='.') + ggtitle("Ulcerative colitis") +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+p3 <- plotUMAP(spe[,spe$group=='CD'], colour_by = 'tissue_sample', point_shape='.') + ggtitle("Crohn's disease")+
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+
+
+p1 + p2 + p3
+```
+
+### Total counts
+
+```{r}
+plotUMAP(spe, colour_by = 'total_count_log10', point_shape='.') 
+```
+
+
+### Clustered
+
+```{r}
+plotUMAP(spe, colour_by = 'cluster_code', point_shape='.', text_by='cluster_code') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+```
+
+
+### celltype_subset
+
+Classifications from Garrido-Trigo et al 2023.
+
+```{r}
+plotUMAP(spe, colour_by = 'celltype_subset', text_by='celltype_subset', point_shape='.') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
 
 ```
+
+### celltype_SingleR2
+
+Classifications from Garrido-Trigo et al 2023.
+
+```{r fig.width=12}
+plotUMAP(spe, colour_by = 'celltype_SingleR2', point_shape='.') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+
+```
+
+
+
+## Clustering
+
+Double checking the clusters line up with annotaiaon
+```{r}
+table(spe$celltype_subset)
+table(spe$celltype_SingleR2)
+table(spe$cluster_code) 
+```
+
+
+Composition. Expect an obvious but imperfect grouping between clustering and cell typing. Will be using annotation for analysis.
+
+```{r}
+heatmap(table(spe$celltype_SingleR2, spe$celltype_subset))
+heatmap(table(spe$celltype_subset, spe$cluster_code))
+heatmap(table(spe$celltype_SingleR2,spe$cluster_code))
+```
+
+
+
