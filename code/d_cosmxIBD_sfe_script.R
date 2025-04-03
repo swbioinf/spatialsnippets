@@ -130,12 +130,16 @@ load_sfe_with_molecules <- function (sfe_data_dir, the_sample) {
   rowData(sfe)$CodeClass <- factor(ifelse(grepl("^SystemControl",probes), "FalseCode",
                                           ifelse(grepl("^NegPrb",probes), "NegProbe","RNA" )),
                                    levels=c("RNA","NegProbe","FalseCode"))
-
+  rowData(sfe)$CodeClass <- droplevels(rowData(sfe)$CodeClass )
+  # An attempt at storing negative probes in AltExp, but is causing issues with saveing.
+  # unsure if sfe altexp is supported?
+  # leaving in main assay for now.
   # No Falsecodes, only negatives
-  sfe.neg <- sfe[rowData(sfe)$CodeClass != "RNA",] # you put your neg probes in
-  sfe     <- sfe[rowData(sfe)$CodeClass == "RNA",] # you take your neg probes out
-  altExp(sfe,"NegPrb") <- sfe.neg                  # you put your neg probes in
-  # and you shake the data out
+  #sfe.neg <- sfe[rowData(sfe)$CodeClass != "RNA",] # you put your neg probes in
+  #sfe     <- sfe[rowData(sfe)$CodeClass == "RNA",] # you take your neg probes out
+  #altExp(sfe,"NegPrb") <- sfe.neg                  # you put your neg probes in
+  ## and you shake the data out
+
   return(sfe)
 }
 
@@ -187,8 +191,9 @@ load_one_sample_as_sfe <- function(sfe_data_dir, the_sample) {
 
 
   # HC_c_4_1
-  # <>>sample code>_<cell_ID>_<fov
-  sfe$cell <- paste0(sfe$tissue_sample, "_",sfe$cell_ID, "_",sfe$fov)
+  # <>>sample code>_<cell_ID>
+  # Where cell_ID includes <number>_<fovnum>: "3518_20"
+  sfe$cell <- paste0(sfe$tissue_sample, "_",sfe$cell_ID)
 
   sfe$total_count <- colSums(counts(sfe))
   sfe$distinct_genes <- colSums(counts(sfe)!=0)
@@ -196,8 +201,9 @@ load_one_sample_as_sfe <- function(sfe_data_dir, the_sample) {
 
 
   #Negative probes
-  sfe$neg_count   <- colSums(counts(altExp(sfe,'NegPrb')))
-  sfe$avg_neg     <- colMeans(counts(altExp(sfe,'NegPrb')))
+
+  sfe$neg_count   <- colSums(counts(sfe[rowData(sfe)$CodeClass == "NegProbe", ]))
+  sfe$avg_neg     <- colMeans(counts(sfe[rowData(sfe)$CodeClass == "NegProbe", ]))
   sfe$pc_neg<- sfe$neg_count / (sfe$neg_count + sfe$total_count) * 100
 
 
@@ -277,19 +283,18 @@ check_and_rm_cells_without_polygons <-function(sfe) {
 
 
 
-do_basic_preprocessing <- function(spe,
+do_basic_preprocessing <- function(sfe,
                                    hvg_prop = 0.3,
                                    num_pcs  = 20,
                                    sampleblock = NULL,
-                                   num_threads = 16, # used by cluster cells
-                                   BPPARAM  = MulticoreParam(num_threads) # and everything else others
+                                   BPPARAM  = MulticoreParam(16) # and everything else others
 ) {
 
 
 
   # Normalization.
   print('Normalise...')
-  spe <- logNormCounts(spe, BPPARAM=BPPARAM)
+  sfe <- logNormCounts(sfe, BPPARAM=BPPARAM)
 
   # Highly variable genes, but ignoring individual level data.
   # Attempts to model technival vs bio variation
@@ -298,34 +303,44 @@ do_basic_preprocessing <- function(spe,
   print("Model gene variance...")
 
   if (is.null(sampleblock)) {
-    gene_variances <- modelGeneVar(spe, BPPARAM=BPPARAM)
+    gene_variances <- modelGeneVar(sfe, BPPARAM=BPPARAM)
   } else {
-    to_block <- as.factor(colData(spe)[,sampleblock])
-    gene_variances <- modelGeneVar(spe, BPPARAM=BPPARAM, block=to_block)
+    to_block <- as.factor(colData(sfe)[,sampleblock])
+    gene_variances <- modelGeneVar(sfe, BPPARAM=BPPARAM, block=to_block)
   }
 
   print("get top hvg...")
-  hvg <- getTopHVGs(gene_variances, prop=hvg_prop)
+  # only consider RNA probes
+  rna_probes             <- rowData(sfe)$target[rowData(sfe)$CodeClass == "RNA"]
+  gene_vairances.RNAonly <- gene_variances[rna_probes, ]
+  hvg <- getTopHVGs(gene_vairances.RNAonly, prop=hvg_prop)
+  rowData(sfe)$hvg <- rowData(sfe)$target %in% hvg
+
   print("run pca...")
-  spe <- fixedPCA(spe, subset.row = hvg)
+  sfe <- fixedPCA(sfe, subset.row = hvg)
   print("run UMAP...")
-  spe <- runUMAP(spe, pca=num_pcs, BPPARAM=BPPARAM)
+  sfe <- runUMAP(sfe, pca=num_pcs, BPPARAM=BPPARAM )
 
   print("cluster...")
   set.seed(12) # set seed for consistant clustering.
-  #spe$nn.cluster <- clusterCells(spe, use.dimred="PCA", BLUSPARAM = bluster::NNGraphParam(num.threads=16))
+  #sfe$nn.cluster <- clusterCells(sfe, use.dimred="PCA", BLUSPARAM = bluster::NNGraphParam(num.threads=16))
   # try snn
-  # Haven't seen evidence of this using multiple thresads.
-  spe$snn.cluster <- clusterCells(spe,
-                                  use.dimred="PCA",
-                                  BLUSPARAM = bluster::SNNGraphParam(num.threads=16))
-  print('clustered')
+  ## Haven't seen evidence of this using multiple thresads.
+  # Split the graph building and clustering steps, as gettting some untraceable issues.
+  g <- buildSNNGraph(sfe, k=20,  use.dimred = 'PCA', BPPARAM=BPPARAM)
+  print('built SNN graph')
+  saveRDS(g, file.path("~/snn_graph_object.rds"))
+
+  sfe$snn.cluster  <- igraph::cluster_louvain(g)$membership
+
+  print('clustered SNN graph')
 
 
-  spe$cluster_code <- factor(paste0("c",spe$snn.cluster), levels=paste0("c",levels(spe$snn.cluster)))
+  sfe$snn.cluster <- as.factor(sfe$snn.cluster)
+  sfe$cluster_code <- factor(paste0("c",sfe$snn.cluster), levels=paste0("c",levels(sfe$snn.cluster)))
 
   print("Done")
-  return(spe)
+  return(sfe)
 
 }
 
@@ -334,58 +349,62 @@ do_basic_preprocessing <- function(spe,
 
 #Load an annotate all samples in the directory full of samples (each as flatfiles)
 
-# Get list of samples
-sample_names <- list.files(sample_dir)
-sample_dirs  <- file.path(sample_dir, sample_names)
+if ( FALSE ) { # ALREADY RUN
 
-# Use multiple apply to run each with corresponding path.
-sfe_list <- mapply(FUN=load_one_sample_as_sfe ,
-                   sfe_data_dir=sample_dirs,
-                   the_sample= sample_names)
+  # Get list of samples
+  sample_names <- list.files(sample_dir)
+  sample_dirs  <- file.path(sample_dir, sample_names)
 
-# This is ineffient, but it works - cbind can join pairs of sfe object.
-sfe <- do.call(cbind, sfe_list)
+  # Use multiple apply to run each with corresponding path.
+  sfe_list <- mapply(FUN=load_one_sample_as_sfe ,
+                     sfe_data_dir=sample_dirs,
+                     the_sample= sample_names)
 
-print("Merged. Now apply annotation.")
+  # This is ineffient, but it works - cbind can join pairs of sfe object.
+  sfe <- do.call(cbind, sfe_list)
 
-
-# Add the cell annotation from the paper.
-anno_table <- read_csv(annotation_file)
-anno_table <- as.data.frame(anno_table)
-rownames(anno_table) <- anno_table$id
-
-head(colData(sfe))
-head(anno_table)
+  print("Merged. Now apply annotation.")
 
 
-sfe$celltype_subset   <- factor(anno_table[sfe$cell,]$subset)
-sfe$celltype_SingleR2 <- factor(anno_table[sfe$cell,]$SingleR2)
+  # Add the cell annotation from the paper.
+  anno_table <- read_csv(annotation_file)
+  anno_table <- as.data.frame(anno_table)
+  rownames(anno_table) <- anno_table$id
 
-# and foactorise a few things now we've got the full table
-sfe$fov_name          <- factor(sfe$fov_name)
-sfe$individual_code   <- factor(sfe$individual_code)
-sfe$tissue_sample     <- factor(sfe$tissue_sample)
-
-# There are a few unannotted, will remove
-table(is.na(sfe$celltype_subset))
+  head(colData(sfe))
+  head(anno_table)
 
 
-ncol(sfe)
-sfe <- sfe[ ,sfe$distinct_genes >= min_detected_genes_per_cell &
-              sfe$avg_neg <= max_avg_neg &
-              !(is.na(sfe$celltype_subset) )]
-ncol(sfe)
+  sfe$celltype_subset   <- factor(anno_table[sfe$cell,]$subset)
+  sfe$celltype_SingleR2 <- factor(anno_table[sfe$cell,]$SingleR2)
+
+  # and foactorise a few things now we've got the full table
+  sfe$fov_name          <- factor(sfe$fov_name)
+  sfe$individual_code   <- factor(sfe$individual_code)
+  sfe$tissue_sample     <- factor(sfe$tissue_sample)
+
+  # There are a few unannotted, will remove
+  table(is.na(sfe$celltype_subset))
+
+  ncol(sfe)
+  sfe <- sfe[ ,sfe$distinct_genes >= min_detected_genes_per_cell &
+                sfe$avg_neg <= max_avg_neg &
+                !(is.na(sfe$celltype_subset) )]
+  ncol(sfe)
 
 
+}
 ## Preprocessing
 #hvg_prop = 0.3
 #num_pcs  = 20
 #sampleblock = NULL
 #num_threads = 16
 #BPPARAM  = MulticoreParam(num_threads)
-saveObject(sfe, "~/test444")
+#saveObject(sfe, "~/testX2")
+sfe <- readObject("~/testX2")
 
-#sfe <- sfe[,1:4000]
+
+#sfe <- sfe[,1:400]
 sfe <- do_basic_preprocessing(sfe, num_pcs = 15)
 
 ## Save
