@@ -13,7 +13,7 @@
 
 <title>Data</title>
 
-<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -32,8 +32,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -314,396 +314,6 @@ $(document).ready(function () {
 </div>
 
 
-<p>
-<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span>
-</button>
-</p>
-<div id="workflowr-report" class="collapse">
-<ul class="nav nav-tabs">
-<li class="active">
-<a data-toggle="tab" href="#summary">Summary</a>
-</li>
-<li>
-<a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
-</li>
-<li>
-<a data-toggle="tab" href="#versions">Past versions</a>
-</li>
-</ul>
-<div class="tab-content">
-<div id="summary" class="tab-pane fade in active">
-<p>
-<strong>Last updated:</strong> 2024-11-02
-</p>
-<p>
-<strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
-</p>
-<p>
-<strong>Knit directory:</strong> <code>spatialsnippets/</code> <span
-class="glyphicon glyphicon-question-sign" aria-hidden="true"
-title="This is the local directory in which the code in this file was executed.">
-</span>
-</p>
-<p>
-This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
-analysis was created with <a
-  href="https://github.com/workflowr/workflowr">workflowr</a> (version
-1.7.1). The <em>Checks</em> tab describes the reproducibility checks
-that were applied when the results were created. The <em>Past
-versions</em> tab lists the development history.
-</p>
-<hr>
-</div>
-<div id="checks" class="tab-pane fade">
-<div id="workflowr-checks" class="panel-group">
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
-</p>
-</div>
-<div id="strongRMarkdownfilestronguptodate"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree17499500a37463101db790d7b17b694442edabfetargetblank1749950a">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/17499500a37463101db790d7b17b694442edabfe" target="_blank">1749950</a>
-</a>
-</p>
-</div>
-<div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree17499500a37463101db790d7b17b694442edabfetargetblank1749950a"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>
-Great! You are using Git for version control. Tracking code development
-and connecting the code version to the results is critical for
-reproducibility.
-</p>
-<p>
-The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/17499500a37463101db790d7b17b694442edabfe" target="_blank">1749950</a>.
-See the <em>Past versions</em> tab to see a history of the changes made
-to the R Markdown and HTML files.
-</p>
-<p>
-Note that you need to be careful to ensure that all relevant files for
-the analysis have been committed to Git prior to generating the results
-(you can use <code>wflow_publish</code> or
-<code>wflow_git_commit</code>). workflowr only checks the R Markdown
-file, but you know if there are other scripts or data files that it
-depends on. Below is the status of the Git repository when the results
-were generated:
-</p>
-<pre><code>
-Ignored files:
-    Ignored:    .Rhistory
-    Ignored:    .Rproj.user/
-    Ignored:    analysis/contributions.nb.html
-    Ignored:    analysis/e_neighbourcellchanges.nb.html
-    Ignored:    analysis/e_spatiallyRestrictedGenesVoyager.nb.html
-    Ignored:    analysis/g_toolkits.nb.html
-    Ignored:    analysis/glossary.nb.html
-    Ignored:    renv/library/
-    Ignored:    renv/staging/
-
-Untracked files:
-    Untracked:  code/scwat-at_betweenClusters_heterotypic_score_functions.R
-    Untracked:  other/
-
-</code></pre>
-<p>
-Note that any generated files, e.g. HTML, png, CSS, etc., are not
-included in this status report because it is ok for generated content to
-have uncommitted changes.
-</p>
-</div>
-</div>
-</div>
-</div>
-<hr>
-</div>
-<div id="versions" class="tab-pane fade">
-
-<p>
-These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/index_data.Rmd</code>) and HTML
-(<code>docs/index_data.html</code>) files. If you’ve configured a remote
-Git repository (see <code>?wflow_git_remote</code>), click on the
-hyperlinks in the table below to view the files as they were in that
-past version.
-</p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/17499500a37463101db790d7b17b694442edabfe/analysis/index_data.Rmd" target="_blank">1749950</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-11-02
-</td>
-<td>
-wflow_publish("analysis/")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/2b1c8e2f1b31eb5a5b7a7c9ac3ea4328dbbec41d/docs/index_data.html" target="_blank">2b1c8e2</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-09-19
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/511594fa32c4ab59aa41a582bc691aca9fde7e67/analysis/index_data.Rmd" target="_blank">511594f</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-09-19
-</td>
-<td>
-wflow_publish("analysis/")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/534709345e5051a7ef8c1b57ddd999df89f72de8/docs/index_data.html" target="_blank">5347093</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-09-17
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/7eec54738f58be5220af7a7cfbdaefc80482d1d2/analysis/index_data.Rmd" target="_blank">7eec547</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-09-17
-</td>
-<td>
-wflow_publish("analysis/")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/2e269292df84ca84eadb9ab068dd78b5828d7fd7/docs/index_data.html" target="_blank">2e26929</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-25
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/0a3a1ae402c4ecb2bb0bf5bfe879bed5e5981dd1/analysis/index_data.Rmd" target="_blank">0a3a1ae</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-25
-</td>
-<td>
-wflow_publish("analysis/")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/30da140477fe00b8c95007a88e0b54e9f0e5c122/docs/index_data.html" target="_blank">30da140</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-22
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/89c3371760221645926a2337889f1571bfaa8801/analysis/index_data.Rmd" target="_blank">89c3371</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-22
-</td>
-<td>
-wflow_publish(c("analysis/index_data.Rmd", "analysis/index.Rmd",
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/bd24df4564f3e3e2889164ba2415d9fe2a829a02/docs/index_data.html" target="_blank">bd24df4</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2023-11-01
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/8b1c005f8c609ac8c7c66b28c945c9d6dccd1b1e/analysis/index_data.Rmd" target="_blank">8b1c005</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2023-11-01
-</td>
-<td>
-wflow_publish("analysis")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/e7a4c1232709d2520c307c758f907eb9005812a0/docs/index_data.html" target="_blank">e7a4c12</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2023-10-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/507ead4d3149a8703afa56cbf10bf74e5cefafa7/analysis/index_data.Rmd" target="_blank">507ead4</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2023-10-18
-</td>
-<td>
-wflow_publish("analysis/")
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<hr>
-</div>
-</div>
-</div>
 <p>Source of data.</p>
 <!-- * [Fuiten 2023 - Digits in a Dish](d_DigitsDish.html) : *Digits in a dish: An in vitro system to assess the molecular genetics of hand/foot development at single-cell resolution* Allison M. Fuiten, Yuki Yoshimoto, Chisa Shukunami, H. Scott Stadler. Fronteirs in Cell and Developmental Biology 2023. -->
 <p>These examples assume that the data has been loaded, preprocessed
@@ -713,13 +323,19 @@ data preparation below. Please note that these are not full annotations,
 and do not aim to reproduce the authors’ published analyses! These are
 simplified and rough annotations to enable running these tests.</p>
 <ul>
-<li><a href="d_cosmxIBD.html">IBD cosmx dataset</a> : <a
+<li><a
 href="https://www.ncbi.nlm.nih.gov/pubmed/37495570"><em>Macrophage and
 neutrophil heterogeneity at single-cell spatial resolution in human
 inflammatory bowel disease</em></a> from Garrido-Trigo et al 2023.<span
 class="citation">(Garrido-Trigo et al. 2023)</span> : This dataset
 includes cosmx samples across 9 individuals; 3 healthy, 3 with chrones
-disease and 3 with Ulcerative colitis.</li>
+disease and 3 with Ulcerative colitis.
+<ul>
+<li><a href="d_cosmxIBD.html">IBD cosmx dataset Seurat</a> : As a seurat
+object</li>
+<li><a href="d_cosmxIBD.html">IBD cosmx dataset SFE</a> : As a
+bioconductor SpatialFeatureExperiment object</li>
+</ul></li>
 <li><a href="d_cosmxAlzPlaque.html">Alzheimers Plaques cosmx</a>: <a
 href="https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub">Microglia-astrocyte
 crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse
