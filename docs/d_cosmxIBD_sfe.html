@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Sarah Williams" />
+
+
+<title>Dataset: IBD cosMX GarridoTrigo2023</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Spatial Sampler</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Tests</a>
+</li>
+<li>
+  <a href="index_data.html">Data</a>
+</li>
+<li>
+  <a href="contributing.html">Contributing</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/swbioinf/spatialsnippets">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Dataset: IBD cosMX GarridoTrigo2023</h1>
+<h4 class="author">Sarah Williams</h4>
+
+</div>
+
+
+<p>Data is from paper <a
+href="https://www.ncbi.nlm.nih.gov/pubmed/37495570"><em>Macrophage and
+neutrophil heterogeneity at single-cell spatial resolution in human
+inflammatory bowel disease</em></a> from Garrido-Trigo et al 2023, <span
+class="citation">(Garrido-Trigo et al. 2023)</span></p>
+<p>The study included 9 cosmx slides of colonic biopsies</p>
+<ul>
+<li>3x HC - Healthy controls</li>
+<li>3x UC - Ulcerative colitis</li>
+<li>3x CD - Chrones’s disease</li>
+</ul>
+<p>Fastantically - not only have they made their raw and annotated data
+available, but have also shared their analysis code; <a
+href="https://github.com/HelenaLC/CosMx-SMI-IBD"
+class="uri">https://github.com/HelenaLC/CosMx-SMI-IBD</a></p>
+<p>They have also shared browseable interface here: <a
+href="https://servidor2-ciberehd.upc.es/external/garrido/app/"
+class="uri">https://servidor2-ciberehd.upc.es/external/garrido/app/</a></p>
+<div id="libraries" class="section level1">
+<h1>Libraries</h1>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<pre class="r"><code>library(patchwork)
+library(SpatialFeatureExperiment)</code></pre>
+<pre><code>Warning: replacing previous import &#39;S4Arrays::makeNindexFromArrayViewport&#39; by
+&#39;DelayedArray::makeNindexFromArrayViewport&#39; when loading &#39;SummarizedExperiment&#39;</code></pre>
+<pre><code>Warning: replacing previous import &#39;S4Arrays::makeNindexFromArrayViewport&#39; by
+&#39;DelayedArray::makeNindexFromArrayViewport&#39; when loading &#39;HDF5Array&#39;</code></pre>
+<pre><code>
+Attaching package: &#39;SpatialFeatureExperiment&#39;
+
+The following object is masked from &#39;package:purrr&#39;:
+
+    transpose
+
+The following object is masked from &#39;package:ggplot2&#39;:
+
+    unit
+
+The following object is masked from &#39;package:base&#39;:
+
+    scale</code></pre>
+<pre class="r"><code>library(alabaster.sfe) # SaveObject</code></pre>
+<pre><code>Loading required package: alabaster.base</code></pre>
+<pre class="r"><code>library(scran)  </code></pre>
+<pre><code>Loading required package: SingleCellExperiment
+Loading required package: SummarizedExperiment
+Loading required package: MatrixGenerics
+Loading required package: matrixStats
+
+Attaching package: &#39;matrixStats&#39;
+
+The following object is masked from &#39;package:alabaster.base&#39;:
+
+    anyMissing
+
+The following object is masked from &#39;package:dplyr&#39;:
+
+    count
+
+
+Attaching package: &#39;MatrixGenerics&#39;
+
+The following objects are masked from &#39;package:matrixStats&#39;:
+
+    colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+    colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+    colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+    colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+    colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+    colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+    colWeightedMeans, colWeightedMedians, colWeightedSds,
+    colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+    rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+    rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+    rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+    rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+    rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+    rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+    rowWeightedSds, rowWeightedVars
+
+Loading required package: GenomicRanges
+Loading required package: stats4
+Loading required package: BiocGenerics
+
+Attaching package: &#39;BiocGenerics&#39;
+
+The following objects are masked from &#39;package:lubridate&#39;:
+
+    intersect, setdiff, union
+
+The following objects are masked from &#39;package:dplyr&#39;:
+
+    combine, intersect, setdiff, union
+
+The following objects are masked from &#39;package:stats&#39;:
+
+    IQR, mad, sd, var, xtabs
+
+The following objects are masked from &#39;package:base&#39;:
+
+    anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+    colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+    get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
+    match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
+    Position, rank, rbind, Reduce, rownames, sapply, saveRDS, setdiff,
+    table, tapply, union, unique, unsplit, which.max, which.min
+
+Loading required package: S4Vectors
+
+Attaching package: &#39;S4Vectors&#39;
+
+The following objects are masked from &#39;package:lubridate&#39;:
+
+    second, second&lt;-
+
+The following objects are masked from &#39;package:dplyr&#39;:
+
+    first, rename
+
+The following object is masked from &#39;package:tidyr&#39;:
+
+    expand
+
+The following object is masked from &#39;package:utils&#39;:
+
+    findMatches
+
+The following objects are masked from &#39;package:base&#39;:
+
+    expand.grid, I, unname
+
+Loading required package: IRanges
+
+Attaching package: &#39;IRanges&#39;
+
+The following object is masked from &#39;package:lubridate&#39;:
+
+    %within%
+
+The following objects are masked from &#39;package:dplyr&#39;:
+
+    collapse, desc, slice
+
+The following object is masked from &#39;package:purrr&#39;:
+
+    reduce
+
+Loading required package: GenomeInfoDb
+Loading required package: Biobase
+Welcome to Bioconductor
+
+    Vignettes contain introductory material; view with
+    &#39;browseVignettes()&#39;. To cite Bioconductor, see
+    &#39;citation(&quot;Biobase&quot;)&#39;, and for packages &#39;citation(&quot;pkgname&quot;)&#39;.
+
+
+Attaching package: &#39;Biobase&#39;
+
+The following object is masked from &#39;package:MatrixGenerics&#39;:
+
+    rowMedians
+
+The following objects are masked from &#39;package:matrixStats&#39;:
+
+    anyMissing, rowMedians
+
+The following object is masked from &#39;package:alabaster.base&#39;:
+
+    anyMissing
+
+Loading required package: scuttle</code></pre>
+<pre class="r"><code>library(scater)
+library(scuttle)
+library(bluster) # clustering parameters, needed for passing htreads to NNGraphParam
+library(BiocParallel)
+
+
+#library(alabaster.sfe)
+# Requires v1.9.3 to use alabaster.sfe to save object.
+# alabaster.sfe not yet in bioconductor production March 2025
+#renv::install(&#39;pachterlab/SpatialFeatureExperiment@devel&#39;)
+#renv::install(&#39;pachterlab/alabaster.sfe&#39;)</code></pre>
+</div>
+<div id="config" class="section level1">
+<h1>Config</h1>
+<pre class="r"><code>dataset_dir      &lt;- &#39;~/projects/spatialsnippets/datasets/&#39;
+project_data_dir &lt;- file.path(dataset_dir,&#39;GSE234713_IBDcosmx_GarridoTrigo2023&#39;)
+sample_dir            &lt;- file.path(project_data_dir, &quot;raw_data_for_sfe/&quot;) 
+annotation_file       &lt;- file.path(project_data_dir,&quot;GSE234713_CosMx_annotation.csv.gz&quot;)
+data_dir              &lt;- file.path(project_data_dir, &quot;processed_data/&quot;) 
+
+
+sfe_01_loaded &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_sfe_01_loaded&quot;) 
+
+# config
+min_count_per_cell &lt;- 50 
+min_detected_genes_per_cell &lt;- 20 # from paper.
+max_pc_negs        &lt;- 1.5
+max_avg_neg        &lt;- 0.5
+
+sample_codes &lt;- c(HC=&quot;Healthy controls&quot;,UC=&quot;Ulcerative colitis&quot;,CD=&quot;Crohn&#39;s disease&quot;)</code></pre>
+</div>
+<div id="data-download" class="section level1">
+<h1>Data download</h1>
+<p>From the project description:</p>
+<p>Raw data on GEO here; <a
+href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE234713"
+class="uri">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE234713</a></p>
+<p><em>Inflammatory bowel diseases (IBDs) including ulcerative colitis
+(UC) and Crohn’s disease (CD) are chronic inflammatory diseases with
+increasing worldwide prevalence that show a perplexing heterogeneity in
+manifestations and response to treatment. We applied spatial
+transcriptomics at single-cell resolution (CosMx Spatial Molecular
+Imaging) to human inflamed and uninflamed intestine.</em></p>
+<p>The following files were download from GEO</p>
+<ul>
+<li>GSE234713_CosMx_annotation.csv.gz</li>
+<li>GSE234713_CosMx_normalized_matrix.txt.gz</li>
+<li>GSE234713_RAW.tar: RAW data was downloaded via custom downlod in 3
+batches, one per group
+<ul>
+<li>GSE234713_RAW_CD.tar</li>
+<li>GSE234713_RAW_HC.tar</li>
+<li>GSE234713_RAW_UC.tar</li>
+</ul></li>
+<li>GSE234713_ReadMe_SMI_Data_File.html</li>
+</ul>
+<pre class="sh"><code>cd raw_data
+tar -xf GSE234713_RAW_CD.tar
+tar -xf GSE234713_RAW_HC.tar
+tar -xf GSE234713_RAW_UC.tar</code></pre>
+<p>Construct a folder with each slide’s info.</p>
+<p>NB: Also due to limited temp directory space, I need to gunzip the
+files (this really shouldn’t be needed) that get read by the efficient
+DT reading functions. Symptom of that is silently incomplete file reads.
+<a
+href="https://www.linkedin.com/pulse/trivial-fix-after-3-hours-debugging-kirill-tsyganov/"
+class="uri">https://www.linkedin.com/pulse/trivial-fix-after-3-hours-debugging-kirill-tsyganov/</a></p>
+<pre class="sh"><code>mkdir raw_data_for_sfe
+cp raw_data/*tar.gz raw_data_for_sfe/
+cd raw_data_for_sfe/
+tar -xzf *.tar.gz
+
+
+cd /home/s.williams/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/raw_data_for_sfe
+for sample in GSM7473682_HC_a  GSM7473685_UC_a  GSM7473688_CD_a GSM7473683_HC_b  GSM7473686_UC_b  GSM7473689_CD_b GSM7473684_HC_c  GSM7473687_UC_c  GSM7473690_CD_c; do
+  echo $sample
+  #cd /home/s.williams/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/raw_data_for_sfe
+  
+  mkdir raw_data_for_sfe/${sample}
+  cp raw_data/${sample}_* raw_data_for_sfe/${sample}
+  gunzip raw_data_for_sfe/${sample}/*
+  
+  # Separately copy in the polygons files (supplied by authors)
+  samplecode=${sample: -4}
+  echo $samplecode
+  cp /home/s.williams/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/polygons/${samplecode}.csv ${sample}/${sample}-polygons.csv
+  
+  
+  
+done 
+</code></pre>
+<p>Read in each sample as a ‘SpatialExperiment’ using a function from
+the <em>SpatialExperimentIO</em> package.</p>
+<p>We don’t have polygon files for this dataset, otherwise would load a
+a SpatialFeatureExperiment. A spatialFeatureExperiment object <em>is
+a</em> SpatialExperiment object with extra features (ie. it inherits
+from it).</p>
+</div>
+<div id="data-load" class="section level1">
+<h1>Data load</h1>
+<p>Data is loaded into a SpatialFeatureExperiment object with the
+following code (long running).</p>
+<pre class="r"><code>################################################################################
+## LIBRARIES
+
+library(tidyverse)
+library(patchwork)
+library(SpatialFeatureExperiment)
+library(alabaster.base)
+library(alabaster.sfe) # SaveObject
+library(alabaster.bumpy)
+library(scran)
+library(scater)
+library(scuttle)
+library(bluster) # clustering parameters, needed for passing htreads to NNGraphParam
+library(BiocParallel)
+library(data.table) # fread fast file reading
+library(BumpyMatrix) # internal represeation of molecules
+
+################################################################################
+## CONFIG
+
+dataset_dir      &lt;- &#39;~/projects/spatialsnippets/datasets/&#39;
+project_data_dir &lt;- file.path(dataset_dir,&#39;GSE234713_IBDcosmx_GarridoTrigo2023&#39;)
+sample_dir            &lt;- file.path(project_data_dir, &quot;raw_data_for_sfe/&quot;)
+annotation_file       &lt;- file.path(project_data_dir,&quot;GSE234713_CosMx_annotation.csv.gz&quot;)
+data_dir              &lt;- file.path(project_data_dir, &quot;processed_data/&quot;)
+
+
+sfe_01_loaded &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_sfe_01_loaded&quot;)
+
+# config
+min_count_per_cell &lt;- 50 # previusly 100
+min_detected_genes_per_cell &lt;- 20 # from paper.
+max_pc_negs        &lt;- 1.5
+max_avg_neg        &lt;- 0.5
+
+sample_codes &lt;- c(HC=&quot;Healthy controls&quot;,UC=&quot;Ulcerative colitis&quot;,CD=&quot;Crohn&#39;s disease&quot;)
+
+################################################################################
+## FUNCTIONS
+
+##5 has annot geom issue
+#sfe_data_dir = sample_dirs[5]
+#the_sample = sample_names[5]
+load_sfe_with_molecules &lt;- function (sfe_data_dir, the_sample) {
+  # This function loads SFE without molecules
+  # then loads the molecules and adds them in (which avoids an error, maybe ram related)
+  # It also checks for weird missing polygons - miss one cell and your cell outlines are just feature outlines.
+
+
+  # Where add_molecules=TRUE.
+  #Error: Capacity error: array cannot contain more than 2147483646 bytes, have 2148177769
+  # Pulls cell ids from cell_id
+  #&quot;1_1&quot; &quot;2_1&quot; &quot;3_1&quot; &quot;4_1&quot; &quot;5_1&quot; &quot;6_1&quot;
+  # &quot;165_349&quot; &quot;166_349&quot; &quot;167_349&quot; &quot;168_349&quot; &quot;169_349&quot; &quot;170_349&quot;
+  # &lt;cellnum&gt;_&lt;fov&gt;
+  # Updated to sfe 1.9.3 (for alabaster.sfe support) - sample_id is now recorded, no need to edit.
+  print(&quot;Read SFE without molecules&quot;)
+  sfe  &lt;- readCosMX(data_dir=sfe_data_dir,
+                    sample_id = the_sample,
+                    add_molecules = FALSE # True yeilds errors above.
+  )
+
+  # the tx file within the data dir
+  tx_file &lt;- file.path(sfe_data_dir, paste0(the_sample,&quot;_tx_file.csv&quot;))
+  # Read in transcript coordinates, but only keep cellular tx (strips out alot)
+  #fov cell_ID      cell x_local_px y_local_px x_global_px y_global_px     z target  CellComp
+  #1       1   c_1_1_1       4255        140   10366.964    126795.1     2   Cd74 Cytoplasm
+  #1       1   c_1_1_1       4255        140   10366.944    126795.5     7 Ifitm3 Cytoplasm
+  #1       1   c_1_1_1       4252        139   10363.784    126796.5     6  Acta2 Cytoplasm
+  #1       1   c_1_1_1       4250        150   10362.394    126785.8     3  Ifit1 Cytoplasm
+  mol_table &lt;- fread(tx_file,
+                     #nrow=100000,
+                     select=c(&#39;cell_ID&#39;, &#39;fov&#39;, &#39;target&#39;, &#39;x_global_px&#39;, &#39;y_global_px&#39;, &#39;CellComp&#39;))
+  #dim(mol_table)
+  #It is possible (at least with cyto2 segmenation) to get a &#39;None&#39; CellComp, and a actuall Cell_ID
+  # (those cell calls are dodgy looking though - probably filter them out Later )
+  #mol_table &lt;- mol_table[CellComp != &#39;None&#39;, ] # Assigned to cells only
+  # So insead filter the no cellID ones!
+  print(&quot;Reading molecules&quot;)
+  mol_table &lt;- mol_table[cell_ID != 0, ]
+  mol_table &lt;- mol_table[,cell_id:=paste0(cell_ID,&quot;_&quot;,fov)]
+  mol_table &lt;- mol_table[,!c(&#39;CellComp&#39;, &quot;fov&quot;,&quot;cell_ID&quot;)]
+  #dim(mol_table)
+
+
+  # construct BumpyMatrix
+  print(&quot;formatting molecules&quot;)
+  mol_bm &lt;- splitAsBumpyMatrix(
+    mol_table[, c(&quot;x_global_px&quot;, &quot;y_global_px&quot;)],
+    row = mol_table$target, col = mol_table$cell_id,
+    sparse =TRUE) # sparse=TRUE is important, and not default !! 10fold less ram.
+  rm(mol_table)
+
+
+
+
+  # there may be more &#39;cells&#39; from the tx file than in the object, but these
+  # are quietly ignored. But everything in sft should be in mol_bm!
+  stopifnot(all(rownames(sfe) %in% rownames(mol_bm) ))
+
+  #stopifnot(all( colnames(sfe) %in% colnames(mol_bm) ))
+  # Cells with no tx transcripts? - Possible!
+  # Silently drop them.
+  #missing_cells &lt;- colnames(sfe)[!colnames(sfe) %in% colnames(mol_bm) ]
+  #colData(sfe)[missing_cells,] %&gt;% as.data.frame() %&gt;% View()
+  #table(colSums(counts(sfe)[, missing_cells]))
+  #genuinely, nope, they have no transcirpts.
+  common_cells &lt;- intersect(colnames(mol_bm),colnames(sfe))
+  sfe &lt;- sfe[,common_cells]
+  mol_bm &lt;- mol_bm[rownames(sfe),common_cells] # match order and drop cells not in sfe, ditto genes
+
+  # now save the molecules in the object
+  print(&quot;Storing molecules&quot;)
+  assay(sfe, &#39;molecules&#39;) &lt;- mol_bm
+
+
+  # Where there is missing polygon data for sfe,
+  # remove the corresponding cell
+  # Otherwise you end up with spatial annotations instead of segmentations,
+  # which means files cant be joined (and probably other issues!)
+  # Affects one (1!) cell in a dataset - I do not care to see why.
+  # Should do nothing otherwise.
+  print(&quot;Checking for polygonless cells&quot;)
+  sfe&lt;-check_and_rm_cells_without_polygons(sfe)
+
+
+  # Move negatives into altExpr
+  probes &lt;- rownames(rowData(sfe))
+  rowData(sfe)$target    &lt;- probes
+  rowData(sfe)$CodeClass &lt;- factor(ifelse(grepl(&quot;^SystemControl&quot;,probes), &quot;FalseCode&quot;,
+                                          ifelse(grepl(&quot;^NegPrb&quot;,probes), &quot;NegProbe&quot;,&quot;RNA&quot; )),
+                                   levels=c(&quot;RNA&quot;,&quot;NegProbe&quot;,&quot;FalseCode&quot;))
+  rowData(sfe)$CodeClass &lt;- droplevels(rowData(sfe)$CodeClass )
+  # An attempt at storing negative probes in AltExp, but is causing issues with saveing.
+  # unsure if sfe altexp is supported?
+  # leaving in main assay for now.
+  # No Falsecodes, only negatives
+  #sfe.neg &lt;- sfe[rowData(sfe)$CodeClass != &quot;RNA&quot;,] # you put your neg probes in
+  #sfe     &lt;- sfe[rowData(sfe)$CodeClass == &quot;RNA&quot;,] # you take your neg probes out
+  #altExp(sfe,&quot;NegPrb&quot;) &lt;- sfe.neg                  # you put your neg probes in
+  ## and you shake the data out
+
+  return(sfe)
+}
+
+
+
+
+
+
+load_one_sample_as_sfe &lt;- function(sfe_data_dir, the_sample) {
+
+  print(the_sample)
+  sfe &lt;- load_sfe_with_molecules(sfe_data_dir, the_sample)
+
+  # sample code nice and short, and may be inferred
+  sample_code &lt;- substr(the_sample,12,16)
+  sfe$sample_id  &lt;- the_sample
+  sfe$slide_name &lt;- the_sample
+
+  # and some experimental info
+  sfe$individual_code &lt;- substr(the_sample,12,16)
+  sfe$tissue_sample   &lt;- substr(the_sample,12,16)
+  sfe$group           &lt;- factor(substr(the_sample, 12,13), levels=names(sample_codes))
+  sfe$condition       &lt;- factor(as.character(sample_codes[sfe$group]), levels=sample_codes)
+  sfe$fov_name        &lt;- paste0(sfe$individual_code,&quot;_&quot;, str_pad(sfe$fov, 3, &#39;left&#39;,pad=&#39;0&#39;))
+
+  # cell labels: need to match that of the annotation file:
+  #                id   subset             SingleR2
+  # HC_c_2_1 HC_c_2_1   stroma            Pericytes
+  # HC_c_3_1 HC_c_3_1   stroma          Endothelium
+  # HC_c_4_1 HC_c_4_1   stroma            Pericytes
+
+
+  #Have this:
+
+  #      fov   cell_ID      Area AspectRatio CenterX_local_px
+  #1         1         1      6153        0.67             2119
+  #2         1        10      5971        0.63             1265
+  #3         1       100      1785        1.11             2954
+  #4         1      1000      3946        0.59             2959
+
+  #     individual_code tissue_sample    group        condition    fov_name
+  #                HC_a          HC_a       HC Healthy controls    HC_a_001
+  #                HC_a          HC_a       HC Healthy controls    HC_a_001
+  #                HC_a          HC_a       HC Healthy controls    HC_a_001
+
+  #&gt; table(table(sfe$cell_ID))
+  #   1    2    3    4    5    6    7    8    9   10   11   12   13   14   15   16   17   18   19
+  # 699  110   56   78   79  110  100  165   21    4   24   38   24    5   66  265   36  190 1451
+
+
+  # HC_c_4_1
+  # &lt;&gt;&gt;sample code&gt;_&lt;cell_ID&gt;
+  # Where cell_ID includes &lt;number&gt;_&lt;fovnum&gt;: &quot;3518_20&quot;
+  sfe$cell &lt;- paste0(sfe$tissue_sample, &quot;_&quot;,sfe$cell_ID)
+
+  sfe$total_count &lt;- colSums(counts(sfe))
+  sfe$distinct_genes &lt;- colSums(counts(sfe)!=0)
+  sfe$total_count_log10 &lt;- log10(sfe$total_count)
+
+
+  #Negative probes
+
+  sfe$neg_count   &lt;- colSums(counts(sfe[rowData(sfe)$CodeClass == &quot;NegProbe&quot;, ]))
+  sfe$avg_neg     &lt;- colMeans(counts(sfe[rowData(sfe)$CodeClass == &quot;NegProbe&quot;, ]))
+  sfe$pc_neg&lt;- sfe$neg_count / (sfe$neg_count + sfe$total_count) * 100
+
+
+  return(sfe)
+}
+
+
+
+check_and_rm_cells_without_polygons &lt;-function(sfe) {
+  # Theory:
+  # A cell polygon is empty ()
+  # Yeilding folling error during parquet construction:
+  #&quot;&gt;&gt;&gt; Constructing cell polygons
+  # &gt;&gt;&gt; ..removing 1 empty polygons&quot;
+  #
+  # This means that theres one more &#39;cell&#39; than &#39;cell segmentation genometriy&#39;
+  #
+  # cellSeg() function will look for a match in those counts and store
+  # geometries in
+  # * colGeometries if cell counts match
+  # * annotGeometires if they dont.
+  #
+  # Consequently, you can&#39;t join / cbind sfe object unless their colgeometries match.
+  #
+  #    Error in value[[3L]](cond) :
+  #    failed to combine &#39;int_colData&#39; in &#39;cbind(&lt;SpatialFeatureExperiment&gt;)&#39;:
+  #    failed to rbind column &#39;colGeometries&#39; across DataFrame objects: the DFrame objects to combine must have
+  #    the same column names
+  #
+  #
+  # Seems to be rare, not ever datasset, and can be just one cell..
+  #
+  # This function will turn annotGeom back into colGeom, buy remooving the missing cells
+  #
+  if (&#39;cellSeg&#39; %in% names(annotGeometries(sfe))) {
+
+    print(&#39;Found cellSeg in annotGeometries instead of colGeometries&#39;)
+
+    geomet_cells &lt;- rownames(annotGeometries(sfe)$cellSeg)
+    sfe_cells    &lt;- colnames(sfe)
+    common_cells &lt;- intersect(sfe_cells, geomet_cells)
+
+    # Can find cells with geometrey, but not in object.
+    # possibly the ones with no counts?
+    #stopifnot(all(geomet_cells %in% sfe_cells))
+    geomet_cells_without_sfe &lt;- setdiff( geomet_cells, sfe_cells)
+    print(paste(&quot;dropping&quot;,length(geomet_cells_without_sfe), &quot;cells from cell seg geometry (absent in count matrix)&quot;))
+
+    # Warn on number of cells dropped
+    cells_without_geomet &lt;- setdiff(sfe_cells, geomet_cells)
+    print(paste(&quot;dropping&quot;,length(cells_without_geomet), &quot;cells from counts matrix (no segmentation outline)&quot;))
+
+    # Drop cells
+    sfe &lt;- sfe[,common_cells]
+    #annotGeometries(sfe)$cellSeg &lt;- annotGeometries(sfe)$cellSeg[common_cells,]
+    #annogeo &lt;- annotGeometries(sfe)$cellSeg
+    #annogeo &lt;- annotGeometries(sfe)$cellSeg[common_cells,]
+
+    # Put it back in using the accessor, all proper like
+    cellSeg(sfe) &lt;- annotGeometries(sfe)$cellSeg[common_cells,]
+
+    # Remove and
+    # for consistantcy, unname the empty list
+    annotGeometries(sfe)$cellSeg &lt;- NULL
+    annotGeometries(sfe) &lt;- unname(annotGeometries(sfe))
+
+    # Dropping the sampleID, which got added for some reason.
+    keep_cols &lt;- colnames(cellSeg(sfe))
+    keep_cols &lt;- keep_cols[keep_cols != &#39;sample_id&#39;]
+    cellSeg(sfe) &lt;- cellSeg(sfe)[,keep_cols]
+
+  }
+  return(sfe)
+}
+
+
+
+
+do_basic_preprocessing &lt;- function(sfe,
+                                   hvg_prop = 0.3,
+                                   num_pcs  = 20,
+                                   sampleblock = NULL,
+                                   BPPARAM  = MulticoreParam(16) # and everything else others
+) {
+
+
+
+  # Normalization.
+  print(&#39;Normalise...&#39;)
+  sfe &lt;- logNormCounts(sfe, BPPARAM=BPPARAM)
+
+  # Highly variable genes, but ignoring individual level data.
+  # Attempts to model technival vs bio variation
+  # Choosing 30% of genes, since we&#39;ve only got 1000, and they are selected for cell type discernment.
+  # 30% is arbitrary!
+  print(&quot;Model gene variance...&quot;)
+
+  if (is.null(sampleblock)) {
+    gene_variances &lt;- modelGeneVar(sfe, BPPARAM=BPPARAM)
+  } else {
+    to_block &lt;- as.factor(colData(sfe)[,sampleblock])
+    gene_variances &lt;- modelGeneVar(sfe, BPPARAM=BPPARAM, block=to_block)
+  }
+
+  print(&quot;get top hvg...&quot;)
+  # only consider RNA probes
+  rna_probes             &lt;- rowData(sfe)$target[rowData(sfe)$CodeClass == &quot;RNA&quot;]
+  gene_vairances.RNAonly &lt;- gene_variances[rna_probes, ]
+  hvg &lt;- getTopHVGs(gene_vairances.RNAonly, prop=hvg_prop)
+  rowData(sfe)$hvg &lt;- rowData(sfe)$target %in% hvg
+
+  print(&quot;run pca...&quot;)
+  sfe &lt;- fixedPCA(sfe, subset.row = hvg)
+  print(&quot;run UMAP...&quot;)
+  sfe &lt;- runUMAP(sfe, pca=num_pcs, BPPARAM=BPPARAM )
+
+  print(&quot;cluster...&quot;)
+  set.seed(12) # set seed for consistant clustering.
+  #sfe$nn.cluster &lt;- clusterCells(sfe, use.dimred=&quot;PCA&quot;, BLUSPARAM = bluster::NNGraphParam(num.threads=16))
+  # try snn
+  ## Haven&#39;t seen evidence of this using multiple thresads.
+  # Split the graph building and clustering steps, as gettting some untraceable issues.
+  g &lt;- buildSNNGraph(sfe, k=20,  use.dimred = &#39;PCA&#39;, BPPARAM=BPPARAM)
+  print(&#39;built SNN graph&#39;)
+  saveRDS(g, file.path(&quot;~/snn_graph_object.rds&quot;))
+
+  sfe$snn.cluster  &lt;- igraph::cluster_louvain(g)$membership
+
+  print(&#39;clustered SNN graph&#39;)
+
+
+  sfe$snn.cluster &lt;- as.factor(sfe$snn.cluster)
+  sfe$cluster_code &lt;- factor(paste0(&quot;c&quot;,sfe$snn.cluster), levels=paste0(&quot;c&quot;,levels(sfe$snn.cluster)))
+
+  print(&quot;Done&quot;)
+  return(sfe)
+
+}
+
+################################################################################
+## Go
+
+#Load an annotate all samples in the directory full of samples (each as flatfiles)
+
+if ( FALSE ) { # ALREADY RUN
+
+  # Get list of samples
+  sample_names &lt;- list.files(sample_dir)
+  sample_dirs  &lt;- file.path(sample_dir, sample_names)
+
+  # Use multiple apply to run each with corresponding path.
+  sfe_list &lt;- mapply(FUN=load_one_sample_as_sfe ,
+                     sfe_data_dir=sample_dirs,
+                     the_sample= sample_names)
+
+  # This is ineffient, but it works - cbind can join pairs of sfe object.
+  sfe &lt;- do.call(cbind, sfe_list)
+
+  print(&quot;Merged. Now apply annotation.&quot;)
+
+
+  # Add the cell annotation from the paper.
+  anno_table &lt;- read_csv(annotation_file)
+  anno_table &lt;- as.data.frame(anno_table)
+  rownames(anno_table) &lt;- anno_table$id
+
+  head(colData(sfe))
+  head(anno_table)
+
+
+  sfe$celltype_subset   &lt;- factor(anno_table[sfe$cell,]$subset)
+  sfe$celltype_SingleR2 &lt;- factor(anno_table[sfe$cell,]$SingleR2)
+
+  # and foactorise a few things now we&#39;ve got the full table
+  sfe$fov_name          &lt;- factor(sfe$fov_name)
+  sfe$individual_code   &lt;- factor(sfe$individual_code)
+  sfe$tissue_sample     &lt;- factor(sfe$tissue_sample)
+
+  # There are a few unannotted, will remove
+  table(is.na(sfe$celltype_subset))
+
+  ncol(sfe)
+  sfe &lt;- sfe[ ,sfe$distinct_genes &gt;= min_detected_genes_per_cell &amp;
+                sfe$avg_neg &lt;= max_avg_neg &amp;
+                !(is.na(sfe$celltype_subset) )]
+  ncol(sfe)
+
+
+}
+## Preprocessing
+#hvg_prop = 0.3
+#num_pcs  = 20
+#sampleblock = NULL
+#num_threads = 16
+#BPPARAM  = MulticoreParam(num_threads)
+#saveObject(sfe, &quot;~/testX2&quot;)
+sfe &lt;- readObject(&quot;~/testX2&quot;)
+
+
+#sfe &lt;- sfe[,1:400]
+sfe &lt;- do_basic_preprocessing(sfe, num_pcs = 15)
+
+## Save
+saveObject(sfe, sfe_01_loaded)</code></pre>
+<p>Load in the saved object</p>
+<pre class="r"><code>sfe &lt;- readObject(sfe_01_loaded)</code></pre>
+<pre><code>&gt;&gt;&gt; Reading SpatialExperiment</code></pre>
+<pre><code>&gt;&gt;&gt; Reading colgeometries</code></pre>
+</div>
+<div id="basic-qc-filter" class="section level1">
+<h1>Basic QC filter</h1>
+<div id="min-count-per-cell" class="section level2">
+<h2>Min count per cell</h2>
+<p>For interest, not filtering on total counts.</p>
+<pre class="r"><code>ggplot(colData(sfe), aes(x=total_count, col=sample_id)) +
+  geom_density() + 
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle(&quot;Counts per cell&quot;)</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="min-detected-genes-per-cell" class="section level2">
+<h2>Min detected genes per cell</h2>
+<p>Distinct genes observed per cell (number of detected genes per
+cell)</p>
+<pre class="r"><code>ggplot(colData(sfe), aes(x=distinct_genes, col=sample_id)) +
+  geom_density() + 
+  geom_vline(xintercept = min_detected_genes_per_cell, lty=3) +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle(&quot;Counts per cell&quot;)</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="percent-negative-probes" class="section level2">
+<h2>Percent Negative probes</h2>
+<pre class="r"><code>ggplot(colData(sfe), aes(x=pc_neg, col=sample_id)) +
+  geom_density() + 
+  geom_vline(xintercept = max_pc_negs, lty=3) +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle(&quot;Negative probe composition&quot;)</code></pre>
+<pre><code>Warning in scale_x_log10(): log-10 transformation introduced infinite values.</code></pre>
+<pre><code>Warning: Removed 207963 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>ggplot(colData(sfe), aes(x=avg_neg, col=sample_id)) +
+  geom_density() + 
+  geom_vline(xintercept = max_avg_neg, lty=3) +
+  theme_bw() +
+  ggtitle(&quot;Negative probe average&quot;)</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Use bottom right corner;</p>
+<pre class="r"><code>ggplot(colData(sfe), aes(y=avg_neg, x=total_count)) +
+  geom_point(pch=3, alpha=0.1) + 
+  geom_hline(yintercept = max_avg_neg, lty=3) +
+  geom_vline(xintercept = min_count_per_cell, lty=3) +
+  scale_x_log10() + 
+  theme_bw() +
+  ggtitle(&quot;Negative probes vs counts&quot;)</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="apply-filteres" class="section level2">
+<h2>Apply filteres</h2>
+<p>From paper: <em>“Cells with an average negative control count greater
+than 0.5 and less than 20 detected features were filtered out.”</em></p>
+<p>Applying a different threshold (arbitrarily), results will
+differ.</p>
+</div>
+<div id="how-many-cells-per-sample" class="section level2">
+<h2>How many cells per sample?</h2>
+<pre class="r"><code>table(sfe$tissue_sample)</code></pre>
+<pre><code>
+ CD_a  CD_b  CD_c  HC_a  HC_b  HC_c  UC_a  UC_b  UC_c 
+31569 70477 53331 39097 54056 27895 49232 76588 54777 </code></pre>
+</div>
+</div>
+<div id="basic-plots" class="section level1">
+<h1>Basic plots</h1>
+<div id="umap" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">UMAP</h2>
+<div id="sample" class="section level3">
+<h3>Sample</h3>
+<pre class="r"><code>plotUMAP(sfe, colour_by = &#39;tissue_sample&#39;, point_shape=&#39;.&#39;) +
+  guides(colour = guide_legend(override.aes = list(shape=15)))</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="condition" class="section level3">
+<h3>Condition</h3>
+<pre class="r"><code>plotUMAP(sfe, colour_by = &#39;condition&#39;, point_shape=&#39;.&#39;) +
+  guides(colour = guide_legend(override.aes = list(shape=15)))</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="condition-x-sample" class="section level3">
+<h3>Condition X Sample</h3>
+<pre class="r"><code>p1 &lt;- plotUMAP(sfe[,sfe$group==&#39;HC&#39;], colour_by = &#39;tissue_sample&#39;, point_shape=&#39;.&#39;) + ggtitle (&quot;Healthy Controls&quot;) + 
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+p2 &lt;- plotUMAP(sfe[,sfe$group==&#39;UC&#39;], colour_by = &#39;tissue_sample&#39;, point_shape=&#39;.&#39;) + ggtitle(&quot;Ulcerative colitis&quot;) +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+p3 &lt;- plotUMAP(sfe[,sfe$group==&#39;CD&#39;], colour_by = &#39;tissue_sample&#39;, point_shape=&#39;.&#39;) + ggtitle(&quot;Crohn&#39;s disease&quot;)+
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+
+
+p1 + p2 + p3</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-15-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="total-counts" class="section level3">
+<h3>Total counts</h3>
+<pre class="r"><code>plotUMAP(sfe, colour_by = &#39;total_count_log10&#39;, point_shape=&#39;.&#39;) </code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="clustered" class="section level3">
+<h3>Clustered</h3>
+<pre class="r"><code>plotUMAP(sfe, colour_by = &#39;cluster_code&#39;, point_shape=&#39;.&#39;, text_by=&#39;cluster_code&#39;) +
+  guides(colour = guide_legend(override.aes = list(shape=15)))</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="celltype_subset" class="section level3">
+<h3>celltype_subset</h3>
+<p>Classifications from Garrido-Trigo et al 2023.</p>
+<pre class="r"><code>plotUMAP(sfe, colour_by = &#39;celltype_subset&#39;, text_by=&#39;celltype_subset&#39;, point_shape=&#39;.&#39;) +
+  guides(colour = guide_legend(override.aes = list(shape=15)))</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="celltype_singler2" class="section level3">
+<h3>celltype_SingleR2</h3>
+<p>Classifications from Garrido-Trigo et al 2023.</p>
+<pre class="r"><code>plotUMAP(sfe, colour_by = &#39;celltype_SingleR2&#39;, point_shape=&#39;.&#39;) +
+  guides(colour = guide_legend(override.aes = list(shape=15)))</code></pre>
+<pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
+(`geom_point()`).</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-19-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="clustering" class="section level2">
+<h2>Clustering</h2>
+<p>Double checking the clusters line up with annotaiaon</p>
+<pre class="r"><code>table(sfe$celltype_subset)</code></pre>
+<pre><code>
+     epi myeloids  plasmas   stroma   tcells 
+  106413    54946   169744   111511    14408 </code></pre>
+<pre class="r"><code>table(sfe$celltype_SingleR2)</code></pre>
+<pre><code>
+                      B cell                  BEST4 OTOP2 
+                        6906                        13904 
+                         CD4                          CD8 
+                        3080                         3149 
+                 Colonocytes              Cycling T cells 
+                       21531                          412 
+                  Cycling TA                Cycling cells 
+                        3036                         3116 
+             Cycling myeloid                          DCs 
+                        2167                         1688 
+                          DN                  Endothelium 
+                         835                        16734 
+             Enteroendocrine                  Eosinophils 
+                        1856                          646 
+            Epithelium Ribhi                         FRCs 
+                        6575                        11982 
+                 Fibroblasts                    GC B cell 
+                        2509                         4994 
+                        Glia                       Goblet 
+                        7067                        12703 
+                        ILC4     Inflammatory fibroblasts 
+                         198                        13779 
+      Inflammatory monocytes                           M0 
+                        2167                         4743 
+                          M1                           M2 
+                        1317                        23279 
+                        MAIT                   MT T cells 
+                        1505                          369 
+             Macrophage NRG1                         Mast 
+                       10000                         4766 
+               Memory B cell               Myofibroblasts 
+                        8407                        23353 
+                          N1                           N2 
+                        1355                         1371 
+                          N3                           NK 
+                        1447                          390 
+                Naïve B cell PC  immediate early response 
+                       10999                        12509 
+                      PC IgA                   PC IgA IgM 
+                        1749                        21546 
+           PC IgA heat shock                       PC IgG 
+                        6160                        93356 
+                 Paneth-like                    Pericytes 
+                        2982                        13034 
+               Ribhi T cells                           S1 
+                         244                         6879 
+                         S2a                          S2b 
+                        5277                         6260 
+                          S3         Secretory progenitor 
+                        4637                        37487 
+               T cells CCL20                        Tregs 
+                         999                         2647 
+                  Tuft cells                       gd IEL 
+                        6339                          580 </code></pre>
+<pre class="r"><code>table(sfe$cluster_code) </code></pre>
+<pre><code>
+   c1    c2    c3    c4    c5    c6    c7    c8    c9   c10   c11   c12   c13 
+45464  9840 80646 48171 68143  9325 11989 51226 10659 17502 43056 32669  3746 
+  c14   c15 
+17781  6805 </code></pre>
+<p>Composition. Expect an obvious but imperfect grouping between
+clustering and cell typing. Will be using annotation for analysis.</p>
+<pre class="r"><code>heatmap(table(sfe$celltype_SingleR2, sfe$celltype_subset))</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>heatmap(table(sfe$celltype_subset, sfe$cluster_code))</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-21-2.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>heatmap(table(sfe$celltype_SingleR2,sfe$cluster_code))</code></pre>
+<p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-21-3.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-garrido-trigoMacrophageNeutrophilHeterogeneity2023"
+class="csl-entry">
+Garrido-Trigo, Alba, Ana M. Corraliza, Marisol Veny, Isabella Dotti,
+Elisa Melón-Ardanaz, Aina Rill, Helena L. Crowell, et al. 2023.
+<span>“Macrophage and Neutrophil Heterogeneity at Single-Cell Spatial
+Resolution in Human Inflammatory Bowel Disease.”</span> <em>Nature
+Communications</em> 14 (1): 4506. <a
+href="https://doi.org/10.1038/s41467-023-40156-6">https://doi.org/10.1038/s41467-023-40156-6</a>.
+</div>
+</div>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.5 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0
+
+locale:
+ [1] LC_CTYPE=en_AU.UTF-8          LC_NUMERIC=C                 
+ [3] LC_TIME=en_AU.UTF-8           LC_COLLATE=en_AU.UTF-8       
+ [5] LC_MONETARY=en_AU.UTF-8       LC_MESSAGES=en_AU.UTF-8      
+ [7] LC_PAPER=en_AU.UTF-8          LC_NAME=en_AU.UTF-8          
+ [9] LC_ADDRESS=en_AU.UTF-8        LC_TELEPHONE=en_AU.UTF-8     
+[11] LC_MEASUREMENT=en_AU.UTF-8    LC_IDENTIFICATION=en_AU.UTF-8
+
+time zone: Etc/UTC
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats4    stats     graphics  grDevices datasets  utils     methods  
+[8] base     
+
+other attached packages:
+ [1] BiocParallel_1.40.0            bluster_1.16.0                
+ [3] scater_1.34.1                  scran_1.34.0                  
+ [5] scuttle_1.16.0                 SingleCellExperiment_1.28.1   
+ [7] SummarizedExperiment_1.36.0    Biobase_2.66.0                
+ [9] GenomicRanges_1.58.0           GenomeInfoDb_1.42.1           
+[11] IRanges_2.40.1                 S4Vectors_0.44.0              
+[13] BiocGenerics_0.52.0            MatrixGenerics_1.18.1         
+[15] matrixStats_1.5.0              alabaster.sfe_0.99.2001       
+[17] alabaster.base_1.6.1           SpatialFeatureExperiment_1.9.8
+[19] patchwork_1.3.0                lubridate_1.9.4               
+[21] forcats_1.0.0                  stringr_1.5.1                 
+[23] dplyr_1.1.4                    purrr_1.0.2                   
+[25] readr_2.1.5                    tidyr_1.3.1                   
+[27] tibble_3.2.1                   ggplot2_3.5.1                 
+[29] tidyverse_2.0.0                workflowr_1.7.1               
+
+loaded via a namespace (and not attached):
+  [1] splines_4.4.0             later_1.4.1              
+  [3] bitops_1.0-9              R.oo_1.27.0              
+  [5] alabaster.bumpy_1.6.0     lifecycle_1.0.4          
+  [7] sf_1.0-19                 edgeR_4.4.2              
+  [9] rprojroot_2.0.4           processx_3.8.5           
+ [11] lattice_0.22-6            MASS_7.3-64              
+ [13] magrittr_2.0.3            limma_3.62.2             
+ [15] sass_0.4.9                rmarkdown_2.29           
+ [17] jquerylib_0.1.4           yaml_2.3.10              
+ [19] metapod_1.14.0            httpuv_1.6.15            
+ [21] sp_2.2-0                  cowplot_1.1.3            
+ [23] DBI_1.2.3                 multcomp_1.4-28          
+ [25] abind_1.4-8               spatialreg_1.3-6         
+ [27] zlibbioc_1.52.0           R.utils_2.12.3           
+ [29] BumpyMatrix_1.14.0        RCurl_1.98-1.16          
+ [31] TH.data_1.1-3             sandwich_3.1-1           
+ [33] git2r_0.33.0              GenomeInfoDbData_1.2.13  
+ [35] ggrepel_0.9.6             irlba_2.3.5.1            
+ [37] alabaster.sce_1.6.0       terra_1.8-21             
+ [39] units_0.8-5               dqrng_0.4.1              
+ [41] DelayedMatrixStats_1.28.1 codetools_0.2-20         
+ [43] DropletUtils_1.26.0       DelayedArray_0.32.0      
+ [45] xml2_1.3.6                tidyselect_1.2.1         
+ [47] UCSC.utils_1.2.0          farver_2.1.2             
+ [49] viridis_0.6.5             ScaledMatrix_1.14.0      
+ [51] jsonlite_1.8.9            BiocNeighbors_2.0.1      
+ [53] e1071_1.7-16              survival_3.8-3           
+ [55] tools_4.4.0               sfarrow_0.4.1            
+ [57] Rcpp_1.0.14               glue_1.8.0               
+ [59] gridExtra_2.3             SparseArray_1.6.1        
+ [61] xfun_0.50                 EBImage_4.48.0           
+ [63] HDF5Array_1.34.0          alabaster.spatial_1.6.1  
+ [65] withr_3.0.2               BiocManager_1.30.25      
+ [67] fastmap_1.2.0             boot_1.3-31              
+ [69] rhdf5filters_1.18.0       spData_2.3.4             
+ [71] rsvd_1.0.5                callr_3.7.6              
+ [73] digest_0.6.37             timechange_0.3.0         
+ [75] R6_2.5.1                  colorspace_2.1-1         
+ [77] wk_0.9.4                  LearnBayes_2.15.1        
+ [79] RBioFormats_1.6.0         jpeg_0.1-10              
+ [81] R.methodsS3_1.8.2         generics_0.1.3           
+ [83] renv_1.0.5                data.table_1.16.4        
+ [85] class_7.3-23              httr_1.4.7               
+ [87] htmlwidgets_1.6.4         S4Arrays_1.6.0           
+ [89] whisker_0.4.1             spdep_1.3-10             
+ [91] pkgconfig_2.0.3           rJava_1.0-11             
+ [93] gtable_0.3.6              XVector_0.46.0           
+ [95] htmltools_0.5.8.1         fftwtools_0.9-11         
+ [97] scales_1.3.0              alabaster.matrix_1.6.1   
+ [99] png_0.1-8                 SpatialExperiment_1.16.0 
+[101] knitr_1.49                rstudioapi_0.17.1        
+[103] tzdb_0.4.0                rjson_0.2.23             
+[105] coda_0.19-4.1             nlme_3.1-166             
+[107] proxy_0.4-27              cachem_1.1.0             
+[109] zoo_1.8-12                rhdf5_2.50.2             
+[111] KernSmooth_2.23-26        vipor_0.4.7              
+[113] parallel_4.4.0            arrow_19.0.1             
+[115] s2_1.1.7                  pillar_1.10.1            
+[117] grid_4.4.0                alabaster.schemas_1.6.0  
+[119] vctrs_0.6.5               promises_1.3.2           
+[121] BiocSingular_1.22.0       beachmat_2.22.0          
+[123] cluster_2.1.8             sfheaders_0.4.4          
+[125] beeswarm_0.4.0            evaluate_1.0.3           
+[127] zeallot_0.1.0             magick_2.8.5             
+[129] mvtnorm_1.3-3             cli_3.6.3                
+[131] locfit_1.5-9.11           compiler_4.4.0           
+[133] rlang_1.1.5               crayon_1.5.3             
+[135] labeling_0.4.3            classInt_0.4-11          
+[137] ps_1.8.1                  ggbeeswarm_0.7.2         
+[139] getPass_0.2-4             fs_1.6.5                 
+[141] stringi_1.8.4             viridisLite_0.4.2        
+[143] alabaster.se_1.6.0        deldir_2.0-4             
+[145] assertthat_0.2.1          munsell_0.5.1            
+[147] tiff_0.1-12               Matrix_1.7-1             
+[149] hms_1.1.3                 bit64_4.6.0-1            
+[151] sparseMatrixStats_1.18.0  Rhdf5lib_1.28.0          
+[153] statmod_1.5.0             alabaster.ranges_1.6.0   
+[155] igraph_2.1.4              bslib_0.9.0              
+[157] bit_4.5.0.1              </code></pre>
+</div>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
