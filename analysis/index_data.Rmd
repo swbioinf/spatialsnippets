@@ -19,7 +19,9 @@ These examples assume that the data has been loaded, preprocessed (e.g. QC-ed, U
 
 
 
-* [IBD cosmx dataset](d_cosmxIBD.html) :  [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570) from Garrido-Trigo et al 2023.[@garrido-trigoMacrophageNeutrophilHeterogeneity2023] : This dataset includes cosmx samples across 9 individuals; 3 healthy, 3 with chrones disease and 3 with  Ulcerative colitis.
+* [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570) from Garrido-Trigo et al 2023.[@garrido-trigoMacrophageNeutrophilHeterogeneity2023] : This dataset includes cosmx samples across 9 individuals; 3 healthy, 3 with chrones disease and 3 with  Ulcerative colitis.
+    + [IBD cosmx dataset Seurat](d_cosmxIBD.html) : As a seurat object
+    + [IBD cosmx dataset SFE](d_cosmxIBD.html) : As a bioconductor SpatialFeatureExperiment object
 * [Alzheimers Plaques cosmx ](d_cosmxAlzPlaque.html): [Microglia-astrocyte crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse model, as revealed by spatial transcriptomics](https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub)
 [@mallachMicrogliaastrocyteCrosstalkAmyloid2024]
 * [Wnt4 KO in developing mouse kidney - 10X Chromium scRNAseq](d_Wnt4KO.html): [Forming nephrons promote nephron progenitor maintenance and branching morphogenesis via paracrine BMP4 signalling under the control of Wnt4](https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full) [@moreauFormingNephronsPromote2023a] : This dataset has 4 pools of single cell RNAseq data, total and conditional Wnt4 knockouts in E14.5 mouse kidney.
