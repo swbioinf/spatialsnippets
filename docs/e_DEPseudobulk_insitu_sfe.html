@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Sarah Williams" />
+
+
+<title>Differential expression between groups using pseudobulk</title>
+
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Spatial Sampler</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Tests</a>
+</li>
+<li>
+  <a href="index_data.html">Data</a>
+</li>
+<li>
+  <a href="contributing.html">Contributing</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/swbioinf/spatialsnippets">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Differential expression between groups
+using pseudobulk</h1>
+<h4 class="author">Sarah Williams</h4>
+
+</div>
+
+
+<p><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096346/"
+class="uri">https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6096346/</a></p>
+<!-- keywords
+
+insituspatial
+seurat
+de
+test
+
+-->
+<div id="overview" class="section level1">
+<h1>Overview</h1>
+<p>Once we have identified cell types present in the samples, its common
+to test how gene expression changes between experimental conditions,
+within each different cell type.</p>
+<p>Some cell types may be dramatically affected by the experimental
+conditions, while others are not. Likewise some genes may change only in
+a specific cell type, whereas others show a more general difference.</p>
+<p>This document describes how to apply a <em>pseudobulk</em> approach
+to test for differences between groups. In a pseudobulk approach counts
+are obtained by pooling together groups of cells; in this case cells
+from the of the same celltype from the same fov. These pooled counts can
+then be analysed more like a bulk RNAseq experiment.</p>
+<p>This is very similar to how a non-spatial single cell experiment may
+be analysed.</p>
+<p>However, unlike a non-spatial single cell experiment, this
+experimental design has multiple FOVs from the same tissue sample; these
+<em>pseudoreplicates</em> are informative but cannot be considered true
+biological replicates. They can be incorporated into the statistics with
+the correlate duplicates approach <span class="citation">(Smyth,
+Michaud, and Scott 2005)</span>.</p>
+<p>Note that there are many other approaches to calculate differential
+expression in this kind of data - including those that make use of
+individual cells; see review <span class="citation">(Soneson and
+Robinson 2018)</span>.</p>
+<p><img src="assets/insitu_spatial_pseudobulk_de.png" /></p>
+<p>This test requires:</p>
+<ul>
+<li>Biological replicates for each group</li>
+<li>Assigned cell types</li>
+<li>[Optionally] Multiple fovs measured per sample</li>
+</ul>
+<p>For example:</p>
+<ul>
+<li>What genes are differentially expressed in epithelial cells in
+Crohn’s disease vs healthy individuals?</li>
+<li>How do genes change with treatment in each different cell type in my
+sample?</li>
+</ul>
+<p>Steps:</p>
+<ol style="list-style-type: decimal">
+<li>Calculate pseudobulk</li>
+<li>Filter to testable pseudobulk groups (enough cells to pool)</li>
+<li>Filter to testable genes (enough expression to see changes)</li>
+<li>Test for changes in gene expression</li>
+<li>Plot DE results and individual genes.</li>
+</ol>
+</div>
+<div id="worked-example" class="section level1">
+<h1>Worked example</h1>
+<p>How does gene expression change within each cell type between
+Ulcerative colitis or Crohn’s disease, and Healthy controls?</p>
+<p>Using data from <a
+href="https://www.ncbi.nlm.nih.gov/pubmed/37495570"><em>Macrophage and
+neutrophil heterogeneity at single-cell spatial resolution in human
+inflammatory bowel disease</em></a> from <span
+class="citation">(Garrido-Trigo et al. 2023)</span>;</p>
+<p>The study included 9 cosmx slides of colonic biopsies</p>
+<ul>
+<li>3x HC - Healthy controls</li>
+<li>3x UC - Ulcerative colitis</li>
+<li>3x CD - Chrones’s disease</li>
+</ul>
+<div id="load-libraries-and-data" class="section level2">
+<h2>Load libraries and data</h2>
+<pre class="r"><code>library(alabaster.sfe) 
+library(SpatialExperiment)
+library(scuttle)
+library(scater)
+library(tidyverse)
+library(limma)
+library(DT)
+library(edgeR)
+library(BiocParallel)
+library(Voyager)
+library(patchwork)
+
+library(ggrepel) # gg_repel, For non-overlapping gene labels</code></pre>
+<pre class="r"><code>data_dir              &lt;- file.path(&quot;~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data&quot;) 
+sfe_01_loaded &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_sfe_01_loaded&quot;)
+#se_pseudobulk_file &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_pseudobulk_se.RDS&quot;)
+se_pseudobulk_file &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_pseudobulk_fov_se.RDS&quot;)</code></pre>
+<pre class="r"><code>sfe &lt;- readObject(sfe_01_loaded)</code></pre>
+<p>SUBSET FOR TESTING</p>
+<pre class="r"><code>#sfe &lt;- sfe[,colData(sfe)$group %in% c(&#39;HC&#39;,&#39;UC&#39;)]
+#sfe &lt;- sfe[,sample(1:ncol(sfe), 10000)]</code></pre>
+</div>
+<div id="experimental-design" class="section level2">
+<h2>Experimental design</h2>
+<!-- Move this to own page? --->
+<p>There are three individuals per condition, one tissue sample from
+each individual. 9 slides in total. Each tissue sample has multiple FOVs
+captured; these are our pseudoreplicates. Each ‘sample’ is listed
+below.</p>
+<p>In the cosMX output an ‘fov’ refers to the rectangular regions on the
+slide that are measured; there are multiple fovs per sample, and in this
+experiment, only one sample per slide. This document uses the
+latter.</p>
+<pre class="r"><code>sample_table &lt;- select(as_tibble(colData(sfe)), condition, individual_code, fov_name) %&gt;%
+  unique() %&gt;% 
+  group_by(condition, individual_code) %&gt;% 
+  summarise(n_fovs= n(), item = str_c(fov_name, collapse = &quot;, &quot;))
+
+DT::datatable(sample_table)</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-8839f08f82529a5247be" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-8839f08f82529a5247be">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9"],["Healthy controls","Healthy controls","Healthy controls","Ulcerative colitis","Ulcerative colitis","Ulcerative colitis","Crohn's disease","Crohn's disease","Crohn's disease"],["HC_a","HC_b","HC_c","UC_a","UC_b","UC_c","CD_a","CD_b","CD_c"],[19,20,16,19,22,21,19,18,16],["HC_a_001, HC_a_010, HC_a_011, HC_a_012, HC_a_013, HC_a_014, HC_a_015, HC_a_016, HC_a_018, HC_a_019, HC_a_002, HC_a_020, HC_a_004, HC_a_005, HC_a_006, HC_a_007, HC_a_008, HC_a_009, HC_a_003","HC_b_001, HC_b_010, HC_b_011, HC_b_012, HC_b_013, HC_b_014, HC_b_015, HC_b_016, HC_b_002, HC_b_003, HC_b_004, HC_b_005, HC_b_006, HC_b_007, HC_b_008, HC_b_009, HC_b_017, HC_b_018, HC_b_019, HC_b_020","HC_c_001, HC_c_011, HC_c_013, HC_c_014, HC_c_002, HC_c_003, HC_c_004, HC_c_006, HC_c_007, HC_c_008, HC_c_009, HC_c_005, HC_c_010, HC_c_015, HC_c_016, HC_c_012","UC_a_001, UC_a_010, UC_a_012, UC_a_013, UC_a_014, UC_a_015, UC_a_016, UC_a_017, UC_a_018, UC_a_019, UC_a_002, UC_a_020, UC_a_021, UC_a_022, UC_a_005, UC_a_007, UC_a_008, UC_a_009, UC_a_006","UC_b_001, UC_b_011, UC_b_012, UC_b_014, UC_b_015, UC_b_016, UC_b_017, UC_b_018, UC_b_002, UC_b_020, UC_b_021, UC_b_022, UC_b_023, UC_b_024, UC_b_003, UC_b_004, UC_b_005, UC_b_006, UC_b_007, UC_b_008, UC_b_009, UC_b_010","UC_c_001, UC_c_010, UC_c_011, UC_c_012, UC_c_013, UC_c_014, UC_c_015, UC_c_016, UC_c_017, UC_c_018, UC_c_019, UC_c_002, UC_c_020, UC_c_021, UC_c_003, UC_c_006, UC_c_007, UC_c_008, UC_c_009, UC_c_004, UC_c_005","CD_a_001, CD_a_010, CD_a_012, CD_a_014, CD_a_015, CD_a_017, CD_a_018, CD_a_019, CD_a_002, CD_a_004, CD_a_005, CD_a_006, CD_a_007, CD_a_008, CD_a_009, CD_a_011, CD_a_013, CD_a_016, CD_a_003","CD_b_010, CD_b_011, CD_b_012, CD_b_013, CD_b_014, CD_b_015, CD_b_016, CD_b_017, CD_b_018, CD_b_019, CD_b_002, CD_b_003, CD_b_004, CD_b_005, CD_b_006, CD_b_007, CD_b_008, CD_b_009","CD_c_001, CD_c_011, CD_c_012, CD_c_013, CD_c_014, CD_c_015, CD_c_017, CD_c_002, CD_c_003, CD_c_004, CD_c_005, CD_c_006, CD_c_007, CD_c_008, CD_c_009, CD_c_010"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>condition<\/th>\n      <th>individual_code<\/th>\n      <th>n_fovs<\/th>\n      <th>item<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"condition","targets":1},{"name":"individual_code","targets":2},{"name":"n_fovs","targets":3},{"name":"item","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="filter-cells-for-de" class="section level2">
+<h2>Filter cells for de</h2>
+<div id="filter-counts-per-cell" class="section level3">
+<h3>Filter counts per cell</h3>
+<p>To start, check out the distribution of reads per cell. Here, we
+choose and apply a filter of 200 reads. This is low compared to what you
+might see in a single scRNAseq experiment, but we are working with only
+1000 genes.</p>
+<p>Even if you have alreay applied a counts per cell filter across your
+dataset (e.g at least 50 counts per cell), you might choose to apply a
+second, higher threshold for differnetial expression. We can afford to
+be more stringent for the differential expression threshold because the
+spatial information isn’t being used, so there is no problem of ‘gaps’
+between cells. Exact thresholds will depend on your data. More counts in
+a cell tend to result in better cell type identification and smoother
+expression values and should theoretically yeild better differential
+expression results - if there are enough cells.</p>
+<pre class="r"><code>min_reads_per_cell &lt;- 200
+
+ggplot(colData(sfe), aes(x=total_count)) +
+  geom_density() +
+  geom_vline(xintercept = min_reads_per_cell, lty=3) +
+  scale_x_log10() +
+  theme_bw()+
+  ggtitle(&quot;How many reads per cell?&quot;)</code></pre>
+<p><img src="figure/e_DEPseudobulk_insitu_sfe.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>sfe &lt;- sfe[,sfe$total_count&gt;= min_reads_per_cell]</code></pre>
+</div>
+</div>
+<div id="deciding-on-pseudobulk-grouping" class="section level2">
+<h2>Deciding on pseudobulk grouping</h2>
+<!-- # ```{r} -->
+<!-- # plotSpatialFeature(sfe[,sfe$tissue_sample == "HC_a"], "celltype_subset",colGeometryName = "cellSeg") +  -->
+<!-- #   theme(legend.title=element_blank()) + -->
+<!-- #   ggtitle("HC_a") -->
+<!-- # ``` -->
+<pre class="r"><code>plot_one &lt;- function(sample) {
+  p &lt;- plotSpatialFeature(sfe[,sfe$tissue_sample == sample], &quot;celltype_subset&quot;,colGeometryName = &quot;cellSeg&quot;) + 
+    theme(legend.title=element_blank()) +
+    ggtitle(sample) 
+  
+  return(p)
+}
+samples &lt;- levels(sfe$tissue_sample)
+plots &lt;- lapply(FUN=plot_one, X=samples)
+p.all &lt;- wrap_plots(plots, ncol=3)
+plot(p.all)</code></pre>
+<p><img src="figure/e_DEPseudobulk_insitu_sfe.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="calculate-pseudobulk" class="section level2">
+<h2>Calculate pseudobulk</h2>
+<p>Explain why pseudobulk&lt;&lt;&lt;&lt;&lt;</p>
+<p>We need to define the grouping that will make one pseudobulk sample
+for analysis. In this experiment, we can consider all FOVs within a
+tissue sample as somewhat equivalent. Therefore that is all cells of a
+particular celltype within an FOV region.</p>
+<p>If we only had one fov per sample, <em>celltype + sample</em> would
+be directly equivalent.</p>
+<p>If we have tiled fovs across an entire tissue sample <em>celltype +
+sample</em> woudl work</p>
+<p>If we had a tiled fovs across a tissue sample with distinct regions
+it would be necessary to group them by <em>subregion fov +
+celltype</em>. Alternatively pool the entire sample if each one is
+equivalent - it depends on where transcriptional differences are
+expected.</p>
+<p>&lt;&lt;&lt;&lt;&lt;</p>
+<p>Now use the <em>PseudobulkExpression()</em> function to sum up each
+gene’s gene expression across each <em>fov_cluster</em>.</p>
+<p>This will build a SummarisedExperiment object at the ‘fov_cluster’
+level’. Which contains one entry per group, containing the sum of copies
+of the gene in all cells within the grouping.</p>
+<p>This can take a while to run - this code uses 8 cores to speed it up.
+Even so, its well worth saving the ‘pseudobulk’ object to disk for later
+calculations and visualisations.</p>
+<pre class="r"><code>#sfe$pdb_sample &lt;- paste0(sfe$tissue_sample, &#39;_&#39;, sfe$celltype_subset)
+
+sfe$pdb_sample &lt;- paste0(sfe$tissue_sample, &#39;_&#39;, sfe$fov, &#39;_&#39;, sfe$celltype_subset)
+
+
+
+se.pdb &lt;- aggregateAcrossCells(sfe, ids=sfe$pdb_sample,
+                               BPPARAM = MulticoreParam(workers=8) # Use 8 cores, requires BiocParallel
+                               )
+# To save it
+saveRDS(se.pdb, se_pseudobulk_file)</code></pre>
+<p>Read in the previously prepared object.</p>
+<pre class="r"><code>se.pdb &lt;- readRDS( se_pseudobulk_file)</code></pre>
+<p>Now instead of counts for each individual cell, we have our
+pseodubulk matrix with the pooled sum of counts for each celltype within
+each fov region. So the numbers are much higher, with fewer zeros.</p>
+<pre class="r"><code>counts(se.pdb)[1:10,1:4]</code></pre>
+<pre><code>      CD_a_10_epi CD_a_10_myeloids CD_a_10_plasmas CD_a_10_stroma
+AATK            5                0               1              1
+ABL1            3                0               0              0
+ABL2           12                0               0              0
+ACE             6                0               0              1
+ACE2            7                0               2              0
+ACKR1           2                0               0              0
+ACKR3           9                0               0              0
+ACKR4           5                0               1              1
+ACTA2           1                0               0              0
+ACTG2           3                0               0              0</code></pre>
+</div>
+<div id="cell-filtering-and-counting-new" class="section level2">
+<h2>Cell filtering and counting (NEW)</h2>
+<p>Once the pseudobulk replicate grouping is decided, we need to check
+there will be enough cells to perform our analyses. Note there are
+several levels of filtering here!</p>
+<ul>
+<li>Need at least x reads in a cell to include it (Done before
+pseudobulk step)</li>
+<li>Need at least x cells of a celltype within an fov to include a
+sample</li>
+<li>Can only test where we have at least 2 samples on each side of a
+contrast.</li>
+</ul>
+<p>What these thresholds should be needs to be determined for each
+experiment.</p>
+<div id="filter-cells-per-group" class="section level3">
+<h3>Filter cells per group</h3>
+<p>Each of our ‘pseudobulk’ samples represents a pool of cells. But some
+pools will contain very few cells, and should be excluded.</p>
+<p>The <em>aggregateAcrossCells</em> function we used to group the
+groups keeps values in the sample annotation where every cell has the
+same value (or NA if they don’t) - this means we have all the sample and
+condition information. Plus, it adds a new column called ‘ncells’, which
+is the number of cells in the pool.</p>
+<pre class="r"><code>DT::datatable(data.frame(colData(se.pdb))[,c(&#39;pdb_sample&#39;,&#39;individual_code&#39;,&#39;tissue_sample&#39;,&#39;ncells&#39;)])</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-a4d51c6334d8450be088" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-a4d51c6334d8450be088">{"x":{"filter":"none","vertical":false,"data":[["CD_a_10_epi","CD_a_10_myeloids","CD_a_10_plasmas","CD_a_10_stroma","CD_a_11_epi","CD_a_11_myeloids","CD_a_11_plasmas","CD_a_11_stroma","CD_a_11_tcells","CD_a_12_epi","CD_a_12_myeloids","CD_a_12_plasmas","CD_a_12_stroma","CD_a_13_epi","CD_a_13_myeloids","CD_a_13_plasmas","CD_a_13_stroma","CD_a_13_tcells","CD_a_14_epi","CD_a_14_myeloids","CD_a_14_plasmas","CD_a_14_stroma","CD_a_14_tcells","CD_a_15_epi","CD_a_15_myeloids","CD_a_15_plasmas","CD_a_15_stroma","CD_a_15_tcells","CD_a_16_myeloids","CD_a_16_plasmas","CD_a_16_stroma","CD_a_17_epi","CD_a_17_myeloids","CD_a_17_plasmas","CD_a_17_stroma","CD_a_17_tcells","CD_a_18_epi","CD_a_18_myeloids","CD_a_18_plasmas","CD_a_18_stroma","CD_a_18_tcells","CD_a_19_epi","CD_a_19_myeloids","CD_a_19_plasmas","CD_a_19_stroma","CD_a_1_epi","CD_a_1_myeloids","CD_a_1_plasmas","CD_a_1_stroma","CD_a_1_tcells","CD_a_2_epi","CD_a_2_myeloids","CD_a_2_plasmas","CD_a_2_stroma","CD_a_2_tcells","CD_a_3_myeloids","CD_a_3_plasmas","CD_a_3_stroma","CD_a_3_tcells","CD_a_4_epi","CD_a_4_myeloids","CD_a_4_plasmas","CD_a_4_stroma","CD_a_4_tcells","CD_a_5_myeloids","CD_a_5_plasmas","CD_a_5_stroma","CD_a_5_tcells","CD_a_6_epi","CD_a_6_myeloids","CD_a_6_plasmas","CD_a_6_stroma","CD_a_6_tcells","CD_a_7_epi","CD_a_7_myeloids","CD_a_7_plasmas","CD_a_7_stroma","CD_a_7_tcells","CD_a_8_epi","CD_a_8_myeloids","CD_a_8_plasmas","CD_a_8_stroma","CD_a_8_tcells","CD_a_9_epi","CD_a_9_myeloids","CD_a_9_plasmas","CD_a_9_stroma","CD_b_10_myeloids","CD_b_10_plasmas","CD_b_10_stroma","CD_b_10_tcells","CD_b_11_epi","CD_b_11_myeloids","CD_b_11_plasmas","CD_b_11_stroma","CD_b_11_tcells","CD_b_12_epi","CD_b_12_myeloids","CD_b_12_plasmas","CD_b_12_stroma","CD_b_12_tcells","CD_b_13_epi","CD_b_13_myeloids","CD_b_13_plasmas","CD_b_13_stroma","CD_b_13_tcells","CD_b_14_epi","CD_b_14_myeloids","CD_b_14_plasmas","CD_b_14_stroma","CD_b_14_tcells","CD_b_15_epi","CD_b_15_myeloids","CD_b_15_plasmas","CD_b_15_stroma","CD_b_15_tcells","CD_b_16_myeloids","CD_b_16_plasmas","CD_b_16_stroma","CD_b_16_tcells","CD_b_17_myeloids","CD_b_17_plasmas","CD_b_17_stroma","CD_b_17_tcells","CD_b_18_myeloids","CD_b_18_plasmas","CD_b_18_stroma","CD_b_18_tcells","CD_b_19_myeloids","CD_b_19_plasmas","CD_b_19_stroma","CD_b_19_tcells","CD_b_2_myeloids","CD_b_2_plasmas","CD_b_2_stroma","CD_b_2_tcells","CD_b_3_myeloids","CD_b_3_plasmas","CD_b_3_stroma","CD_b_3_tcells","CD_b_4_myeloids","CD_b_4_plasmas","CD_b_4_stroma","CD_b_4_tcells","CD_b_5_myeloids","CD_b_5_plasmas","CD_b_5_stroma","CD_b_5_tcells","CD_b_6_myeloids","CD_b_6_plasmas","CD_b_6_stroma","CD_b_6_tcells","CD_b_7_myeloids","CD_b_7_plasmas","CD_b_7_stroma","CD_b_7_tcells","CD_b_8_myeloids","CD_b_8_plasmas","CD_b_8_stroma","CD_b_8_tcells","CD_b_9_epi","CD_b_9_myeloids","CD_b_9_plasmas","CD_b_9_stroma","CD_b_9_tcells","CD_c_10_epi","CD_c_10_myeloids","CD_c_10_plasmas","CD_c_10_stroma","CD_c_10_tcells","CD_c_11_epi","CD_c_11_myeloids","CD_c_11_plasmas","CD_c_11_stroma","CD_c_11_tcells","CD_c_12_epi","CD_c_12_myeloids","CD_c_12_plasmas","CD_c_12_stroma","CD_c_13_epi","CD_c_13_myeloids","CD_c_13_plasmas","CD_c_13_stroma","CD_c_13_tcells","CD_c_14_epi","CD_c_14_myeloids","CD_c_14_plasmas","CD_c_14_stroma","CD_c_14_tcells","CD_c_15_epi","CD_c_15_myeloids","CD_c_15_plasmas","CD_c_15_stroma","CD_c_17_epi","CD_c_17_myeloids","CD_c_17_plasmas","CD_c_17_stroma","CD_c_17_tcells","CD_c_1_epi","CD_c_1_myeloids","CD_c_1_plasmas","CD_c_1_stroma","CD_c_1_tcells","CD_c_2_epi","CD_c_2_myeloids","CD_c_2_plasmas","CD_c_2_stroma","CD_c_2_tcells","CD_c_3_epi","CD_c_3_myeloids","CD_c_3_plasmas","CD_c_3_stroma","CD_c_3_tcells","CD_c_4_epi","CD_c_4_myeloids","CD_c_4_plasmas","CD_c_4_stroma","CD_c_4_tcells","CD_c_5_epi","CD_c_5_myeloids","CD_c_5_plasmas","CD_c_5_stroma","CD_c_5_tcells","CD_c_6_epi","CD_c_6_myeloids","CD_c_6_plasmas","CD_c_6_stroma","CD_c_6_tcells","CD_c_7_epi","CD_c_7_myeloids","CD_c_7_plasmas","CD_c_7_stroma","CD_c_7_tcells","CD_c_8_epi","CD_c_8_myeloids","CD_c_8_plasmas","CD_c_8_stroma","CD_c_8_tcells","CD_c_9_epi","CD_c_9_myeloids","CD_c_9_plasmas","CD_c_9_stroma","CD_c_9_tcells","HC_a_10_epi","HC_a_10_myeloids","HC_a_10_plasmas","HC_a_10_stroma","HC_a_10_tcells","HC_a_11_epi","HC_a_11_myeloids","HC_a_11_plasmas","HC_a_11_stroma","HC_a_11_tcells","HC_a_12_epi","HC_a_12_myeloids","HC_a_12_plasmas","HC_a_12_stroma","HC_a_12_tcells","HC_a_13_epi","HC_a_13_myeloids","HC_a_13_plasmas","HC_a_13_stroma","HC_a_13_tcells","HC_a_14_epi","HC_a_14_myeloids","HC_a_14_plasmas","HC_a_14_stroma","HC_a_14_tcells","HC_a_15_epi","HC_a_15_myeloids","HC_a_15_plasmas","HC_a_15_stroma","HC_a_15_tcells","HC_a_16_epi","HC_a_16_myeloids","HC_a_16_plasmas","HC_a_16_stroma","HC_a_16_tcells","HC_a_18_epi","HC_a_18_myeloids","HC_a_18_plasmas","HC_a_18_stroma","HC_a_18_tcells","HC_a_19_epi","HC_a_19_myeloids","HC_a_19_plasmas","HC_a_19_stroma","HC_a_19_tcells","HC_a_1_epi","HC_a_1_myeloids","HC_a_1_plasmas","HC_a_1_stroma","HC_a_1_tcells","HC_a_20_epi","HC_a_20_myeloids","HC_a_20_plasmas","HC_a_20_stroma","HC_a_20_tcells","HC_a_2_epi","HC_a_2_myeloids","HC_a_2_plasmas","HC_a_2_stroma","HC_a_2_tcells","HC_a_3_epi","HC_a_3_myeloids","HC_a_3_plasmas","HC_a_3_stroma","HC_a_3_tcells","HC_a_4_epi","HC_a_4_myeloids","HC_a_4_plasmas","HC_a_4_stroma","HC_a_4_tcells","HC_a_5_epi","HC_a_5_myeloids","HC_a_5_plasmas","HC_a_5_stroma","HC_a_5_tcells","HC_a_6_epi","HC_a_6_myeloids","HC_a_6_plasmas","HC_a_6_stroma","HC_a_6_tcells","HC_a_7_epi","HC_a_7_myeloids","HC_a_7_plasmas","HC_a_7_stroma","HC_a_7_tcells","HC_a_8_epi","HC_a_8_myeloids","HC_a_8_plasmas","HC_a_8_stroma","HC_a_8_tcells","HC_a_9_epi","HC_a_9_myeloids","HC_a_9_plasmas","HC_a_9_stroma","HC_a_9_tcells","HC_b_10_epi","HC_b_10_myeloids","HC_b_10_plasmas","HC_b_10_stroma","HC_b_10_tcells","HC_b_11_epi","HC_b_11_myeloids","HC_b_11_plasmas","HC_b_11_stroma","HC_b_11_tcells","HC_b_12_epi","HC_b_12_myeloids","HC_b_12_plasmas","HC_b_12_stroma","HC_b_12_tcells","HC_b_13_epi","HC_b_13_myeloids","HC_b_13_plasmas","HC_b_13_stroma","HC_b_13_tcells","HC_b_14_epi","HC_b_14_myeloids","HC_b_14_plasmas","HC_b_14_stroma","HC_b_14_tcells","HC_b_15_epi","HC_b_15_myeloids","HC_b_15_plasmas","HC_b_15_stroma","HC_b_15_tcells","HC_b_16_epi","HC_b_16_myeloids","HC_b_16_plasmas","HC_b_16_stroma","HC_b_16_tcells","HC_b_17_epi","HC_b_17_myeloids","HC_b_17_plasmas","HC_b_17_stroma","HC_b_18_myeloids","HC_b_18_plasmas","HC_b_18_stroma","HC_b_19_myeloids","HC_b_19_stroma","HC_b_19_tcells","HC_b_1_epi","HC_b_1_myeloids","HC_b_1_plasmas","HC_b_1_stroma","HC_b_1_tcells","HC_b_20_epi","HC_b_20_myeloids","HC_b_20_plasmas","HC_b_20_stroma","HC_b_20_tcells","HC_b_2_epi","HC_b_2_myeloids","HC_b_2_plasmas","HC_b_2_stroma","HC_b_2_tcells","HC_b_3_epi","HC_b_3_myeloids","HC_b_3_plasmas","HC_b_3_stroma","HC_b_3_tcells","HC_b_4_epi","HC_b_4_myeloids","HC_b_4_plasmas","HC_b_4_stroma","HC_b_4_tcells","HC_b_5_epi","HC_b_5_myeloids","HC_b_5_plasmas","HC_b_5_stroma","HC_b_5_tcells","HC_b_6_epi","HC_b_6_myeloids","HC_b_6_plasmas","HC_b_6_stroma","HC_b_6_tcells","HC_b_7_epi","HC_b_7_myeloids","HC_b_7_plasmas","HC_b_7_stroma","HC_b_7_tcells","HC_b_8_epi","HC_b_8_myeloids","HC_b_8_plasmas","HC_b_8_stroma","HC_b_8_tcells","HC_b_9_epi","HC_b_9_myeloids","HC_b_9_plasmas","HC_b_9_stroma","HC_b_9_tcells","HC_c_10_myeloids","HC_c_10_stroma","HC_c_11_epi","HC_c_11_myeloids","HC_c_11_plasmas","HC_c_11_stroma","HC_c_12_epi","HC_c_12_myeloids","HC_c_12_stroma","HC_c_13_epi","HC_c_13_myeloids","HC_c_13_plasmas","HC_c_13_stroma","HC_c_13_tcells","HC_c_14_epi","HC_c_14_myeloids","HC_c_14_plasmas","HC_c_14_stroma","HC_c_14_tcells","HC_c_15_epi","HC_c_15_myeloids","HC_c_15_plasmas","HC_c_15_stroma","HC_c_16_epi","HC_c_16_myeloids","HC_c_16_plasmas","HC_c_16_stroma","HC_c_1_epi","HC_c_1_myeloids","HC_c_1_plasmas","HC_c_1_stroma","HC_c_1_tcells","HC_c_2_epi","HC_c_2_myeloids","HC_c_2_plasmas","HC_c_2_stroma","HC_c_2_tcells","HC_c_3_epi","HC_c_3_myeloids","HC_c_3_plasmas","HC_c_3_stroma","HC_c_4_epi","HC_c_4_myeloids","HC_c_4_plasmas","HC_c_4_stroma","HC_c_5_epi","HC_c_5_myeloids","HC_c_5_plasmas","HC_c_5_stroma","HC_c_6_epi","HC_c_6_plasmas","HC_c_6_stroma","HC_c_7_epi","HC_c_7_myeloids","HC_c_7_plasmas","HC_c_7_stroma","HC_c_8_epi","HC_c_8_myeloids","HC_c_8_plasmas","HC_c_8_stroma","HC_c_8_tcells","HC_c_9_epi","HC_c_9_myeloids","HC_c_9_plasmas","HC_c_9_stroma","UC_a_10_epi","UC_a_10_myeloids","UC_a_10_plasmas","UC_a_10_stroma","UC_a_10_tcells","UC_a_12_epi","UC_a_12_myeloids","UC_a_12_plasmas","UC_a_12_stroma","UC_a_12_tcells","UC_a_13_myeloids","UC_a_13_plasmas","UC_a_13_stroma","UC_a_13_tcells","UC_a_14_myeloids","UC_a_14_plasmas","UC_a_14_stroma","UC_a_14_tcells","UC_a_15_myeloids","UC_a_15_plasmas","UC_a_15_stroma","UC_a_15_tcells","UC_a_16_myeloids","UC_a_16_plasmas","UC_a_16_stroma","UC_a_17_myeloids","UC_a_17_plasmas","UC_a_17_stroma","UC_a_17_tcells","UC_a_18_epi","UC_a_18_myeloids","UC_a_18_plasmas","UC_a_18_stroma","UC_a_18_tcells","UC_a_19_myeloids","UC_a_19_plasmas","UC_a_19_stroma","UC_a_19_tcells","UC_a_1_epi","UC_a_1_myeloids","UC_a_1_plasmas","UC_a_1_stroma","UC_a_1_tcells","UC_a_20_epi","UC_a_20_myeloids","UC_a_20_plasmas","UC_a_20_stroma","UC_a_20_tcells","UC_a_21_myeloids","UC_a_21_plasmas","UC_a_21_stroma","UC_a_21_tcells","UC_a_22_myeloids","UC_a_22_plasmas","UC_a_22_stroma","UC_a_22_tcells","UC_a_2_epi","UC_a_2_myeloids","UC_a_2_plasmas","UC_a_2_stroma","UC_a_2_tcells","UC_a_5_epi","UC_a_5_myeloids","UC_a_5_plasmas","UC_a_5_stroma","UC_a_5_tcells","UC_a_6_epi","UC_a_6_myeloids","UC_a_6_plasmas","UC_a_6_stroma","UC_a_6_tcells","UC_a_7_epi","UC_a_7_myeloids","UC_a_7_plasmas","UC_a_7_stroma","UC_a_7_tcells","UC_a_8_epi","UC_a_8_myeloids","UC_a_8_plasmas","UC_a_8_stroma","UC_a_8_tcells","UC_a_9_myeloids","UC_a_9_plasmas","UC_a_9_stroma","UC_a_9_tcells","UC_b_10_myeloids","UC_b_10_plasmas","UC_b_10_stroma","UC_b_10_tcells","UC_b_11_myeloids","UC_b_11_plasmas","UC_b_11_stroma","UC_b_11_tcells","UC_b_12_myeloids","UC_b_12_plasmas","UC_b_12_stroma","UC_b_12_tcells","UC_b_14_epi","UC_b_14_myeloids","UC_b_14_plasmas","UC_b_14_stroma","UC_b_14_tcells","UC_b_15_epi","UC_b_15_myeloids","UC_b_15_plasmas","UC_b_15_stroma","UC_b_15_tcells","UC_b_16_epi","UC_b_16_myeloids","UC_b_16_plasmas","UC_b_16_stroma","UC_b_16_tcells","UC_b_17_epi","UC_b_17_myeloids","UC_b_17_plasmas","UC_b_17_stroma","UC_b_17_tcells","UC_b_18_epi","UC_b_18_myeloids","UC_b_18_plasmas","UC_b_18_stroma","UC_b_18_tcells","UC_b_1_epi","UC_b_1_myeloids","UC_b_1_plasmas","UC_b_1_stroma","UC_b_1_tcells","UC_b_20_myeloids","UC_b_20_plasmas","UC_b_20_stroma","UC_b_20_tcells","UC_b_21_epi","UC_b_21_myeloids","UC_b_21_plasmas","UC_b_21_stroma","UC_b_21_tcells","UC_b_22_epi","UC_b_22_myeloids","UC_b_22_plasmas","UC_b_22_stroma","UC_b_22_tcells","UC_b_23_myeloids","UC_b_23_plasmas","UC_b_23_stroma","UC_b_23_tcells","UC_b_24_myeloids","UC_b_24_plasmas","UC_b_24_stroma","UC_b_24_tcells","UC_b_2_epi","UC_b_2_myeloids","UC_b_2_plasmas","UC_b_2_stroma","UC_b_2_tcells","UC_b_3_epi","UC_b_3_myeloids","UC_b_3_plasmas","UC_b_3_stroma","UC_b_3_tcells","UC_b_4_epi","UC_b_4_myeloids","UC_b_4_plasmas","UC_b_4_stroma","UC_b_4_tcells","UC_b_5_myeloids","UC_b_5_plasmas","UC_b_5_stroma","UC_b_5_tcells","UC_b_6_epi","UC_b_6_myeloids","UC_b_6_plasmas","UC_b_6_stroma","UC_b_6_tcells","UC_b_7_epi","UC_b_7_myeloids","UC_b_7_plasmas","UC_b_7_stroma","UC_b_7_tcells","UC_b_8_epi","UC_b_8_myeloids","UC_b_8_plasmas","UC_b_8_stroma","UC_b_8_tcells","UC_b_9_myeloids","UC_b_9_plasmas","UC_b_9_stroma","UC_b_9_tcells","UC_c_10_epi","UC_c_10_myeloids","UC_c_10_plasmas","UC_c_10_stroma","UC_c_10_tcells","UC_c_11_epi","UC_c_11_myeloids","UC_c_11_plasmas","UC_c_11_stroma","UC_c_11_tcells","UC_c_12_epi","UC_c_12_myeloids","UC_c_12_plasmas","UC_c_12_stroma","UC_c_12_tcells","UC_c_13_epi","UC_c_13_myeloids","UC_c_13_plasmas","UC_c_13_stroma","UC_c_13_tcells","UC_c_14_epi","UC_c_14_myeloids","UC_c_14_plasmas","UC_c_14_stroma","UC_c_14_tcells","UC_c_15_epi","UC_c_15_myeloids","UC_c_15_plasmas","UC_c_15_stroma","UC_c_15_tcells","UC_c_16_epi","UC_c_16_myeloids","UC_c_16_plasmas","UC_c_16_stroma","UC_c_16_tcells","UC_c_17_epi","UC_c_17_myeloids","UC_c_17_plasmas","UC_c_17_stroma","UC_c_17_tcells","UC_c_18_epi","UC_c_18_myeloids","UC_c_18_plasmas","UC_c_18_stroma","UC_c_18_tcells","UC_c_19_epi","UC_c_19_myeloids","UC_c_19_plasmas","UC_c_19_stroma","UC_c_19_tcells","UC_c_1_epi","UC_c_1_myeloids","UC_c_1_plasmas","UC_c_1_stroma","UC_c_1_tcells","UC_c_20_epi","UC_c_20_myeloids","UC_c_20_plasmas","UC_c_20_stroma","UC_c_20_tcells","UC_c_21_epi","UC_c_21_myeloids","UC_c_21_plasmas","UC_c_21_stroma","UC_c_21_tcells","UC_c_2_epi","UC_c_2_myeloids","UC_c_2_plasmas","UC_c_2_stroma","UC_c_2_tcells","UC_c_3_epi","UC_c_3_myeloids","UC_c_3_plasmas","UC_c_3_stroma","UC_c_3_tcells","UC_c_4_epi","UC_c_4_myeloids","UC_c_4_stroma","UC_c_5_epi","UC_c_5_myeloids","UC_c_5_plasmas","UC_c_5_stroma","UC_c_6_epi","UC_c_6_myeloids","UC_c_6_plasmas","UC_c_6_stroma","UC_c_6_tcells","UC_c_7_epi","UC_c_7_myeloids","UC_c_7_plasmas","UC_c_7_stroma","UC_c_7_tcells","UC_c_8_epi","UC_c_8_myeloids","UC_c_8_plasmas","UC_c_8_stroma","UC_c_8_tcells","UC_c_9_epi","UC_c_9_myeloids","UC_c_9_plasmas","UC_c_9_stroma","UC_c_9_tcells"],["CD_a_10_epi","CD_a_10_myeloids","CD_a_10_plasmas","CD_a_10_stroma","CD_a_11_epi","CD_a_11_myeloids","CD_a_11_plasmas","CD_a_11_stroma","CD_a_11_tcells","CD_a_12_epi","CD_a_12_myeloids","CD_a_12_plasmas","CD_a_12_stroma","CD_a_13_epi","CD_a_13_myeloids","CD_a_13_plasmas","CD_a_13_stroma","CD_a_13_tcells","CD_a_14_epi","CD_a_14_myeloids","CD_a_14_plasmas","CD_a_14_stroma","CD_a_14_tcells","CD_a_15_epi","CD_a_15_myeloids","CD_a_15_plasmas","CD_a_15_stroma","CD_a_15_tcells","CD_a_16_myeloids","CD_a_16_plasmas","CD_a_16_stroma","CD_a_17_epi","CD_a_17_myeloids","CD_a_17_plasmas","CD_a_17_stroma","CD_a_17_tcells","CD_a_18_epi","CD_a_18_myeloids","CD_a_18_plasmas","CD_a_18_stroma","CD_a_18_tcells","CD_a_19_epi","CD_a_19_myeloids","CD_a_19_plasmas","CD_a_19_stroma","CD_a_1_epi","CD_a_1_myeloids","CD_a_1_plasmas","CD_a_1_stroma","CD_a_1_tcells","CD_a_2_epi","CD_a_2_myeloids","CD_a_2_plasmas","CD_a_2_stroma","CD_a_2_tcells","CD_a_3_myeloids","CD_a_3_plasmas","CD_a_3_stroma","CD_a_3_tcells","CD_a_4_epi","CD_a_4_myeloids","CD_a_4_plasmas","CD_a_4_stroma","CD_a_4_tcells","CD_a_5_myeloids","CD_a_5_plasmas","CD_a_5_stroma","CD_a_5_tcells","CD_a_6_epi","CD_a_6_myeloids","CD_a_6_plasmas","CD_a_6_stroma","CD_a_6_tcells","CD_a_7_epi","CD_a_7_myeloids","CD_a_7_plasmas","CD_a_7_stroma","CD_a_7_tcells","CD_a_8_epi","CD_a_8_myeloids","CD_a_8_plasmas","CD_a_8_stroma","CD_a_8_tcells","CD_a_9_epi","CD_a_9_myeloids","CD_a_9_plasmas","CD_a_9_stroma","CD_b_10_myeloids","CD_b_10_plasmas","CD_b_10_stroma","CD_b_10_tcells","CD_b_11_epi","CD_b_11_myeloids","CD_b_11_plasmas","CD_b_11_stroma","CD_b_11_tcells","CD_b_12_epi","CD_b_12_myeloids","CD_b_12_plasmas","CD_b_12_stroma","CD_b_12_tcells","CD_b_13_epi","CD_b_13_myeloids","CD_b_13_plasmas","CD_b_13_stroma","CD_b_13_tcells","CD_b_14_epi","CD_b_14_myeloids","CD_b_14_plasmas","CD_b_14_stroma","CD_b_14_tcells","CD_b_15_epi","CD_b_15_myeloids","CD_b_15_plasmas","CD_b_15_stroma","CD_b_15_tcells","CD_b_16_myeloids","CD_b_16_plasmas","CD_b_16_stroma","CD_b_16_tcells","CD_b_17_myeloids","CD_b_17_plasmas","CD_b_17_stroma","CD_b_17_tcells","CD_b_18_myeloids","CD_b_18_plasmas","CD_b_18_stroma","CD_b_18_tcells","CD_b_19_myeloids","CD_b_19_plasmas","CD_b_19_stroma","CD_b_19_tcells","CD_b_2_myeloids","CD_b_2_plasmas","CD_b_2_stroma","CD_b_2_tcells","CD_b_3_myeloids","CD_b_3_plasmas","CD_b_3_stroma","CD_b_3_tcells","CD_b_4_myeloids","CD_b_4_plasmas","CD_b_4_stroma","CD_b_4_tcells","CD_b_5_myeloids","CD_b_5_plasmas","CD_b_5_stroma","CD_b_5_tcells","CD_b_6_myeloids","CD_b_6_plasmas","CD_b_6_stroma","CD_b_6_tcells","CD_b_7_myeloids","CD_b_7_plasmas","CD_b_7_stroma","CD_b_7_tcells","CD_b_8_myeloids","CD_b_8_plasmas","CD_b_8_stroma","CD_b_8_tcells","CD_b_9_epi","CD_b_9_myeloids","CD_b_9_plasmas","CD_b_9_stroma","CD_b_9_tcells","CD_c_10_epi","CD_c_10_myeloids","CD_c_10_plasmas","CD_c_10_stroma","CD_c_10_tcells","CD_c_11_epi","CD_c_11_myeloids","CD_c_11_plasmas","CD_c_11_stroma","CD_c_11_tcells","CD_c_12_epi","CD_c_12_myeloids","CD_c_12_plasmas","CD_c_12_stroma","CD_c_13_epi","CD_c_13_myeloids","CD_c_13_plasmas","CD_c_13_stroma","CD_c_13_tcells","CD_c_14_epi","CD_c_14_myeloids","CD_c_14_plasmas","CD_c_14_stroma","CD_c_14_tcells","CD_c_15_epi","CD_c_15_myeloids","CD_c_15_plasmas","CD_c_15_stroma","CD_c_17_epi","CD_c_17_myeloids","CD_c_17_plasmas","CD_c_17_stroma","CD_c_17_tcells","CD_c_1_epi","CD_c_1_myeloids","CD_c_1_plasmas","CD_c_1_stroma","CD_c_1_tcells","CD_c_2_epi","CD_c_2_myeloids","CD_c_2_plasmas","CD_c_2_stroma","CD_c_2_tcells","CD_c_3_epi","CD_c_3_myeloids","CD_c_3_plasmas","CD_c_3_stroma","CD_c_3_tcells","CD_c_4_epi","CD_c_4_myeloids","CD_c_4_plasmas","CD_c_4_stroma","CD_c_4_tcells","CD_c_5_epi","CD_c_5_myeloids","CD_c_5_plasmas","CD_c_5_stroma","CD_c_5_tcells","CD_c_6_epi","CD_c_6_myeloids","CD_c_6_plasmas","CD_c_6_stroma","CD_c_6_tcells","CD_c_7_epi","CD_c_7_myeloids","CD_c_7_plasmas","CD_c_7_stroma","CD_c_7_tcells","CD_c_8_epi","CD_c_8_myeloids","CD_c_8_plasmas","CD_c_8_stroma","CD_c_8_tcells","CD_c_9_epi","CD_c_9_myeloids","CD_c_9_plasmas","CD_c_9_stroma","CD_c_9_tcells","HC_a_10_epi","HC_a_10_myeloids","HC_a_10_plasmas","HC_a_10_stroma","HC_a_10_tcells","HC_a_11_epi","HC_a_11_myeloids","HC_a_11_plasmas","HC_a_11_stroma","HC_a_11_tcells","HC_a_12_epi","HC_a_12_myeloids","HC_a_12_plasmas","HC_a_12_stroma","HC_a_12_tcells","HC_a_13_epi","HC_a_13_myeloids","HC_a_13_plasmas","HC_a_13_stroma","HC_a_13_tcells","HC_a_14_epi","HC_a_14_myeloids","HC_a_14_plasmas","HC_a_14_stroma","HC_a_14_tcells","HC_a_15_epi","HC_a_15_myeloids","HC_a_15_plasmas","HC_a_15_stroma","HC_a_15_tcells","HC_a_16_epi","HC_a_16_myeloids","HC_a_16_plasmas","HC_a_16_stroma","HC_a_16_tcells","HC_a_18_epi","HC_a_18_myeloids","HC_a_18_plasmas","HC_a_18_stroma","HC_a_18_tcells","HC_a_19_epi","HC_a_19_myeloids","HC_a_19_plasmas","HC_a_19_stroma","HC_a_19_tcells","HC_a_1_epi","HC_a_1_myeloids","HC_a_1_plasmas","HC_a_1_stroma","HC_a_1_tcells","HC_a_20_epi","HC_a_20_myeloids","HC_a_20_plasmas","HC_a_20_stroma","HC_a_20_tcells","HC_a_2_epi","HC_a_2_myeloids","HC_a_2_plasmas","HC_a_2_stroma","HC_a_2_tcells","HC_a_3_epi","HC_a_3_myeloids","HC_a_3_plasmas","HC_a_3_stroma","HC_a_3_tcells","HC_a_4_epi","HC_a_4_myeloids","HC_a_4_plasmas","HC_a_4_stroma","HC_a_4_tcells","HC_a_5_epi","HC_a_5_myeloids","HC_a_5_plasmas","HC_a_5_stroma","HC_a_5_tcells","HC_a_6_epi","HC_a_6_myeloids","HC_a_6_plasmas","HC_a_6_stroma","HC_a_6_tcells","HC_a_7_epi","HC_a_7_myeloids","HC_a_7_plasmas","HC_a_7_stroma","HC_a_7_tcells","HC_a_8_epi","HC_a_8_myeloids","HC_a_8_plasmas","HC_a_8_stroma","HC_a_8_tcells","HC_a_9_epi","HC_a_9_myeloids","HC_a_9_plasmas","HC_a_9_stroma","HC_a_9_tcells","HC_b_10_epi","HC_b_10_myeloids","HC_b_10_plasmas","HC_b_10_stroma","HC_b_10_tcells","HC_b_11_epi","HC_b_11_myeloids","HC_b_11_plasmas","HC_b_11_stroma","HC_b_11_tcells","HC_b_12_epi","HC_b_12_myeloids","HC_b_12_plasmas","HC_b_12_stroma","HC_b_12_tcells","HC_b_13_epi","HC_b_13_myeloids","HC_b_13_plasmas","HC_b_13_stroma","HC_b_13_tcells","HC_b_14_epi","HC_b_14_myeloids","HC_b_14_plasmas","HC_b_14_stroma","HC_b_14_tcells","HC_b_15_epi","HC_b_15_myeloids","HC_b_15_plasmas","HC_b_15_stroma","HC_b_15_tcells","HC_b_16_epi","HC_b_16_myeloids","HC_b_16_plasmas","HC_b_16_stroma","HC_b_16_tcells","HC_b_17_epi","HC_b_17_myeloids","HC_b_17_plasmas","HC_b_17_stroma","HC_b_18_myeloids","HC_b_18_plasmas","HC_b_18_stroma","HC_b_19_myeloids","HC_b_19_stroma","HC_b_19_tcells","HC_b_1_epi","HC_b_1_myeloids","HC_b_1_plasmas","HC_b_1_stroma","HC_b_1_tcells","HC_b_20_epi","HC_b_20_myeloids","HC_b_20_plasmas","HC_b_20_stroma","HC_b_20_tcells","HC_b_2_epi","HC_b_2_myeloids","HC_b_2_plasmas","HC_b_2_stroma","HC_b_2_tcells","HC_b_3_epi","HC_b_3_myeloids","HC_b_3_plasmas","HC_b_3_stroma","HC_b_3_tcells","HC_b_4_epi","HC_b_4_myeloids","HC_b_4_plasmas","HC_b_4_stroma","HC_b_4_tcells","HC_b_5_epi","HC_b_5_myeloids","HC_b_5_plasmas","HC_b_5_stroma","HC_b_5_tcells","HC_b_6_epi","HC_b_6_myeloids","HC_b_6_plasmas","HC_b_6_stroma","HC_b_6_tcells","HC_b_7_epi","HC_b_7_myeloids","HC_b_7_plasmas","HC_b_7_stroma","HC_b_7_tcells","HC_b_8_epi","HC_b_8_myeloids","HC_b_8_plasmas","HC_b_8_stroma","HC_b_8_tcells","HC_b_9_epi","HC_b_9_myeloids","HC_b_9_plasmas","HC_b_9_stroma","HC_b_9_tcells","HC_c_10_myeloids","HC_c_10_stroma","HC_c_11_epi","HC_c_11_myeloids","HC_c_11_plasmas","HC_c_11_stroma","HC_c_12_epi","HC_c_12_myeloids","HC_c_12_stroma","HC_c_13_epi","HC_c_13_myeloids","HC_c_13_plasmas","HC_c_13_stroma","HC_c_13_tcells","HC_c_14_epi","HC_c_14_myeloids","HC_c_14_plasmas","HC_c_14_stroma","HC_c_14_tcells","HC_c_15_epi","HC_c_15_myeloids","HC_c_15_plasmas","HC_c_15_stroma","HC_c_16_epi","HC_c_16_myeloids","HC_c_16_plasmas","HC_c_16_stroma","HC_c_1_epi","HC_c_1_myeloids","HC_c_1_plasmas","HC_c_1_stroma","HC_c_1_tcells","HC_c_2_epi","HC_c_2_myeloids","HC_c_2_plasmas","HC_c_2_stroma","HC_c_2_tcells","HC_c_3_epi","HC_c_3_myeloids","HC_c_3_plasmas","HC_c_3_stroma","HC_c_4_epi","HC_c_4_myeloids","HC_c_4_plasmas","HC_c_4_stroma","HC_c_5_epi","HC_c_5_myeloids","HC_c_5_plasmas","HC_c_5_stroma","HC_c_6_epi","HC_c_6_plasmas","HC_c_6_stroma","HC_c_7_epi","HC_c_7_myeloids","HC_c_7_plasmas","HC_c_7_stroma","HC_c_8_epi","HC_c_8_myeloids","HC_c_8_plasmas","HC_c_8_stroma","HC_c_8_tcells","HC_c_9_epi","HC_c_9_myeloids","HC_c_9_plasmas","HC_c_9_stroma","UC_a_10_epi","UC_a_10_myeloids","UC_a_10_plasmas","UC_a_10_stroma","UC_a_10_tcells","UC_a_12_epi","UC_a_12_myeloids","UC_a_12_plasmas","UC_a_12_stroma","UC_a_12_tcells","UC_a_13_myeloids","UC_a_13_plasmas","UC_a_13_stroma","UC_a_13_tcells","UC_a_14_myeloids","UC_a_14_plasmas","UC_a_14_stroma","UC_a_14_tcells","UC_a_15_myeloids","UC_a_15_plasmas","UC_a_15_stroma","UC_a_15_tcells","UC_a_16_myeloids","UC_a_16_plasmas","UC_a_16_stroma","UC_a_17_myeloids","UC_a_17_plasmas","UC_a_17_stroma","UC_a_17_tcells","UC_a_18_epi","UC_a_18_myeloids","UC_a_18_plasmas","UC_a_18_stroma","UC_a_18_tcells","UC_a_19_myeloids","UC_a_19_plasmas","UC_a_19_stroma","UC_a_19_tcells","UC_a_1_epi","UC_a_1_myeloids","UC_a_1_plasmas","UC_a_1_stroma","UC_a_1_tcells","UC_a_20_epi","UC_a_20_myeloids","UC_a_20_plasmas","UC_a_20_stroma","UC_a_20_tcells","UC_a_21_myeloids","UC_a_21_plasmas","UC_a_21_stroma","UC_a_21_tcells","UC_a_22_myeloids","UC_a_22_plasmas","UC_a_22_stroma","UC_a_22_tcells","UC_a_2_epi","UC_a_2_myeloids","UC_a_2_plasmas","UC_a_2_stroma","UC_a_2_tcells","UC_a_5_epi","UC_a_5_myeloids","UC_a_5_plasmas","UC_a_5_stroma","UC_a_5_tcells","UC_a_6_epi","UC_a_6_myeloids","UC_a_6_plasmas","UC_a_6_stroma","UC_a_6_tcells","UC_a_7_epi","UC_a_7_myeloids","UC_a_7_plasmas","UC_a_7_stroma","UC_a_7_tcells","UC_a_8_epi","UC_a_8_myeloids","UC_a_8_plasmas","UC_a_8_stroma","UC_a_8_tcells","UC_a_9_myeloids","UC_a_9_plasmas","UC_a_9_stroma","UC_a_9_tcells","UC_b_10_myeloids","UC_b_10_plasmas","UC_b_10_stroma","UC_b_10_tcells","UC_b_11_myeloids","UC_b_11_plasmas","UC_b_11_stroma","UC_b_11_tcells","UC_b_12_myeloids","UC_b_12_plasmas","UC_b_12_stroma","UC_b_12_tcells","UC_b_14_epi","UC_b_14_myeloids","UC_b_14_plasmas","UC_b_14_stroma","UC_b_14_tcells","UC_b_15_epi","UC_b_15_myeloids","UC_b_15_plasmas","UC_b_15_stroma","UC_b_15_tcells","UC_b_16_epi","UC_b_16_myeloids","UC_b_16_plasmas","UC_b_16_stroma","UC_b_16_tcells","UC_b_17_epi","UC_b_17_myeloids","UC_b_17_plasmas","UC_b_17_stroma","UC_b_17_tcells","UC_b_18_epi","UC_b_18_myeloids","UC_b_18_plasmas","UC_b_18_stroma","UC_b_18_tcells","UC_b_1_epi","UC_b_1_myeloids","UC_b_1_plasmas","UC_b_1_stroma","UC_b_1_tcells","UC_b_20_myeloids","UC_b_20_plasmas","UC_b_20_stroma","UC_b_20_tcells","UC_b_21_epi","UC_b_21_myeloids","UC_b_21_plasmas","UC_b_21_stroma","UC_b_21_tcells","UC_b_22_epi","UC_b_22_myeloids","UC_b_22_plasmas","UC_b_22_stroma","UC_b_22_tcells","UC_b_23_myeloids","UC_b_23_plasmas","UC_b_23_stroma","UC_b_23_tcells","UC_b_24_myeloids","UC_b_24_plasmas","UC_b_24_stroma","UC_b_24_tcells","UC_b_2_epi","UC_b_2_myeloids","UC_b_2_plasmas","UC_b_2_stroma","UC_b_2_tcells","UC_b_3_epi","UC_b_3_myeloids","UC_b_3_plasmas","UC_b_3_stroma","UC_b_3_tcells","UC_b_4_epi","UC_b_4_myeloids","UC_b_4_plasmas","UC_b_4_stroma","UC_b_4_tcells","UC_b_5_myeloids","UC_b_5_plasmas","UC_b_5_stroma","UC_b_5_tcells","UC_b_6_epi","UC_b_6_myeloids","UC_b_6_plasmas","UC_b_6_stroma","UC_b_6_tcells","UC_b_7_epi","UC_b_7_myeloids","UC_b_7_plasmas","UC_b_7_stroma","UC_b_7_tcells","UC_b_8_epi","UC_b_8_myeloids","UC_b_8_plasmas","UC_b_8_stroma","UC_b_8_tcells","UC_b_9_myeloids","UC_b_9_plasmas","UC_b_9_stroma","UC_b_9_tcells","UC_c_10_epi","UC_c_10_myeloids","UC_c_10_plasmas","UC_c_10_stroma","UC_c_10_tcells","UC_c_11_epi","UC_c_11_myeloids","UC_c_11_plasmas","UC_c_11_stroma","UC_c_11_tcells","UC_c_12_epi","UC_c_12_myeloids","UC_c_12_plasmas","UC_c_12_stroma","UC_c_12_tcells","UC_c_13_epi","UC_c_13_myeloids","UC_c_13_plasmas","UC_c_13_stroma","UC_c_13_tcells","UC_c_14_epi","UC_c_14_myeloids","UC_c_14_plasmas","UC_c_14_stroma","UC_c_14_tcells","UC_c_15_epi","UC_c_15_myeloids","UC_c_15_plasmas","UC_c_15_stroma","UC_c_15_tcells","UC_c_16_epi","UC_c_16_myeloids","UC_c_16_plasmas","UC_c_16_stroma","UC_c_16_tcells","UC_c_17_epi","UC_c_17_myeloids","UC_c_17_plasmas","UC_c_17_stroma","UC_c_17_tcells","UC_c_18_epi","UC_c_18_myeloids","UC_c_18_plasmas","UC_c_18_stroma","UC_c_18_tcells","UC_c_19_epi","UC_c_19_myeloids","UC_c_19_plasmas","UC_c_19_stroma","UC_c_19_tcells","UC_c_1_epi","UC_c_1_myeloids","UC_c_1_plasmas","UC_c_1_stroma","UC_c_1_tcells","UC_c_20_epi","UC_c_20_myeloids","UC_c_20_plasmas","UC_c_20_stroma","UC_c_20_tcells","UC_c_21_epi","UC_c_21_myeloids","UC_c_21_plasmas","UC_c_21_stroma","UC_c_21_tcells","UC_c_2_epi","UC_c_2_myeloids","UC_c_2_plasmas","UC_c_2_stroma","UC_c_2_tcells","UC_c_3_epi","UC_c_3_myeloids","UC_c_3_plasmas","UC_c_3_stroma","UC_c_3_tcells","UC_c_4_epi","UC_c_4_myeloids","UC_c_4_stroma","UC_c_5_epi","UC_c_5_myeloids","UC_c_5_plasmas","UC_c_5_stroma","UC_c_6_epi","UC_c_6_myeloids","UC_c_6_plasmas","UC_c_6_stroma","UC_c_6_tcells","UC_c_7_epi","UC_c_7_myeloids","UC_c_7_plasmas","UC_c_7_stroma","UC_c_7_tcells","UC_c_8_epi","UC_c_8_myeloids","UC_c_8_plasmas","UC_c_8_stroma","UC_c_8_tcells","UC_c_9_epi","UC_c_9_myeloids","UC_c_9_plasmas","UC_c_9_stroma","UC_c_9_tcells"],["CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c"],["CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_a","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_b","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","CD_c","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_a","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_b","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","HC_c","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_a","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_b","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c","UC_c"],[49,1,6,1,68,2,14,2,2,57,3,6,2,85,3,7,3,1,256,6,56,35,1,31,3,6,4,2,1,2,8,25,5,6,17,1,33,6,11,14,1,328,8,30,16,279,12,99,78,2,2,28,2,230,21,8,1,129,5,309,25,156,69,9,19,2,189,3,23,4,9,64,3,270,18,76,69,2,338,8,100,21,1,93,6,37,22,577,968,724,483,624,468,1051,619,140,432,778,1733,486,148,717,446,1505,568,139,606,1044,1548,560,244,212,1790,1761,816,448,919,645,1380,236,1002,2217,765,181,1336,1347,538,305,817,398,528,130,807,1445,932,224,988,1694,993,206,910,891,701,172,982,447,426,294,1074,1025,532,350,684,526,797,53,755,386,587,185,3,931,1159,743,154,497,42,359,120,2,476,38,225,112,3,141,9,77,56,680,89,681,175,3,411,119,766,196,8,163,64,133,43,105,14,138,22,3,314,92,982,142,16,458,153,1163,175,35,299,26,382,96,6,8,10,194,36,2,804,186,901,209,22,290,95,436,74,2,681,98,615,142,15,438,37,279,82,11,378,88,393,134,7,238,64,407,144,51,268,71,279,146,14,240,55,192,122,5,173,56,316,184,26,285,45,268,137,15,233,109,329,252,38,323,60,402,254,51,301,42,147,95,31,459,40,141,178,31,423,91,348,220,25,867,150,439,332,50,499,61,217,276,36,247,30,136,72,13,238,94,733,398,185,241,74,273,188,17,277,61,271,212,39,251,51,210,115,19,297,33,185,171,11,204,74,631,173,109,1203,50,196,307,12,1071,78,152,152,7,793,165,1276,458,463,1183,54,182,162,4,1063,53,153,263,9,663,61,431,188,200,290,39,107,225,1,11,2,4,88,27,1,255,11,65,1,1263,133,552,446,330,1,31,1,206,3,1222,133,333,448,69,1199,87,293,398,48,1319,96,524,438,123,1224,96,182,244,8,1299,64,170,265,2,556,41,134,290,4,1103,131,976,332,106,1382,119,317,390,11,6,31,304,26,97,63,2,1,14,153,4,8,92,1,415,64,167,91,1,5,3,1,20,1,1,1,8,20,3,42,3,1,496,47,125,120,1,157,23,77,25,437,40,123,92,240,21,88,95,112,5,12,272,19,102,48,466,76,185,150,4,339,48,169,97,1,48,353,132,4,5,197,2659,986,23,235,1477,1094,54,174,85,347,1,120,387,211,1,93,634,189,292,773,621,11,1,143,286,451,11,124,8,920,6,377,94,1170,711,13,1,175,26,522,10,108,21,820,10,193,35,729,16,186,89,666,188,1,112,207,1810,884,14,749,95,591,206,2,707,302,1765,1018,17,1339,164,1126,325,5,67,1138,441,25,146,141,160,15,179,48,235,7,16,140,104,4,6,314,1016,521,49,2,257,540,328,26,11,312,1802,552,90,1,161,442,314,21,4,334,676,469,36,8,259,1100,610,45,66,434,99,13,10,293,1585,503,40,4,178,982,369,17,373,1147,531,64,340,1466,505,85,52,433,1419,852,81,12,458,1444,628,80,15,280,898,404,32,263,182,349,27,3,237,336,352,17,1,274,686,393,23,4,360,769,421,25,162,127,191,12,942,51,85,171,11,1085,24,127,64,1,1278,116,97,150,5,754,48,95,110,6,1244,49,108,79,3,970,62,107,139,4,1085,128,118,187,10,998,41,148,217,10,1062,45,107,126,12,254,4,42,80,2,374,14,48,52,2,319,17,80,108,7,240,19,40,144,4,257,8,60,47,3,425,30,89,132,7,4,3,41,2,13,1,54,750,88,96,182,12,825,71,156,255,16,728,38,119,240,14,558,40,115,134,5]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>pdb_sample<\/th>\n      <th>individual_code<\/th>\n      <th>tissue_sample<\/th>\n      <th>ncells<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":4},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"pdb_sample","targets":1},{"name":"individual_code","targets":2},{"name":"tissue_sample","targets":3},{"name":"ncells","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code># What is the minimum accepptable number of cells in a pool?
+min_cells_per_fovcluster &lt;- 20
+
+ggplot(colData(se.pdb), aes(x=ncells, col=celltype_subset)) +
+  geom_density() +
+  geom_vline(xintercept=min_cells_per_fovcluster, lty=3) +
+  geom_rug() +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle(&quot;How many cells per fov-cluster?&quot;)</code></pre>
+<p><img src="figure/e_DEPseudobulk_insitu_sfe.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Note there are much fewer t-cells overall, but given that we have a
+high number of samples, there should still be enough to include. Its
+typical that some of the less common cell types are difficult or
+impossible to reliably test.</p>
+<p>We can then remove pools where there were too few cells - choosing a
+threshold of 20 in this instance.</p>
+<pre class="r"><code>ncol(se.pdb)</code></pre>
+<pre><code>[1] 787</code></pre>
+<pre class="r"><code>se.pdb &lt;- se.pdb[,se.pdb$ncells &gt;= min_cells_per_fovcluster]
+ncol(se.pdb)</code></pre>
+<pre><code>[1] 600</code></pre>
+</div>
+<div id="samples-per-contrast." class="section level3">
+<h3>Samples per contrast.</h3>
+<p>Ignoring pseodureplicate fovs from a single sample, how many
+bioloical samples are represented in our filtered table?</p>
+<p>In this experiment, there are enough samples to run the contrasts for
+every cell type.</p>
+<pre class="r"><code>celltype_summary_table.passed &lt;- data.frame(colData(se.pdb)[,c(&#39;pdb_sample&#39;,&#39;condition&#39;,&#39;individual_code&#39;,&#39;celltype_subset&#39;)])
+
+
+celltype_summary_table.passed %&gt;% select(condition, individual_code, celltype_subset) %&gt;%
+  unique() %&gt;%
+  group_by(condition, celltype_subset) %&gt;%
+  summarise(n=n()) %&gt;% 
+  pivot_wider( names_from=condition, values_from = n)</code></pre>
+<pre><code># A tibble: 5 × 4
+  celltype_subset `Healthy controls` `Ulcerative colitis` `Crohn&#39;s disease`
+  &lt;fct&gt;                        &lt;int&gt;                &lt;int&gt;             &lt;int&gt;
+1 epi                              3                    3                 3
+2 myeloids                         3                    3                 3
+3 plasmas                          3                    3                 3
+4 stroma                           3                    3                 3
+5 tcells                           2                    2                 3</code></pre>
+</div>
+</div>
+<div id="calculate-differential-expression" class="section level2">
+<h2>Calculate Differential Expression</h2>
+<p>We now have a counts matrix, and an annotation table that describes
+its samples.</p>
+<p>This looks very much like a bulk RNAseq experiment. Except - instead
+of X samples across Y conditions, we have X samples of Y conditions for
+each of Z celltypes.</p>
+<pre class="r"><code># For clarity, pull out the counts amtrix and annotation table
+pseudobulk_counts_matrix &lt;- counts(se.pdb)
+pseudobulk_anno_table   &lt;- as_tibble(colData(se.pdb)[,c(&#39;pdb_sample&#39;,&#39;group&#39;,&#39;condition&#39;,&#39;individual_code&#39;,&#39;tissue_sample&#39;,&#39;celltype_subset&#39;)])
+pseudobulk_counts_matrix[1:10,1:4]</code></pre>
+<pre><code>      CD_a_10_epi CD_a_11_epi CD_a_12_epi CD_a_13_epi
+AATK            5          10          10          12
+ABL1            3          13          12           5
+ABL2           12          10           3          12
+ACE             6          13           5           9
+ACE2            7           9          12          21
+ACKR1           2           8          10          13
+ACKR3           9           4           7           9
+ACKR4           5          10           9          26
+ACTA2           1           5          14           7
+ACTG2           3           6           2           9</code></pre>
+<pre class="r"><code>head(pseudobulk_anno_table)</code></pre>
+<pre><code># A tibble: 6 × 6
+  pdb_sample      group condition  individual_code tissue_sample celltype_subset
+  &lt;chr&gt;           &lt;fct&gt; &lt;fct&gt;      &lt;fct&gt;           &lt;fct&gt;         &lt;fct&gt;          
+1 CD_a_10_epi     CD    Crohn&#39;s d… CD_a            CD_a          epi            
+2 CD_a_11_epi     CD    Crohn&#39;s d… CD_a            CD_a          epi            
+3 CD_a_12_epi     CD    Crohn&#39;s d… CD_a            CD_a          epi            
+4 CD_a_13_epi     CD    Crohn&#39;s d… CD_a            CD_a          epi            
+5 CD_a_14_epi     CD    Crohn&#39;s d… CD_a            CD_a          epi            
+6 CD_a_14_plasmas CD    Crohn&#39;s d… CD_a            CD_a          plasmas        </code></pre>
+<p>We will use a fairly standard limma differential expression
+analysis.</p>
+<p>We will process each celltype one at a time as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Subset the counts matrix and annotation table to the celltype.</li>
+<li>Build and fit the model. In our case, a simple one that looks for
+various by disease group, blocked on individual.</li>
+<li>Check there are enough biological samples to run the test</li>
+<li>Run the test.</li>
+</ol>
+<p>How to build the model and run the test will need to be customised
+for your experimental design. Online resources that describe approaches
+for bulk RNAseq analyses can be applied to pseudobulk analyses - see the
+‘More Information’ section of this document for suggestions.</p>
+<div id="the-model" class="section level3">
+<h3>The model</h3>
+<p>In this case the line <code>model.matrix( ~0 + group)</code> builds a
+model where gene expression is expected to vary by group (UC/CD/HC). The
+~0 part indicates a ‘intercept’, which is convenient because it means we
+can include all 3 groups in our contrasts, rather than one of them being
+treated as the baseline. ( NB: Mathematically, you could use ~group
+alone without intercept, and define contrasts accordingly to get the
+same result. )</p>
+<p>But, we also need to take into account our individuals. We do this by
+<em>blocking</em> on individual, and calculating a intra duplicate
+correlation with <em>duplicateCorrelation()</em><span
+class="citation">(Smyth, Michaud, and Scott 2005)</span>. That’s a
+method from microarray times, see <a
+href="https://support.bioconductor.org/p/125489/">discussion</a> for how
+it is applied to bulk RNAseq data.</p>
+<p>If instead we didn’t have multiple fovs per replicate, can skip
+blocking or use of duplicateCorrelation(). That is more typical of a
+typical of a bulk rnaseq or single cell RNAseq pseuobulk analysis.</p>
+<p>Some example models: * <strong>~0 + group, (no blocking or duplicate
+correlation)</strong> : If there was only one pseudoreplicate per
+individual. Either from a single fov, or from pooling fovs tile across a
+sample. * <strong>~0 + group, (blocked on individual with using
+duplicate Correlation)</strong> : Used here, takes into account
+pseodureplicate fovs from the same samples. * <strong>~0 + group +
+individual (no blocking or duplicate correlation)</strong> : If this was
+a treatment / time point experiment with paired samples from
+individuals. But only one pseodureplicate per individual. If there were
+multiple fovs per tissue sample, you could add blocking and duplicate
+correlation on tissue ID. * <strong>~0 + group + celltype</strong> (with
+or without blocking + duplicate correlation) : Instead of subsetting to
+celltype, includes cell type in the model. This pulls more data into the
+statistics, but makes building the contrasts challenging! Not covered
+here.</p>
+</div>
+<div id="about-filtering" class="section level3">
+<h3>About Filtering</h3>
+<p>What if you do need to skip constrasts? Often its easiest to count
+your biological replicates at the differential expression step and skip
+them there. You might need to run contrasts between groups one at a time
+to do this.</p>
+</div>
+<div id="actually-calculate-differential-expression"
+class="section level3">
+<h3>Actually calculate differential expression</h3>
+<p>Next continuue on to</p>
+<pre class="r"><code># Build a table of each contrast we might want to do. 
+#contrasts = group A - group B.
+#UCvHC  = UC - HC
+#CDvHC  = CD - HC
+contrasts_wanted &lt;- bind_cols(
+  A= c(&quot;UC&quot;, &quot;CD&quot;), # First terms
+  B= c(&quot;HC&quot;, &quot;HC&quot;)  # Second terms (usually control)
+)
+
+# Empty list to collect results
+de_result_list &lt;- list()
+
+## Cycle through each celltype
+for (the_celltype in levels(se.pdb$celltype_subset)) {
+  
+  print(the_celltype)
+  
+  # Subset pseudobulk object to one celltype
+  se.pdb.this &lt;- se.pdb[,se.pdb$celltype_subset == the_celltype]
+  
+  # And pull out the annotation and counts
+  anno_table.this   &lt;- as.tibble(colData(se.pdb.this))
+  count_matrix.this &lt;- counts(se.pdb.this)
+
+  
+
+  ## Check for sufficient replicates ##
+  # To do any calculations, we need at least 2 pseudobulk groups per contrast.
+  # there are plenty in this experiemnt, but with less replicates and rare cell types
+  # its very common to have to skip some contrats for some celltypes.
+
+  # skip clusters with no samples after filtering
+  if( nrow(anno_table.this) &lt; 1 ) {next}
+  
+  # Count how many bio samples per group (only need one fov to count it)
+  biosample_per_group &lt;- anno_table.this %&gt;% 
+    select(group, tissue_sample) %&gt;%
+    unique()    %&gt;% # Don&#39;t care how many (passed) fovs there were on the tissue
+    pull(group) %&gt;% # pull out group column, one entry per tissue sample
+    table() # count how many
+  print(biosample_per_group)
+  
+
+  # Are there enough Biological smples to consider the contrast?
+  min_biosample_per_group &lt;- 2
+    enough_biosamples &lt;- 
+    (unname(biosample_per_group[contrasts_wanted$A]) &gt;= min_biosample_per_group) &amp;
+    (unname(biosample_per_group[contrasts_wanted$B]) &gt;= min_biosample_per_group)
+    
+  # Make a new table with contrasts that we have enough biosamples for.
+  contrasts_to_test &lt;- contrasts_wanted[enough_biosamples,]
+  
+  
+  
+  ## Setup model
+  
+  # Setup objects for limma
+  dge &lt;- DGEList(count_matrix.this)
+  dge &lt;- calcNormFactors(dge)
+  
+  # Build model
+  group           &lt;- anno_table.this$group
+  individual_code &lt;- anno_table.this$individual_code
+
+  # Model design 
+  design    &lt;- model.matrix( ~0 + group)
+  
+  # Run Voom
+  vm  &lt;- voom(dge, design = design, plot = FALSE)
+  
+  # Adding dupliate correlation to use individual fovs, rather than pooled per biosample
+  corrfit &lt;- duplicateCorrelation(vm, design, block=individual_code)
+  fit     &lt;- lmFit(vm, design, correlation = corrfit$consensus, block=individual_code) 
+
+  # Define and fit contrasts and run ebayes
+  # Doing this in an automated way so we can include/exvlude contrasts where 
+  # there are / arenot enough replicates available. 
+  # That&#39;s why generatgin a string .
+  contrast_str_list &lt;- paste0(&quot;group&quot;,contrasts_to_test$A,&quot;-&quot;,&quot;group&quot;,contrasts_to_test$B)
+  
+  contrasts &lt;- makeContrasts(contrasts=contrast_str_list,
+                           levels=coef(fit))
+  
+  fit &lt;- contrasts.fit(fit, contrasts)
+  fit &lt;- eBayes(fit)
+
+  
+  
+  ## Loop through contrasts.
+  # You ccan run multiple contrasts at onces, but doing it this way allows us
+  # to skip individual contrasts within a celltype.
+  for ( the_coef in colnames(contrasts) ) {
+    # Make a version of the coeffient name that doesn&#39;t include a &#39;-&#39;, or the 
+    # factor name (group)
+    # Life is easier without special characters
+    # groupUC-groupHC =&gt; UCvHC
+    contrast_name &lt;- gsub(&quot;group&quot;,&quot;&quot;, gsub(&quot;-&quot;,&quot;v&quot;,the_coef))
+    
+    de_result.this &lt;- topTable(fit, n = Inf, adjust.method = &quot;BH&quot;, coef = the_coef) %&gt;%
+      rownames_to_column(&quot;target&quot;) %&gt;%
+      mutate(contrast=contrast_name,
+             contrast_group=&quot;pairwise&quot;,
+             celltype=the_celltype) %&gt;%
+      select(celltype,contrast_group, contrast,target,everything()) %&gt;%
+      arrange(P.Value)
+    
+      # build a unique name for this result by adding
+      # &lt;celltype&gt;_&lt;A&gt;v&lt;B&gt;
+      de_result_list[[paste(the_celltype, contrast_name, sep=&quot;_&quot;)]] &lt;- de_result.this
+    
+  }
+
+}</code></pre>
+<pre><code>[1] &quot;epi&quot;</code></pre>
+<pre><code>.
+HC UC CD 
+ 3  3  3 
+[1] &quot;myeloids&quot;
+.
+HC UC CD 
+ 3  3  3 
+[1] &quot;plasmas&quot;
+.
+HC UC CD 
+ 3  3  3 
+[1] &quot;stroma&quot;
+.
+HC UC CD 
+ 3  3  3 
+[1] &quot;tcells&quot;</code></pre>
+<pre><code>.
+HC UC CD 
+ 2  2  3 </code></pre>
+<pre class="r"><code># Join together results for all celltypes, and pull out those with a singificant adjusted p-value
+de_results_all &lt;- bind_rows(de_result_list)
+de_results_sig &lt;- filter(de_results_all, adj.P.Val &lt; 0.01)</code></pre>
+<p>Table of significant results.</p>
+<pre class="r"><code>DT::datatable(mutate(de_results_sig, across(is.numeric, signif, digits = 3)))</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-0b50cf44ed0c70fb0261" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-0b50cf44ed0c70fb0261">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88"],["epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","epi","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","myeloids","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","plasmas","stroma","stroma","stroma","stroma","stroma","stroma","stroma","stroma","stroma","stroma","tcells","tcells","tcells","tcells","tcells","tcells","tcells"],["pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","UCvHC","UCvHC","CDvHC","CDvHC","CDvHC","CDvHC","CDvHC"],["LYZ","IGHG2","IGHG1","HLA-DRB1","SAA1","B3GNT7","LCN2","CD74","HLA-DQB1","HLA-DRB5","DUOXA2","FZD5","OLFM4","CXCL3","RPS4Y1","SERPINA1","S100P","MT1X","HLA-DPA1","CHGA","BST2","CIITA","IGHG2","S100P","IGHG1","HLA-DRB1","HLA-DPA1","NFKBIA","JCHAIN","IGHG1","PIGR","FCGR3A","IGHA1","EZR","IGHG2","STAT1","IGHG2","IGHG1","TNFRSF18","IGHG2","ADAMDEC1","PIGR","IGHG1","TNFRSF13B","CXCL14","CCL3","KRT8","BCL2","MPO","AQP8","CSF2RB","NFKBIA","IL10RA","BMP6","TSLP","IGHA1","DUSP5","CLDN4","IGFBP5","GSN","CD9","ADAMDEC1","PIGR","CFD","CCL3","TYK2","BMP6","TNFRSF18","NFKBIA","CSF2RB","TNFRSF13B","CHI3L1","IGHG2","PIGR","IGHG1","RGS2","ADIRF","NEAT1","IGHG1","IGHG2","GSN","IGHG2","IGHG1","IGHG2","IGHG1","NKG7","IGFBP3","CCL5"],[3.57,2.8,2.88,2.36,1.63,-2.23,2.99,2.68,1.51,2.35,1.95,-1.38,3.23,1.44,1.62,1.52,1.65,-1.61,1.64,-2.43,1.19,1.78,1.83,1.64,1.73,1.68,1.72,-1.32,-3.05,2.63,-1.65,1.26,-2.5,-1.18,2.49,1.44,2.97,2.9,-1.55,2.8,-2.04,-1.72,2.44,-1.38,-1.56,-1.31,-1.25,-1,1.04,0.863,-0.981,-1.07,-0.882,-1.23,1.03,-1.95,-1.16,-0.9379999999999999,1.02,-0.831,-0.924,-2.21,-1.7,-1.25,-1.33,-1.58,-1.43,-0.854,-1.13,-0.994,-1.01,1.72,2.4,-1.53,2.29,-1.05,-1.13,1.03,2.68,2.6,-1.47,3.76,3.76,3.14,2.82,1.76,-1.64,1.47],[10,10.1,10.6,10.5,9.279999999999999,10.2,9.82,11.1,9.720000000000001,9,9.27,11,11.6,10.5,8.16,10.9,10.9,11,9.380000000000001,9.83,8.68,9.01,10.1,10.9,10.6,10.5,9.380000000000001,10.7,11.6,12.7,9.51,10.5,13.4,9.529999999999999,12.2,10.4,12.2,12.7,9.859999999999999,14.3,9.65,9.380000000000001,14.7,9.34,9.800000000000001,9.25,10.8,9.84,8.970000000000001,9.210000000000001,9.720000000000001,10.2,9.800000000000001,9.23,8.43,16,11.9,8.74,9.52,9.83,8.85,9.65,9.380000000000001,9.85,9.25,12,9.23,9.859999999999999,10.2,9.720000000000001,9.34,9.66,12,9.52,12.5,10.5,9.76,12.8,12.5,12,11.7,12.8,13.3,12.8,13.3,10.1,9.01,11.9],[7.23,6.89,6.89,5.95,5.81,-5.72,5.53,5.33,5.25,4.99,4.94,-4.9,4.73,4.71,4.14,4.07,4.07,-4.04,3.93,-3.92,5.07,5.07,4.78,4.6,4.47,4.43,4.36,-5.65,-5.49,4.86,-4.79,4.68,-4.66,-4.65,4.62,5.25,5.11,4.99,-8.32,7.64,-6.83,-6.47,5.93,-5.6,-5.47,-5.25,-4.72,-4.7,4.66,4.4,-4.27,-4.25,-4.24,-4.12,4.08,-4.06,-3.96,-3.93,3.89,-3.85,-3.8,-7.22,-6.27,-5.46,-5.22,-4.79,-4.69,-4.39,-4.28,-4.15,-4.01,5.33,5.05,-4.86,4.74,-4.39,-4.31,4.1,5.5,5.4,-4.41,7.37,7.09,6.23,5.42,4.78,-4.48,4.39],[5.12e-11,2.92e-10,2.94e-10,2.87e-08,5.34e-08,8e-08,1.97e-07,4.8e-07,6.73e-07,2.1e-06,2.55e-06,3.05e-06,6.22e-06,6.67e-06,6.64e-05,8.41e-05,8.55e-05,9.399999999999999e-05,0.000142,0.00015,1.48e-06,1.51e-06,5.02e-06,1.07e-05,1.82e-05,2.11e-05,2.79e-05,8.15e-08,1.73e-07,2.93e-06,4e-06,6.55e-06,6.89e-06,7.46e-06,8.199999999999999e-06,5.34e-07,9.900000000000001e-07,1.69e-06,3.33e-14,1.72e-12,1.6e-10,1.07e-09,1.73e-08,8.869999999999999e-08,1.66e-07,4.74e-07,5.11e-06,5.38e-06,6.52e-06,1.93e-05,3.35e-05,3.59e-05,3.78e-05,5.9e-05,7.059999999999999e-05,7.64e-05,0.000113,0.000124,0.000143,0.000171,0.000204,1.86e-11,3.06e-09,1.76e-07,5.28e-07,3.64e-06,5.67e-06,2.05e-05,3.19e-05,5.31e-05,9.35e-05,3.14e-07,1.14e-06,2.64e-06,4.59e-06,1.97e-05,2.71e-05,6.270000000000001e-05,1.37e-07,2.21e-07,1.86e-05,1.47e-10,4.96e-10,2.16e-08,6.38e-07,8.01e-06,2.53e-05,3.52e-05],[5.11e-08,9.78e-08,9.78e-08,7.16e-06,1.07e-05,1.33e-05,2.82e-05,5.99e-05,7.47e-05,0.00021,0.000232,0.000254,0.000476,0.000476,0.00442,0.00502,0.00502,0.00521,0.00746,0.00747,0.000752,0.000752,0.00167,0.00268,0.00351,0.00351,0.00398,8.14e-05,8.65e-05,0.000974,0.001,0.00102,0.00102,0.00102,0.00102,0.000494,0.000494,0.000562,3.33e-11,8.6e-10,5.34e-08,2.67e-07,3.45e-06,1.48e-05,2.37e-05,5.92e-05,0.000537,0.000537,0.000592,0.00161,0.00252,0.00252,0.00252,0.00368,0.00415,0.00424,0.00596,0.0062,0.00683,0.00775,0.00885,1.86e-08,1.53e-06,5.87e-05,0.000132,0.000728,0.000944,0.00292,0.00398,0.0059,0.009339999999999999,0.000314,0.000569,0.00088,0.00115,0.00394,0.00451,0.00894,0.00011,0.00011,0.0062,1.47e-07,2.48e-07,2.15e-05,0.000319,0.00267,0.00631,0.00702],[14.7,13.1,13,8.710000000000001,8.119999999999999,7.74,6.89,6.06,5.73,4.66,4.47,4.34,3.69,3.6,1.43,1.26,1.26,1.17,0.719,0.704,5.01,4.98,3.88,3.18,2.7,2.57,2.32,7.67,6.96,4.36,4.08,3.62,3.57,3.5,3.42,5.86,5.3,4.82,21.8,17.8,13.6,11.7,9.119999999999999,7.49,6.9,5.88,3.65,3.57,3.4,2.37,1.83,1.78,1.72,1.3,1.17,1.4,0.779,0.615,0.476,0.303,0.149,15.6,10.8,6.97,5.94,4.14,3.72,2.54,2.14,1.66,1.14,6.42,5.18,4.45,3.89,2.61,2.31,1.56,6.93,6.59,2.64,13.2,12.1,8.9,5.8,3.48,2.44,2.14]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div id="de-plots" class="section level2">
+<h2>DE plots</h2>
+<p>The below plots show the logFC calculate for each gene versus its
+average expression across all samples. This is a useful diagnostic plot
+to evaluate your differential expression results.</p>
+<ul>
+<li>Only big changes are significant at lower expressions, simply
+becuase higher expression means more statistical confidence.</li>
+<li>A lopsided plot might indicate some oddness around the normalisation
+of your data (e.g. extremely different cell counts).</li>
+</ul>
+<!--[[ADD pvalue plot?]]-->
+<pre class="r"><code>make_ma_style_plot &lt;- function(res_table, pval_threshold = 0.01, n_genes_to_label = 10) {
+  p &lt;- ggplot(res_table, aes(x=AveExpr, y=logFC, col=adj.P.Val &lt; pval_threshold) ) +
+    geom_hline(yintercept = c(0), col=&#39;grey80&#39;) +
+    geom_point(pch=3) +
+    geom_text_repel(data    = head(arrange(filter(res_table , adj.P.Val &lt; pval_threshold ), P.Value), n=5),
+                    mapping = aes(label=target), col=&quot;red&quot; ) +
+    theme_bw() +
+    geom_hline(yintercept = c(-1,1), lty=3) +
+    scale_colour_manual(values = c(&#39;FALSE&#39;=&quot;black&quot;, &#39;TRUE&#39;=&quot;red&quot;)) +
+    theme(legend.position = &#39;none&#39;)
+  return(p)
+}</code></pre>
+<pre class="r"><code>#res_table.UCvHC.epi &lt;- filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;epi&quot;)
+
+p1 &lt;- make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;plasmas&quot;)) + ggtitle(&quot;UC vs HC - plasmas&quot;)
+p2 &lt;- make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;tcells&quot;))+ ggtitle(&quot;UC vs HC - T-cells&quot;)
+p3 &lt;- make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;stroma&quot;)) + ggtitle(&quot;UC vs HC - stroma&quot;)
+
+p1 + p2 + p3</code></pre>
+<p><img src="figure/e_DEPseudobulk_insitu_sfe.Rmd/unnamed-chunk-19-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="check-some-examples" class="section level2">
+<h2>Check some examples</h2>
+<p>Its always worth visualising how the expression of your
+differentially expressed genes really looks, with respect to your
+experimental design. How best to do this depends on your experiment.</p>
+<p>The results suggests that XTNFRSF18 was significantly DE between
+individuals with Ulcerative Colitis and Healthy Controls in plasma
+cells. As a first step, there’s some very convenient seurat plots
+below;</p>
+<pre class="r"><code># Get some normalised values, purely for plotting.
+# (can&#39;t use logged counts because the sizes are so dramatically different!)
+dge &lt;- DGEList(counts(se.pdb))
+dge &lt;- calcNormFactors(dge)
+norm_counts &lt;- cpm(dge)
+
+# Store normalised log2 scale expression in 
+assay(se.pdb, &quot;logcounts&quot;) &lt;- log2(norm_counts)</code></pre>
+<pre class="r"><code>plotExpression(se.pdb, &quot;TNFRSF18&quot;, x=&quot;group&quot;, colour_by = &quot;group&quot;,
+               other_fields = &quot;celltype_subset&quot;) + 
+ facet_wrap(~celltype_subset)</code></pre>
+<p><img src="figure/e_DEPseudobulk_insitu_sfe.Rmd/unnamed-chunk-21-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>Compared with IGHG1, which was flagged at differentially expressed
+across multiple cell types.</p>
+<pre class="r"><code>plotExpression(se.pdb, &quot;IGHG1&quot;, x=&quot;group&quot;, colour_by = &quot;group&quot;,
+               other_fields = &quot;celltype_subset&quot;) + 
+ facet_wrap(~celltype_subset)</code></pre>
+<p><img src="figure/e_DEPseudobulk_insitu_sfe.Rmd/unnamed-chunk-22-1.png" width="960" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="code-snippet" class="section level1">
+<h1>Code Snippet</h1>
+<p>TO BE UPDATED</p>
+<pre class="r"><code>library(SpatialFeatureExperiment)
+library(scuttle)
+library(tidyverse)
+library(limma)
+library(edgeR)
+
+
+# Set threhoehsolds
+min_reads_per_cell       &lt;- 200
+min_cells_per_fovcluster &lt;- 20
+
+
+# Remove cells with too few counts
+spe &lt;- spe[,spe$nCount_RNA &gt;= min_reads_per_cell]
+
+
+# Define pseodoreplicate groups, with all relevant sample annotation
+# remove those with too few cells.
+spe$pdb_sample &lt;- paste0(spe$fov_name,&quot;_&quot;, spe$celltype_subset)
+celltype_summary_table &lt;- colData(spe) %&gt;% 
+  group_by(condition, group, individual_code, fov_name, celltype_subset, pdb_sample) %&gt;%
+  summarise(cells=n(), .groups = &#39;drop&#39;)
+
+
+## Calculate pseudobulk 
+pseudobulk_counts &lt;- aggregateAcrossCells(spe, ids=spe$pdb_sample )
+#pseudobulk_counts_matrix &lt;- 
+
+# Determine pdb_samples with enough cells
+# Filter both pseudobulk matrix and pseudobulk annotation 
+passed_pdb_samples &lt;- celltype_summary_table$pdb_sample[celltype_summary_table$cells &gt;= min_cells_per_fovcluster]
+pseudobulk_counts_matrix &lt;- pseudobulk_counts_matrix[,passed_pdb_samples]
+pseudobulk_anno_table    &lt;- celltype_summary_table[passed_pdb_samples,]
+
+
+# Calculate DE across every celltype
+# Empty list to collect results
+de_result_list &lt;- list()
+
+# celltype_subset is a matrix
+for (the_celltype in levels(spe$celltype_subset)) {
+  
+  # Subset counts andn annotation to one cell type. 
+  # Ensure order remains identical!
+  print(the_celltype)
+  anno_table.this   &lt;- pseudobulk_anno_table[pseudobulk_anno_table$celltype_subset == the_celltype,]
+  count_matrix.this &lt;- pseudobulk_counts_matrix[,anno_table.this$pdb_sample]
+
+  
+  ## Check for sufficient replicates ##
+  # To do any calculations, we need at least 2 pseudobulk groups per contrast.
+  # there are plenty in this experiemnt, but with less replicates and rare cell types
+  # it may be neccesary to check and skip certain contrasts. Here woudl be a good 
+  # if (not enouch samples to run test ) {next}
+  
+  # skip clusters with no samples after filtering
+  if( nrow(anno_table.this) &lt; 1 ) {next}
+  
+  
+  # Setup objects for limma
+  dge &lt;- DGEList(count_matrix.this)
+  dge &lt;- calcNormFactors(dge)
+  
+  
+  
+  # Build model
+  group           &lt;- anno_table.this$group
+  individual_code &lt;- anno_table.this$individual_code
+
+  # Model design 
+  design    &lt;- model.matrix( ~0 + group)
+  
+  # Run Voom
+  vm  &lt;- voom(dge, design = design, plot = FALSE)
+  
+  # Adding dupliate correlation to use individual fovs, rather than pooled per biosample
+  corrfit &lt;- duplicateCorrelation(vm, design, block=individual_code)
+  fit     &lt;- lmFit(vm, design, correlation = corrfit$consensus, block=individual_code) 
+
+  # Define and fit contrasts and run ebayes
+  contrasts &lt;- makeContrasts(UCvHC  = groupUC - groupHC, 
+                             CDvHC  = groupCD - groupHC,
+                           levels=coef(fit))
+  fit &lt;- contrasts.fit(fit, contrasts)
+  fit &lt;- eBayes(fit)
+
+  ## Look through each contrast, and extract a results table.
+  for ( the_coef in colnames(contrasts) ) {
+    de_result.this &lt;- topTable(fit, n = Inf, adjust.method = &quot;BH&quot;, coef = the_coef) %&gt;%
+      rownames_to_column(&quot;target&quot;) %&gt;%
+      mutate(contrast=the_coef,
+             celltype=the_celltype) %&gt;%
+      select(celltype,contrast,target,everything()) %&gt;%
+      arrange(P.Value)
+    
+    
+      de_result_list[[paste(the_celltype, the_coef, sep=&quot;_&quot;)]] &lt;- de_result.this
+    
+  }
+
+  
+
+ 
+}
+
+# Join together results for all celltypes, and pull out those with a singificant adjusted p-value
+de_results_all &lt;- bind_rows(de_result_list)
+de_results_sig &lt;- filter(de_results_all, adj.P.Val &lt; 0.01)</code></pre>
+</div>
+<div id="results" class="section level1">
+<h1>Results</h1>
+<pre class="r"><code>DT::datatable(mutate(head(de_results_sig), across(is.numeric, signif, digits = 3)))</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-02919026514f0c819cc6" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-02919026514f0c819cc6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["epi","epi","epi","epi","epi","epi"],["pairwise","pairwise","pairwise","pairwise","pairwise","pairwise"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC"],["LYZ","IGHG2","IGHG1","HLA-DRB1","SAA1","B3GNT7"],[3.57,2.8,2.88,2.36,1.63,-2.23],[10,10.1,10.6,10.5,9.279999999999999,10.2],[7.23,6.89,6.89,5.95,5.81,-5.72],[5.12e-11,2.92e-10,2.94e-10,2.87e-08,5.34e-08,8e-08],[5.11e-08,9.78e-08,9.78e-08,7.16e-06,1.07e-05,1.33e-05],[14.7,13.1,13,8.710000000000001,8.119999999999999,7.74]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>This table is the typical output of <em>limma</em> tests; With a
+couple of extra columns added by our code.</p>
+<ul>
+<li><strong>celltype</strong>: The celltype being tested (Added by
+example code)</li>
+<li><strong>contrast</strong>: The contrast being tested (Added by
+example code)</li>
+<li><strong>target</strong> : The gene name (Added by example code, is
+the rowname in limma output)</li>
+<li><strong>rownames</strong> : The tested cell types</li>
+<li><strong>logFC</strong> : Log 2 fold change between tested groups.
+For a test of Test-Con;
+<ul>
+<li>At logFC +1, A is doubled B.</li>
+<li>At logFC -1, A is half of B.<br />
+</li>
+<li>A logFC 0 indicates no change.</li>
+</ul></li>
+<li><strong>AveExpr</strong> : Average expression of a gene across all
+replicates.</li>
+<li><strong>t</strong> : Moderated T-statistic. See Limma
+documentation.</li>
+<li><strong>P.Value</strong> : P.value</li>
+<li><strong>adj.P.Val</strong> : A multiple-hypothesis corrected
+p-value</li>
+<li><strong>B</strong> : B statistic (rarely used). See Limma
+documentation.</li>
+</ul>
+</div>
+<div id="more-information" class="section level1">
+<h1>More Information</h1>
+<ul>
+<li><a href="https://bioconductor.org/books/release/OSCA/">‘Ochestrating
+single cell analysis with bioconductor’ book chapter ‘DE analyses
+between conditions’</a> : An explanation of the ‘pseudobulk’ approch to
+single cell differential expression calculation.</li>
+<li><a
+href="https://bioconductor.org/packages/release/bioc/vignettes/glmGamPoi/inst/doc/pseudobulk.html">Pseudobulk
+and differential expression (glmGamPoi documentation)</a>: Part of the
+documentation for the glmGamPoi R package (not used here), that features
+another clear explanation of pseudobulking.</li>
+<li><a href="https://www.nature.com/articles/nmeth.4612">Bias,
+robustness and scalability in single-cell differential expression
+analysis</a> <span class="citation">(Soneson and Robinson 2018)</span> :
+A review of single cell differential expression calculation
+methods.</li>
+<li><a
+href="https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/usersguide.pdf">limma
+documentation</a> <span class="citation">(Ritchie et al. 2015)</span>:
+The complete manual to limma.</li>
+<li><a
+href="https://academic.oup.com/bioinformatics/article/21/9/2067/409024">Use
+of within-array replicate spots for assessing differential expression in
+microarray experiments</a><span class="citation">(Smyth, Michaud, and
+Scott 2005)</span> : Paper describing the duplicate correlation approach
+for pseudoreplicates (in the original context of micorarray
+analysis).</li>
+<li><a href="https://support.bioconductor.org/p/125489/">Bioconductor
+support: Further clarification on when not to use duplicateCorrelation
+with technical replicates (RNA-seq)</a> : A very helpful discussion
+about when to use correlateDuplicates for pseuodreplicates.</li>
+<li><a
+href="https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html">Differential
+Expression with Limma-Voom UC davis bioinformatics training</a> : A more
+accessible explanation of bulk RNAseq analyses using limma.</li>
+<li><a
+href="https://genomicsclass.github.io/book/pages/interactions_and_contrasts.html">Interactions
+and contrasts</a> : An excellent visual explanation of how to build
+linear models for more complex multi-factor experimental designs
+(e.g. treatment <em>and</em> genotype). Part of a larger <a
+href="https://github.com/genomicsclass/book">Data Analysis for Genomics
+class</a> resource.</li>
+<li><a href="https://pachterlab.github.io/voyager/index.html">Voyager
+Website</a>: Voyager is a great package for exploring and visualising
+spatial data around the ‘SpatialFeatureExperiment’ (SFE) format. Many of
+the useful plots are from this package.</li>
+</ul>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-garrido-trigoMacrophageNeutrophilHeterogeneity2023"
+class="csl-entry">
+Garrido-Trigo, Alba, Ana M. Corraliza, Marisol Veny, Isabella Dotti,
+Elisa Melón-Ardanaz, Aina Rill, Helena L. Crowell, et al. 2023.
+<span>“Macrophage and Neutrophil Heterogeneity at Single-Cell Spatial
+Resolution in Human Inflammatory Bowel Disease.”</span> <em>Nature
+Communications</em> 14 (1): 4506. <a
+href="https://doi.org/10.1038/s41467-023-40156-6">https://doi.org/10.1038/s41467-023-40156-6</a>.
+</div>
+<div id="ref-Ritchie2015" class="csl-entry">
+Ritchie, Matthew E., Belinda Phipson, Di Wu, Yifang Hu, Charity W. Law,
+Wei Shi, and Gordon K. Smyth. 2015. <span>“Limma Powers Differential
+Expression Analyses for <span class="nocase">RNA-sequencing</span> and
+Microarray Studies.”</span> <em>Nucleic Acids Research</em> 43 (7): e47.
+<a
+href="https://doi.org/10.1093/nar/gkv007">https://doi.org/10.1093/nar/gkv007</a>.
+</div>
+<div id="ref-smythUseWithinarrayReplicate2005" class="csl-entry">
+Smyth, Gordon K., Joëlle Michaud, and Hamish S. Scott. 2005. <span>“Use
+of Within-Array Replicate Spots for Assessing Differential Expression in
+Microarray Experiments.”</span> <em>Bioinformatics</em> 21 (9): 2067–75.
+<a
+href="https://doi.org/10.1093/bioinformatics/bti270">https://doi.org/10.1093/bioinformatics/bti270</a>.
+</div>
+<div id="ref-Soneson2017" class="csl-entry">
+Soneson, Charlotte, and Mark D Robinson. 2018. <span>“Bias, Robustness
+and Scalability in Single-Cell Differential Expression Analysis.”</span>
+<em>Nature Methods</em> 15 (4): 255–61. <a
+href="https://doi.org/10.1038/nmeth.4612">https://doi.org/10.1038/nmeth.4612</a>.
+</div>
+</div>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.5 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.20.so;  LAPACK version 3.10.0
+
+locale:
+ [1] LC_CTYPE=en_AU.UTF-8          LC_NUMERIC=C                 
+ [3] LC_TIME=en_AU.UTF-8           LC_COLLATE=en_AU.UTF-8       
+ [5] LC_MONETARY=en_AU.UTF-8       LC_MESSAGES=en_AU.UTF-8      
+ [7] LC_PAPER=en_AU.UTF-8          LC_NAME=en_AU.UTF-8          
+ [9] LC_ADDRESS=en_AU.UTF-8        LC_TELEPHONE=en_AU.UTF-8     
+[11] LC_MEASUREMENT=en_AU.UTF-8    LC_IDENTIFICATION=en_AU.UTF-8
+
+time zone: Etc/UTC
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats4    stats     graphics  grDevices datasets  utils     methods  
+[8] base     
+
+other attached packages:
+ [1] ggrepel_0.9.6                  patchwork_1.3.0               
+ [3] Voyager_1.8.1                  BiocParallel_1.40.0           
+ [5] edgeR_4.4.2                    DT_0.33                       
+ [7] limma_3.62.2                   lubridate_1.9.4               
+ [9] forcats_1.0.0                  stringr_1.5.1                 
+[11] dplyr_1.1.4                    purrr_1.0.2                   
+[13] readr_2.1.5                    tidyr_1.3.1                   
+[15] tibble_3.2.1                   tidyverse_2.0.0               
+[17] scater_1.34.1                  ggplot2_3.5.1                 
+[19] scuttle_1.16.0                 SpatialExperiment_1.16.0      
+[21] SingleCellExperiment_1.28.1    SummarizedExperiment_1.36.0   
+[23] Biobase_2.66.0                 GenomicRanges_1.58.0          
+[25] GenomeInfoDb_1.42.1            IRanges_2.40.1                
+[27] S4Vectors_0.44.0               BiocGenerics_0.52.0           
+[29] MatrixGenerics_1.18.1          matrixStats_1.5.0             
+[31] alabaster.sfe_0.99.2001        alabaster.base_1.6.1          
+[33] SpatialFeatureExperiment_1.9.8 workflowr_1.7.1               
+
+loaded via a namespace (and not attached):
+  [1] fs_1.6.5                  spatialreg_1.3-6         
+  [3] bitops_1.0-9              sf_1.0-19                
+  [5] EBImage_4.48.0            httr_1.4.7               
+  [7] tools_4.4.0               utf8_1.2.4               
+  [9] R6_2.5.1                  HDF5Array_1.34.0         
+ [11] rhdf5filters_1.18.0       withr_3.0.2              
+ [13] sp_2.2-0                  gridExtra_2.3            
+ [15] cli_3.6.3                 RBioFormats_1.6.0        
+ [17] sandwich_3.1-1            alabaster.se_1.6.0       
+ [19] labeling_0.4.3            sass_0.4.9               
+ [21] mvtnorm_1.3-3             arrow_19.0.1             
+ [23] proxy_0.4-27              R.utils_2.12.3           
+ [25] scico_1.5.0               rstudioapi_0.17.1        
+ [27] generics_0.1.3            crosstalk_1.2.1          
+ [29] spdep_1.3-10              Matrix_1.7-1             
+ [31] ggbeeswarm_0.7.2          abind_1.4-8              
+ [33] R.methodsS3_1.8.2         terra_1.8-21             
+ [35] lifecycle_1.0.4           whisker_0.4.1            
+ [37] multcomp_1.4-28           yaml_2.3.10              
+ [39] rhdf5_2.50.2              SparseArray_1.6.1        
+ [41] grid_4.4.0                promises_1.3.2           
+ [43] dqrng_0.4.1               crayon_1.5.3             
+ [45] alabaster.spatial_1.6.1   lattice_0.22-6           
+ [47] beachmat_2.22.0           cowplot_1.1.3            
+ [49] magick_2.8.5              zeallot_0.1.0            
+ [51] pillar_1.10.1             knitr_1.49               
+ [53] rjson_0.2.23              boot_1.3-31              
+ [55] sfarrow_0.4.1             codetools_0.2-20         
+ [57] wk_0.9.4                  glue_1.8.0               
+ [59] getPass_0.2-4             data.table_1.16.4        
+ [61] memuse_4.2-3              vctrs_0.6.5              
+ [63] png_0.1-8                 gtable_0.3.6             
+ [65] assertthat_0.2.1          cachem_1.1.0             
+ [67] xfun_0.50                 S4Arrays_1.6.0           
+ [69] DropletUtils_1.26.0       coda_0.19-4.1            
+ [71] survival_3.8-3            sfheaders_0.4.4          
+ [73] rJava_1.0-11              units_0.8-5              
+ [75] statmod_1.5.0             bluster_1.16.0           
+ [77] TH.data_1.1-3             nlme_3.1-166             
+ [79] bit64_4.6.0-1             alabaster.ranges_1.6.0   
+ [81] BumpyMatrix_1.14.0        rprojroot_2.0.4          
+ [83] bslib_0.9.0               irlba_2.3.5.1            
+ [85] vipor_0.4.7               KernSmooth_2.23-26       
+ [87] colorspace_2.1-1          spData_2.3.4             
+ [89] DBI_1.2.3                 tidyselect_1.2.1         
+ [91] processx_3.8.5            bit_4.5.0.1              
+ [93] compiler_4.4.0            git2r_0.33.0             
+ [95] BiocNeighbors_2.0.1       xml2_1.3.6               
+ [97] DelayedArray_0.32.0       scales_1.3.0             
+ [99] classInt_0.4-11           callr_3.7.6              
+[101] tiff_0.1-12               digest_0.6.37            
+[103] fftwtools_0.9-11          alabaster.matrix_1.6.1   
+[105] rmarkdown_2.29            XVector_0.46.0           
+[107] htmltools_0.5.8.1         pkgconfig_2.0.3          
+[109] jpeg_0.1-10               sparseMatrixStats_1.18.0 
+[111] fastmap_1.2.0             rlang_1.1.5              
+[113] htmlwidgets_1.6.4         UCSC.utils_1.2.0         
+[115] DelayedMatrixStats_1.28.1 farver_2.1.2             
+[117] jquerylib_0.1.4           zoo_1.8-12               
+[119] jsonlite_1.8.9            R.oo_1.27.0              
+[121] BiocSingular_1.22.0       RCurl_1.98-1.16          
+[123] magrittr_2.0.3            GenomeInfoDbData_1.2.13  
+[125] s2_1.1.7                  Rhdf5lib_1.28.0          
+[127] munsell_0.5.1             Rcpp_1.0.14              
+[129] ggnewscale_0.5.1          viridis_0.6.5            
+[131] stringi_1.8.4             alabaster.schemas_1.6.0  
+[133] zlibbioc_1.52.0           MASS_7.3-64              
+[135] alabaster.bumpy_1.6.0     parallel_4.4.0           
+[137] deldir_2.0-4              splines_4.4.0            
+[139] hms_1.1.3                 locfit_1.5-9.11          
+[141] ps_1.8.1                  igraph_2.1.4             
+[143] ScaledMatrix_1.14.0       LearnBayes_2.15.1        
+[145] evaluate_1.0.3            renv_1.0.5               
+[147] BiocManager_1.30.25       tzdb_0.4.0               
+[149] httpuv_1.6.15             alabaster.sce_1.6.0      
+[151] rsvd_1.0.5                e1071_1.7-16             
+[153] RSpectra_0.16-2           later_1.4.1              
+[155] viridisLite_0.4.2         class_7.3-23             
+[157] beeswarm_0.4.0            cluster_2.1.8            
+[159] timechange_0.3.0         </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
