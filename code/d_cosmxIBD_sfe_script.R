@@ -349,7 +349,7 @@ do_basic_preprocessing <- function(sfe,
 
 #Load an annotate all samples in the directory full of samples (each as flatfiles)
 
-if ( FALSE ) { # ALREADY RUN
+if ( TRUE ) {
 
   # Get list of samples
   sample_names <- list.files(sample_dir)
@@ -401,7 +401,7 @@ if ( FALSE ) { # ALREADY RUN
 #num_threads = 16
 #BPPARAM  = MulticoreParam(num_threads)
 #saveObject(sfe, "~/testX2")
-sfe <- readObject("~/testX2")
+#sfe <- readObject("~/testX2")
 
 
 #sfe <- sfe[,1:400]
