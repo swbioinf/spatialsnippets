@@ -37,7 +37,6 @@ gene expression changes between experimental conditions, within each different c
 
 Some cell types may be dramatically affected by the experimental conditions, while others are not. Likewise some genes may change only in a specific cell type, whereas others show a more general difference.
 
-
 This document describes how to apply a *pseudobulk* approach to test for differences between groups. In a pseudobulk approach counts are obtained by pooling together groups of cells; in this case cells from the of the same celltype from the same fov. These pooled counts can then be analysed more like a bulk RNAseq experiment. 
 
 This is very similar to how a non-spatial single cell experiment may be analysed. 
@@ -47,7 +46,7 @@ However, unlike a non-spatial single cell experiment, this experimental design h
 
 Note that there are many other approaches to calculate differential expression in this kind of data - including those that make use of individual cells; see review [@Soneson2017].
 
-![](assets/insitu_spatial_pseudobulk_de.png)
+![](assets/insitu_spatial_pseudobulk_de_fovs.png)
 
 This test requires:
 
@@ -115,22 +114,26 @@ se_pseudobulk_file <- file.path(data_dir, "GSE234713_CosMx_IBD_pseudobulk_fov_se
 sfe <- readObject(sfe_01_loaded)
 ```
 
-SUBSET FOR TESTING
-```{r}
-#sfe <- sfe[,colData(sfe)$group %in% c('HC','UC')]
-#sfe <- sfe[,sample(1:ncol(sfe), 10000)]
-```
-
 
 ## Experimental design
 
 <!-- Move this to own page? --->
 
-There are three individuals per condition, one tissue sample from each individual. 9 slides in total. Each tissue sample has multiple FOVs captured; these are our pseudoreplicates. Each 'sample' is listed below.
+There are three individuals per condition, one tissue sample from each individual. 9 slides in total. Each tissue sample has multiple FOVs captured.
+
+In the cosMX output an 'fov' refers to the rectangular regions on the slide that are measured; there are multiple fovs per sample, and in this experiment, only one sample per slide. 
 
 
-In the cosMX output an 'fov' refers to the rectangular regions on the slide that are measured; there are multiple fovs per sample, and in this experiment, only one sample per slide. This document uses the latter.
+### Level of pseudobulk pooling
 
+We will be pooling cells of the same type from the sample into 'pseudobulk' samples. We could do this at two levels
+
+1. Individual fov on tissue : Each fov is its own 'pseudoreplicate', and there are multiple per tissue sample.
+2. Entire tissue (or tissue region) : Pool cells from all fovs within a tissue. This is the simplest option, and is outlined here: (LINK EXAMPLE)
+
+If there are no explict fovs on the data (like Xenium), option 2 is best. And likewise, if the fovs are tiled across a large area of the sample, option 2 may be more sensible (conceptually, fov-fov variation would be averaged out). Option 1 may be considered if there are only a handful of disconnected fovs on the tissue, and it is desireable to model the variation between them. 
+
+Arguably, option 2 is the better option for this data (see example (LINK EXAMPLE)) - since largely the samples but this example will demonstrate option 1 - psedudo replicates.
 
 ```{r}
 sample_table <- select(as_tibble(colData(sfe)), condition, individual_code, fov_name) %>%
@@ -140,6 +143,23 @@ sample_table <- select(as_tibble(colData(sfe)), condition, individual_code, fov_
 
 DT::datatable(sample_table)
 ```
+
+```{r}
+plot_one <- function(sample) {
+  p <- plotSpatialFeature(sfe[,sfe$tissue_sample == sample], "celltype_subset",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank()) +
+    ggtitle(sample) 
+  
+  return(p)
+}
+samples <- levels(sfe$tissue_sample)
+plots <- lapply(FUN=plot_one, X=samples)
+p.all <- wrap_plots(plots, ncol=3)
+plot(p.all)
+```
+
+
+
 
 
 ## Filter cells for de
@@ -168,49 +188,18 @@ ggplot(colData(sfe), aes(x=total_count)) +
 sfe <- sfe[,sfe$total_count>= min_reads_per_cell]
 ```
 
-
-## Deciding on pseudobulk grouping
-
-<!-- # ```{r} -->
-<!-- # plotSpatialFeature(sfe[,sfe$tissue_sample == "HC_a"], "celltype_subset",colGeometryName = "cellSeg") +  -->
-<!-- #   theme(legend.title=element_blank()) + -->
-<!-- #   ggtitle("HC_a") -->
-<!-- # ``` -->
-
-```{r}
-
-plot_one <- function(sample) {
-  p <- plotSpatialFeature(sfe[,sfe$tissue_sample == sample], "celltype_subset",colGeometryName = "cellSeg") + 
-    theme(legend.title=element_blank()) +
-    ggtitle(sample) 
-  
-  return(p)
-}
-samples <- levels(sfe$tissue_sample)
-plots <- lapply(FUN=plot_one, X=samples)
-p.all <- wrap_plots(plots, ncol=3)
-plot(p.all)
-```
-
-
 ## Calculate pseudobulk
 
-
-Explain why pseudobulk<<<<<
 
 We need to define the grouping that will make one pseudobulk sample for analysis. 
 In this experiment, we can consider all FOVs within a tissue sample as somewhat equivalent. 
 Therefore that is all cells of a particular celltype within an FOV region.
 
-If we only had one fov per sample, *celltype + sample* would be directly equivalent.
+If we only had one fov per sample, *celltype + sample* would be directly equivalent. This is exactly what you'd do with pseudoreplicates (see section *Level of pseudobulk pooling*) - and it is a much simpler methoed (LINK EXAMPLE)
 
 If we have tiled fovs across an entire tissue sample *celltype + sample* woudl work
 
 If we had a tiled fovs across a tissue sample with distinct regions it would be necessary to group them by *subregion fov + celltype*. Alternatively pool the entire sample if each one is equivalent - it depends on where transcriptional differences are expected.
-
-<<<<<
-
-
 
 
 Now use the _PseudobulkExpression()_ function to sum up each gene's gene expression across each *fov_cluster*. 
@@ -246,7 +235,7 @@ with the pooled sum of counts for each celltype within each fov region. So the n
 counts(se.pdb)[1:10,1:4]
 ```
 
-## Cell filtering and counting (NEW)
+## Cell filtering and counting 
 
 
 Once the pseudobulk replicate grouping is decided, we need to check there will be enough cells 
@@ -293,7 +282,7 @@ se.pdb <- se.pdb[,se.pdb$ncells >= min_cells_per_fovcluster]
 ncol(se.pdb)
 ```
 
-### Samples per contrast.
+### Samples per contrast
 
 Ignoring pseodureplicate fovs from a single sample, how many bioloical samples are represented in our filtered table?
 
@@ -360,6 +349,7 @@ But, we also need to take into account our individuals. We do this by *blocking*
 If instead we didn't have multiple fovs per replicate, can skip blocking or use of duplicateCorrelation(). That is more typical of a typical of a bulk rnaseq or single cell RNAseq pseuobulk analysis.
 
 Some example models:
+
 * **~0 + group, (no blocking or duplicate correlation)** : If there was only one pseudoreplicate per individual. Either from a single fov, or from pooling fovs tile across a sample.
 * **~0 + group, (blocked on individual with using duplicate Correlation)** : Used here, takes into account pseodureplicate fovs from the same samples.
 * **~0 + group + individual (no blocking or duplicate correlation)** : If this was a treatment / time point experiment with paired samples from individuals. But only one pseodureplicate per individual. If there were multiple fovs per tissue sample, you could add blocking and duplicate correlation on tissue ID.
@@ -398,17 +388,13 @@ de_result_list <- list()
 
 ## Cycle through each celltype
 for (the_celltype in levels(se.pdb$celltype_subset)) {
-  
-  print(the_celltype)
-  
+
   # Subset pseudobulk object to one celltype
   se.pdb.this <- se.pdb[,se.pdb$celltype_subset == the_celltype]
   
   # And pull out the annotation and counts
   anno_table.this   <- as.tibble(colData(se.pdb.this))
   count_matrix.this <- counts(se.pdb.this)
-
-  
 
   ## Check for sufficient replicates ##
   # To do any calculations, we need at least 2 pseudobulk groups per contrast.
@@ -424,8 +410,6 @@ for (the_celltype in levels(se.pdb$celltype_subset)) {
     unique()    %>% # Don't care how many (passed) fovs there were on the tissue
     pull(group) %>% # pull out group column, one entry per tissue sample
     table() # count how many
-  print(biosample_per_group)
-  
 
   # Are there enough Biological smples to consider the contrast?
   min_biosample_per_group <- 2
