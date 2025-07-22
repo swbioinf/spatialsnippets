@@ -58,6 +58,13 @@ The following files were download from GEO
   * GSE234713_RAW_UC.tar
 * GSE234713_ReadMe_SMI_Data_File.html
 
+The polygon files defining the cell outlines were provided separately. Typically these would be included with the other files. 
+
+* CD_a.csv : A .csv file which defines the outline of every cell. One file per slide.
+
+
+
+
 ```{sh eval=FALSE}
 cd raw_data
 tar -xf GSE234713_RAW_CD.tar
@@ -73,19 +80,18 @@ tar -xf GSE234713_RAW_UC.tar
 ```{r}
 dataset_dir      <- '~/projects/spatialsnippets/datasets/'
 project_data_dir <- file.path(dataset_dir,'GSE234713_IBDcosmx_GarridoTrigo2023')
-sample_dir            <- file.path(project_data_dir, "raw_data/") 
+sample_dir            <- file.path(project_data_dir, "raw_data_for_sfe/") 
 annotation_file       <- file.path(project_data_dir,"GSE234713_CosMx_annotation.csv.gz")
 data_dir              <- file.path(project_data_dir, "processed_data/") 
 
 
+seurat_file_00_raw    <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_00_raw.RDS")
 seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
 
 # config
 min_count_per_cell <- 100
 max_pc_negs        <- 1.5
 max_avg_neg        <- 0.5
-
-
 
 sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Crohn's disease")
 
@@ -102,64 +108,20 @@ sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Crohn's dise
 ## Load data
 
 ```{r}
+# Load LoadNanostring.X for keeping metadata e.t.c
+source('/home/s.williams/projects/loadnanostring/code/LoadNanostring.R')
 
-
-#the_sample <- 'GSM7473682_HC_a'
 
 load_sample_into_seurat <- function(the_sample){
   
-  metadata_cols <- c("fov","Area") 
-  
-  sample_metadata_file <- file.path(sample_dir, paste0(the_sample,'_metadata_file.csv.gz'))
-  sample_mtx_file      <- file.path(sample_dir, paste0(the_sample,'_exprMat_file.csv.gz'))
-  sample_molecules_file <- file.path(sample_dir, paste0(the_sample,'_tx_file.csv.gz'))
-  
-  # NB Are only loading centroids for this data, as we dont have files <sample>-polygons.csv
-  # in flat files. Also do not have original images to segment on.
-  
-  ns <- ReadNanostring(
-                 data.dir           = sample_dir,
-                 mtx.file           = sample_mtx_file,
-                 metadata.file      = sample_metadata_file,
-                 molecules.file     = sample_molecules_file,
-                 segmentations.file = NULL,
-                 metadata           = metadata_cols , # Can only draw from selected feilds. So add later. Using ensures table-ness.
-                 type="centroids"
-                 #type = c("centroids", "segmentations") #object 'segs' not found
-                 
-        )
-  
-
-  # Add the rest of the metadata
-  metadata_table <- read_csv(sample_metadata_file)
-  
-  # Check order matches.
-  stopifnot(all(paste0(metadata_table$cell_ID, "_", metadata_table$fov)  == ns$metadata$cell)) #im not paranoid, who's paranoid? not me.
-  # pull the whole of annodation in now, and shuffle column order.
-  ns$metadata <- cbind(ns$metadata, metadata_table[,!colnames(metadata_table) %in% metadata_cols])
-  ns$metadata <- ns$metadata[, c(2,1,3:ncol(ns$metadata))]
-  rownames(ns$metadata) <- ns$metadata$cell
-  
-  cents  <- CreateCentroids(ns$centroids)
-  #coords <- CreateFOV(coords = list("centroids" = cents), type = "centroids")
-  coords <- CreateFOV(coords = list("centroids" = cents), molecules = ns$pixels,  assay='RNA')
-  
-  
-  so     <- CreateSeuratObject(counts    = ns$matrix,
-                               meta.data = ns$metadata,
-                               assay = 'RNA')
-  
-  # Cells from counts matrix vs cells from centroid coordinates. 
-  # Can be different (presumbably cell with zero counts?)
-  cells <- intersect(Cells(so),  
-                     Cells(x = coords, boundary = "centroids") ) 
-  coords <- subset(x = coords, cells = cells)
-  
-  # FOV he
-  so[[the_sample]] <- coords
+  # Using a modified version of the LoadNanostring function, which keeps metadata, and loads a litte more effiently for large datasets (which is not this one.)
+  # ..../datasets//GSE234713_IBDcosmx_GarridoTrigo2023/raw_data_for_sfe//GSM7473682_HC_a
+  so <- LoadNanostring.X(file.path(sample_dir, the_sample), 
+                         project = the_sample,
+                         assay='RNA',
+                         fov=the_sample, tempdir= '~/tmp')
   
   # sample info
-  so$orig.ident <- the_sample
   so$individual_code <- factor(substr(so$orig.ident,12,16))
   so$tissue_sample   <- factor(substr(so$orig.ident,12,16))
   so$group     <- factor(substr(the_sample, 12, 13), levels=names(sample_codes))
@@ -171,20 +133,20 @@ load_sample_into_seurat <- function(the_sample){
   # Put neg probes into their own assay.
   neg_probes <- rownames(so)[grepl(x=rownames(so), pattern="NegPrb")]
   neg_matrix         <- GetAssayData(so,assay = 'RNA', layer = 'counts')[neg_probes,]
-  so[["negprobes"]] <- CreateAssayObject(counts = neg_matrix)
-  
+  #so[["negprobes"]] <- CreateAssayObject(counts = neg_matrix)
+  so[["negprobes"]] <- CreateAssay5Object(counts = neg_matrix)
+    
   ## and remove from the main one
-  #rna_probes <- rownames(so)[(! rownames(so) %in% neg_probes)]
-  #so         <- so[rna_probes,]
+  rna_probes  <- rownames(so)[(! rownames(so) %in% neg_probes)]
+  so[['RNA']] <- subset( so[['RNA']],features = rna_probes)
   
 
   return(so)
   
 }
 
+
 ```
-
-
 
 ```{r}
 samples <- c('GSM7473682_HC_a','GSM7473683_HC_b','GSM7473684_HC_c',
@@ -192,18 +154,38 @@ samples <- c('GSM7473682_HC_a','GSM7473683_HC_b','GSM7473684_HC_c',
              'GSM7473688_CD_a','GSM7473689_CD_b','GSM7473690_CD_c')
 sample_prefix <- paste0(substr(samples, 12,15))
 
+```
+
+
+```{r eval=FALSE}
+
 so.list <- lapply(FUN=load_sample_into_seurat, X=samples)
 
 #NB: merge is in SeuratObject packages, but must be called without :: 
+options(future.globals.maxSize= 10*1024^3) # 10G.
 so.raw <- merge(so.list[[1]], y=so.list[2:length(so.list)], add.cell.ids=sample_prefix)
+#Error in getGlobalsAndPackages(expr, envir = envir, globals = globals) : 
+#  The total size of the 8 globals exported for future expression (‘FUN()’) is 5.90 GiB.. This exceeds the maximum #allowed size of 500.00 MiB (option 'future.globals.maxSize'). The three largest globals are ‘FUN’ (5.90 GiB of #class ‘function’), ‘p’ (25.22 KiB of class ‘function’) and ‘slot<-’ (1.36 KiB of class ‘function’)
 rm(so.list)
+
+# save
+saveRDS(so.raw, seurat_file_00_raw)
+
+```
+
+```{r}
+# load previously saved.
+so.raw <- readRDS(seurat_file_00_raw)
 ```
 
 # Negative probe handling
 
 ```{r}
 so.raw$pc_neg <-  ( so.raw$nCount_negprobes / so.raw$nCount_RNA ) * 100
-so.raw$avg_neg <-  colMeans(so.raw[["negprobes"]])
+
+so.raw[["negprobes"]] <- JoinLayers(so.raw[["negprobes"]]) # For caluclating these, need to have the negprobes merged
+so.raw$avg_neg <-  colMeans(so.raw[["negprobes"]])   # only defined firsts sample.
+
 ```
 
 
@@ -217,6 +199,8 @@ so.raw$avg_neg <-  colMeans(so.raw[["negprobes"]])
 <!-- rna_probes <- rownames(so)[(! rownames(so.raw) %in% neg_probes)] -->
 <!-- so.raw         <- so[rna_probes,] -->
 <!-- ``` -->
+
+
 
 
 # Pull in annotation
@@ -276,7 +260,7 @@ ggplot(so.raw@meta.data, aes(x=avg_neg, col=orig.ident)) +
 ```
 
 
-Use bottom left corner;
+Use bottom right corner;
 ```{r}
 ggplot(so.raw@meta.data, aes(y=avg_neg, x=nCount_RNA)) +
   geom_point(pch=3, alpha=0.1) + 
@@ -295,6 +279,8 @@ From paper: _"Cells with an average negative control count greater than 0.5 and 
 
 Also remove cell with no cell type annotations.
 ```{r}
+###so.raw <- JoinLayers(so.raw)
+
 so <- so.raw[ ,so.raw$nCount_RNA >= min_count_per_cell &
                so.raw$avg_neg <= max_avg_neg &
                !(is.na(so.raw$celltype_subset) )]
