@@ -14,7 +14,7 @@
 
 <title>Dataset: IBD cosMX GarridoTrigo2023</title>
 
-<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -36,8 +36,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -349,7 +349,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">spatialsnippets</a>
+      <a class="navbar-brand" href="index.html">Spatial Sampler</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -358,6 +358,9 @@ div.tocify {
 </li>
 <li>
   <a href="index_data.html">Data</a>
+</li>
+<li>
+  <a href="contributing.html">Contributing</a>
 </li>
 <li>
   <a href="about.html">About</a>
@@ -389,440 +392,6 @@ div.tocify {
 </div>
 
 
-<p>
-<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span>
-</button>
-</p>
-<div id="workflowr-report" class="collapse">
-<ul class="nav nav-tabs">
-<li class="active">
-<a data-toggle="tab" href="#summary">Summary</a>
-</li>
-<li>
-<a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
-</li>
-<li>
-<a data-toggle="tab" href="#versions">Past versions</a>
-</li>
-</ul>
-<div class="tab-content">
-<div id="summary" class="tab-pane fade in active">
-<p>
-<strong>Last updated:</strong> 2024-07-08
-</p>
-<p>
-<strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
-</p>
-<p>
-<strong>Knit directory:</strong> <code>spatialsnippets/</code> <span
-class="glyphicon glyphicon-question-sign" aria-hidden="true"
-title="This is the local directory in which the code in this file was executed.">
-</span>
-</p>
-<p>
-This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
-analysis was created with <a
-  href="https://github.com/workflowr/workflowr">workflowr</a> (version
-1.7.1). The <em>Checks</em> tab describes the reproducibility checks
-that were applied when the results were created. The <em>Past
-versions</em> tab lists the development history.
-</p>
-<hr>
-</div>
-<div id="checks" class="tab-pane fade">
-<div id="workflowr-checks" class="panel-group">
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
-</p>
-</div>
-<div id="strongRMarkdownfilestronguptodate"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
-</p>
-</div>
-<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great job! The global environment was empty. Objects defined in the
-global environment can affect the analysis in your R Markdown file in
-unknown ways. For reproduciblity it’s best to always run the code in an
-empty environment.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20231017code">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Seed:</strong>
-<code>set.seed(20231017)</code> </a>
-</p>
-</div>
-<div id="strongSeedstrongcodesetseed20231017code"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>The command <code>set.seed(20231017)</code> was run prior to running
-the code in the R Markdown file. Setting a seed ensures that any results
-that rely on randomness, e.g. subsampling or permutations, are
-reproducible.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Session information:</strong>
-recorded </a>
-</p>
-</div>
-<div id="strongSessioninformationstrongrecorded"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great job! Recording the operating system, R version, and package
-versions is critical for reproducibility.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Cache:</strong> none </a>
-</p>
-</div>
-<div id="strongCachestrongnone" class="panel-collapse collapse">
-<div class="panel-body">
-<p>Nice! There were no cached chunks for this analysis, so you can be
-confident that you successfully produced the results during this
-run.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
-</p>
-</div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr
-project makes it easier to run your code on other machines.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree1993e7237b6bb5e07997fc5d0f827df901348ed3targetblank1993e72a">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/1993e7237b6bb5e07997fc5d0f827df901348ed3" target="_blank">1993e72</a>
-</a>
-</p>
-</div>
-<div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree1993e7237b6bb5e07997fc5d0f827df901348ed3targetblank1993e72a"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>
-Great! You are using Git for version control. Tracking code development
-and connecting the code version to the results is critical for
-reproducibility.
-</p>
-<p>
-The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/1993e7237b6bb5e07997fc5d0f827df901348ed3" target="_blank">1993e72</a>.
-See the <em>Past versions</em> tab to see a history of the changes made
-to the R Markdown and HTML files.
-</p>
-<p>
-Note that you need to be careful to ensure that all relevant files for
-the analysis have been committed to Git prior to generating the results
-(you can use <code>wflow_publish</code> or
-<code>wflow_git_commit</code>). workflowr only checks the R Markdown
-file, but you know if there are other scripts or data files that it
-depends on. Below is the status of the Git repository when the results
-were generated:
-</p>
-<pre><code>
-Ignored files:
-    Ignored:    .Rhistory
-    Ignored:    .Rproj.user/
-    Ignored:    analysis/glossary.nb.html
-    Ignored:    renv/library/
-    Ignored:    renv/staging/
-
-</code></pre>
-<p>
-Note that any generated files, e.g. HTML, png, CSS, etc., are not
-included in this status report because it is ok for generated content to
-have uncommitted changes.
-</p>
-</div>
-</div>
-</div>
-</div>
-<hr>
-</div>
-<div id="versions" class="tab-pane fade">
-
-<p>
-These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/d_cosmxIBD.Rmd</code>) and HTML
-(<code>docs/d_cosmxIBD.html</code>) files. If you’ve configured a remote
-Git repository (see <code>?wflow_git_remote</code>), click on the
-hyperlinks in the table below to view the files as they were in that
-past version.
-</p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/1993e7237b6bb5e07997fc5d0f827df901348ed3/analysis/d_cosmxIBD.Rmd" target="_blank">1993e72</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-07-08
-</td>
-<td>
-wflow_publish("analysis/d_cosmxIBD.Rmd")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/697815489cd801e303185e38f2e764cb06d42d16/docs/d_cosmxIBD.html" target="_blank">6978154</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-05-30
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/f14901bfcb78e20914e86ed703b6c25c3d4d0482/analysis/d_cosmxIBD.Rmd" target="_blank">f14901b</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-05-30
-</td>
-<td>
-wflow_publish(c("analysis/e_DEPseudobulk_insitu.Rmd",
-"analysis/e_CompositionChange.Rmd",
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/f2229af8461ffa6335e0f455ce1c38bf9314f23f/docs/d_cosmxIBD.html" target="_blank">f2229af</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-05-07
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/d6a8b2e1871315e987ca33152e1caad611f240d9/analysis/d_cosmxIBD.Rmd" target="_blank">d6a8b2e</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-05-07
-</td>
-<td>
-analysis/e_CompositionChange.Rmd
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/a722f3633532c1313b267999809c48b047d27fbe/docs/d_cosmxIBD.html" target="_blank">a722f36</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-04-18
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/1dc67305f712b38bbf7a54ed3cd0eb96b284d0e0/analysis/d_cosmxIBD.Rmd" target="_blank">1dc6730</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-04-18
-</td>
-<td>
-wflow_publish(c("analysis/index.Rmd",
-"analysis/e_CompositionChange.Rmd",
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/2e269292df84ca84eadb9ab068dd78b5828d7fd7/docs/d_cosmxIBD.html" target="_blank">2e26929</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-25
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/0a3a1ae402c4ecb2bb0bf5bfe879bed5e5981dd1/analysis/d_cosmxIBD.Rmd" target="_blank">0a3a1ae</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-25
-</td>
-<td>
-wflow_publish("analysis/")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/d_cosmxIBD.html" target="_blank">cf8a2ee</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-08
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/6295b7d314030df2d6cbc32d1c08ab215a1c8389/analysis/d_cosmxIBD.Rmd" target="_blank">6295b7d</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-08
-</td>
-<td>
-wflow_publish(c("analysis/index.Rmd", "analysis/d_cosmxIBD.Rmd"))
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<hr>
-</div>
-</div>
-</div>
 <p>Data is from paper <a
 href="https://www.ncbi.nlm.nih.gov/pubmed/37495570"><em>Macrophage and
 neutrophil heterogeneity at single-cell spatial resolution in human
@@ -846,6 +415,9 @@ class="uri">https://servidor2-ciberehd.upc.es/external/garrido/app/</a></p>
 <pre class="r"><code>library(Seurat)</code></pre>
 <pre><code>Loading required package: SeuratObject</code></pre>
 <pre><code>Loading required package: sp</code></pre>
+<pre><code>&#39;SeuratObject&#39; was built with package &#39;Matrix&#39; 1.6.5 but the current
+version is 1.7.1; it is recomended that you reinstall &#39;SeuratObject&#39; as
+the ABI for &#39;Matrix&#39; may have changed</code></pre>
 <pre><code>
 Attaching package: &#39;SeuratObject&#39;</code></pre>
 <pre><code>The following objects are masked from &#39;package:base&#39;:
@@ -856,8 +428,8 @@ library(tidyverse)</code></pre>
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
 ✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.0     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
 ✔ purrr     1.0.2     </code></pre>
 <pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
@@ -889,6 +461,12 @@ batches, one per group
 </ul></li>
 <li>GSE234713_ReadMe_SMI_Data_File.html</li>
 </ul>
+<p>The polygon files defining the cell outlines were provided
+separately. Typically these would be included with the other files.</p>
+<ul>
+<li>CD_a.csv : A .csv file which defines the outline of every cell. One
+file per slide.</li>
+</ul>
 <pre class="sh"><code>cd raw_data
 tar -xf GSE234713_RAW_CD.tar
 tar -xf GSE234713_RAW_HC.tar
@@ -898,11 +476,12 @@ tar -xf GSE234713_RAW_UC.tar</code></pre>
 <h1>Data load</h1>
 <pre class="r"><code>dataset_dir      &lt;- &#39;~/projects/spatialsnippets/datasets/&#39;
 project_data_dir &lt;- file.path(dataset_dir,&#39;GSE234713_IBDcosmx_GarridoTrigo2023&#39;)
-sample_dir            &lt;- file.path(project_data_dir, &quot;raw_data/&quot;) 
+sample_dir            &lt;- file.path(project_data_dir, &quot;raw_data_for_sfe/&quot;) 
 annotation_file       &lt;- file.path(project_data_dir,&quot;GSE234713_CosMx_annotation.csv.gz&quot;)
 data_dir              &lt;- file.path(project_data_dir, &quot;processed_data/&quot;) 
 
 
+seurat_file_00_raw    &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_seurat_00_raw.RDS&quot;)
 seurat_file_01_loaded &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_seurat_01_loaded.RDS&quot;)
 
 # config
@@ -910,70 +489,26 @@ min_count_per_cell &lt;- 100
 max_pc_negs        &lt;- 1.5
 max_avg_neg        &lt;- 0.5
 
-
-
 sample_codes &lt;- c(HC=&quot;Healthy controls&quot;,UC=&quot;Ulcerative colitis&quot;,CD=&quot;Crohn&#39;s disease&quot;)</code></pre>
 <div id="raw-data" class="section level2">
 <h2>Raw data</h2>
 </div>
 <div id="load-data" class="section level2">
 <h2>Load data</h2>
-<pre class="r"><code>#the_sample &lt;- &#39;GSM7473682_HC_a&#39;
+<pre class="r"><code># Load LoadNanostring.X for keeping metadata e.t.c
+source(&#39;/home/s.williams/projects/loadnanostring/code/LoadNanostring.R&#39;)
+
 
 load_sample_into_seurat &lt;- function(the_sample){
   
-  metadata_cols &lt;- c(&quot;fov&quot;,&quot;Area&quot;) 
-  
-  sample_metadata_file &lt;- file.path(sample_dir, paste0(the_sample,&#39;_metadata_file.csv.gz&#39;))
-  sample_mtx_file      &lt;- file.path(sample_dir, paste0(the_sample,&#39;_exprMat_file.csv.gz&#39;))
-  sample_molecules_file &lt;- file.path(sample_dir, paste0(the_sample,&#39;_tx_file.csv.gz&#39;))
-  
-  # NB Are only loading centroids for this data, as we dont have files &lt;sample&gt;-polygons.csv
-  # in flat files. Also do not have original images to segment on.
-  
-  ns &lt;- ReadNanostring(
-                 data.dir           = sample_dir,
-                 mtx.file           = sample_mtx_file,
-                 metadata.file      = sample_metadata_file,
-                 molecules.file     = sample_molecules_file,
-                 segmentations.file = NULL,
-                 metadata           = metadata_cols , # Can only draw from selected feilds. So add later. Using ensures table-ness.
-                 type=&quot;centroids&quot;
-                 #type = c(&quot;centroids&quot;, &quot;segmentations&quot;) #object &#39;segs&#39; not found
-                 
-        )
-  
-
-  # Add the rest of the metadata
-  metadata_table &lt;- read_csv(sample_metadata_file)
-  
-  # Check order matches.
-  stopifnot(all(paste0(metadata_table$cell_ID, &quot;_&quot;, metadata_table$fov)  == ns$metadata$cell)) #im not paranoid, who&#39;s paranoid? not me.
-  # pull the whole of annodation in now, and shuffle column order.
-  ns$metadata &lt;- cbind(ns$metadata, metadata_table[,!colnames(metadata_table) %in% metadata_cols])
-  ns$metadata &lt;- ns$metadata[, c(2,1,3:ncol(ns$metadata))]
-  rownames(ns$metadata) &lt;- ns$metadata$cell
-  
-  cents  &lt;- CreateCentroids(ns$centroids)
-  #coords &lt;- CreateFOV(coords = list(&quot;centroids&quot; = cents), type = &quot;centroids&quot;)
-  coords &lt;- CreateFOV(coords = list(&quot;centroids&quot; = cents), molecules = ns$pixels,  assay=&#39;RNA&#39;)
-  
-  
-  so     &lt;- CreateSeuratObject(counts    = ns$matrix,
-                               meta.data = ns$metadata,
-                               assay = &#39;RNA&#39;)
-  
-  # Cells from counts matrix vs cells from centroid coordinates. 
-  # Can be different (presumbably cell with zero counts?)
-  cells &lt;- intersect(Cells(so),  
-                     Cells(x = coords, boundary = &quot;centroids&quot;) ) 
-  coords &lt;- subset(x = coords, cells = cells)
-  
-  # FOV he
-  so[[the_sample]] &lt;- coords
+  # Using a modified version of the LoadNanostring function, which keeps metadata, and loads a litte more effiently for large datasets (which is not this one.)
+  # ..../datasets//GSE234713_IBDcosmx_GarridoTrigo2023/raw_data_for_sfe//GSM7473682_HC_a
+  so &lt;- LoadNanostring.X(file.path(sample_dir, the_sample), 
+                         project = the_sample,
+                         assay=&#39;RNA&#39;,
+                         fov=the_sample, tempdir= &#39;~/tmp&#39;)
   
   # sample info
-  so$orig.ident &lt;- the_sample
   so$individual_code &lt;- factor(substr(so$orig.ident,12,16))
   so$tissue_sample   &lt;- factor(substr(so$orig.ident,12,16))
   so$group     &lt;- factor(substr(the_sample, 12, 13), levels=names(sample_codes))
@@ -985,11 +520,12 @@ load_sample_into_seurat &lt;- function(the_sample){
   # Put neg probes into their own assay.
   neg_probes &lt;- rownames(so)[grepl(x=rownames(so), pattern=&quot;NegPrb&quot;)]
   neg_matrix         &lt;- GetAssayData(so,assay = &#39;RNA&#39;, layer = &#39;counts&#39;)[neg_probes,]
-  so[[&quot;negprobes&quot;]] &lt;- CreateAssayObject(counts = neg_matrix)
-  
+  #so[[&quot;negprobes&quot;]] &lt;- CreateAssayObject(counts = neg_matrix)
+  so[[&quot;negprobes&quot;]] &lt;- CreateAssay5Object(counts = neg_matrix)
+    
   ## and remove from the main one
-  #rna_probes &lt;- rownames(so)[(! rownames(so) %in% neg_probes)]
-  #so         &lt;- so[rna_probes,]
+  rna_probes  &lt;- rownames(so)[(! rownames(so) %in% neg_probes)]
+  so[[&#39;RNA&#39;]] &lt;- subset( so[[&#39;RNA&#39;]],features = rna_probes)
   
 
   return(so)
@@ -998,89 +534,29 @@ load_sample_into_seurat &lt;- function(the_sample){
 <pre class="r"><code>samples &lt;- c(&#39;GSM7473682_HC_a&#39;,&#39;GSM7473683_HC_b&#39;,&#39;GSM7473684_HC_c&#39;,
              &#39;GSM7473685_UC_a&#39;,&#39;GSM7473686_UC_b&#39;,&#39;GSM7473687_UC_c&#39;,
              &#39;GSM7473688_CD_a&#39;,&#39;GSM7473689_CD_b&#39;,&#39;GSM7473690_CD_c&#39;)
-sample_prefix &lt;- paste0(substr(samples, 12,15))
+sample_prefix &lt;- paste0(substr(samples, 12,15))</code></pre>
+<pre class="r"><code>so.list &lt;- lapply(FUN=load_sample_into_seurat, X=samples)
 
-so.list &lt;- lapply(FUN=load_sample_into_seurat, X=samples)</code></pre>
-<pre><code>Rows: 42636 Columns: 20
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: &quot;,&quot;
-dbl (20): fov, cell_ID, Area, AspectRatio, CenterX_local_px, CenterY_local_p...
+#NB: merge is in SeuratObject packages, but must be called without :: 
+options(future.globals.maxSize= 10*1024^3) # 10G.
+so.raw &lt;- merge(so.list[[1]], y=so.list[2:length(so.list)], add.cell.ids=sample_prefix)
+#Error in getGlobalsAndPackages(expr, envir = envir, globals = globals) : 
+#  The total size of the 8 globals exported for future expression (‘FUN()’) is 5.90 GiB.. This exceeds the maximum #allowed size of 500.00 MiB (option &#39;future.globals.maxSize&#39;). The three largest globals are ‘FUN’ (5.90 GiB of #class ‘function’), ‘p’ (25.22 KiB of class ‘function’) and ‘slot&lt;-’ (1.36 KiB of class ‘function’)
+rm(so.list)
 
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 54818 Columns: 20
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: &quot;,&quot;
-dbl (20): fov, cell_ID, Area, AspectRatio, CenterX_local_px, CenterY_local_p...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 31340 Columns: 20
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: &quot;,&quot;
-dbl (20): fov, cell_ID, Area, AspectRatio, CenterX_local_px, CenterY_local_p...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 50757 Columns: 20
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: &quot;,&quot;
-dbl (20): fov, cell_ID, Area, AspectRatio, CenterX_local_px, CenterY_local_p...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 78115 Columns: 20
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: &quot;,&quot;
-dbl (20): fov, cell_ID, Area, AspectRatio, CenterX_local_px, CenterY_local_p...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 57436 Columns: 20
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: &quot;,&quot;
-dbl (20): fov, cell_ID, Area, AspectRatio, CenterX_local_px, CenterY_local_p...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 38779 Columns: 20
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: &quot;,&quot;
-dbl (20): fov, cell_ID, Area, AspectRatio, CenterX_local_px, CenterY_local_p...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 72837 Columns: 20
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: &quot;,&quot;
-dbl (20): fov, cell_ID, Area, AspectRatio, CenterX_local_px, CenterY_local_p...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-Rows: 55559 Columns: 20
-── Column specification ────────────────────────────────────────────────────────
-Delimiter: &quot;,&quot;
-dbl (20): fov, cell_ID, Area, AspectRatio, CenterX_local_px, CenterY_local_p...
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>#NB: merge is in SeuratObject packages, but must be called without :: 
-so.raw &lt;- merge(so.list[[1]], y=so.list[2:length(so.list)], add.cell.ids=sample_prefix)</code></pre>
-<pre><code>Warning: Key &#39;RNA_&#39; taken, using &#39;gsm7473683hcb_&#39; instead</code></pre>
-<pre><code>Warning: Key &#39;RNA_&#39; taken, using &#39;gsm7473684hcc_&#39; instead</code></pre>
-<pre><code>Warning: Key &#39;RNA_&#39; taken, using &#39;gsm7473685uca_&#39; instead</code></pre>
-<pre><code>Warning: Key &#39;RNA_&#39; taken, using &#39;gsm7473686ucb_&#39; instead</code></pre>
-<pre><code>Warning: Key &#39;RNA_&#39; taken, using &#39;gsm7473687ucc_&#39; instead</code></pre>
-<pre><code>Warning: Key &#39;RNA_&#39; taken, using &#39;gsm7473688cda_&#39; instead</code></pre>
-<pre><code>Warning: Key &#39;RNA_&#39; taken, using &#39;gsm7473689cdb_&#39; instead</code></pre>
-<pre><code>Warning: Key &#39;RNA_&#39; taken, using &#39;gsm7473690cdc_&#39; instead</code></pre>
-<pre class="r"><code>rm(so.list)</code></pre>
+# save
+saveRDS(so.raw, seurat_file_00_raw)</code></pre>
+<pre class="r"><code># load previously saved.
+so.raw &lt;- readRDS(seurat_file_00_raw)</code></pre>
 </div>
 </div>
 <div id="negative-probe-handling" class="section level1">
 <h1>Negative probe handling</h1>
 <pre class="r"><code>so.raw$pc_neg &lt;-  ( so.raw$nCount_negprobes / so.raw$nCount_RNA ) * 100
-so.raw$avg_neg &lt;-  colMeans(so.raw[[&quot;negprobes&quot;]])</code></pre>
+
+so.raw[[&quot;negprobes&quot;]] &lt;- JoinLayers(so.raw[[&quot;negprobes&quot;]]) # For caluclating these, need to have the negprobes merged
+so.raw$avg_neg &lt;-  colMeans(so.raw[[&quot;negprobes&quot;]])   # only defined firsts sample.</code></pre>
+<pre><code>Warning: data layer is not found and counts layer is used</code></pre>
 <!-- ```{r} -->
 <!-- # Put neg probes into their own assay. -->
 <!-- neg_probes <- rownames(so.raw)[grepl(x=rownames(so.raw), pattern="NegPrb")] -->
@@ -1106,48 +582,48 @@ chr (3): id, subset, SingleR2
 rownames(anno_table) &lt;- anno_table$id
 
 head(so.raw@meta.data)</code></pre>
-<pre><code>              orig.ident nCount_RNA nFeature_RNA  Area fov cell cell_ID
-HC_a_1_1 GSM7473682_HC_a        368          189  6153   1  1_1       1
-HC_a_2_1 GSM7473682_HC_a        810          286 16178   1  2_1       2
-HC_a_3_1 GSM7473682_HC_a        119           74  3119   1  3_1       3
-HC_a_4_1 GSM7473682_HC_a        106           59  3988   1  4_1       4
-HC_a_5_1 GSM7473682_HC_a        465          209  4773   1  5_1       5
-HC_a_6_1 GSM7473682_HC_a       1322          441 11588   1  6_1       6
-         AspectRatio CenterX_local_px CenterY_local_px CenterX_global_px
-HC_a_1_1        0.67             2119             3443          19274.56
-HC_a_2_1        0.85             1847             3404          19002.56
-HC_a_3_1        1.52             1986             3458          19141.56
-HC_a_4_1        1.52             2362             3454          19517.56
-HC_a_5_1        0.53             2159             3415          19314.56
-HC_a_6_1        0.87             1664             3402          18819.56
-         CenterY_global_px Width Height Mean.MembraneStain Max.MembraneStain
-HC_a_1_1          173198.6    79    118                680              2218
-HC_a_2_1          173159.6   137    161                615              4453
-HC_a_3_1          173213.6    79     52                989              2827
-HC_a_4_1          173209.6    91     60                449              2099
-HC_a_5_1          173170.6    63    118               1002              2425
-HC_a_6_1          173157.6   116    134               1024              2320
-         Mean.PanCK Max.PanCK Mean.CD45 Max.CD45 Mean.CD3 Max.CD3 Mean.DAPI
-HC_a_1_1      17170     29735       198     9639      234    1237        20
-HC_a_2_1      16775     29702       222    21371      234    1520        12
-HC_a_3_1      24033     29662       171     6858      298    1721        13
-HC_a_4_1      13575     29651       146      935      206    1402         6
-HC_a_5_1      24946     29670       299     6387      330    1443        22
-HC_a_6_1      25700     29712       354    23243      328    1610        23
-         Max.DAPI individual_code tissue_sample group        condition fov_name
-HC_a_1_1      131            HC_a          HC_a    HC Healthy controls HC_a_001
-HC_a_2_1      122            HC_a          HC_a    HC Healthy controls HC_a_001
-HC_a_3_1       58            HC_a          HC_a    HC Healthy controls HC_a_001
-HC_a_4_1       56            HC_a          HC_a    HC Healthy controls HC_a_001
-HC_a_5_1      116            HC_a          HC_a    HC Healthy controls HC_a_001
-HC_a_6_1      113            HC_a          HC_a    HC Healthy controls HC_a_001
+<pre><code>              orig.ident nCount_RNA nFeature_RNA fov cell_ID  Area AspectRatio
+HC_a_1_1 GSM7473682_HC_a        366          187   1       1  6153        0.67
+HC_a_2_1 GSM7473682_HC_a        805          283   1       2 16178        0.85
+HC_a_3_1 GSM7473682_HC_a        118           73   1       3  3119        1.52
+HC_a_4_1 GSM7473682_HC_a        106           59   1       4  3988        1.52
+HC_a_5_1 GSM7473682_HC_a        462          207   1       5  4773        0.53
+HC_a_6_1 GSM7473682_HC_a       1314          436   1       6 11588        0.87
+         CenterX_local_px CenterY_local_px CenterX_global_px CenterY_global_px
+HC_a_1_1             2119             3443          19274.56          173198.6
+HC_a_2_1             1847             3404          19002.56          173159.6
+HC_a_3_1             1986             3458          19141.56          173213.6
+HC_a_4_1             2362             3454          19517.56          173209.6
+HC_a_5_1             2159             3415          19314.56          173170.6
+HC_a_6_1             1664             3402          18819.56          173157.6
+         Width Height Mean.MembraneStain Max.MembraneStain Mean.PanCK Max.PanCK
+HC_a_1_1    79    118                680              2218      17170     29735
+HC_a_2_1   137    161                615              4453      16775     29702
+HC_a_3_1    79     52                989              2827      24033     29662
+HC_a_4_1    91     60                449              2099      13575     29651
+HC_a_5_1    63    118               1002              2425      24946     29670
+HC_a_6_1   116    134               1024              2320      25700     29712
+         Mean.CD45 Max.CD45 Mean.CD3 Max.CD3 Mean.DAPI Max.DAPI cell
+HC_a_1_1       198     9639      234    1237        20      131  1_1
+HC_a_2_1       222    21371      234    1520        12      122  2_1
+HC_a_3_1       171     6858      298    1721        13       58  3_1
+HC_a_4_1       146      935      206    1402         6       56  4_1
+HC_a_5_1       299     6387      330    1443        22      116  5_1
+HC_a_6_1       354    23243      328    1610        23      113  6_1
+         individual_code tissue_sample group        condition fov_name
+HC_a_1_1            HC_a          HC_a    HC Healthy controls HC_a_001
+HC_a_2_1            HC_a          HC_a    HC Healthy controls HC_a_001
+HC_a_3_1            HC_a          HC_a    HC Healthy controls HC_a_001
+HC_a_4_1            HC_a          HC_a    HC Healthy controls HC_a_001
+HC_a_5_1            HC_a          HC_a    HC Healthy controls HC_a_001
+HC_a_6_1            HC_a          HC_a    HC Healthy controls HC_a_001
          nCount_negprobes nFeature_negprobes    pc_neg    avg_neg
-HC_a_1_1                2                  2 0.5434783 0.10526316
-HC_a_2_1                5                  3 0.6172840 0.26315789
-HC_a_3_1                1                  1 0.8403361 0.05263158
+HC_a_1_1                2                  2 0.5464481 0.10526316
+HC_a_2_1                5                  3 0.6211180 0.26315789
+HC_a_3_1                1                  1 0.8474576 0.05263158
 HC_a_4_1                0                  0 0.0000000 0.00000000
-HC_a_5_1                3                  2 0.6451613 0.15789474
-HC_a_6_1                8                  5 0.6051437 0.42105263</code></pre>
+HC_a_5_1                3                  2 0.6493506 0.15789474
+HC_a_6_1                8                  5 0.6088280 0.42105263</code></pre>
 <pre class="r"><code>head(anno_table)</code></pre>
 <pre><code>               id   subset             SingleR2
 HC_c_2_1 HC_c_2_1   stroma            Pericytes
@@ -1177,121 +653,9 @@ table(is.na(so.raw$celltype_subset))</code></pre>
   scale_x_log10() +
   theme_bw() +
   ggtitle(&quot;Counts per cell&quot;)</code></pre>
-<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
-Past versions of unnamed-chunk-8-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-8-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-8-1.png" target="_blank">a722f36</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-04-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-8-1.png" target="_blank">cf8a2ee</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-08
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="percent-negative-probes" class="section level2">
-<h2>Percent Negative probes</h2>
-<pre class="r"><code>ggplot(so.raw@meta.data, aes(x=pc_neg, col=orig.ident)) +
-  geom_density() + 
-  geom_vline(xintercept = max_pc_negs, lty=3) +
-  scale_x_log10() +
-  theme_bw() +
-  ggtitle(&quot;Negative probe composition&quot;)</code></pre>
 <pre><code>Warning in scale_x_log10(): log-10 transformation introduced infinite values.</code></pre>
-<pre><code>Warning: Removed 227705 rows containing non-finite outside the scale range
+<pre><code>Warning: Removed 17 rows containing non-finite outside the scale range
 (`stat_density()`).</code></pre>
-<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
-Past versions of unnamed-chunk-9-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-9-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-9-1.png" target="_blank">a722f36</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-04-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-9-1.png" target="_blank">cf8a2ee</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-08
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>ggplot(so.raw@meta.data, aes(x=avg_neg, col=orig.ident)) +
-  geom_density() + 
-  geom_vline(xintercept = max_avg_neg, lty=3) +
-  theme_bw() +
-  ggtitle(&quot;Negative probe average&quot;)</code></pre>
 <p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
@@ -1341,14 +705,18 @@ Sarah Williams
 </table>
 </div>
 </div>
-<p>Use bottom left corner;</p>
-<pre class="r"><code>ggplot(so.raw@meta.data, aes(y=avg_neg, x=nCount_RNA)) +
-  geom_point(pch=3, alpha=0.1) + 
-  geom_hline(yintercept = max_avg_neg, lty=3) +
-  geom_vline(xintercept = min_count_per_cell, lty=3) +
-  scale_x_log10() + 
+</div>
+<div id="percent-negative-probes" class="section level2">
+<h2>Percent Negative probes</h2>
+<pre class="r"><code>ggplot(so.raw@meta.data, aes(x=pc_neg, col=orig.ident)) +
+  geom_density() + 
+  geom_vline(xintercept = max_pc_negs, lty=3) +
+  scale_x_log10() +
   theme_bw() +
-  ggtitle(&quot;Negative probes vs counts&quot;)</code></pre>
+  ggtitle(&quot;Negative probe composition&quot;)</code></pre>
+<pre><code>Warning in scale_x_log10(): log-10 transformation introduced infinite values.</code></pre>
+<pre><code>Warning: Removed 227722 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
 <p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
@@ -1398,18 +766,38 @@ Sarah Williams
 </table>
 </div>
 </div>
+<pre class="r"><code>ggplot(so.raw@meta.data, aes(x=avg_neg, col=orig.ident)) +
+  geom_density() + 
+  geom_vline(xintercept = max_avg_neg, lty=3) +
+  theme_bw() +
+  ggtitle(&quot;Negative probe average&quot;)</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Use bottom right corner;</p>
+<pre class="r"><code>ggplot(so.raw@meta.data, aes(y=avg_neg, x=nCount_RNA)) +
+  geom_point(pch=3, alpha=0.1) + 
+  geom_hline(yintercept = max_avg_neg, lty=3) +
+  geom_vline(xintercept = min_count_per_cell, lty=3) +
+  scale_x_log10() + 
+  theme_bw() +
+  ggtitle(&quot;Negative probes vs counts&quot;)</code></pre>
+<pre><code>Warning in scale_x_log10(): log-10 transformation introduced infinite values.</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 <div id="apply-filteres" class="section level2">
 <h2>Apply filteres</h2>
 <p>From paper: <em>“Cells with an average negative control count greater
 than 0.5 and less than 20 detected features were filtered out.”</em></p>
 <p>Also remove cell with no cell type annotations.</p>
-<pre class="r"><code>so &lt;- so.raw[ ,so.raw$nCount_RNA &gt;= min_count_per_cell &amp;
+<pre class="r"><code>###so.raw &lt;- JoinLayers(so.raw)
+
+so &lt;- so.raw[ ,so.raw$nCount_RNA &gt;= min_count_per_cell &amp;
                so.raw$avg_neg &lt;= max_avg_neg &amp;
                !(is.na(so.raw$celltype_subset) )]</code></pre>
 <pre><code>Warning: Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating Centroids objects
 Not validating Centroids objects</code></pre>
+<pre><code>Warning: Not validating FOV objects</code></pre>
+<pre><code>Warning: Not validating Centroids objects</code></pre>
 <pre><code>Warning: Not validating FOV objects
 Not validating FOV objects
 Not validating FOV objects</code></pre>
@@ -1417,6 +805,8 @@ Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating Centroids objects
 Not validating Centroids objects</code></pre>
+<pre><code>Warning: Not validating FOV objects</code></pre>
+<pre><code>Warning: Not validating Centroids objects</code></pre>
 <pre><code>Warning: Not validating FOV objects
 Not validating FOV objects
 Not validating FOV objects</code></pre>
@@ -1424,6 +814,8 @@ Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating Centroids objects
 Not validating Centroids objects</code></pre>
+<pre><code>Warning: Not validating FOV objects</code></pre>
+<pre><code>Warning: Not validating Centroids objects</code></pre>
 <pre><code>Warning: Not validating FOV objects
 Not validating FOV objects
 Not validating FOV objects</code></pre>
@@ -1431,6 +823,8 @@ Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating Centroids objects
 Not validating Centroids objects</code></pre>
+<pre><code>Warning: Not validating FOV objects</code></pre>
+<pre><code>Warning: Not validating Centroids objects</code></pre>
 <pre><code>Warning: Not validating FOV objects
 Not validating FOV objects
 Not validating FOV objects</code></pre>
@@ -1438,6 +832,8 @@ Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating Centroids objects
 Not validating Centroids objects</code></pre>
+<pre><code>Warning: Not validating FOV objects</code></pre>
+<pre><code>Warning: Not validating Centroids objects</code></pre>
 <pre><code>Warning: Not validating FOV objects
 Not validating FOV objects
 Not validating FOV objects</code></pre>
@@ -1445,6 +841,8 @@ Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating Centroids objects
 Not validating Centroids objects</code></pre>
+<pre><code>Warning: Not validating FOV objects</code></pre>
+<pre><code>Warning: Not validating Centroids objects</code></pre>
 <pre><code>Warning: Not validating FOV objects
 Not validating FOV objects
 Not validating FOV objects</code></pre>
@@ -1452,6 +850,8 @@ Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating Centroids objects
 Not validating Centroids objects</code></pre>
+<pre><code>Warning: Not validating FOV objects</code></pre>
+<pre><code>Warning: Not validating Centroids objects</code></pre>
 <pre><code>Warning: Not validating FOV objects
 Not validating FOV objects
 Not validating FOV objects</code></pre>
@@ -1459,6 +859,8 @@ Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating Centroids objects
 Not validating Centroids objects</code></pre>
+<pre><code>Warning: Not validating FOV objects</code></pre>
+<pre><code>Warning: Not validating Centroids objects</code></pre>
 <pre><code>Warning: Not validating FOV objects
 Not validating FOV objects
 Not validating FOV objects</code></pre>
@@ -1466,6 +868,8 @@ Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating Centroids objects
 Not validating Centroids objects</code></pre>
+<pre><code>Warning: Not validating FOV objects</code></pre>
+<pre><code>Warning: Not validating Centroids objects</code></pre>
 <pre><code>Warning: Not validating FOV objects
 Not validating FOV objects
 Not validating FOV objects</code></pre>
@@ -1473,7 +877,7 @@ Not validating FOV objects</code></pre>
 <pre class="r"><code>ncol(so.raw)</code></pre>
 <pre><code>[1] 480385</code></pre>
 <pre class="r"><code>ncol(so)</code></pre>
-<pre><code>[1] 354191</code></pre>
+<pre><code>[1] 353239</code></pre>
 <pre class="r"><code>so &lt;- readRDS(seurat_file_01_loaded)</code></pre>
 </div>
 <div id="how-many-cells-per-sample" class="section level2">
@@ -1481,9 +885,9 @@ Not validating FOV objects</code></pre>
 <pre class="r"><code>table(so@meta.data$orig.ident)</code></pre>
 <pre><code>
 GSM7473682_HC_a GSM7473683_HC_b GSM7473684_HC_c GSM7473685_UC_a GSM7473686_UC_b 
-          30426           46203           15482           44070           60127 
+          30356           46142           15420           44028           59901 
 GSM7473687_UC_c GSM7473688_CD_a GSM7473689_CD_b GSM7473690_CD_c 
-          38439           14579           69147           35718 </code></pre>
+          38310           14469           69114           35499 </code></pre>
 </div>
 </div>
 <div id="basic-preprocessing" class="section level1">
@@ -1511,128 +915,7 @@ so &lt;- FindClusters(so)</code></pre>
 <pre class="r"><code>DimPlot(so, group.by = &#39;orig.ident&#39;)</code></pre>
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
-<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
-Past versions of unnamed-chunk-16-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-16-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-16-1.png" target="_blank">a722f36</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-04-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-16-1.png" target="_blank">cf8a2ee</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-08
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="condition" class="section level3">
-<h3>Condition</h3>
-<pre class="r"><code>DimPlot(so, group.by = &#39;condition&#39;)</code></pre>
-<pre><code>Rasterizing points since number of points exceeds 100,000.
-To disable this behavior set `raster=FALSE`</code></pre>
-<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
-Past versions of unnamed-chunk-17-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-17-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/697815489cd801e303185e38f2e764cb06d42d16/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-17-1.png" target="_blank">6978154</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-05-30
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-17-1.png" target="_blank">a722f36</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-04-18
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-17-1.png" target="_blank">cf8a2ee</a>
-</td>
-<td>
-Sarah Williams
-</td>
-<td>
-2024-03-08
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="condition-x-sample" class="section level3">
-<h3>Condition X Sample</h3>
-<pre class="r"><code>DimPlot(so, group.by = &#39;orig.ident&#39;,split.by = &quot;condition&quot;)</code></pre>
-<pre><code>Rasterizing points since number of points exceeds 100,000.
-To disable this behavior set `raster=FALSE`</code></pre>
-<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-18-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
 Past versions of unnamed-chunk-18-1.png
@@ -1693,13 +976,11 @@ Sarah Williams
 </div>
 </div>
 </div>
-<div id="total-counts" class="section level3">
-<h3>Total counts</h3>
-<pre class="r"><code>FeaturePlot(so, &#39;nCount_RNA&#39;) + scale_colour_viridis_c(option=&quot;magma&quot;, direction = -1)</code></pre>
+<div id="condition" class="section level3">
+<h3>Condition</h3>
+<pre class="r"><code>DimPlot(so, group.by = &#39;condition&#39;)</code></pre>
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
-<pre><code>Scale for colour is already present.
-Adding another scale for colour, which will replace the existing scale.</code></pre>
 <p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
@@ -1750,12 +1031,12 @@ Sarah Williams
 </div>
 </div>
 </div>
-<div id="clustered" class="section level3">
-<h3>Clustered</h3>
-<pre class="r"><code>DimPlot(so, group.by = &#39;seurat_clusters&#39;)</code></pre>
+<div id="condition-x-sample" class="section level3">
+<h3>Condition X Sample</h3>
+<pre class="r"><code>DimPlot(so, group.by = &#39;orig.ident&#39;,split.by = &quot;condition&quot;)</code></pre>
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
-<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-20-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
 Past versions of unnamed-chunk-20-1.png
@@ -1805,12 +1086,13 @@ Sarah Williams
 </div>
 </div>
 </div>
-<div id="celltype_subset" class="section level3">
-<h3>celltype_subset</h3>
-<p>Classifications from Garrido-Trigo et al 2023.</p>
-<pre class="r"><code>DimPlot(so, group.by = &#39;celltype_subset&#39;)</code></pre>
+<div id="total-counts" class="section level3">
+<h3>Total counts</h3>
+<pre class="r"><code>FeaturePlot(so, &#39;nCount_RNA&#39;) + scale_colour_viridis_c(option=&quot;magma&quot;, direction = -1)</code></pre>
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
+<pre><code>Scale for colour is already present.
+Adding another scale for colour, which will replace the existing scale.</code></pre>
 <p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-1">
@@ -1861,10 +1143,9 @@ Sarah Williams
 </div>
 </div>
 </div>
-<div id="celltype_singler2" class="section level3">
-<h3>celltype_SingleR2</h3>
-<p>Classifications from Garrido-Trigo et al 2023.</p>
-<pre class="r"><code>DimPlot(so, group.by = &#39;celltype_SingleR2&#39;)</code></pre>
+<div id="clustered" class="section level3">
+<h3>Clustered</h3>
+<pre class="r"><code>DimPlot(so, group.by = &#39;seurat_clusters&#39;)</code></pre>
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
 <p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-22-1.png" width="672" style="display: block; margin: auto;" /></p>
@@ -1917,72 +1198,20 @@ Sarah Williams
 </div>
 </div>
 </div>
+<div id="celltype_subset" class="section level3">
+<h3>celltype_subset</h3>
+<p>Classifications from Garrido-Trigo et al 2023.</p>
+<pre class="r"><code>DimPlot(so, group.by = &#39;celltype_subset&#39;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
-<div id="clustering" class="section level2">
-<h2>Clustering</h2>
-<p>Double checking the clusters line up with annotaiaon</p>
-<pre class="r"><code>table(so$celltype_subset)</code></pre>
-<pre><code>
-     epi myeloids  plasmas   stroma   tcells 
-   82743    44006   130781    84915    11746 </code></pre>
-<pre class="r"><code>table(so$celltype_SingleR2)</code></pre>
-<pre><code>
-                      B cell                  BEST4 OTOP2 
-                        5314                        10155 
-                         CD4                          CD8 
-                        2733                         2881 
-                 Colonocytes                Cycling cells 
-                       17673                         2112 
-             Cycling myeloid              Cycling T cells 
-                        1287                          323 
-                  Cycling TA                          DCs 
-                        1846                         1469 
-                          DN                  Endothelium 
-                         608                        13808 
-             Enteroendocrine                  Eosinophils 
-                         852                          194 
-            Epithelium Ribhi                  Fibroblasts 
-                        4379                         1666 
-                        FRCs                    GC B cell 
-                       10027                         3566 
-                      gd IEL                         Glia 
-                         367                         4353 
-                      Goblet                         ILC4 
-                        8864                          115 
-    Inflammatory fibroblasts       Inflammatory monocytes 
-                       12593                         1735 
-                          M0                           M1 
-                        3001                          937 
-                          M2              Macrophage NRG1 
-                       21296                         9581 
-                        MAIT                         Mast 
-                        1233                         2939 
-               Memory B cell                   MT T cells 
-                        7040                          175 
-              Myofibroblasts                           N1 
-                       16697                          556 
-                          N2                           N3 
-                         433                          578 
-                Naïve B cell                           NK 
-                        8906                          240 
-                 Paneth-like PC  immediate early response 
-                        1820                         9826 
-                      PC IgA            PC IgA heat shock 
-                        1299                         5090 
-                  PC IgA IgM                       PC IgG 
-                       12245                        75381 
-                   Pericytes                Ribhi T cells 
-                        9303                           87 
-                          S1                          S2a 
-                        5214                         3567 
-                         S2b                           S3 
-                        4606                         3081 
-        Secretory progenitor                T cells CCL20 
-                       34665                          817 
-                       Tregs                   Tuft cells 
-                        2167                         2489 </code></pre>
-<p>Composition</p>
-<pre class="r"><code>heatmap(table(so$celltype_subset,so$celltype_SingleR2))</code></pre>
+<div id="celltype_singler2" class="section level3">
+<h3>celltype_SingleR2</h3>
+<p>Classifications from Garrido-Trigo et al 2023.</p>
+<pre class="r"><code>DimPlot(so, group.by = &#39;celltype_SingleR2&#39;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
 <p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-24-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-24-1">
@@ -2034,6 +1263,74 @@ Sarah Williams
 </div>
 </div>
 </div>
+<div id="clustering" class="section level2">
+<h2>Clustering</h2>
+<p>Double checking the clusters line up with annotaiaon</p>
+<pre class="r"><code>table(so$celltype_subset)</code></pre>
+<pre><code>
+     epi myeloids  plasmas   stroma   tcells 
+   82558    43916   130386    84654    11725 </code></pre>
+<pre class="r"><code>table(so$celltype_SingleR2)</code></pre>
+<pre><code>
+                      B cell                  BEST4 OTOP2 
+                        5304                        10122 
+                         CD4                          CD8 
+                        2729                         2879 
+                 Colonocytes                Cycling cells 
+                       17651                         2105 
+             Cycling myeloid              Cycling T cells 
+                        1286                          322 
+                  Cycling TA                          DCs 
+                        1836                         1468 
+                          DN                  Endothelium 
+                         607                        13773 
+             Enteroendocrine                  Eosinophils 
+                         847                          191 
+            Epithelium Ribhi                  Fibroblasts 
+                        4357                         1665 
+                        FRCs                    GC B cell 
+                       10001                         3554 
+                      gd IEL                         Glia 
+                         366                         4337 
+                      Goblet                         ILC4 
+                        8837                          115 
+    Inflammatory fibroblasts       Inflammatory monocytes 
+                       12571                         1730 
+                          M0                           M1 
+                        2989                          934 
+                          M2              Macrophage NRG1 
+                       21269                         9575 
+                        MAIT                         Mast 
+                        1230                         2929 
+               Memory B cell                   MT T cells 
+                        7022                          175 
+              Myofibroblasts                           N1 
+                       16628                          544 
+                          N2                           N3 
+                         425                          576 
+                Naïve B cell                           NK 
+                        8894                          240 
+                 Paneth-like PC  immediate early response 
+                        1810                         9797 
+                      PC IgA            PC IgA heat shock 
+                        1294                         5077 
+                  PC IgA IgM                       PC IgG 
+                       12181                        75156 
+                   Pericytes                Ribhi T cells 
+                        9262                           86 
+                          S1                          S2a 
+                        5206                         3550 
+                         S2b                           S3 
+                        4596                         3065 
+        Secretory progenitor                T cells CCL20 
+                       34636                          816 
+                       Tregs                   Tuft cells 
+                        2160                         2462 </code></pre>
+<p>Composition</p>
+<pre class="r"><code>heatmap(table(so$celltype_subset,so$celltype_SingleR2))</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
 <div id="save-data" class="section level1">
 <h1>Save data</h1>
 <pre class="r"><code>saveRDS(so, seurat_file_01_loaded)</code></pre>
@@ -2057,9 +1354,9 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.3.2 (2023-10-31)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Ubuntu 22.04.4 LTS
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.5 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -2080,56 +1377,54 @@ attached base packages:
 [1] stats     graphics  grDevices datasets  utils     methods   base     
 
 other attached packages:
- [1] lubridate_1.9.3    forcats_1.0.0      stringr_1.5.1      dplyr_1.1.4       
+ [1] lubridate_1.9.4    forcats_1.0.0      stringr_1.5.1      dplyr_1.1.4       
  [5] purrr_1.0.2        readr_2.1.5        tidyr_1.3.1        tibble_3.2.1      
- [9] ggplot2_3.5.0      tidyverse_2.0.0    Seurat_5.1.0       SeuratObject_5.0.2
-[13] sp_2.1-3           workflowr_1.7.1   
+ [9] ggplot2_3.5.1      tidyverse_2.0.0    Seurat_5.2.1       SeuratObject_5.0.2
+[13] sp_2.2-0           workflowr_1.7.1   
 
 loaded via a namespace (and not attached):
-  [1] RColorBrewer_1.1-3     rstudioapi_0.16.0      jsonlite_1.8.8        
-  [4] magrittr_2.0.3         spatstat.utils_3.0-4   farver_2.1.1          
-  [7] rmarkdown_2.26         fs_1.6.3               vctrs_0.6.5           
- [10] ROCR_1.0-11            spatstat.explore_3.2-7 htmltools_0.5.8.1     
- [13] sass_0.4.9             sctransform_0.4.1      parallelly_1.37.1     
- [16] KernSmooth_2.23-22     bslib_0.7.0            htmlwidgets_1.6.4     
+  [1] RColorBrewer_1.1-3     rstudioapi_0.17.1      jsonlite_1.8.9        
+  [4] magrittr_2.0.3         spatstat.utils_3.1-2   farver_2.1.2          
+  [7] rmarkdown_2.29         fs_1.6.5               vctrs_0.6.5           
+ [10] ROCR_1.0-11            spatstat.explore_3.3-4 htmltools_0.5.8.1     
+ [13] sass_0.4.9             sctransform_0.4.1      parallelly_1.42.0     
+ [16] KernSmooth_2.23-26     bslib_0.9.0            htmlwidgets_1.6.4     
  [19] ica_1.0-3              plyr_1.8.9             plotly_4.10.4         
- [22] zoo_1.8-12             cachem_1.0.8           whisker_0.4.1         
- [25] igraph_2.0.3           mime_0.12              lifecycle_1.0.4       
- [28] pkgconfig_2.0.3        Matrix_1.6-5           R6_2.5.1              
- [31] fastmap_1.1.1          fitdistrplus_1.1-11    future_1.33.2         
- [34] shiny_1.8.1.1          digest_0.6.35          colorspace_2.1-0      
- [37] patchwork_1.2.0        ps_1.7.6               rprojroot_2.0.4       
- [40] tensor_1.5             RSpectra_0.16-1        irlba_2.3.5.1         
- [43] labeling_0.4.3         progressr_0.14.0       timechange_0.3.0      
- [46] fansi_1.0.6            spatstat.sparse_3.0-3  httr_1.4.7            
- [49] polyclip_1.10-6        abind_1.4-5            compiler_4.3.2        
- [52] bit64_4.0.5            withr_3.0.0            fastDummies_1.7.3     
- [55] highr_0.10             R.utils_2.12.3         MASS_7.3-60.0.1       
- [58] tools_4.3.2            lmtest_0.9-40          httpuv_1.6.15         
- [61] future.apply_1.11.2    goftest_1.2-3          R.oo_1.26.0           
- [64] glue_1.7.0             callr_3.7.6            nlme_3.1-164          
- [67] promises_1.2.1         grid_4.3.2             Rtsne_0.17            
- [70] getPass_0.2-4          cluster_2.1.6          reshape2_1.4.4        
- [73] generics_0.1.3         gtable_0.3.4           spatstat.data_3.0-4   
- [76] tzdb_0.4.0             R.methodsS3_1.8.2      hms_1.1.3             
- [79] data.table_1.15.4      utf8_1.2.4             spatstat.geom_3.2-9   
- [82] RcppAnnoy_0.0.22       ggrepel_0.9.5          RANN_2.6.1            
- [85] pillar_1.9.0           vroom_1.6.5            spam_2.10-0           
- [88] RcppHNSW_0.6.0         later_1.3.2            splines_4.3.2         
- [91] lattice_0.22-6         bit_4.0.5              renv_1.0.5            
- [94] survival_3.5-8         deldir_2.0-4           tidyselect_1.2.1      
- [97] miniUI_0.1.1.1         pbapply_1.7-2          knitr_1.45            
-[100] git2r_0.33.0           gridExtra_2.3          scattermore_1.2       
-[103] xfun_0.43              matrixStats_1.2.0      stringi_1.8.3         
-[106] lazyeval_0.2.2         yaml_2.3.8             evaluate_0.23         
-[109] codetools_0.2-20       BiocManager_1.30.22    cli_3.6.2             
-[112] uwot_0.1.16            xtable_1.8-4           reticulate_1.35.0     
-[115] munsell_0.5.1          processx_3.8.4         jquerylib_0.1.4       
-[118] Rcpp_1.0.12            globals_0.16.3         spatstat.random_3.2-3 
-[121] png_0.1-8              parallel_4.3.2         dotCall64_1.1-1       
-[124] listenv_0.9.1          viridisLite_0.4.2      scales_1.3.0          
-[127] ggridges_0.5.6         crayon_1.5.2           leiden_0.4.3.1        
-[130] rlang_1.1.3            cowplot_1.1.3         </code></pre>
+ [22] zoo_1.8-12             cachem_1.1.0           whisker_0.4.1         
+ [25] igraph_2.1.4           mime_0.12              lifecycle_1.0.4       
+ [28] pkgconfig_2.0.3        Matrix_1.7-1           R6_2.5.1              
+ [31] fastmap_1.2.0          fitdistrplus_1.2-2     future_1.34.0         
+ [34] shiny_1.10.0           digest_0.6.37          colorspace_2.1-1      
+ [37] patchwork_1.3.0        ps_1.8.1               rprojroot_2.0.4       
+ [40] tensor_1.5             RSpectra_0.16-2        irlba_2.3.5.1         
+ [43] labeling_0.4.3         progressr_0.15.1       timechange_0.3.0      
+ [46] spatstat.sparse_3.1-0  httr_1.4.7             polyclip_1.10-7       
+ [49] abind_1.4-8            compiler_4.4.0         bit64_4.6.0-1         
+ [52] withr_3.0.2            fastDummies_1.7.5      MASS_7.3-64           
+ [55] tools_4.4.0            lmtest_0.9-40          httpuv_1.6.15         
+ [58] future.apply_1.11.3    goftest_1.2-3          glue_1.8.0            
+ [61] callr_3.7.6            nlme_3.1-166           promises_1.3.2        
+ [64] grid_4.4.0             Rtsne_0.17             getPass_0.2-4         
+ [67] cluster_2.1.8          reshape2_1.4.4         generics_0.1.3        
+ [70] gtable_0.3.6           spatstat.data_3.1-4    tzdb_0.4.0            
+ [73] hms_1.1.3              data.table_1.16.4      spatstat.geom_3.3-5   
+ [76] RcppAnnoy_0.0.22       ggrepel_0.9.6          RANN_2.6.2            
+ [79] pillar_1.10.1          vroom_1.6.5            spam_2.11-1           
+ [82] RcppHNSW_0.6.0         later_1.4.1            splines_4.4.0         
+ [85] lattice_0.22-6         bit_4.5.0.1            renv_1.0.5            
+ [88] survival_3.8-3         deldir_2.0-4           tidyselect_1.2.1      
+ [91] miniUI_0.1.1.1         pbapply_1.7-2          knitr_1.49            
+ [94] git2r_0.33.0           gridExtra_2.3          scattermore_1.2       
+ [97] xfun_0.50              matrixStats_1.5.0      stringi_1.8.4         
+[100] lazyeval_0.2.2         yaml_2.3.10            evaluate_1.0.3        
+[103] codetools_0.2-20       BiocManager_1.30.25    cli_3.6.3             
+[106] uwot_0.2.2             xtable_1.8-4           reticulate_1.40.0     
+[109] munsell_0.5.1          processx_3.8.5         jquerylib_0.1.4       
+[112] Rcpp_1.0.14            globals_0.16.3         spatstat.random_3.3-2 
+[115] png_0.1-8              spatstat.univar_3.1-1  parallel_4.4.0        
+[118] dotCall64_1.2          listenv_0.9.1          viridisLite_0.4.2     
+[121] scales_1.3.0           ggridges_0.5.6         crayon_1.5.3          
+[124] rlang_1.1.5            cowplot_1.1.3         </code></pre>
 </div>
 </div>
 
