@@ -95,12 +95,20 @@ The following files were download from GEO
   * GSE234713_RAW_UC.tar
 * GSE234713_ReadMe_SMI_Data_File.html
 
+
+The polygon files defining the cell outlines were provided separately. Typically these would be included with the other files
+
+* CD_a.csv : A .csv file which defines the outline of every cell. One file per slide.
+
+
+
 ```{sh eval=FALSE}
 cd raw_data
 tar -xf GSE234713_RAW_CD.tar
 tar -xf GSE234713_RAW_HC.tar
 tar -xf GSE234713_RAW_UC.tar
 ```
+
 
 Construct a folder with each slide's info.
 
