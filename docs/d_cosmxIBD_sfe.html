@@ -629,6 +629,12 @@ batches, one per group
 </ul></li>
 <li>GSE234713_ReadMe_SMI_Data_File.html</li>
 </ul>
+<p>The polygon files defining the cell outlines were provided
+separately. Typically these would be included with the other files</p>
+<ul>
+<li>CD_a.csv : A .csv file which defines the outline of every cell. One
+file per slide.</li>
+</ul>
 <pre class="sh"><code>cd raw_data
 tar -xf GSE234713_RAW_CD.tar
 tar -xf GSE234713_RAW_HC.tar
@@ -1025,7 +1031,7 @@ do_basic_preprocessing &lt;- function(sfe,
 
 #Load an annotate all samples in the directory full of samples (each as flatfiles)
 
-if ( FALSE ) { # ALREADY RUN
+if ( TRUE ) {
 
   # Get list of samples
   sample_names &lt;- list.files(sample_dir)
@@ -1077,7 +1083,7 @@ if ( FALSE ) { # ALREADY RUN
 #num_threads = 16
 #BPPARAM  = MulticoreParam(num_threads)
 #saveObject(sfe, &quot;~/testX2&quot;)
-sfe &lt;- readObject(&quot;~/testX2&quot;)
+#sfe &lt;- readObject(&quot;~/testX2&quot;)
 
 
 #sfe &lt;- sfe[,1:400]
@@ -1101,6 +1107,43 @@ saveObject(sfe, sfe_01_loaded)</code></pre>
   theme_bw() +
   ggtitle(&quot;Counts per cell&quot;)</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-7-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="min-detected-genes-per-cell" class="section level2">
 <h2>Min detected genes per cell</h2>
@@ -1113,6 +1156,43 @@ cell)</p>
   theme_bw() +
   ggtitle(&quot;Counts per cell&quot;)</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-8-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
+Past versions of unnamed-chunk-8-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-8-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="percent-negative-probes" class="section level2">
 <h2>Percent Negative probes</h2>
@@ -1126,12 +1206,86 @@ cell)</p>
 <pre><code>Warning: Removed 207963 rows containing non-finite outside the scale range
 (`stat_density()`).</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-9-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
+Past versions of unnamed-chunk-9-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-9-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ggplot(colData(sfe), aes(x=avg_neg, col=sample_id)) +
   geom_density() + 
   geom_vline(xintercept = max_avg_neg, lty=3) +
   theme_bw() +
   ggtitle(&quot;Negative probe average&quot;)</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-10-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
+Past versions of unnamed-chunk-10-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-10-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Use bottom right corner;</p>
 <pre class="r"><code>ggplot(colData(sfe), aes(y=avg_neg, x=total_count)) +
   geom_point(pch=3, alpha=0.1) + 
@@ -1141,6 +1295,43 @@ cell)</p>
   theme_bw() +
   ggtitle(&quot;Negative probes vs counts&quot;)</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-11-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="apply-filteres" class="section level2">
 <h2>Apply filteres</h2>
@@ -1166,12 +1357,86 @@ differ.</p>
 <pre class="r"><code>plotUMAP(sfe, colour_by = &#39;tissue_sample&#39;, point_shape=&#39;.&#39;) +
   guides(colour = guide_legend(override.aes = list(shape=15)))</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-13-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="condition" class="section level3">
 <h3>Condition</h3>
 <pre class="r"><code>plotUMAP(sfe, colour_by = &#39;condition&#39;, point_shape=&#39;.&#39;) +
   guides(colour = guide_legend(override.aes = list(shape=15)))</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-14-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="condition-x-sample" class="section level3">
 <h3>Condition X Sample</h3>
@@ -1185,17 +1450,128 @@ p3 &lt;- plotUMAP(sfe[,sfe$group==&#39;CD&#39;], colour_by = &#39;tissue_sample&
 
 p1 + p2 + p3</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-15-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
+Past versions of unnamed-chunk-15-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-15-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="total-counts" class="section level3">
 <h3>Total counts</h3>
 <pre class="r"><code>plotUMAP(sfe, colour_by = &#39;total_count_log10&#39;, point_shape=&#39;.&#39;) </code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
+Past versions of unnamed-chunk-16-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-16-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="clustered" class="section level3">
 <h3>Clustered</h3>
 <pre class="r"><code>plotUMAP(sfe, colour_by = &#39;cluster_code&#39;, point_shape=&#39;.&#39;, text_by=&#39;cluster_code&#39;) +
   guides(colour = guide_legend(override.aes = list(shape=15)))</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-17-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
+Past versions of unnamed-chunk-17-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-17-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-17-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="celltype_subset" class="section level3">
 <h3>celltype_subset</h3>
@@ -1203,6 +1579,43 @@ p1 + p2 + p3</code></pre>
 <pre class="r"><code>plotUMAP(sfe, colour_by = &#39;celltype_subset&#39;, text_by=&#39;celltype_subset&#39;, point_shape=&#39;.&#39;) +
   guides(colour = guide_legend(override.aes = list(shape=15)))</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
+Past versions of unnamed-chunk-18-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-18-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="celltype_singler2" class="section level3">
 <h3>celltype_SingleR2</h3>
@@ -1212,6 +1625,43 @@ p1 + p2 + p3</code></pre>
 <pre><code>Warning: Removed 2 rows containing missing values or values outside the scale range
 (`geom_point()`).</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-19-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
+Past versions of unnamed-chunk-19-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-19-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="clustering" class="section level2">
@@ -1280,17 +1730,128 @@ p1 + p2 + p3</code></pre>
 <pre class="r"><code>table(sfe$cluster_code) </code></pre>
 <pre><code>
    c1    c2    c3    c4    c5    c6    c7    c8    c9   c10   c11   c12   c13 
-45464  9840 80646 48171 68143  9325 11989 51226 10659 17502 43056 32669  3746 
+45499  9839 80620 48169 68132  9328 11987 51152 10666 17502 43134 32656  3747 
   c14   c15 
-17781  6805 </code></pre>
+17777  6814 </code></pre>
 <p>Composition. Expect an obvious but imperfect grouping between
 clustering and cell typing. Will be using annotation for analysis.</p>
 <pre class="r"><code>heatmap(table(sfe$celltype_SingleR2, sfe$celltype_subset))</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-1">
+Past versions of unnamed-chunk-21-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-21-1.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>heatmap(table(sfe$celltype_subset, sfe$cluster_code))</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-21-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-2">
+Past versions of unnamed-chunk-21-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-21-2.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>heatmap(table(sfe$celltype_SingleR2,sfe$cluster_code))</code></pre>
 <p><img src="figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-21-3.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-3">
+Past versions of unnamed-chunk-21-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/656742d7d6969ec9c2fe631dee56e0fdb699e269/docs/figure/d_cosmxIBD_sfe.Rmd/unnamed-chunk-21-3.png" target="_blank">656742d</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-04-04
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-garrido-trigoMacrophageNeutrophilHeterogeneity2023"
 class="csl-entry">
