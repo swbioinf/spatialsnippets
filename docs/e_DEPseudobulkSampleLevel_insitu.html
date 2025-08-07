@@ -431,7 +431,7 @@ be analysed.</p>
 expression in this kind of data - including those that make use of
 individual cells; see review <span class="citation">(Soneson and
 Robinson 2018)</span>.</p>
-<p><img src="assets/insitu_spatial_pseudobulk_de.png" /></p>
+<p><img src="assets/insitu_spatial_pseudobulk_de_fullchunk.png" /></p>
 <p>This test requires:</p>
 <ul>
 <li>Biological replicates for each group</li>
@@ -471,7 +471,6 @@ class="citation">(Garrido-Trigo et al. 2023)</span>;</p>
 <div id="load-libraries-and-data" class="section level2">
 <h2>Load libraries and data</h2>
 <pre class="r"><code>library(Seurat)
-#library(speckle)
 library(tidyverse)
 library(limma)
 library(DT)
@@ -539,6 +538,43 @@ ggplot(so@meta.data, aes(x=nCount_RNA)) +
   theme_bw()+
   ggtitle(&quot;How many reads per cell?&quot;)</code></pre>
 <p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-5-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>so&lt;- so[,so$nCount_RNA &gt;= min_reads_per_cell]</code></pre>
 </div>
 <div id="filter-cells-per-group" class="section level3">
@@ -569,6 +605,43 @@ DT::datatable(celltype_summary_table)</code></pre>
   theme_bw() +
   ggtitle(&quot;How many cells per sample cluster?&quot;)</code></pre>
 <p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
+Past versions of unnamed-chunk-7-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-7-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Record the names of those sample_clusters that contain enough cells
 to be used. Will use this later to filter.</p>
 <pre class="r"><code>celltype_summary_table.passed &lt;- celltype_summary_table[celltype_summary_table$cells &gt;= min_cells_per_samplecluster,]
@@ -825,6 +898,43 @@ p3 &lt;- make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot
 
 p1 + p2 + p3</code></pre>
 <p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
+Past versions of unnamed-chunk-17-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-17-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="check-some-examples" class="section level2">
 <h2>Check some examples</h2>
@@ -839,6 +949,43 @@ below;</p>
 p2 &lt;- FeaturePlot(so, &quot;TNFRSF13B&quot;, split.by = &quot;group&quot;)
 p1 / p2</code></pre>
 <p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-18-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
+Past versions of unnamed-chunk-18-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-18-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>But it gets difficult to summarise data at the single cell level. We
 can also use the the normalised pseudobulk expression to see how gene
 expression varies within each fov,individual,celltype and condition -
@@ -859,6 +1006,43 @@ ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
   theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
   facet_wrap(~celltype_subset) </code></pre>
 <p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
+Past versions of unnamed-chunk-19-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Contrast with PIGR, which was flagged at differentially expressed
 across multiple cell types. (Though, being a largely epithelial gene, is
 highest in the epithelia.)</p>
@@ -870,21 +1054,68 @@ ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
   theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
   facet_wrap(~celltype_subset) </code></pre>
 <p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
+Past versions of unnamed-chunk-20-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-20-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="code-snippet" class="section level1">
 <h1>Code Snippet</h1>
+<p>Metadata coloumns used:</p>
+<ul>
+<li><strong>nCount_RNA</strong> : Counts per cell</li>
+<li><strong>sample</strong> : The unique identifier of each tissue
+sample</li>
+<li><strong>cluster</strong> : The column containing the clusters to
+test condition within. Test repeated for element within column. May be
+cluster, cellype, niche or other cell-grouping of interest.</li>
+<li><strong>group</strong> : Column containing experimental groups
+(e.g. condition, treatment group)</li>
+</ul>
 <pre class="r"><code>### REQUIRES TESTING ####
-
-
 library(Seurat)
 library(edgeR)
 library(limma)
 library(tidyverse)
 
+
 # Set threhoehsolds
 min_reads_per_cell          &lt;- 200
-min_cells_per_samplecluster &lt;- 50
+min_cells_per_samplecluster &lt;- 100
 
 
 # Remove cells with too few counts
@@ -893,9 +1124,9 @@ so &lt;- so[,so$nCount_RNA &gt;= min_reads_per_cell]
 
 # Define pseodoreplicate groups, with all relevant sample annotation
 # remove those with too few cells.
-so$sample_cluster &lt;- paste0(so$sample&quot;_&quot;, so$celltype_subset)
+so$sample_cluster &lt;- paste0(so$sample,&quot;_&quot;, so$cluster)
 celltype_summary_table &lt;- so@meta.data %&gt;% 
-  group_by(condition, group, individual_code, celltype_subset, sample_cluster) %&gt;%
+  group_by(sample_cluster, group, individual, cluster)  %&gt;%
   summarise(cells=n(), .groups = &#39;drop&#39;)
 
 
@@ -910,20 +1141,24 @@ colnames(pseudobulk_counts_matrix)&lt;-gsub(&quot;-&quot;,&quot;_&quot;,colnames
 # Filter both pseudobulk matrix and pseudobulk annotation 
 passed_sample_clusters &lt;- celltype_summary_table$sample_cluster[celltype_summary_table$cells &gt;= min_cells_per_samplecluster]
 pseudobulk_counts_matrix &lt;- pseudobulk_counts_matrix[,passed_sample_clusters]
-pseudobulk_anno_table    &lt;- celltype_summary_table[passed_sample_clusters,]
+
+
+# Create pseubulk anno table from passed clusters, matching order
+match_order &lt;- match(passed_sample_clusters, celltype_summary_table$sample_cluster)
+pseudobulk_anno_table &lt;- celltype_summary_table[match_order,]
+
 
 
 # Calculate DE across every celltype
 # Empty list to collect results
 de_result_list &lt;- list()
 
-# celltype_subset is a matrix
-for (the_celltype in levels(so$celltype_subset)) {
+for (the_celltype in unique(so$cluster)) {
   
   # Subset counts andn annotation to one cell type. 
   # Ensure order remains identical!
   print(the_celltype)
-  anno_table.this   &lt;- pseudobulk_anno_table[pseudobulk_anno_table$celltype_subset == the_celltype,]
+  anno_table.this   &lt;- pseudobulk_anno_table[pseudobulk_anno_table$cluster == the_celltype,]
   count_matrix.this &lt;- pseudobulk_counts_matrix[,anno_table.this$sample_cluster]
 
   
@@ -942,10 +1177,9 @@ for (the_celltype in levels(so$celltype_subset)) {
   dge &lt;- calcNormFactors(dge)
   
   
-  
   # Build model
   group           &lt;- anno_table.this$group
-  individual_code &lt;- anno_table.this$individual_code
+
 
   # Model design 
   design    &lt;- model.matrix( ~0 + group)
@@ -955,9 +1189,10 @@ for (the_celltype in levels(so$celltype_subset)) {
   
   # Define and fit contrasts and run ebayes
   fit     &lt;- lmFit(vm, design) 
-  contrasts &lt;- makeContrasts(UCvHC  = groupUC - groupHC, 
-                             CDvHC  = groupCD - groupHC,
-                           levels=coef(fit))
+  contrasts &lt;- makeContrasts(AvsControl  = groupGroupA - groupControl, 
+                             #BvsControl  = groupGroupB - groupControl,
+                             # ...
+                             levels=coef(fit))
   fit &lt;- contrasts.fit(fit, contrasts)
   fit &lt;- eBayes(fit)
 
@@ -982,7 +1217,7 @@ for (the_celltype in levels(so$celltype_subset)) {
 
 # Join together results for all celltypes, and pull out those with a singificant adjusted p-value
 de_results_all &lt;- bind_rows(de_result_list)
-de_results_sig &lt;- filter(de_results_all, adj.P.Val &lt; 0.01)</code></pre>
+de_results_sig &lt;- filter(de_results_all, adj.P.Val &lt; 0.05)</code></pre>
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>
@@ -1043,17 +1278,6 @@ href="https://bioconductor.org/packages/release/bioc/vignettes/limma/inst/doc/us
 documentation</a> <span class="citation">(Ritchie et al. 2015)</span>:
 The complete manual to limma.</li>
 <li><a
-href="https://academic.oup.com/bioinformatics/article/21/9/2067/409024">Use
-of within-array replicate spots for assessing differential expression in
-microarray experiments</a><span class="citation">(Smyth, Michaud, and
-Scott 2005)</span> : Paper describing the duplicate correlation approach
-for pseudoreplicates (in the original context of micorarray
-analysis).</li>
-<li><a href="https://support.bioconductor.org/p/125489/">Bioconductor
-support: Further clarification on when not to use duplicateCorrelation
-with technical replicates (RNA-seq)</a> : A very helpful discussion
-about when to use correlateDuplicates for pseuodreplicates.</li>
-<li><a
 href="https://ucdavis-bioinformatics-training.github.io/2018-June-RNA-Seq-Workshop/thursday/DE.html">Differential
 Expression with Limma-Voom UC davis bioinformatics training</a> : A more
 accessible explanation of bulk RNAseq analyses using limma.</li>
@@ -1085,13 +1309,6 @@ Expression Analyses for <span class="nocase">RNA-sequencing</span> and
 Microarray Studies.”</span> <em>Nucleic Acids Research</em> 43 (7): e47.
 <a
 href="https://doi.org/10.1093/nar/gkv007">https://doi.org/10.1093/nar/gkv007</a>.
-</div>
-<div id="ref-smythUseWithinarrayReplicate2005" class="csl-entry">
-Smyth, Gordon K., Joëlle Michaud, and Hamish S. Scott. 2005. <span>“Use
-of Within-Array Replicate Spots for Assessing Differential Expression in
-Microarray Experiments.”</span> <em>Bioinformatics</em> 21 (9): 2067–75.
-<a
-href="https://doi.org/10.1093/bioinformatics/bti270">https://doi.org/10.1093/bioinformatics/bti270</a>.
 </div>
 <div id="ref-Soneson2017" class="csl-entry">
 Soneson, Charlotte, and Mark D Robinson. 2018. <span>“Bias, Robustness

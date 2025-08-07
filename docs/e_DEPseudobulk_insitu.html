@@ -12,7 +12,7 @@
 <meta name="author" content="Sarah Williams" />
 
 
-<title>Differential expression between groups using pseudobulk</title>
+<title>Differential expression between groups using pseudobulk (with pseudoreplicates)</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -396,7 +396,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Differential expression between groups
-using pseudobulk</h1>
+using pseudobulk (with pseudoreplicates)</h1>
 <h4 class="author">Sarah Williams</h4>
 
 </div>
@@ -572,6 +572,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-5-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/c77f76cecb74337321d877773789d8703b9bdb89/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-5-1.png" target="_blank">c77f76c</a>
 </td>
 <td>
@@ -637,6 +648,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-7-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/697815489cd801e303185e38f2e764cb06d42d16/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-7-1.png" target="_blank">6978154</a>
@@ -961,6 +983,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-17-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/8580064eb7ab2ec42fa85ed21e7856c9f83b05e3/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-17-1.png" target="_blank">8580064</a>
 </td>
 <td>
@@ -1045,6 +1078,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-18-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/8580064eb7ab2ec42fa85ed21e7856c9f83b05e3/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-18-1.png" target="_blank">8580064</a>
 </td>
 <td>
@@ -1113,6 +1157,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-19-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/8580064eb7ab2ec42fa85ed21e7856c9f83b05e3/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-19-1.png" target="_blank">8580064</a>
 </td>
 <td>
@@ -1171,6 +1226,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-20-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/8580064eb7ab2ec42fa85ed21e7856c9f83b05e3/docs/figure/e_DEPseudobulk_insitu.Rmd/unnamed-chunk-20-1.png" target="_blank">8580064</a>
 </td>
 <td>
@@ -1204,9 +1270,9 @@ so &lt;- so[,so$nCount_RNA &gt;= min_reads_per_cell]
 
 # Define pseodoreplicate groups, with all relevant sample annotation
 # remove those with too few cells.
-so$fov_cluster &lt;- paste0(so$fov_name,&quot;_&quot;, so$celltype_subset)
+so$fov_cluster &lt;- paste0(so$fov_name,&quot;_&quot;, so$cluster)
 celltype_summary_table &lt;- so@meta.data %&gt;% 
-  group_by(condition, group, individual_code, fov_name, celltype_subset, fov_cluster) %&gt;%
+  group_by(condition, group, individual_code, fov_name, cluster, fov_cluster) %&gt;%
   summarise(cells=n(), .groups = &#39;drop&#39;)
 
 
@@ -1221,20 +1287,24 @@ colnames(pseudobulk_counts_matrix)&lt;-gsub(&quot;-&quot;,&quot;_&quot;,colnames
 # Filter both pseudobulk matrix and pseudobulk annotation 
 passed_fov_clusters &lt;- celltype_summary_table$fov_cluster[celltype_summary_table$cells &gt;= min_cells_per_fovcluster]
 pseudobulk_counts_matrix &lt;- pseudobulk_counts_matrix[,passed_fov_clusters]
-pseudobulk_anno_table    &lt;- celltype_summary_table[passed_fov_clusters,]
+# Create pseubulk anno table from passed clusters, matching order
+match_order &lt;- match(passed_fov_clusters, celltype_summary_table$fov_cluster)
+pseudobulk_anno_table &lt;- celltype_summary_table[match_order,]
+
+
 
 
 # Calculate DE across every celltype
 # Empty list to collect results
 de_result_list &lt;- list()
 
-# celltype_subset is a matrix
-for (the_celltype in levels(so$celltype_subset)) {
+
+for (the_celltype in unique(so$cluster)) {
   
   # Subset counts andn annotation to one cell type. 
   # Ensure order remains identical!
   print(the_celltype)
-  anno_table.this   &lt;- pseudobulk_anno_table[pseudobulk_anno_table$celltype_subset == the_celltype,]
+  anno_table.this   &lt;- pseudobulk_anno_table[pseudobulk_anno_table$cluster == the_celltype,]
   count_matrix.this &lt;- pseudobulk_counts_matrix[,anno_table.this$fov_cluster]
 
   
@@ -1269,8 +1339,9 @@ for (the_celltype in levels(so$celltype_subset)) {
   fit     &lt;- lmFit(vm, design, correlation = corrfit$consensus, block=individual_code) 
 
   # Define and fit contrasts and run ebayes
-  contrasts &lt;- makeContrasts(UCvHC  = groupUC - groupHC, 
-                             CDvHC  = groupCD - groupHC,
+  contrasts &lt;- makeContrasts(AvsControl  = groupGroupA - groupControl, 
+                             #BvsControl  = groupGroupB - groupControl,
+                             # ...
                            levels=coef(fit))
   fit &lt;- contrasts.fit(fit, contrasts)
   fit &lt;- eBayes(fit)
