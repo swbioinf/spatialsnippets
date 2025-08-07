@@ -49,13 +49,14 @@ Note that there are many other approaches to calculate differential expression i
 This test requires:
 
 * Biological replicates for each group
-* Assigned cell types
+* Assigned cell types 
 
 
 For example:
 
 * What genes are differentially expressed in epithelial cells in Crohn's disease vs healthy individuals?
 * How do genes change with treatment in each different cell type in my sample?
+* What differences are there between treatment sensitive and resistant cancer cell? (instead of a 'celltype' could use a cancer or stromal niche)
 
 
 Steps:
@@ -89,15 +90,10 @@ library(tidyverse)
 library(limma)
 library(DT)
 library(edgeR)
-```
 
-```{r}
 data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
 seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
-```
 
-
-```{r}
 so <- readRDS(seurat_file_01_loaded)
 ```
 
@@ -110,7 +106,8 @@ There are three individuals per condition, one tissue sample from each individua
 
 As a cosmx Each tissue sample has multiple FOVs captured. 
 
-NB: *'FOV' Feild Of View*: In the seurat package, an number of functions include an 'fov' parameter. This corresponds to the slide on which one or more samples are present on. In the cosMX output an 'fov' refers to the rectangular regions on the slide that are measured; there are multiple fovs per slide. This document uses the latter.
+NB: *'FOV' Feild Of View*: In the seurat package, an number of functions include an 'fov' parameter. This corresponds to the slide/image on which one or more samples are present on. Where Seuart asks for an 'fov' parameter - it exects of of the image names `names(so@images)`.
+In the cosMX output however, an 'fov' refers to the rectangular regions on the slide that are measured; there are multiple fovs per slide. 
 
 
 ```{r}
@@ -140,7 +137,7 @@ to perform our analyses. Note there are several levels of filtering here!
 * Need at least x reads in a cell to include it
 * Need at least x cells of a celltype within an fov to include a sample
 * Can only test where we have at least 2 samples on each side of a contrast.
-* In some datasets, it may be worth removing entire samples that have too few fovs (e.g. tissue peeling off the slide). This isn't done here, as there are plenty.
+* In some datasets, it may be worth removing entire samples that have too few fovs (e.g. Tumour microarrays with some samples peeling off the slide). This isn't neccesary for this study.
 
 What these thresholds should be needs to be determined for each experiment.
 
@@ -231,7 +228,7 @@ colnames(pseudobulk_counts_matrix)<-gsub("-","_",colnames(pseudobulk_counts_matr
 
 
 Now instead of counts for each individual cell, we have our pseodubulk matrix 
-with the pooled sum of counts for each celltype within each fov region. So the numbers are much higher, with fewer zeros. 
+with the pooled sum of counts for each celltype within each tissue sample. So the numbers are much higher, with fewer zeros. 
 But note that each pool is a different size, so we can't compare counts directly. We will address this later with normalisation. 
 
 ```{r}
@@ -278,7 +275,7 @@ We will use a fairly standard limma differential expression analysis.
 We will process each celltype one at a time as follows:
 
 1) Subset the counts matrix and annotation table to the celltype.
-2) Build and fit the model. In our case, a simple one that looks for various by disease group, blocked on individual.
+2) Build and fit the model. In our case, a simple one that looks for various by disease group
 3) Run the test.
 
 How to build the model and run the test will need to be customised for your experimental design. Online resources that describe approaches for bulk RNAseq analyses can be applied to pseudobulk analyses - see the 'More Information' section of this document for suggestions. 
@@ -289,9 +286,9 @@ is expected to vary by group (UC/CD/HC). The ~0 part indicates a 'intercept', wh
 
 Some example models:
 
-* **~0 + group ** : One pseudoreplicate per individual.
-* **~0 + group + individual** : If this was a treatment / time point experiment with paired samples from individuals. But only one pseodureplicate per individual. 
-* **~0 + group + celltype** (with or without blocking + duplicate correlation) : Instead of subsetting to celltype, includes cell type in the model. This pulls more data into the stataticacs, but makes building the contrasts challenging! Not covered here.
+* **~0 + group ** : One replicate per individual, comparing groups.
+* **~0 + group + individual** : If this was a treatment / time point experiment with paired samples from individuals. 
+* **~0 + group + celltype** : Instead of subsetting to celltype, includes cell type in the model. This pulls more data into the stataticacs, but makes building the contrasts challenging! Not covered here.
 
 
 ```{r}
@@ -438,7 +435,7 @@ p1 / p2
 ```
 
 
-We might also want to seewhat that expression looks like spatially, on some representative groups. Though the changes aren't obvious at this broad level.
+We might also want to seewhat that expression looks like spatially, on some representative groups. Though the changes aren't obvious at this broad level, (its hard to see very much with with size shape of this sample).
 
 ```{r fig.width=10, fig.height=5}
 so.sample1 <- so[,so$tissue_sample=='HC_a']
@@ -520,8 +517,6 @@ Metadata coloumns used:
 
 
 ```{r eval=FALSE}
-
-### REQUIRES TESTING ####
 library(Seurat)
 library(edgeR)
 library(limma)
