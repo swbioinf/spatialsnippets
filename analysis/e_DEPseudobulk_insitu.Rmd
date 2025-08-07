@@ -1,5 +1,5 @@
 ---
-title: "Differential expression between groups using pseudobulk"
+title: "Differential expression between groups using pseudobulk (with pseudoreplicates)"
 author: "Sarah Williams"
 output:
   html_notebook: 
@@ -492,6 +492,14 @@ ggplot(plottable, aes(x=individual_code, y=expression, col=condition )) +
 
 # Code Snippet
 
+```{r eval=FALSE, echo=FALSE, results='hide', message=FALSE} 
+## Load data to test snippet
+# Data paths
+data_dir <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data")
+seurat_file_01_generic <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_generic4snippettests.RDS")
+so <- readRDS(seurat_file_01_generic)
+```
+
 ```{r eval=FALSE}
 library(Seurat)
 library(edgeR)
@@ -509,9 +517,9 @@ so <- so[,so$nCount_RNA >= min_reads_per_cell]
 
 # Define pseodoreplicate groups, with all relevant sample annotation
 # remove those with too few cells.
-so$fov_cluster <- paste0(so$fov_name,"_", so$celltype_subset)
+so$fov_cluster <- paste0(so$fov_name,"_", so$cluster)
 celltype_summary_table <- so@meta.data %>% 
-  group_by(condition, group, individual_code, fov_name, celltype_subset, fov_cluster) %>%
+  group_by(condition, group, individual_code, fov_name, cluster, fov_cluster) %>%
   summarise(cells=n(), .groups = 'drop')
 
 
@@ -526,20 +534,24 @@ colnames(pseudobulk_counts_matrix)<-gsub("-","_",colnames(pseudobulk_counts_matr
 # Filter both pseudobulk matrix and pseudobulk annotation 
 passed_fov_clusters <- celltype_summary_table$fov_cluster[celltype_summary_table$cells >= min_cells_per_fovcluster]
 pseudobulk_counts_matrix <- pseudobulk_counts_matrix[,passed_fov_clusters]
-pseudobulk_anno_table    <- celltype_summary_table[passed_fov_clusters,]
+# Create pseubulk anno table from passed clusters, matching order
+match_order <- match(passed_fov_clusters, celltype_summary_table$fov_cluster)
+pseudobulk_anno_table <- celltype_summary_table[match_order,]
+
+
 
 
 # Calculate DE across every celltype
 # Empty list to collect results
 de_result_list <- list()
 
-# celltype_subset is a matrix
-for (the_celltype in levels(so$celltype_subset)) {
+
+for (the_celltype in unique(so$cluster)) {
   
   # Subset counts andn annotation to one cell type. 
   # Ensure order remains identical!
   print(the_celltype)
-  anno_table.this   <- pseudobulk_anno_table[pseudobulk_anno_table$celltype_subset == the_celltype,]
+  anno_table.this   <- pseudobulk_anno_table[pseudobulk_anno_table$cluster == the_celltype,]
   count_matrix.this <- pseudobulk_counts_matrix[,anno_table.this$fov_cluster]
 
   
@@ -574,8 +586,9 @@ for (the_celltype in levels(so$celltype_subset)) {
   fit     <- lmFit(vm, design, correlation = corrfit$consensus, block=individual_code) 
 
   # Define and fit contrasts and run ebayes
-  contrasts <- makeContrasts(UCvHC  = groupUC - groupHC, 
-                             CDvHC  = groupCD - groupHC,
+  contrasts <- makeContrasts(AvsControl  = groupGroupA - groupControl, 
+                             #BvsControl  = groupGroupB - groupControl,
+                             # ...
                            levels=coef(fit))
   fit <- contrasts.fit(fit, contrasts)
   fit <- eBayes(fit)
