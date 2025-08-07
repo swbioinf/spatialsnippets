@@ -443,6 +443,9 @@ Robinson 2018)</span>.</p>
 Crohn’s disease vs healthy individuals?</li>
 <li>How do genes change with treatment in each different cell type in my
 sample?</li>
+<li>What differences are there between treatment sensitive and resistant
+cancer cell? (instead of a ‘celltype’ could use a cancer or stromal
+niche)</li>
 </ul>
 <p>Steps:</p>
 <ol style="list-style-type: decimal">
@@ -474,10 +477,12 @@ class="citation">(Garrido-Trigo et al. 2023)</span>;</p>
 library(tidyverse)
 library(limma)
 library(DT)
-library(edgeR)</code></pre>
-<pre class="r"><code>data_dir              &lt;- file.path(&quot;~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data&quot;) 
-seurat_file_01_loaded &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_seurat_01_loaded.RDS&quot;)</code></pre>
-<pre class="r"><code>so &lt;- readRDS(seurat_file_01_loaded)</code></pre>
+library(edgeR)
+
+data_dir              &lt;- file.path(&quot;~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data&quot;) 
+seurat_file_01_loaded &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_seurat_01_loaded.RDS&quot;)
+
+so &lt;- readRDS(seurat_file_01_loaded)</code></pre>
 </div>
 <div id="experimental-design" class="section level2">
 <h2>Experimental design</h2>
@@ -486,10 +491,12 @@ seurat_file_01_loaded &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_seurat
 each individual. 9 slides in total. Each ‘sample’ is listed below.</p>
 <p>As a cosmx Each tissue sample has multiple FOVs captured.</p>
 <p>NB: <em>‘FOV’ Feild Of View</em>: In the seurat package, an number of
-functions include an ‘fov’ parameter. This corresponds to the slide on
-which one or more samples are present on. In the cosMX output an ‘fov’
+functions include an ‘fov’ parameter. This corresponds to the
+slide/image on which one or more samples are present on. Where Seuart
+asks for an ‘fov’ parameter - it exects of of the image names
+<code>names(so@images)</code>. In the cosMX output however, an ‘fov’
 refers to the rectangular regions on the slide that are measured; there
-are multiple fovs per slide. This document uses the latter.</p>
+are multiple fovs per slide.</p>
 <pre class="r"><code>sample_table &lt;- select(as_tibble(so@meta.data), condition, individual_code, fov_name) %&gt;%
   unique() %&gt;% 
   group_by(condition, individual_code) %&gt;% 
@@ -518,8 +525,8 @@ sample</li>
 <li>Can only test where we have at least 2 samples on each side of a
 contrast.</li>
 <li>In some datasets, it may be worth removing entire samples that have
-too few fovs (e.g. tissue peeling off the slide). This isn’t done here,
-as there are plenty.</li>
+too few fovs (e.g. Tumour microarrays with some samples peeling off the
+slide). This isn’t neccesary for this study.</li>
 </ul>
 <p>What these thresholds should be needs to be determined for each
 experiment.</p>
@@ -537,44 +544,7 @@ ggplot(so@meta.data, aes(x=nCount_RNA)) +
   scale_x_log10() +
   theme_bw()+
   ggtitle(&quot;How many reads per cell?&quot;)</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
-Past versions of unnamed-chunk-5-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-5-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-5-1.png" target="_blank">3e314f0</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2025-08-07
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>so&lt;- so[,so$nCount_RNA &gt;= min_reads_per_cell]</code></pre>
 </div>
 <div id="filter-cells-per-group" class="section level3">
@@ -604,13 +574,13 @@ DT::datatable(celltype_summary_table)</code></pre>
   scale_x_log10() +
   theme_bw() +
   ggtitle(&quot;How many cells per sample cluster?&quot;)</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-7-1">
-Past versions of unnamed-chunk-7-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-7-1" class="collapse">
+<div id="fig-unnamed-chunk-5-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -629,7 +599,7 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-7-1.png" target="_blank">3e314f0</a>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-5-1.png" target="_blank">3e314f0</a>
 </td>
 <td>
 swbioinf
@@ -682,8 +652,8 @@ pseudobulk_counts_matrix &lt;- pseudobulk_counts[[&quot;RNA&quot;]]
 colnames(pseudobulk_counts_matrix)&lt;-gsub(&quot;-&quot;,&quot;_&quot;,colnames(pseudobulk_counts_matrix))</code></pre>
 <p>Now instead of counts for each individual cell, we have our
 pseodubulk matrix with the pooled sum of counts for each celltype within
-each fov region. So the numbers are much higher, with fewer zeros. But
-note that each pool is a different size, so we can’t compare counts
+each tissue sample. So the numbers are much higher, with fewer zeros.
+But note that each pool is a different size, so we can’t compare counts
 directly. We will address this later with normalisation.</p>
 <pre class="r"><code>pseudobulk_counts_matrix[1:10,1:4]</code></pre>
 <pre><code>10 x 4 sparse Matrix of class &quot;dgCMatrix&quot;
@@ -757,7 +727,7 @@ analysis.</p>
 <ol style="list-style-type: decimal">
 <li>Subset the counts matrix and annotation table to the celltype.</li>
 <li>Build and fit the model. In our case, a simple one that looks for
-various by disease group, blocked on individual.</li>
+various by disease group</li>
 <li>Run the test.</li>
 </ol>
 <p>How to build the model and run the test will need to be customised
@@ -773,15 +743,14 @@ alone without intercept, and define contrasts accordingly to get the
 same result. )</p>
 <p>Some example models:</p>
 <ul>
-<li><strong>~0 + group </strong> : One pseudoreplicate per
-individual.</li>
+<li><strong>~0 + group </strong> : One replicate per individual,
+comparing groups.</li>
 <li><strong>~0 + group + individual</strong> : If this was a treatment /
-time point experiment with paired samples from individuals. But only one
-pseodureplicate per individual.</li>
-<li><strong>~0 + group + celltype</strong> (with or without blocking +
-duplicate correlation) : Instead of subsetting to celltype, includes
-cell type in the model. This pulls more data into the stataticacs, but
-makes building the contrasts challenging! Not covered here.</li>
+time point experiment with paired samples from individuals.</li>
+<li><strong>~0 + group + celltype</strong> : Instead of subsetting to
+celltype, includes cell type in the model. This pulls more data into the
+stataticacs, but makes building the contrasts challenging! Not covered
+here.</li>
 </ul>
 <pre class="r"><code># Empty list to collect results
 de_result_list &lt;- list()
@@ -897,7 +866,46 @@ p2 &lt;- make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot
 p3 &lt;- make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;stroma&quot;)) + ggtitle(&quot;UC vs HC - stroma&quot;)
 
 p1 + p2 + p3</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-15-1.png" width="1152" style="display: block; margin: auto;" /></p>
+</div>
+<div id="check-some-examples" class="section level2">
+<h2>Check some examples</h2>
+<p>Its always worth visualising how the expression of your
+differentially expressed genes really looks, with respect to your
+experimental design. How best to do this depends on your experiment.</p>
+<p>The results suggests that TNFRSF13B was significantly DE between
+individuals with Ulcerative Colitis and Healthy Controls in plasma
+cells. As a first step, there’s some very convenient seurat plots
+below;</p>
+<pre class="r"><code>p1 &lt;- VlnPlot(subset(so, celltype_subset == &quot;plasmas&quot;), features = &quot;TNFRSF13B&quot;, group.by = &#39;group&#39;, alpha = 0.1)
+p2 &lt;- FeaturePlot(so, &quot;TNFRSF13B&quot;, split.by = &quot;group&quot;)
+p1 / p2</code></pre>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-16-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>We might also want to seewhat that expression looks like spatially,
+on some representative groups. Though the changes aren’t obvious at this
+broad level, (its hard to see very much with with size shape of this
+sample).</p>
+<pre class="r"><code>so.sample1 &lt;- so[,so$tissue_sample==&#39;HC_a&#39;]
+so.sample2 &lt;- so[,so$tissue_sample==&#39;UC_c&#39;]
+p1 &lt;- ImageFeaturePlot(so.sample1, 
+               fov          = &#39;GSM7473682_HC_a&#39;, # see names(so@images)
+               feature      = &#39;TNFRSF13B&#39;, 
+               axes         = TRUE, 
+               border.color = &quot;black&quot;, border.size = 0.1, 
+               boundaries   = &quot;segmentation&quot;,
+               crop=TRUE,
+               nmols = 10000) 
+p2 &lt;- ImageFeaturePlot(so.sample2, 
+               fov          = &#39;GSM7473687_UC_c&#39;, # &#39;GSM7473686_UC_b&#39;, # see names(so@images)
+               feature      = &#39;TNFRSF13B&#39;, 
+               axes         = TRUE, 
+               border.color = &quot;black&quot;, border.size = 0.1, 
+               boundaries   = &quot;segmentation&quot;,
+               crop=TRUE,
+               nmols = 10000) 
+
+plot(p1)</code></pre>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
 Past versions of unnamed-chunk-17-1.png
@@ -935,20 +943,29 @@ swbioinf
 </table>
 </div>
 </div>
-</div>
-<div id="check-some-examples" class="section level2">
-<h2>Check some examples</h2>
-<p>Its always worth visualising how the expression of your
-differentially expressed genes really looks, with respect to your
-experimental design. How best to do this depends on your experiment.</p>
-<p>The results suggests that TNFRSF13B was significantly DE between
-individuals with Ulcerative Colitis and Healthy Controls in plasma
-cells. As a first step, there’s some very convenient seurat plots
-below;</p>
-<pre class="r"><code>p1 &lt;- VlnPlot(subset(so, celltype_subset == &quot;plasmas&quot;), features = &quot;TNFRSF13B&quot;, group.by = &#39;group&#39;, alpha = 0.1)
-p2 &lt;- FeaturePlot(so, &quot;TNFRSF13B&quot;, split.by = &quot;group&quot;)
-p1 / p2</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-18-1.png" width="960" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>plot(p2)</code></pre>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p>But it gets difficult to summarise see the changes in either of
+those.</p>
+<p>We can also use the the normalised pseudobulk expression to see how
+gene expression varies within each fov,individual,celltype and condition
+- The plot below shows an overview of normalised TNFRSF18 expression
+across the entire experiment.</p>
+<pre class="r"><code># Get tmm normalised coutns for all pseudobulk
+# WHen we did the DE we calculated this a celltype at a time, so values might differ slightly!
+dge &lt;- DGEList(pseudobulk_counts_matrix)
+dge &lt;- calcNormFactors(dge)
+norm_pseudobulk &lt;- cpm(dge , log=TRUE) # uses tmm normalisation
+
+# Plot expression for TNFRSF13B
+plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;TNFRSF13B&quot;,])
+ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point() + 
+  theme_bw() + 
+  theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
+  facet_wrap(~celltype_subset) </code></pre>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-18-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
 Past versions of unnamed-chunk-18-1.png
@@ -986,30 +1003,17 @@ swbioinf
 </table>
 </div>
 </div>
-<p>We might also want to seewhat that expression looks like spatially,
-on some representative groups. Though the changes aren’t obvious at this
-broad level.</p>
-<pre class="r"><code>so.sample1 &lt;- so[,so$tissue_sample==&#39;HC_a&#39;]
-so.sample2 &lt;- so[,so$tissue_sample==&#39;UC_c&#39;]
-p1 &lt;- ImageFeaturePlot(so.sample1, 
-               fov          = &#39;GSM7473682_HC_a&#39;, # see names(so@images)
-               feature      = &#39;TNFRSF13B&#39;, 
-               axes         = TRUE, 
-               border.color = &quot;black&quot;, border.size = 0.1, 
-               boundaries   = &quot;segmentation&quot;,
-               crop=TRUE,
-               nmols = 10000) 
-p2 &lt;- ImageFeaturePlot(so.sample2, 
-               fov          = &#39;GSM7473687_UC_c&#39;, # &#39;GSM7473686_UC_b&#39;, # see names(so@images)
-               feature      = &#39;TNFRSF13B&#39;, 
-               axes         = TRUE, 
-               border.color = &quot;black&quot;, border.size = 0.1, 
-               boundaries   = &quot;segmentation&quot;,
-               crop=TRUE,
-               nmols = 10000) 
-
-plot(p1)</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p>Contrast with PIGR, which was flagged at differentially expressed
+across multiple cell types. (Though, being a largely epithelial gene, is
+highest in the epithelia.)</p>
+<pre class="r"><code>plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;PIGR&quot;,])
+ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point() + 
+  theme_bw() + 
+  theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
+  facet_wrap(~celltype_subset) </code></pre>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
 Past versions of unnamed-chunk-19-1.png
@@ -1034,6 +1038,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/f9a3c731068201f089f063ffa6720263fae15576/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-1.png" target="_blank">f9a3c73</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-1.png" target="_blank">3e314f0</a>
 </td>
 <td>
@@ -1047,77 +1062,6 @@ swbioinf
 </table>
 </div>
 </div>
-<pre class="r"><code>plot(p2)</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-2.png" width="960" style="display: block; margin: auto;" /></p>
-<p>But it gets difficult to summarise see the changes in either of
-those.</p>
-<p>We can also use the the normalised pseudobulk expression to see how
-gene expression varies within each fov,individual,celltype and condition
-- The plot below shows an overview of normalised TNFRSF18 expression
-across the entire experiment.</p>
-<pre class="r"><code># Get tmm normalised coutns for all pseudobulk
-# WHen we did the DE we calculated this a celltype at a time, so values might differ slightly!
-dge &lt;- DGEList(pseudobulk_counts_matrix)
-dge &lt;- calcNormFactors(dge)
-norm_pseudobulk &lt;- cpm(dge , log=TRUE) # uses tmm normalisation
-
-# Plot expression for TNFRSF13B
-plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;TNFRSF13B&quot;,])
-ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
-  geom_boxplot(outlier.shape = NA) +
-  geom_point() + 
-  theme_bw() + 
-  theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
-  facet_wrap(~celltype_subset) </code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-20-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
-Past versions of unnamed-chunk-20-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-20-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-20-1.png" target="_blank">3e314f0</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2025-08-07
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>Contrast with PIGR, which was flagged at differentially expressed
-across multiple cell types. (Though, being a largely epithelial gene, is
-highest in the epithelia.)</p>
-<pre class="r"><code>plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;PIGR&quot;,])
-ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
-  geom_boxplot(outlier.shape = NA) +
-  geom_point() + 
-  theme_bw() + 
-  theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
-  facet_wrap(~celltype_subset) </code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="code-snippet" class="section level1">
@@ -1133,8 +1077,7 @@ cluster, cellype, niche or other cell-grouping of interest.</li>
 <li><strong>group</strong> : Column containing experimental groups
 (e.g. condition, treatment group)</li>
 </ul>
-<pre class="r"><code>### REQUIRES TESTING ####
-library(Seurat)
+<pre class="r"><code>library(Seurat)
 library(edgeR)
 library(limma)
 library(tidyverse)
