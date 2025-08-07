@@ -986,26 +986,30 @@ swbioinf
 </table>
 </div>
 </div>
-<p>But it gets difficult to summarise data at the single cell level. We
-can also use the the normalised pseudobulk expression to see how gene
-expression varies within each fov,individual,celltype and condition -
-The plot below shows an overview of normalised TNFRSF18 expression
-across the entire experiment.</p>
-<pre class="r"><code># Get tmm normalised coutns for all pseudobulk
-# WHen we did the DE we calculated this a celltype at a time, so values might differ slightly!
-dge &lt;- DGEList(pseudobulk_counts_matrix)
-dge &lt;- calcNormFactors(dge)
-norm_pseudobulk &lt;- cpm(dge , log=TRUE) # uses tmm normalisation
+<p>We might also want to seewhat that expression looks like spatially,
+on some representative groups. Though the changes aren’t obvious at this
+broad level.</p>
+<pre class="r"><code>so.sample1 &lt;- so[,so$tissue_sample==&#39;HC_a&#39;]
+so.sample2 &lt;- so[,so$tissue_sample==&#39;UC_c&#39;]
+p1 &lt;- ImageFeaturePlot(so.sample1, 
+               fov          = &#39;GSM7473682_HC_a&#39;, # see names(so@images)
+               feature      = &#39;TNFRSF13B&#39;, 
+               axes         = TRUE, 
+               border.color = &quot;black&quot;, border.size = 0.1, 
+               boundaries   = &quot;segmentation&quot;,
+               crop=TRUE,
+               nmols = 10000) 
+p2 &lt;- ImageFeaturePlot(so.sample2, 
+               fov          = &#39;GSM7473687_UC_c&#39;, # &#39;GSM7473686_UC_b&#39;, # see names(so@images)
+               feature      = &#39;TNFRSF13B&#39;, 
+               axes         = TRUE, 
+               border.color = &quot;black&quot;, border.size = 0.1, 
+               boundaries   = &quot;segmentation&quot;,
+               crop=TRUE,
+               nmols = 10000) 
 
-# Plot expression for TNFRSF13B
-plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;TNFRSF13B&quot;,])
-ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
-  geom_boxplot(outlier.shape = NA) +
-  geom_point() + 
-  theme_bw() + 
-  theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
-  facet_wrap(~celltype_subset) </code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-1.png" width="672" style="display: block; margin: auto;" /></p>
+plot(p1)</code></pre>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-1.png" width="960" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
 Past versions of unnamed-chunk-19-1.png
@@ -1043,10 +1047,22 @@ swbioinf
 </table>
 </div>
 </div>
-<p>Contrast with PIGR, which was flagged at differentially expressed
-across multiple cell types. (Though, being a largely epithelial gene, is
-highest in the epithelia.)</p>
-<pre class="r"><code>plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;PIGR&quot;,])
+<pre class="r"><code>plot(p2)</code></pre>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p>But it gets difficult to summarise see the changes in either of
+those.</p>
+<p>We can also use the the normalised pseudobulk expression to see how
+gene expression varies within each fov,individual,celltype and condition
+- The plot below shows an overview of normalised TNFRSF18 expression
+across the entire experiment.</p>
+<pre class="r"><code># Get tmm normalised coutns for all pseudobulk
+# WHen we did the DE we calculated this a celltype at a time, so values might differ slightly!
+dge &lt;- DGEList(pseudobulk_counts_matrix)
+dge &lt;- calcNormFactors(dge)
+norm_pseudobulk &lt;- cpm(dge , log=TRUE) # uses tmm normalisation
+
+# Plot expression for TNFRSF13B
+plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;TNFRSF13B&quot;,])
 ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
   geom_boxplot(outlier.shape = NA) +
   geom_point() + 
@@ -1091,6 +1107,17 @@ swbioinf
 </table>
 </div>
 </div>
+<p>Contrast with PIGR, which was flagged at differentially expressed
+across multiple cell types. (Though, being a largely epithelial gene, is
+highest in the epithelia.)</p>
+<pre class="r"><code>plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;PIGR&quot;,])
+ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point() + 
+  theme_bw() + 
+  theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
+  facet_wrap(~celltype_subset) </code></pre>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-21-1.png" width="672" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="code-snippet" class="section level1">

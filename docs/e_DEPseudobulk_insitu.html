@@ -1254,6 +1254,19 @@ swbioinf
 </div>
 <div id="code-snippet" class="section level1">
 <h1>Code Snippet</h1>
+<p>Metadata coloumns used:</p>
+<ul>
+<li><strong>nCount_RNA</strong> : Counts per cell</li>
+<li><strong>sample</strong> : The unique identifier of each tissue
+sample</li>
+<li><strong>cluster</strong> : The column containing the clusters to
+test condition within. Test repeated for element within column. May be
+cluster, cellype, niche or other cell-grouping of interest.</li>
+<li><strong>group</strong> : Column containing experimental groups
+(e.g. condition, treatment group)</li>
+<li><strong>fov</strong> : column containing the cosmx ‘fov’ number (not
+the suerat FOV which corresponds to the whole slide).</li>
+</ul>
 <pre class="r"><code>library(Seurat)
 library(edgeR)
 library(limma)
