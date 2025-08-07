@@ -38,12 +38,9 @@ gene expression changes between experimental conditions, within each different c
 Some cell types may be dramatically affected by the experimental conditions, while others are not. Likewise some genes may change only in a specific cell type, whereas others show a more general difference.
 
 
-This document describes how to apply a *pseudobulk* approach to test for differences between groups. In a pseudobulk approach counts are obtained by pooling together groups of cells; in this case cells from the of the same celltype from the same fov. These pooled counts can then be analysed more like a bulk RNAseq experiment. 
+This document describes how to apply a *pseudobulk* approach to test for differences between groups. In a pseudobulk approach counts are obtained by pooling together groups of cells; in this case cells from the of the same celltype from the same sample. These pooled counts can then be analysed more like a bulk RNAseq experiment. 
 
 This is very similar to how a non-spatial single cell experiment may be analysed. 
-
-However, unlike a non-spatial single cell experiment, this experimental design has multiple FOVs from the same tissue sample; these *pseudoreplicates* are informative but cannot be considered true biological replicates. They can be incorporated into the statistics with the correlate duplicates approach [@smythUseWithinarrayReplicate2005].
-
 
 Note that there are many other approaches to calculate differential expression in this kind of data - including those that make use of individual cells; see review [@Soneson2017].
 
@@ -53,7 +50,6 @@ This test requires:
 
 * Biological replicates for each group
 * Assigned cell types
-* [Optionally] Multiple fovs measured per sample
 
 
 For example:
@@ -89,7 +85,7 @@ The study included 9 cosmx slides of colonic biopsies
 
 ```{r}
 library(Seurat)
-library(speckle)
+#library(speckle)
 library(tidyverse)
 library(limma)
 library(DT)
@@ -110,8 +106,10 @@ so <- readRDS(seurat_file_01_loaded)
 
 <!-- Move this to own page? --->
 
-There are three individuals per condition, one tissue sample from each individual. 9 slides in total. Each tissue sample has multiple FOVs captured; these are our pseudoreplicates. Each 'sample' is listed below.
+There are three individuals per condition, one tissue sample from each individual. 9 slides in total. Each 'sample' is listed below.
 
+
+As a cosmx Each tissue sample has multiple FOVs captured. 
 
 NB: *'FOV' Feild Of View*: In the seurat package, an number of functions include an 'fov' parameter. This corresponds to the slide on which one or more samples are present on. In the cosMX output an 'fov' refers to the rectangular regions on the slide that are measured; there are multiple fovs per slide. This document uses the latter.
 
@@ -131,17 +129,11 @@ DT::datatable(sample_table)
 
 ## Cell filtering and counting 
 
-
-
 We need to define the grouping that will make one pseudobulk sample for analysis. 
-In this experiment, we can consider all FOVs within a tissue sample as somewhat equivalent. 
-Therefore that is all cells of a particular celltype within an FOV region.
+In this experiment, we can consider all cells within a tissue sample as somewhat equivalent. 
+Therefore that is all cells of a particular celltype, within a tissue sample.
 
-If we only had one fov per sample, *celltype + sample* would be directly equivalent.
-
-If we had a tiled fovs across a tissue sample with distinct regions it would be necessary to group them by *subregion fov + celltype*. Alternatively pool the entire sample if each one is equivalent - it depends on where transcriptional differences are expected.
-
-
+If we had a tiled fovs across a tissue sample with distinct regions (e.g. cancer, stroma) it would be necessary to group them by subregion as well.
 
 Once the pseudobulk replicate grouping is decided, we need to check there will be enough cells 
 to perform our analyses. Note there are several levels of filtering here!
@@ -149,16 +141,14 @@ to perform our analyses. Note there are several levels of filtering here!
 * Need at least x reads in a cell to include it
 * Need at least x cells of a celltype within an fov to include a sample
 * Can only test where we have at least 2 samples on each side of a contrast.
-
+* In some datasets, it may be worth removing entire samples that have too few fovs (e.g. tissue peeling off the slide). This isn't done here, as there are plenty.
 
 What these thresholds should be needs to be determined for each experiment.
-
 
 ### Filter counts per cell
 
 To start, check out the distribution of reads per cell. Here, we choose and apply a filter of 200 reads.
 This is low compared to what you might see in a single scRNAseq experiment, but we are working with only 1000 genes.
-
 
 ```{r}
 min_reads_per_cell <- 200
@@ -170,24 +160,23 @@ ggplot(so@meta.data, aes(x=nCount_RNA)) +
   theme_bw()+
   ggtitle("How many reads per cell?")
 
-
 so<- so[,so$nCount_RNA >= min_reads_per_cell]
 ```
 
 
 ### Filter cells per group
 
-Next we pool each celltype within each fov (naming those groupings fov_cluster). But there needs to be a certain number of cells for that to work - less than a certain number of cells and a pseudobulk pool will be excluded. The table below shows the cells per grouping.
+Next we pool each celltype within each sample (naming those groupings sample_cluster). But there needs to be a certain number of cells for that to work - less than a certain number of cells and a pool will be excluded. The table below shows the cells per grouping.
 
 Note there are much fewer t-cells overall, but given that we have a high number of samples, there should still be enough to include.  Its typical that some of the less common cell types are difficult or impossible to reliably test.
 
 ```{r}
-min_cells_per_fovcluster <- 20
+min_cells_per_samplecluster <- 100
 
-so$fov_cluster <- paste0(so$fov_name,"_", so$celltype_subset)
+so$sample_cluster <- paste0(so$tissue_sample,"_", so$celltype_subset)
 
 celltype_summary_table <- so@meta.data %>% 
-  group_by(condition, group, individual_code, fov_name, celltype_subset, fov_cluster) %>%
+  group_by(condition, group, individual_code, celltype_subset, sample_cluster) %>%
   summarise(cells=n(), .groups = 'drop')
 DT::datatable(celltype_summary_table)
 ```
@@ -196,24 +185,24 @@ DT::datatable(celltype_summary_table)
 ```{r}
 ggplot(celltype_summary_table, aes(x=cells, col=celltype_subset)) +
   geom_density() +
-  geom_vline(xintercept=min_cells_per_fovcluster, lty=3) +
+  geom_vline(xintercept=min_cells_per_samplecluster, lty=3) +
   geom_rug() +
   scale_x_log10() +
   theme_bw() +
-  ggtitle("How many cells per fov-cluster?")
+  ggtitle("How many cells per sample cluster?")
 ```
 
 
-Record the names of those fov_clusters that contain enough cells to be used. 
+Record the names of those sample_clusters that contain enough cells to be used. 
 Will use this later to filter.
 ```{r}
-celltype_summary_table.passed <- celltype_summary_table[celltype_summary_table$cells >= min_cells_per_fovcluster,]
-passed_fov_clusters <- celltype_summary_table.passed$fov_cluster
+celltype_summary_table.passed <- celltype_summary_table[celltype_summary_table$cells >= min_cells_per_samplecluster,]
+passed_sample_clusters <- celltype_summary_table.passed$sample_cluster
 ```
 
 ### Samples per contrast.
 
-Ignoring pseodureplicate fovs from a single sample, how many bioloical samples are represented in our filtered table?
+How many bioloical samples are represented in our filtered table?
 
 In this experiment, there are enough samples to run the contrasts for every cell type.
 
@@ -231,10 +220,10 @@ NB: What if you do need to skip constrasts? Often its easiest to count your biol
 
 ## Calculate pseudobulk
 
-Now use the _PseudobulkExpression()_ function to sum up each gene's gene expression across each *fov_cluster*. 
+Now use the _PseudobulkExpression()_ function to sum up each gene's gene expression across each *sample_cluster*. 
 
 ```{r}
-pseudobulk_counts <- PseudobulkExpression(so, assays = "RNA", layer="counts",  method = 'aggregate', group.by = 'fov_cluster')
+pseudobulk_counts <- PseudobulkExpression(so, assays = "RNA", layer="counts",  method = 'aggregate', group.by = 'sample_cluster')
 pseudobulk_counts_matrix <- pseudobulk_counts[["RNA"]]
 
 # Change - back to _. Ideally we'd have neither, but - will cause problems later
@@ -251,25 +240,25 @@ pseudobulk_counts_matrix[1:10,1:4]
 ```
 
 
-Next, filter to only those passed fov_clusters we saw earlier - this filtered table is what we'll use for calculating differential expression.  
+Next, filter to only those passed sample_clusters we saw earlier - this filtered table is what we'll use for calculating differential expression.  
 
-We also need an annotation table to tell us what is in each fov_cluster (sample, celltype, condition...). Build this by filtering the celltype summary table made earlier.
+We also need an annotation table to tell us what is in each sample_cluster (sample, celltype, condition...). Build this by filtering the celltype summary table made earlier.
 
 For convenience we filter it to the same samples, in the same order as the pseudobulk matrix, so we can then use those columns of data to build our differential expression model in the next step. We need to be careful the order remains the same.
 
 ```{r}
 # Filter the pseudobulk table
-pseudobulk_counts_matrix <- pseudobulk_counts_matrix[,passed_fov_clusters]
+pseudobulk_counts_matrix <- pseudobulk_counts_matrix[,passed_sample_clusters]
 
-# And filter the celltype summary into an annotation table for only those fov_clusters
+# And filter the celltype summary into an annotation table for only those sample_clusters
 # pull in relevant annotation in a matched order
 pseudobulk_anno_table <- celltype_summary_table
-match_order <- match(passed_fov_clusters, pseudobulk_anno_table$fov_cluster)
+match_order <- match(passed_sample_clusters, pseudobulk_anno_table$sample_cluster)
 pseudobulk_anno_table <- pseudobulk_anno_table[match_order,]
 
 # Double check that the order of samples in the annotation table matches the pseudobulk table. 
 # If this is wrong then the results will be nonsense!
-stopifnot(all(colnames(pseudobulk_counts_matrix) == pseudobulk_anno_table$fov_cluster  ))
+stopifnot(all(colnames(pseudobulk_counts_matrix) == pseudobulk_anno_table$sample_cluster  ))
 ```
 
 
@@ -299,18 +288,11 @@ How to build the model and run the test will need to be customised for your expe
 In this case the line `model.matrix( ~0 + group)` builds a model where gene expression
 is expected to vary by group (UC/CD/HC). The ~0 part indicates a 'intercept', which is convenient because it means we can include all 3 groups in our contrasts, rather than one of them being treated as the baseline. ( NB: Mathematically, you could use ~group alone without intercept, and define contrasts accordingly to get the same result. )
 
-But, we also need to take into account our individuals. We do this by *blocking* on individual, and calculating a intra duplicate correlation with _duplicateCorrelation()_[@smythUseWithinarrayReplicate2005]. That's a method from microarray times, see [discussion](https://support.bioconductor.org/p/125489/) for how it is applied to bulk RNAseq data.
-
-If instead we didn't have multiple fovs per replicate, can skip blocking or use of duplicateCorrelation(). That is more typical of a typical of a bulk rnaseq or single cell RNAseq pseuobulk analysis.
-
 Some example models:
 
-* **~0 + group, (blocked on individual with using duplicate Correlation)** : Used here, takes into account pseodureplicate fovs from the same samples
-* **~0 + group, (no blocking or duplicate correlation)** : If there was only one pseudoreplicate per individual. Either from a single fov, or from pooling fovs. 
-* **~0 + group + individual (no blocking or duplicate correlation)** : If this was a treatment / time point experiment with paired samples from individuals. But only one pseodureplicate per individual. If there were multiple fovs per tissue sample, you could add blocking and duplicate correlation on tissue ID.
+* **~0 + group ** : One pseudoreplicate per individual.
+* **~0 + group + individual** : If this was a treatment / time point experiment with paired samples from individuals. But only one pseodureplicate per individual. 
 * **~0 + group + celltype** (with or without blocking + duplicate correlation) : Instead of subsetting to celltype, includes cell type in the model. This pulls more data into the stataticacs, but makes building the contrasts challenging! Not covered here.
-
-
 
 
 ```{r}
@@ -324,7 +306,7 @@ for (the_celltype in levels(so$celltype_subset)) {
   # Ensure order remains identical!
   print(the_celltype)
   anno_table.this   <- pseudobulk_anno_table[pseudobulk_anno_table$celltype_subset == the_celltype,]
-  count_matrix.this <- pseudobulk_counts_matrix[,anno_table.this$fov_cluster]
+  count_matrix.this <- pseudobulk_counts_matrix[,anno_table.this$sample_cluster]
 
   
   ## Check for sufficient replicates ##
@@ -353,11 +335,10 @@ for (the_celltype in levels(so$celltype_subset)) {
   # Run Voom
   vm  <- voom(dge, design = design, plot = FALSE)
   
-  # Adding dupliate correlation to use individual fovs, rather than pooled per biosample
-  corrfit <- duplicateCorrelation(vm, design, block=individual_code)
-  fit     <- lmFit(vm, design, correlation = corrfit$consensus, block=individual_code) 
+
 
   # Define and fit contrasts and run ebayes
+  fit <- lmFit(vm, design) 
   contrasts <- makeContrasts(UCvHC  = groupUC - groupHC, 
                              CDvHC  = groupCD - groupHC,
                            levels=coef(fit))
@@ -385,7 +366,7 @@ for (the_celltype in levels(so$celltype_subset)) {
 
 # Join together results for all celltypes, and pull out those with a singificant adjusted p-value
 de_results_all <- bind_rows(de_result_list)
-de_results_sig <- filter(de_results_all, adj.P.Val < 0.01)
+de_results_sig <- filter(de_results_all, adj.P.Val < 0.05)
 ```
 
 
@@ -449,11 +430,11 @@ p1 + p2 + p3
 Its always worth visualising how the expression of your differentially expressed genes really looks, with respect to your experimental design. How best to do this depends on your experiment. 
 
 
-The results suggests that TNFRSF18 was significantly DE between individuals with Ulcerative Colitis and Healthy Controls in plasma cells. As a first step, there's some very convenient seurat plots below;
+The results suggests that TNFRSF13B was significantly DE between individuals with Ulcerative Colitis and Healthy Controls in plasma cells. As a first step, there's some very convenient seurat plots below;
 
 ```{r fig.width=10, fig.height=6}
-p1 <- VlnPlot(subset(so, celltype_subset == "plasmas"), features = "TNFRSF18", group.by = 'group', alpha = 0.1)
-p2 <- FeaturePlot(so, "TNFRSF18", split.by = "group")
+p1 <- VlnPlot(subset(so, celltype_subset == "plasmas"), features = "TNFRSF13B", group.by = 'group', alpha = 0.1)
+p2 <- FeaturePlot(so, "TNFRSF13B", split.by = "group")
 p1 / p2
 ```
 
@@ -466,9 +447,9 @@ dge <- DGEList(pseudobulk_counts_matrix)
 dge <- calcNormFactors(dge)
 norm_pseudobulk <- cpm(dge , log=TRUE) # uses tmm normalisation
 
-# Plot expression for TNFRSF18
-plottable <- cbind(pseudobulk_anno_table, expression = norm_pseudobulk["TNFRSF18",])
-ggplot(plottable, aes(x=individual_code, y=expression, col=condition )) +
+# Plot expression for TNFRSF13B
+plottable <- cbind(pseudobulk_anno_table, expression = norm_pseudobulk["TNFRSF13B",])
+ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
   geom_boxplot(outlier.shape = NA) +
   geom_point() + 
   theme_bw() + 
@@ -478,11 +459,11 @@ ggplot(plottable, aes(x=individual_code, y=expression, col=condition )) +
 ```
 
 
-Compared with IGHG1, which was flagged at differentially expressed across multiple cell types.
+Contrast with PIGR, which was flagged at differentially expressed across multiple cell types. (Though, being a largely epithelial gene, is highest in the epithelia.)
 
 ```{r}
-plottable <- cbind(pseudobulk_anno_table, expression = norm_pseudobulk["IGHG1",])
-ggplot(plottable, aes(x=individual_code, y=expression, col=condition )) +
+plottable <- cbind(pseudobulk_anno_table, expression = norm_pseudobulk["PIGR",])
+ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
   geom_boxplot(outlier.shape = NA) +
   geom_point() + 
   theme_bw() + 
@@ -493,14 +474,18 @@ ggplot(plottable, aes(x=individual_code, y=expression, col=condition )) +
 # Code Snippet
 
 ```{r eval=FALSE}
+
+### REQUIRES TESTING ####
+
+
 library(Seurat)
 library(edgeR)
 library(limma)
 library(tidyverse)
 
 # Set threhoehsolds
-min_reads_per_cell       <- 200
-min_cells_per_fovcluster <- 20
+min_reads_per_cell          <- 200
+min_cells_per_samplecluster <- 50
 
 
 # Remove cells with too few counts
@@ -509,24 +494,24 @@ so <- so[,so$nCount_RNA >= min_reads_per_cell]
 
 # Define pseodoreplicate groups, with all relevant sample annotation
 # remove those with too few cells.
-so$fov_cluster <- paste0(so$fov_name,"_", so$celltype_subset)
+so$sample_cluster <- paste0(so$sample"_", so$celltype_subset)
 celltype_summary_table <- so@meta.data %>% 
-  group_by(condition, group, individual_code, fov_name, celltype_subset, fov_cluster) %>%
+  group_by(condition, group, individual_code, celltype_subset, sample_cluster) %>%
   summarise(cells=n(), .groups = 'drop')
 
 
 ## Calculate pseudobulk 
-pseudobulk_counts <- PseudobulkExpression(so, assays = "RNA", layer="counts",  method = 'aggregate', group.by = 'fov_cluster')
+pseudobulk_counts <- PseudobulkExpression(so, assays = "RNA", layer="counts",  method = 'aggregate', group.by = 'sample_cluster')
 pseudobulk_counts_matrix <- pseudobulk_counts[["RNA"]]
 # Change - back to _. Ideally have neither and skip this step
 colnames(pseudobulk_counts_matrix)<-gsub("-","_",colnames(pseudobulk_counts_matrix))
 
 
-# Determine fov_clusters with enough cells
+# Determine sample_clusters with enough cells
 # Filter both pseudobulk matrix and pseudobulk annotation 
-passed_fov_clusters <- celltype_summary_table$fov_cluster[celltype_summary_table$cells >= min_cells_per_fovcluster]
-pseudobulk_counts_matrix <- pseudobulk_counts_matrix[,passed_fov_clusters]
-pseudobulk_anno_table    <- celltype_summary_table[passed_fov_clusters,]
+passed_sample_clusters <- celltype_summary_table$sample_cluster[celltype_summary_table$cells >= min_cells_per_samplecluster]
+pseudobulk_counts_matrix <- pseudobulk_counts_matrix[,passed_sample_clusters]
+pseudobulk_anno_table    <- celltype_summary_table[passed_sample_clusters,]
 
 
 # Calculate DE across every celltype
@@ -540,7 +525,7 @@ for (the_celltype in levels(so$celltype_subset)) {
   # Ensure order remains identical!
   print(the_celltype)
   anno_table.this   <- pseudobulk_anno_table[pseudobulk_anno_table$celltype_subset == the_celltype,]
-  count_matrix.this <- pseudobulk_counts_matrix[,anno_table.this$fov_cluster]
+  count_matrix.this <- pseudobulk_counts_matrix[,anno_table.this$sample_cluster]
 
   
   ## Check for sufficient replicates ##
@@ -569,11 +554,8 @@ for (the_celltype in levels(so$celltype_subset)) {
   # Run Voom
   vm  <- voom(dge, design = design, plot = FALSE)
   
-  # Adding dupliate correlation to use individual fovs, rather than pooled per biosample
-  corrfit <- duplicateCorrelation(vm, design, block=individual_code)
-  fit     <- lmFit(vm, design, correlation = corrfit$consensus, block=individual_code) 
-
   # Define and fit contrasts and run ebayes
+  fit     <- lmFit(vm, design) 
   contrasts <- makeContrasts(UCvHC  = groupUC - groupHC, 
                              CDvHC  = groupCD - groupHC,
                            levels=coef(fit))
