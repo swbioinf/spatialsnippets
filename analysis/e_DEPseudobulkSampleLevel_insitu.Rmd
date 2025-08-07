@@ -437,7 +437,37 @@ p2 <- FeaturePlot(so, "TNFRSF13B", split.by = "group")
 p1 / p2
 ```
 
-But it gets difficult to summarise data at the single cell level. We can also use the the normalised pseudobulk expression to see how gene expression varies within each fov,individual,celltype and condition - The plot below shows an overview of normalised TNFRSF18 expression across the entire experiment. 
+
+We might also want to seewhat that expression looks like spatially, on some representative groups. Though the changes aren't obvious at this broad level.
+
+```{r fig.width=10, fig.height=5}
+so.sample1 <- so[,so$tissue_sample=='HC_a']
+so.sample2 <- so[,so$tissue_sample=='UC_c']
+p1 <- ImageFeaturePlot(so.sample1, 
+               fov          = 'GSM7473682_HC_a', # see names(so@images)
+               feature      = 'TNFRSF13B', 
+               axes         = TRUE, 
+               border.color = "black", border.size = 0.1, 
+               boundaries   = "segmentation",
+               crop=TRUE,
+               nmols = 10000) 
+p2 <- ImageFeaturePlot(so.sample2, 
+               fov          = 'GSM7473687_UC_c', # 'GSM7473686_UC_b', # see names(so@images)
+               feature      = 'TNFRSF13B', 
+               axes         = TRUE, 
+               border.color = "black", border.size = 0.1, 
+               boundaries   = "segmentation",
+               crop=TRUE,
+               nmols = 10000) 
+
+plot(p1)
+plot(p2)
+```
+
+
+But it gets difficult to summarise see the changes in either of those. 
+
+We can also use the the normalised pseudobulk expression to see how gene expression varies within each fov,individual,celltype and condition - The plot below shows an overview of normalised TNFRSF18 expression across the entire experiment. 
 
 ```{r}
 # Get tmm normalised coutns for all pseudobulk
@@ -469,6 +499,7 @@ ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
   theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
   facet_wrap(~celltype_subset) 
 ```
+
 
 # Code Snippet
 

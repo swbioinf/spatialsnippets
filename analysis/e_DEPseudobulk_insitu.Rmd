@@ -500,6 +500,15 @@ seurat_file_01_generic <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_gen
 so <- readRDS(seurat_file_01_generic)
 ```
 
+Metadata coloumns used:
+
+* **nCount_RNA**  : Counts per cell
+* **sample** : The unique identifier of each tissue sample
+* **cluster** : The column containing the clusters to test condition within. Test repeated for element within column. May be cluster, cellype, niche or other cell-grouping of interest. 
+* **group** : Column containing experimental groups (e.g. condition, treatment group)
+* **fov** : column containing the cosmx 'fov' number (not the suerat FOV which corresponds to the whole slide). 
+
+
 ```{r eval=FALSE}
 library(Seurat)
 library(edgeR)
