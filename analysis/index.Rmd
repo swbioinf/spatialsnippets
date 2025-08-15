@@ -12,7 +12,6 @@ bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 Below is a sampler of tests that can be performed on an in-situ single cell spatial datasets. Each example presents just one way of doing things - there are many, many other approaches! These are simply a starting point.
 
 
-
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
 library(reactable)
 library(htmltools)
