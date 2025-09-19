@@ -14,7 +14,7 @@
 
 <title>Spatially resticted genes</title>
 
-<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -44,8 +44,8 @@
 <script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
 <link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
 <script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -400,413 +400,6 @@ div.tocify {
 </div>
 
 
-<p>
-<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span>
-</button>
-</p>
-<div id="workflowr-report" class="collapse">
-<ul class="nav nav-tabs">
-<li class="active">
-<a data-toggle="tab" href="#summary">Summary</a>
-</li>
-<li>
-<a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
-</li>
-<li>
-<a data-toggle="tab" href="#versions">Past versions</a>
-</li>
-</ul>
-<div class="tab-content">
-<div id="summary" class="tab-pane fade in active">
-<p>
-<strong>Last updated:</strong> 2024-11-02
-</p>
-<p>
-<strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
-</p>
-<p>
-<strong>Knit directory:</strong> <code>spatialsnippets/</code> <span
-class="glyphicon glyphicon-question-sign" aria-hidden="true"
-title="This is the local directory in which the code in this file was executed.">
-</span>
-</p>
-<p>
-This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
-analysis was created with <a
-  href="https://github.com/workflowr/workflowr">workflowr</a> (version
-1.7.1). The <em>Checks</em> tab describes the reproducibility checks
-that were applied when the results were created. The <em>Past
-versions</em> tab lists the development history.
-</p>
-<hr>
-</div>
-<div id="checks" class="tab-pane fade">
-<div id="workflowr-checks" class="panel-group">
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
-</p>
-</div>
-<div id="strongRMarkdownfilestronguptodate"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
-</p>
-</div>
-<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great job! The global environment was empty. Objects defined in the
-global environment can affect the analysis in your R Markdown file in
-unknown ways. For reproduciblity it’s best to always run the code in an
-empty environment.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20231017code">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Seed:</strong>
-<code>set.seed(20231017)</code> </a>
-</p>
-</div>
-<div id="strongSeedstrongcodesetseed20231017code"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>The command <code>set.seed(20231017)</code> was run prior to running
-the code in the R Markdown file. Setting a seed ensures that any results
-that rely on randomness, e.g. subsampling or permutations, are
-reproducible.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Session information:</strong>
-recorded </a>
-</p>
-</div>
-<div id="strongSessioninformationstrongrecorded"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great job! Recording the operating system, R version, and package
-versions is critical for reproducibility.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Cache:</strong> none </a>
-</p>
-</div>
-<div id="strongCachestrongnone" class="panel-collapse collapse">
-<div class="panel-body">
-<p>Nice! There were no cached chunks for this analysis, so you can be
-confident that you successfully produced the results during this
-run.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
-</p>
-</div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr
-project makes it easier to run your code on other machines.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree17499500a37463101db790d7b17b694442edabfetargetblank1749950a">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/17499500a37463101db790d7b17b694442edabfe" target="_blank">1749950</a>
-</a>
-</p>
-</div>
-<div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree17499500a37463101db790d7b17b694442edabfetargetblank1749950a"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>
-Great! You are using Git for version control. Tracking code development
-and connecting the code version to the results is critical for
-reproducibility.
-</p>
-<p>
-The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/17499500a37463101db790d7b17b694442edabfe" target="_blank">1749950</a>.
-See the <em>Past versions</em> tab to see a history of the changes made
-to the R Markdown and HTML files.
-</p>
-<p>
-Note that you need to be careful to ensure that all relevant files for
-the analysis have been committed to Git prior to generating the results
-(you can use <code>wflow_publish</code> or
-<code>wflow_git_commit</code>). workflowr only checks the R Markdown
-file, but you know if there are other scripts or data files that it
-depends on. Below is the status of the Git repository when the results
-were generated:
-</p>
-<pre><code>
-Ignored files:
-    Ignored:    .Rhistory
-    Ignored:    .Rproj.user/
-    Ignored:    analysis/contributions.nb.html
-    Ignored:    analysis/e_neighbourcellchanges.nb.html
-    Ignored:    analysis/e_spatiallyRestrictedGenesVoyager.nb.html
-    Ignored:    analysis/g_toolkits.nb.html
-    Ignored:    analysis/glossary.nb.html
-    Ignored:    renv/library/
-    Ignored:    renv/staging/
-
-Untracked files:
-    Untracked:  code/scwat-at_betweenClusters_heterotypic_score_functions.R
-    Untracked:  other/
-
-</code></pre>
-<p>
-Note that any generated files, e.g. HTML, png, CSS, etc., are not
-included in this status report because it is ok for generated content to
-have uncommitted changes.
-</p>
-</div>
-</div>
-</div>
-</div>
-<hr>
-</div>
-<div id="versions" class="tab-pane fade">
-
-<p>
-These are the previous versions of the repository in which changes were
-made to the R Markdown
-(<code>analysis/e_spatiallyRestrictedGenes.Rmd</code>) and HTML
-(<code>docs/e_spatiallyRestrictedGenes.html</code>) files. If you’ve
-configured a remote Git repository (see <code>?wflow_git_remote</code>),
-click on the hyperlinks in the table below to view the files as they
-were in that past version.
-</p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/17499500a37463101db790d7b17b694442edabfe/analysis/e_spatiallyRestrictedGenes.Rmd" target="_blank">1749950</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-11-02
-</td>
-<td>
-wflow_publish("analysis/")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/b9d1fcb91fcd2bcce32aabd75e8bdd6b60d4503a/docs/e_spatiallyRestrictedGenes.html" target="_blank">b9d1fcb</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-11-01
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/da09a66f0eaa5bf6bbb0dd4a4c73d417dca6b8a2/analysis/e_spatiallyRestrictedGenes.Rmd" target="_blank">da09a66</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-11-01
-</td>
-<td>
-wflow_publish("analysis")
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/0ce06a8fe9e3d0354b4cca882c8978ff95d0f1bf/docs/e_spatiallyRestrictedGenes.html" target="_blank">0ce06a8</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-11-01
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/6cf65ff5b2702f1ec8a3209fffb576099129462a/analysis/e_spatiallyRestrictedGenes.Rmd" target="_blank">6cf65ff</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-11-01
-</td>
-<td>
-wflow_publish("analysis/e_spatiallyRestrictedGenes.Rmd")
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/45cde50463b2e404d922760981ea284008526769/analysis/e_spatiallyRestrictedGenes.Rmd" target="_blank">45cde50</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-10-28
-</td>
-<td>
-adding halfbuilt files
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/4e21b4e777c143f6fb9229d92b13c68a7af1e1ff/docs/e_spatiallyRestrictedGenes.html" target="_blank">4e21b4e</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-07-03
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/a10809a605c50889944f135d7f139d35f3acbde0/analysis/e_spatiallyRestrictedGenes.Rmd" target="_blank">a10809a</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-07-03
-</td>
-<td>
-wflow_publish("analysis/e_spatiallyRestrictedGenes.Rmd")
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/fd64e3009d2a3284f3a5e43d572c953497246b13/analysis/e_spatiallyRestrictedGenes.Rmd" target="_blank">fd64e30</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-06-18
-</td>
-<td>
-new plots
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<hr>
-</div>
-</div>
-</div>
 <div id="overview" class="section level1">
 <h1>Overview</h1>
 <p>It is possible to test for genes that are expressed in a non-random
@@ -867,9 +460,17 @@ cells</li>
 # install.packages(&#39;Rfast2&#39;)
 # install.packages(&#39;ape&#39;)
 
+
 library(Seurat)
 library(tidyverse)
-library(DT)</code></pre>
+library(DT)
+
+
+# Certain stps may result in error:
+#Error in getGlobalsAndPackages(expr, envir = envir, globals = globals) : 
+#  The total size of the 14 globals exported for future expression (‘FUN()’) is 1.21 GiB.. This exceeds the maximum allowed size of 500.00 MiB (option &#39;future.globals.maxSize&#39;). The three largest globals are ‘FUN’ (824.48 MiB of class ‘function’), ‘x’ (411.83 MiB of class ‘list’) and ‘over’ (940.20 KiB of class ‘function’)
+# this can be fixed by increaseing the future.globals.maxsize variable (to an acceptable amount of ram)
+options(future.globals.maxSize= 5*1024^3) # Set to 5Gb</code></pre>
 <p>And load the preprocessed Seurat object.</p>
 <pre class="r"><code>dataset_dir      &lt;- &#39;~/projects/spatialsnippets/datasets/GSE263793_Mallach2024_AlzPlaque/processed_data/&#39;
 seurat_file_01_preprocessed &lt;- file.path(dataset_dir,  &quot;GSE263793_AlzPlaque_seurat_01_preprocessed.RDS&quot;)
@@ -887,7 +488,7 @@ features are unlikely to be spatially restricted.</p>
 features. The actual number for a real experiment could be judged from
 the variable features plot below, e.g. 100-200-2000 (or whatever you use
 for PCA - it really depends on your panel!).</p>
-<pre class="r"><code>num_variable_features = 10 # Test only! Should be much larger.
+<pre class="r"><code>num_variable_features = 30 # Test only! Should be much larger. Consider using all your VariableFeatures used for UMAPs, et.c.
 so &lt;-  FindVariableFeatures(so, nfeatures=num_variable_features)
 VariableFeaturePlot(so)</code></pre>
 <p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
@@ -945,36 +546,61 @@ particularly noticeable on a panel of many small cores.</p>
   features = VariableFeatures(so.sample),    
   selection.method = &quot;moransi&quot;,
   layer = &quot;counts&quot;)</code></pre>
+<!-- ### OLD BUG -->
+<!-- However, right now, there is a bug with the current FindSpatiallyVariableFeatures function, described [here](https://github.com/satijalab/seurat/issues/8226). Likely that issue will be closed when this is fixed! -->
+<!-- If you see the following error - try a workaround, using a customised version of this that avoids the issue in this dataset. The custom version, may be found [here](https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R) -->
+<!-- ``` -->
+<!-- Error in `LayerData<-`: -->
+<!-- ! 'layer' must be a single non-empty string -->
+<!-- ``` -->
+<!-- The adjusted function is called as: -->
+<!-- ```{r} -->
+<!-- # Workaround  -->
+<!-- # Available: https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R -->
+<!-- source("code/spatially_variable_features_code.R") -->
+<!-- so.sample <- FindSpatiallyVariableFeatures.Seurat_EDITED( -->
+<!--   so.sample,  -->
+<!--   assay = "RNA",  -->
+<!--   features = VariableFeatures(so.sample),     -->
+<!--   selection.method = "moransi", -->
+<!--   layer = "counts") -->
+<!-- ``` -->
 <p>However, right now, there is a bug with the current
-FindSpatiallyVariableFeatures function, described <a
-href="https://github.com/satijalab/seurat/issues/8226">here</a>. Likely
-that issue will be closed when this is fixed!</p>
-<p>If you see the following error - try a workaround, using a customised
-version of this that avoids the issue in this dataset. The custom
-version, may be found <a
-href="https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R">here</a></p>
-<pre><code>Error in `LayerData&lt;-`:
-! &#39;layer&#39; must be a single non-empty string</code></pre>
-<p>The adjusted function is called as:</p>
-<pre class="r"><code># Workaround 
-# Available: https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R
-source(&quot;code/spatially_variable_features_code.R&quot;)
-so.sample &lt;- FindSpatiallyVariableFeatures.Seurat_EDITED(
-  so.sample, 
-  assay = &quot;RNA&quot;, 
-  features = VariableFeatures(so.sample),    
+<em>FindSpatiallyVariableFeatures()</em> function with this dataset. If
+you find the R code segfaults (ie. R exits entirely) with the message
+“<em>address (nil), cause ‘memory not mapped’</em>”, consider the
+workaroudn below. Also, check issue ticket <a
+href="https://github.com/satijalab/seurat/issues/10099">here</a>, it may
+be fixed.</p>
+<pre class="r"><code>so.sample.assay &lt;- so.sample[[&#39;RNA&#39;]]
+# Or equivalently
+# so.sample.assay &lt;- GetAssay(so.sample, &quot;RNA&quot;)
+
+# Make sure that the rownames of the coordinate table is the cell names
+# Might not occur for certain types of data.
+tc &lt;- GetTissueCoordinates(so.sample)
+rownames(tc)&lt;- tc$cell
+
+# When given an &#39;assay&#39; FindSpatiallyVariableFeatures returns an assay. Put it back in the seurat object.
+so.sample[[&#39;RNA&#39;]] &lt;- FindSpatiallyVariableFeatures(
+  so.sample.assay,
+  layer = &quot;scale.data&quot;,
+  spatial.location = tc,
+  features = VariableFeatures(so.sample),
   selection.method = &quot;moransi&quot;,
-  layer = &quot;counts&quot;)</code></pre>
-<pre><code>[1] &quot;&gt;&gt;&gt;&gt; USING EDITED FUNCTION!!!! &lt;&lt;&lt;&quot;</code></pre>
-<p><em>FindSpatiallyVariableFeatures()</em> should return a seurat
-object with the moransI scores embedded in the feature metatdata of the
-‘RNA’ assay.</p>
+  nfeatures=10 # mark top 10 spatially variable
+  )</code></pre>
+</div>
+<div id="resume" class="section level3">
+<h3>Resume</h3>
+<p>Now we have a a seurat object with the moransI scores embedded in the
+feature metatdata of the ‘RNA’ assay.</p>
 <pre class="r"><code>gene_metadata &lt;- so.sample[[&quot;RNA&quot;]]@meta.data
 #NB: This is geme metadata, different to the usual *cell* metadata found at so.sample@meta.data
 # so.sample[[&#39;RNA&#39;]]  retreives the &#39;RNA&#39; assay.
 DT::datatable(head(gene_metadata), width=&#39;100%&#39;)</code></pre>
-<div id="htmlwidget-90b70f07a5c348cdd0a6" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-90b70f07a5c348cdd0a6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["Chrna4","Slc6a1","Cd109","Ldha","Aldoc","Drd1"],["RNAProbe","RNAProbe","RNAProbe","RNAProbe","RNAProbe","RNAProbe"],[20278,41055,8140,35695,188086,8103],[0.4703017371338451,0.9521766356657467,0.1887886448500591,0.8278637196465432,4.362223716863418,0.1879305146461952],[0.5198235818514522,1.07159949326702,0.1891803124853376,0.9039084127058603,5.650448083329423,0.1967343874630507],[1.199130749655941,5.429370269015958,0.2345732441844675,1.546603060680439,82.24698940600416,0.3816672632022888],[0.9334658184326288,2.594828661199474,0.2615785654487797,2.099963124092061,45.11653708903471,0.2750117479755442],[1.284600599162089,2.092381030856228,0.8967601905072201,0.7364905806853842,1.822989854999171,1.387821669481007],[false,false,false,false,false,false],[null,null,null,null,null,null],[0.3660380970613573,0.856705274241409,0.1915861012730928,0.7687852972145114,3.182684024121758,0.1817746721546856],[0.6582367603347562,4.07107526880193,0.2393184720530114,1.187479144729904,24.537390278082,0.2636107689253243],[0.6134307422177253,1.927255109491727,0.2619282154153541,1.710812015747839,17.2546218750321,0.245481816291253],[1.073041690012283,2.112369685129758,0.9136796189502528,0.6941026447087406,1.422076383695691,1.07385049087524],[false,false,false,false,false,false],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>feature<\/th>\n      <th>CodeClass<\/th>\n      <th>total_count_unfiltered<\/th>\n      <th>mean_count_unfiltered<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_mean<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_variance<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_variance.expected<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_variance.standardized<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_variable<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_rank<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_mean<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_variance<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_variance.expected<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_variance.standardized<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_variable<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_rank<\/th>\n      <th>var.features<\/th>\n      <th>var.features.rank<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,5,6,7,8,10,11,12,13,14,16,18,19,20,22]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"feature","targets":1},{"name":"CodeClass","targets":2},{"name":"total_count_unfiltered","targets":3},{"name":"mean_count_unfiltered","targets":4},{"name":"vf_vst_counts.AD2.AD3.CosMx_mean","targets":5},{"name":"vf_vst_counts.AD2.AD3.CosMx_variance","targets":6},{"name":"vf_vst_counts.AD2.AD3.CosMx_variance.expected","targets":7},{"name":"vf_vst_counts.AD2.AD3.CosMx_variance.standardized","targets":8},{"name":"vf_vst_counts.AD2.AD3.CosMx_variable","targets":9},{"name":"vf_vst_counts.AD2.AD3.CosMx_rank","targets":10},{"name":"vf_vst_counts.AD4.AD5.CosMx_mean","targets":11},{"name":"vf_vst_counts.AD4.AD5.CosMx_variance","targets":12},{"name":"vf_vst_counts.AD4.AD5.CosMx_variance.expected","targets":13},{"name":"vf_vst_counts.AD4.AD5.CosMx_variance.standardized","targets":14},{"name":"vf_vst_counts.AD4.AD5.CosMx_variable","targets":15},{"name":"vf_vst_counts.AD4.AD5.CosMx_rank","targets":16},{"name":"var.features","targets":17},{"name":"var.features.rank","targets":18},{"name":"MoransI_observed","targets":19},{"name":"MoransI_p.value","targets":20},{"name":"moransi.spatially.variable","targets":21},{"name":"moransi.spatially.variable.rank","targets":22}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1c7c3df6597d5f4c2d66" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1c7c3df6597d5f4c2d66">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["Chrna4","Slc6a1","Cd109","Ldha","Aldoc","Drd1"],["RNAProbe","RNAProbe","RNAProbe","RNAProbe","RNAProbe","RNAProbe"],[20278,41055,8140,35695,188086,8103],[0.4703017371338451,0.9521766356657467,0.1887886448500591,0.8278637196465432,4.362223716863418,0.1879305146461952],[0.5198235818514522,1.07159949326702,0.1891803124853376,0.9039084127058603,5.650448083329423,0.1967343874630507],[1.199130749655941,5.429370269015958,0.2345732441844675,1.546603060680439,82.24698940600416,0.3816672632022888],[0.9334658184326288,2.594828661199474,0.2615785654487797,2.099963124092061,45.11653708903471,0.2750117479755442],[1.284600599162089,2.092381030856228,0.8967601905072201,0.7364905806853842,1.822989854999171,1.387821669481007],[false,false,false,false,false,false],[null,null,null,null,null,null],[0.3660380970613573,0.856705274241409,0.1915861012730928,0.7687852972145114,3.182684024121758,0.1817746721546856],[0.6582367603347562,4.07107526880193,0.2393184720530114,1.187479144729904,24.537390278082,0.2636107689253243],[0.6134307422177253,1.927255109491727,0.2619282154153541,1.710812015747839,17.2546218750321,0.245481816291253],[1.073041690012283,2.112369685129758,0.9136796189502528,0.6941026447087406,1.422076383695691,1.07385049087524],[false,false,false,false,false,false],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null],[null,null,null,null,null,null]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>feature<\/th>\n      <th>CodeClass<\/th>\n      <th>total_count_unfiltered<\/th>\n      <th>mean_count_unfiltered<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_mean<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_variance<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_variance.expected<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_variance.standardized<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_variable<\/th>\n      <th>vf_vst_counts.AD2.AD3.CosMx_rank<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_mean<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_variance<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_variance.expected<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_variance.standardized<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_variable<\/th>\n      <th>vf_vst_counts.AD4.AD5.CosMx_rank<\/th>\n      <th>var.features<\/th>\n      <th>var.features.rank<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,5,6,7,8,10,11,12,13,14,16,18,19,20,22]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"feature","targets":1},{"name":"CodeClass","targets":2},{"name":"total_count_unfiltered","targets":3},{"name":"mean_count_unfiltered","targets":4},{"name":"vf_vst_counts.AD2.AD3.CosMx_mean","targets":5},{"name":"vf_vst_counts.AD2.AD3.CosMx_variance","targets":6},{"name":"vf_vst_counts.AD2.AD3.CosMx_variance.expected","targets":7},{"name":"vf_vst_counts.AD2.AD3.CosMx_variance.standardized","targets":8},{"name":"vf_vst_counts.AD2.AD3.CosMx_variable","targets":9},{"name":"vf_vst_counts.AD2.AD3.CosMx_rank","targets":10},{"name":"vf_vst_counts.AD4.AD5.CosMx_mean","targets":11},{"name":"vf_vst_counts.AD4.AD5.CosMx_variance","targets":12},{"name":"vf_vst_counts.AD4.AD5.CosMx_variance.expected","targets":13},{"name":"vf_vst_counts.AD4.AD5.CosMx_variance.standardized","targets":14},{"name":"vf_vst_counts.AD4.AD5.CosMx_variable","targets":15},{"name":"vf_vst_counts.AD4.AD5.CosMx_rank","targets":16},{"name":"var.features","targets":17},{"name":"var.features.rank","targets":18},{"name":"MoransI_observed","targets":19},{"name":"MoransI_p.value","targets":20},{"name":"moransi.spatially.variable","targets":21},{"name":"moransi.spatially.variable.rank","targets":22}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 <p>The whole gene-metadata includes other columns, and in fact the
 columns we are interested in only have values for the ‘variable’ genes
 that we tested. So, make a summary table with just the relevant
@@ -986,15 +612,15 @@ data.</p>
   arrange(moransi.spatially.variable.rank)
   
 DT::datatable(gene_metadata_morans, width = &#39;100%&#39;)</code></pre>
-<div id="htmlwidget-fcbdfde5eeb925643261" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-fcbdfde5eeb925643261">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10"],["Ptgds","Penk","Drd4","Lilra5","Vtn","Acta2","Cnr1","Ttr","Sst","Npy"],[0.3229695055639554,0.1590561524926949,0.08720462499499981,0.08718933646160711,0.05282752140827351,0.02569336530082773,0.02362886716393527,0.01266743839515891,0.04844601413882734,0.01902939103935176],[0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.001951219512195122,0.001951219512195122],[true,true,true,true,true,true,true,true,true,true],[1,2,3,4,5,6,7,8,9,10]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>feature<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"feature","targets":1},{"name":"MoransI_observed","targets":2},{"name":"MoransI_p.value","targets":3},{"name":"moransi.spatially.variable","targets":4},{"name":"moransi.spatially.variable.rank","targets":5}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-aebaa78d3aa0440cf777" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-aebaa78d3aa0440cf777">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"],["Ptgds","Apod","Vtn","Vim","Ctsd","Penk","Cst7","Rims1","Sst","Nnat","C1qc","Ctss","Cd74","Lilra5","Gad1","Drd4","C1qa","H2-Aa","Cnr1","Npy","Calb2","Myl9","Gad2","Pvalb","Tagln","Acta2","Spp1","Gpr17","Ttr","Vip"],[0.2791514595465751,0.2647512389873998,0.1608297333152247,0.156031564853461,0.1358804617832294,0.1267589887303113,0.1215085363930231,0.1154555421171841,0.1119583842976517,0.1117549130509003,0.1074284676527031,0.107270982698591,0.105961348242481,0.1028400893852252,0.1006799279829889,0.095940733724853,0.08486186451168312,0.07197783284013808,0.06574396375653166,0.05414780103450433,0.05290987026530136,0.04518518486314733,0.03873182182940033,0.03646427998019523,0.03026986122262887,0.02849167939514811,0.02048600280499146,0.01632887619431922,0.007997309470952762,0.004644989367391512],[0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.007804878048780488,0.1131707317073171],[true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>feature<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"feature","targets":1},{"name":"MoransI_observed","targets":2},{"name":"MoransI_p.value","targets":3},{"name":"moransi.spatially.variable","targets":4},{"name":"moransi.spatially.variable.rank","targets":5}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 </div>
 <div id="plot-results" class="section level3">
 <h3>Plot results</h3>
 <p>We can pull out the most significant genes from that table.</p>
 <pre class="r"><code>top_genes = gene_metadata_morans$feature[1:3]
 top_genes</code></pre>
-<pre><code>[1] &quot;Ptgds&quot; &quot;Penk&quot;  &quot;Drd4&quot; </code></pre>
+<pre><code>[1] &quot;Ptgds&quot; &quot;Apod&quot;  &quot;Vtn&quot;  </code></pre>
 <p>Here we are plotting the top 3 genes on that slide. Each has a
 different but clear reasons for being spatially restricted. Ptgds and
 Penk seem to be restricted to specific regions of the tissue. Wherease
@@ -1078,14 +704,29 @@ for (the_sample in samples) {
   
   # Again, this should be: 
   #so.sample &lt;- FindSpatiallyVariableFeatures(
-  so.sample &lt;- FindSpatiallyVariableFeatures.Seurat_EDITED(
-    so.sample, 
-    assay = &quot;RNA&quot;, 
-    features = VariableFeatures(so.sample),    
+  #  so.sample, 
+  #  assay = &quot;RNA&quot;, 
+  #  features = VariableFeatures(so.sample),    
+  #  selection.method = &quot;moransi&quot;,
+  #  layer = &quot;counts&quot;
+  #)
+  
+  # Workaround running FindSpatiallyVariableFeatures at the assay level
+  so.sample.assay &lt;- so.sample[[&#39;RNA&#39;]]
+  tc &lt;- GetTissueCoordinates(so.sample)
+  rownames(tc)&lt;- tc$cell
+  
+  # When given an &#39;assay&#39; FindSpatiallyVariableFeatures returns an assay. Put it back in the seurat object.
+  so.sample[[&#39;RNA&#39;]] &lt;- FindSpatiallyVariableFeatures(
+    so.sample.assay,
+    layer = &quot;scale.data&quot;,
+    spatial.location = tc,
+    features = VariableFeatures(so.sample),
     selection.method = &quot;moransi&quot;,
-    layer = &quot;counts&quot;
-  )
-
+    nfeatures=10 # mark top 10 spatially variable
+    )
+  # --- end workaround
+  
   gene_metadata &lt;- so.sample[[&quot;RNA&quot;]]@meta.data
   results &lt;- 
   select(gene_metadata, 
@@ -1101,27 +742,24 @@ for (the_sample in samples) {
 
   
   results_list[[the_sample]] &lt;- results
-}</code></pre>
-<pre><code>[1] &quot;&gt;&gt;&gt;&gt; USING EDITED FUNCTION!!!! &lt;&lt;&lt;&quot;
-[1] &quot;&gt;&gt;&gt;&gt; USING EDITED FUNCTION!!!! &lt;&lt;&lt;&quot;
-[1] &quot;&gt;&gt;&gt;&gt; USING EDITED FUNCTION!!!! &lt;&lt;&lt;&quot;
-[1] &quot;&gt;&gt;&gt;&gt; USING EDITED FUNCTION!!!! &lt;&lt;&lt;&quot;</code></pre>
-<pre class="r"><code>results_all &lt;- bind_rows(results_list)</code></pre>
+}
+
+results_all &lt;- bind_rows(results_list)</code></pre>
 <p>Display results for variable genes</p>
 <pre class="r"><code>DT::datatable(results_all, width=&#39;100%&#39;) </code></pre>
-<div id="htmlwidget-423a02c40977061eb4d3" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-423a02c40977061eb4d3">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40"],["sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4"],["Ptgds","Penk","Drd4","Lilra5","Vtn","Acta2","Cnr1","Ttr","Sst","Npy","Ttr","Penk","Ptgds","Lilra5","Drd4","Acta2","Cnr1","Sst","Npy","Vtn","Ttr","Penk","Ptgds","Lilra5","Drd4","Acta2","Sst","Vtn","Cnr1","Npy","Ttr","Ptgds","Drd4","Penk","Lilra5","Acta2","Sst","Npy","Cnr1","Vtn"],[0.3229695055639554,0.1590561524926949,0.08720462499499981,0.08718933646160711,0.05282752140827351,0.02569336530082773,0.02362886716393527,0.01266743839515891,0.04844601413882734,0.01902939103935176,0.3728454799388959,0.1466038049287352,0.1224925545450483,0.09091210714592868,0.08363449281579936,0.03678956364445252,0.0277001335719391,0.02115759343775087,0.01988063216026358,0.01278082783592561,0.5195494965118608,0.1511118241235551,0.1425199586828255,0.09155962979698748,0.08776290200400122,0.05324483809413939,0.0414617262356598,0.03179844426917366,0.03079903927019299,0.02070981737900819,0.6042436378674948,0.1254127115631302,0.1087605254637382,0.1034361004316954,0.1017928004816937,0.05254541191339321,0.033958104426764,0.03103475845295824,0.0243497538943351,0.02054798872420385],[0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.001951219512195122,0.001951219512195122,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561],[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],[1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sample<\/th>\n      <th>feature<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sample","targets":1},{"name":"feature","targets":2},{"name":"MoransI_observed","targets":3},{"name":"MoransI_p.value","targets":4},{"name":"moransi.spatially.variable","targets":5},{"name":"moransi.spatially.variable.rank","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
-<p>Ttr had a much higher Moran’s I in sample4 than sample1. Plotting its
-distribution in both demonstrates the difference - there’s a very high
-expression region in sample4 not seen in sample1.</p>
-<pre class="r"><code>ImageDimPlot(
-  subset( so, subset = sample == &#39;sample1&#39;),  
-             fov          = &quot;AD2.AD3.CosMx&quot;,
-             molecules    = &#39;Ttr&#39;, 
-             group.by     = &#39;sample&#39;, cols = c(&quot;grey30&quot;), # Make all cells grey.
-             boundaries   = &quot;segmentation&quot;,
-             border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
-<p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-13-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<div id="htmlwidget-edf89941762df552bb3c" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-edf89941762df552bb3c">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120"],["sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4"],["Ptgds","Apod","Vtn","Vim","Ctsd","Penk","Cst7","Rims1","Sst","Nnat","C1qc","Ctss","Cd74","Lilra5","Gad1","Drd4","C1qa","H2-Aa","Cnr1","Npy","Calb2","Myl9","Gad2","Pvalb","Tagln","Acta2","Spp1","Gpr17","Ttr","Vip","Ttr","Apod","Ptgds","Nnat","Penk","Rims1","Vim","Gad1","Gad2","Lilra5","Pvalb","Drd4","Ctsd","Cst7","Ctss","C1qc","Cd74","C1qa","Cnr1","H2-Aa","Sst","Calb2","Acta2","Vtn","Spp1","Npy","Tagln","Myl9","Gpr17","Vip","Ttr","Calb2","Nnat","Apod","Ptgds","Gad1","Penk","Pvalb","Vim","Cd74","Rims1","Ctsd","Cnr1","Cst7","H2-Aa","Ctss","C1qc","Lilra5","Sst","Gad2","C1qa","Drd4","Vtn","Spp1","Tagln","Acta2","Npy","Myl9","Vip","Gpr17","Ttr","Nnat","Calb2","Apod","Ptgds","Vim","Penk","Lilra5","Ctsd","Gad1","Drd4","Rims1","Cst7","Ctss","C1qc","C1qa","Cnr1","Sst","Cd74","Pvalb","Vtn","Acta2","Gad2","Npy","Tagln","Spp1","Myl9","H2-Aa","Gpr17","Vip"],[0.2791514595465751,0.2647512389873998,0.1608297333152247,0.156031564853461,0.1358804617832294,0.1267589887303113,0.1215085363930231,0.1154555421171841,0.1119583842976517,0.1117549130509003,0.1074284676527031,0.107270982698591,0.105961348242481,0.1028400893852252,0.1006799279829889,0.095940733724853,0.08486186451168312,0.07197783284013808,0.06574396375653166,0.05414780103450433,0.05290987026530136,0.04518518486314733,0.03873182182940033,0.03646427998019523,0.03026986122262887,0.02849167939514811,0.02048600280499146,0.01632887619431922,0.007997309470952762,0.004644989367391512,0.5602615437260782,0.2224416059182948,0.2033078488225802,0.1667141176866905,0.1663773279266557,0.1488336569032409,0.1202323086586946,0.1201423316639522,0.1162519980691941,0.11541397520215,0.1082818192110274,0.1020935038108373,0.1017462472045144,0.09662157499283143,0.09424688113451327,0.09254120743210219,0.08991156253306333,0.08724011594698387,0.07804422082253085,0.06503827984559944,0.06229303229816301,0.05639371921660282,0.04772301615690359,0.04463534622314307,0.03636492270381628,0.0342798376027347,0.03035366038557551,0.02577727598077402,0.01363784944038379,0.01250768350701217,0.5732605027153428,0.2857339998344249,0.262564087320589,0.2324739725979255,0.1942286602301289,0.1538728414512635,0.1450239688169085,0.1339032581098657,0.1236672182223258,0.1113120921699836,0.1034812252988173,0.09457488683649526,0.09163472968303898,0.08858561589927361,0.08788185662672532,0.08783412850496101,0.08551302969334276,0.08520321388098683,0.08276149264665442,0.08254365232976948,0.08066591041002055,0.06938200830646789,0.0674908025836618,0.05268519595381781,0.05162340328842772,0.049816593246063,0.04349050393108235,0.03840044785560229,0.01442573009600202,0.007872195289188644,0.3120419514622916,0.2851245818567024,0.2648480645101793,0.2592546099972919,0.210155670491002,0.1942045081992709,0.1265912880443676,0.1243665051552116,0.1192949595003706,0.115341837758045,0.1142256663630354,0.1118530320389475,0.1063477340801568,0.1027712203630057,0.1025621690992159,0.1005871313520487,0.08926224685608204,0.0799673539801091,0.07631753162925672,0.07344434052054159,0.06973843188514617,0.06762603447385047,0.05192507318868694,0.05021664002015423,0.0459583078226337,0.0444529262024547,0.03668919017237728,0.03429410701056056,0.01531134199922614,0.007303958318709044],[0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.007804878048780488,0.1131707317073171,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561],[true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sample<\/th>\n      <th>feature<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sample","targets":1},{"name":"feature","targets":2},{"name":"MoransI_observed","targets":3},{"name":"MoransI_p.value","targets":4},{"name":"moransi.spatially.variable","targets":5},{"name":"moransi.spatially.variable.rank","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<p>Plot some of the moransI scores. We should keep in mind that the
+shape of the tissue itself limits where the targest can fall, but some
+genes are clearly more spatially restricted than others.</p>
+<pre class="r"><code># unique set of genes that were top 10 morans in any sample
+plot_genes &lt;- filter(results_all, moransi.spatially.variable.rank &lt;= 10) %&gt;% pull(feature) %&gt;% unique()
+ggplot(filter(results_all, feature %in% plot_genes), aes(x=feature, y=MoransI_observed)) +
+  geom_boxplot() +
+  geom_point( mapping=aes(col=sample)) +
+  theme_bw() +
+  ggtitle(&quot;MoransI Per sample&quot;)</code></pre>
+<p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
 Past versions of unnamed-chunk-13-1.png
@@ -1159,20 +797,26 @@ swbioinf
 </table>
 </div>
 </div>
+</div>
+<div id="check-an-example" class="section level2">
+<h2>Check an example</h2>
+<p>Ttr had a much higher Moran’s I in sample4 than sample1. Plotting its
+distribution in both demonstrates the difference - there’s a very high
+expression region in sample4 not seen in sample1.</p>
 <pre class="r"><code>ImageDimPlot(
-  subset( so, subset = sample == &#39;sample4&#39;),  
-             fov          = &quot;AD4.AD5.CosMx&quot;, # note the slide it is on.
+  subset( so, subset = sample == &#39;sample1&#39;),  
+             fov          = &quot;AD2.AD3.CosMx&quot;,
              molecules    = &#39;Ttr&#39;, 
              group.by     = &#39;sample&#39;, cols = c(&quot;grey30&quot;), # Make all cells grey.
              boundaries   = &quot;segmentation&quot;,
              border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
-<p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-13-2.png" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-14-1.png" width="1152" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-2">
-Past versions of unnamed-chunk-13-2.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
+Past versions of unnamed-chunk-14-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-13-2" class="collapse">
+<div id="fig-unnamed-chunk-14-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1191,7 +835,74 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/b9d1fcb91fcd2bcce32aabd75e8bdd6b60d4503a/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-13-2.png" target="_blank">b9d1fcb</a>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/b9d1fcb91fcd2bcce32aabd75e8bdd6b60d4503a/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-14-1.png" target="_blank">b9d1fcb</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-11-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/0ce06a8fe9e3d0354b4cca882c8978ff95d0f1bf/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-14-1.png" target="_blank">0ce06a8</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-11-01
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>ImageDimPlot(
+  subset( so, subset = sample == &#39;sample4&#39;),  
+             fov          = &quot;AD4.AD5.CosMx&quot;, # note the slide it is on.
+             molecules    = &#39;Ttr&#39;, 
+             group.by     = &#39;sample&#39;, cols = c(&quot;grey30&quot;), # Make all cells grey.
+             boundaries   = &quot;segmentation&quot;,
+             border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
+<p><img src="figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-14-2.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-2">
+Past versions of unnamed-chunk-14-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-14-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/b9d1fcb91fcd2bcce32aabd75e8bdd6b60d4503a/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-14-2.png" target="_blank">b9d1fcb</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-11-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/0ce06a8fe9e3d0354b4cca882c8978ff95d0f1bf/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-14-2.png" target="_blank">0ce06a8</a>
 </td>
 <td>
 swbioinf
@@ -1232,15 +943,34 @@ for (the_sample in samples) {
   
   so.sample &lt;- subset( so, subset= sample == the_sample)
   
-  # Again, this should be: 
+  
+  # TRY THIS FIRST
+  # This is the Seurat method, and may have been fixed.
   #so.sample &lt;- FindSpatiallyVariableFeatures(
-  so.sample &lt;- FindSpatiallyVariableFeatures.Seurat_EDITED(
-    so.sample, 
-    assay = &quot;RNA&quot;, 
-    features = VariableFeatures(so.sample),    
+  #  so.sample, 
+  #  assay = &quot;RNA&quot;, 
+  #  features = VariableFeatures(so.sample),    
+  #  selection.method = &quot;moransi&quot;,
+  #  layer = &quot;counts&quot;
+  #)
+  
+  # workaround
+  # If the Seurat method above crashes (segfault), a workaround is
+  # funning FindSpatiallyVariableFeatures at the assay level
+  so.sample.assay &lt;- so.sample[[&#39;RNA&#39;]]
+  tc &lt;- GetTissueCoordinates(so.sample)
+  rownames(tc)&lt;- tc$cell
+  # When given an &#39;assay&#39; FindSpatiallyVariableFeatures returns an assay. Put it back in the seurat object.
+  so.sample[[&#39;RNA&#39;]] &lt;- FindSpatiallyVariableFeatures(
+    so.sample.assay,
+    layer = &quot;scale.data&quot;,
+    spatial.location = tc,
+    features = VariableFeatures(so.sample),
     selection.method = &quot;moransi&quot;,
-    layer = &quot;counts&quot;
-  )
+    nfeatures=10 # mark top 10 spatially variable
+    )
+  # --- end workaround
+  
   
   # Format output table
   gene_metadata &lt;- so.sample[[&quot;RNA&quot;]]@meta.data
@@ -1266,8 +996,8 @@ results_all &lt;- bind_rows(results_list)</code></pre>
 <div id="results" class="section level1">
 <h1>Results</h1>
 <pre class="r"><code>DT::datatable(results_all, width=&#39;100%&#39;)</code></pre>
-<div id="htmlwidget-07a7c656fb218458b363" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-07a7c656fb218458b363">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40"],["sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4"],["Ptgds","Penk","Drd4","Lilra5","Vtn","Acta2","Cnr1","Ttr","Sst","Npy","Ttr","Penk","Ptgds","Lilra5","Drd4","Acta2","Cnr1","Sst","Npy","Vtn","Ttr","Penk","Ptgds","Lilra5","Drd4","Acta2","Sst","Vtn","Cnr1","Npy","Ttr","Ptgds","Drd4","Penk","Lilra5","Acta2","Sst","Npy","Cnr1","Vtn"],[0.3229695055639554,0.1590561524926949,0.08720462499499981,0.08718933646160711,0.05282752140827351,0.02569336530082773,0.02362886716393527,0.01266743839515891,0.04844601413882734,0.01902939103935176,0.3728454799388959,0.1466038049287352,0.1224925545450483,0.09091210714592868,0.08363449281579936,0.03678956364445252,0.0277001335719391,0.02115759343775087,0.01988063216026358,0.01278082783592561,0.5195494965118608,0.1511118241235551,0.1425199586828255,0.09155962979698748,0.08776290200400122,0.05324483809413939,0.0414617262356598,0.03179844426917366,0.03079903927019299,0.02070981737900819,0.6042436378674948,0.1254127115631302,0.1087605254637382,0.1034361004316954,0.1017928004816937,0.05254541191339321,0.033958104426764,0.03103475845295824,0.0243497538943351,0.02054798872420385],[0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.001951219512195122,0.001951219512195122,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561],[true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true,true],[1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10,1,2,3,4,5,6,7,8,9,10]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sample<\/th>\n      <th>feature<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sample","targets":1},{"name":"feature","targets":2},{"name":"MoransI_observed","targets":3},{"name":"MoransI_p.value","targets":4},{"name":"moransi.spatially.variable","targets":5},{"name":"moransi.spatially.variable.rank","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2a0044d31e1a627effea" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2a0044d31e1a627effea">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74","75","76","77","78","79","80","81","82","83","84","85","86","87","88","89","90","91","92","93","94","95","96","97","98","99","100","101","102","103","104","105","106","107","108","109","110","111","112","113","114","115","116","117","118","119","120"],["sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample1","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample2","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample3","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4","sample4"],["Ptgds","Apod","Vtn","Vim","Ctsd","Penk","Cst7","Rims1","Sst","Nnat","C1qc","Ctss","Cd74","Lilra5","Gad1","Drd4","C1qa","H2-Aa","Cnr1","Npy","Calb2","Myl9","Gad2","Pvalb","Tagln","Acta2","Spp1","Gpr17","Ttr","Vip","Ttr","Apod","Ptgds","Nnat","Penk","Rims1","Vim","Gad1","Gad2","Lilra5","Pvalb","Drd4","Ctsd","Cst7","Ctss","C1qc","Cd74","C1qa","Cnr1","H2-Aa","Sst","Calb2","Acta2","Vtn","Spp1","Npy","Tagln","Myl9","Gpr17","Vip","Ttr","Calb2","Nnat","Apod","Ptgds","Gad1","Penk","Pvalb","Vim","Cd74","Rims1","Ctsd","Cnr1","Cst7","H2-Aa","Ctss","C1qc","Lilra5","Sst","Gad2","C1qa","Drd4","Vtn","Spp1","Tagln","Acta2","Npy","Myl9","Vip","Gpr17","Ttr","Nnat","Calb2","Apod","Ptgds","Vim","Penk","Lilra5","Ctsd","Gad1","Drd4","Rims1","Cst7","Ctss","C1qc","C1qa","Cnr1","Sst","Cd74","Pvalb","Vtn","Acta2","Gad2","Npy","Tagln","Spp1","Myl9","H2-Aa","Gpr17","Vip"],[0.2791514595465751,0.2647512389873998,0.1608297333152247,0.156031564853461,0.1358804617832294,0.1267589887303113,0.1215085363930231,0.1154555421171841,0.1119583842976517,0.1117549130509003,0.1074284676527031,0.107270982698591,0.105961348242481,0.1028400893852252,0.1006799279829889,0.095940733724853,0.08486186451168312,0.07197783284013808,0.06574396375653166,0.05414780103450433,0.05290987026530136,0.04518518486314733,0.03873182182940033,0.03646427998019523,0.03026986122262887,0.02849167939514811,0.02048600280499146,0.01632887619431922,0.007997309470952762,0.004644989367391512,0.5602615437260782,0.2224416059182948,0.2033078488225802,0.1667141176866905,0.1663773279266557,0.1488336569032409,0.1202323086586946,0.1201423316639522,0.1162519980691941,0.11541397520215,0.1082818192110274,0.1020935038108373,0.1017462472045144,0.09662157499283143,0.09424688113451327,0.09254120743210219,0.08991156253306333,0.08724011594698387,0.07804422082253085,0.06503827984559944,0.06229303229816301,0.05639371921660282,0.04772301615690359,0.04463534622314307,0.03636492270381628,0.0342798376027347,0.03035366038557551,0.02577727598077402,0.01363784944038379,0.01250768350701217,0.5732605027153428,0.2857339998344249,0.262564087320589,0.2324739725979255,0.1942286602301289,0.1538728414512635,0.1450239688169085,0.1339032581098657,0.1236672182223258,0.1113120921699836,0.1034812252988173,0.09457488683649526,0.09163472968303898,0.08858561589927361,0.08788185662672532,0.08783412850496101,0.08551302969334276,0.08520321388098683,0.08276149264665442,0.08254365232976948,0.08066591041002055,0.06938200830646789,0.0674908025836618,0.05268519595381781,0.05162340328842772,0.049816593246063,0.04349050393108235,0.03840044785560229,0.01442573009600202,0.007872195289188644,0.3120419514622916,0.2851245818567024,0.2648480645101793,0.2592546099972919,0.210155670491002,0.1942045081992709,0.1265912880443676,0.1243665051552116,0.1192949595003706,0.115341837758045,0.1142256663630354,0.1118530320389475,0.1063477340801568,0.1027712203630057,0.1025621690992159,0.1005871313520487,0.08926224685608204,0.0799673539801091,0.07631753162925672,0.07344434052054159,0.06973843188514617,0.06762603447385047,0.05192507318868694,0.05021664002015423,0.0459583078226337,0.0444529262024547,0.03668919017237728,0.03429410701056056,0.01531134199922614,0.007303958318709044],[0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.007804878048780488,0.1131707317073171,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561,0.000975609756097561],[true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,true,true,true,true,true,true,true,true,true,true,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false],[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>sample<\/th>\n      <th>feature<\/th>\n      <th>MoransI_observed<\/th>\n      <th>MoransI_p.value<\/th>\n      <th>moransi.spatially.variable<\/th>\n      <th>moransi.spatially.variable.rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[3,4,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"sample","targets":1},{"name":"feature","targets":2},{"name":"MoransI_observed","targets":3},{"name":"MoransI_p.value","targets":4},{"name":"moransi.spatially.variable","targets":5},{"name":"moransi.spatially.variable.rank","targets":6}],"order":[],"autoWidth":false,"orderClasses":false},"selection":{"mode":"multiple","selected":null,"target":"row","selectable":null}},"evals":[],"jsHooks":[]}</script>
 <ul>
 <li><strong>sample</strong>: <em>(not a default column, added by
 code)</em>: What tissue sample the test was run on.</li>
@@ -1279,7 +1009,8 @@ repulsion).</li>
 <li><strong>MoransI_p.value</strong> : P-value for the moransI
 test.</li>
 <li><strong>moransi.spatially.variable</strong> : Is this gene spatially
-restricted? True or false value.</li>
+restricted? True or false value. The number of TRUEs is controlled by
+the nfeatures parameter of <em>FindSpatiallyVariableFeatures</em>.</li>
 <li><strong>moransi.spatially.variable.rank</strong> : Ranking of the
 genes by spatial correlation, where 1 is the most distincly spatially
 restricted.</li>
@@ -1335,8 +1066,8 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.3.2 (2023-10-31)
-Platform: x86_64-pc-linux-gnu (64-bit)
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
 Running under: Ubuntu 22.04.5 LTS
 
 Matrix products: default
@@ -1358,58 +1089,57 @@ attached base packages:
 [1] stats     graphics  grDevices datasets  utils     methods   base     
 
 other attached packages:
- [1] DT_0.33            lubridate_1.9.3    forcats_1.0.0      stringr_1.5.1     
+ [1] DT_0.33            lubridate_1.9.4    forcats_1.0.0      stringr_1.5.1     
  [5] dplyr_1.1.4        purrr_1.0.2        readr_2.1.5        tidyr_1.3.1       
- [9] tibble_3.2.1       ggplot2_3.5.0      tidyverse_2.0.0    Seurat_5.1.0      
-[13] SeuratObject_5.0.2 sp_2.1-3           workflowr_1.7.1   
+ [9] tibble_3.2.1       ggplot2_3.5.1      tidyverse_2.0.0    Seurat_5.3.0      
+[13] SeuratObject_5.2.0 sp_2.2-0           workflowr_1.7.1   
 
 loaded via a namespace (and not attached):
-  [1] RColorBrewer_1.1-3     rstudioapi_0.16.0      jsonlite_1.8.8        
-  [4] magrittr_2.0.3         spatstat.utils_3.0-4   farver_2.1.1          
-  [7] rmarkdown_2.26         fs_1.6.3               vctrs_0.6.5           
- [10] ROCR_1.0-11            spatstat.explore_3.2-7 htmltools_0.5.8.1     
- [13] sass_0.4.9             sctransform_0.4.1      parallelly_1.37.1     
- [16] KernSmooth_2.23-22     bslib_0.7.0            htmlwidgets_1.6.4     
+  [1] RColorBrewer_1.1-3     rstudioapi_0.17.1      jsonlite_1.8.9        
+  [4] magrittr_2.0.3         spatstat.utils_3.1-2   farver_2.1.2          
+  [7] rmarkdown_2.29         fs_1.6.5               vctrs_0.6.5           
+ [10] ROCR_1.0-11            spatstat.explore_3.3-4 htmltools_0.5.8.1     
+ [13] sass_0.4.9             sctransform_0.4.1      parallelly_1.42.0     
+ [16] KernSmooth_2.23-26     bslib_0.9.0            htmlwidgets_1.6.4     
  [19] ica_1.0-3              plyr_1.8.9             plotly_4.10.4         
- [22] zoo_1.8-12             cachem_1.0.8           whisker_0.4.1         
- [25] igraph_2.0.3           mime_0.12              lifecycle_1.0.4       
- [28] pkgconfig_2.0.3        Matrix_1.6-5           R6_2.5.1              
- [31] fastmap_1.1.1          fitdistrplus_1.1-11    future_1.33.2         
- [34] shiny_1.8.1.1          digest_0.6.35          colorspace_2.1-0      
- [37] patchwork_1.2.0        ps_1.7.6               rprojroot_2.0.4       
- [40] tensor_1.5             RSpectra_0.16-1        irlba_2.3.5.1         
- [43] crosstalk_1.2.1        labeling_0.4.3         RcppZiggurat_0.1.6    
- [46] progressr_0.14.0       timechange_0.3.0       fansi_1.0.6           
- [49] spatstat.sparse_3.0-3  httr_1.4.7             polyclip_1.10-6       
- [52] abind_1.4-5            compiler_4.3.2         proxy_0.4-27          
- [55] withr_3.0.0            DBI_1.2.2              fastDummies_1.7.3     
- [58] highr_0.10             MASS_7.3-60.0.1        classInt_0.4-10       
- [61] units_0.8-5            tools_4.3.2            lmtest_0.9-40         
- [64] httpuv_1.6.15          future.apply_1.11.2    Rfast2_0.1.5.2        
- [67] goftest_1.2-3          glue_1.7.0             callr_3.7.6           
- [70] nlme_3.1-164           promises_1.2.1         sf_1.0-16             
- [73] grid_4.3.2             Rtsne_0.17             getPass_0.2-4         
- [76] cluster_2.1.6          reshape2_1.4.4         generics_0.1.3        
- [79] gtable_0.3.4           spatstat.data_3.0-4    tzdb_0.4.0            
- [82] class_7.3-22           hms_1.1.3              data.table_1.15.4     
- [85] utf8_1.2.4             spatstat.geom_3.2-9    RcppAnnoy_0.0.22      
- [88] ggrepel_0.9.5          RANN_2.6.1             pillar_1.9.0          
- [91] spam_2.10-0            RcppHNSW_0.6.0         later_1.3.2           
- [94] splines_4.3.2          lattice_0.22-6         renv_1.0.5            
- [97] survival_3.5-8         deldir_2.0-4           tidyselect_1.2.1      
-[100] Rnanoflann_0.0.3       miniUI_0.1.1.1         pbapply_1.7-2         
-[103] knitr_1.45             git2r_0.33.0           gridExtra_2.3         
-[106] scattermore_1.2        xfun_0.43              matrixStats_1.2.0     
-[109] stringi_1.8.3          lazyeval_0.2.2         yaml_2.3.8            
-[112] evaluate_0.23          codetools_0.2-20       BiocManager_1.30.22   
-[115] cli_3.6.2              RcppParallel_5.1.7     uwot_0.1.16           
-[118] xtable_1.8-4           reticulate_1.35.0      munsell_0.5.1         
-[121] processx_3.8.4         jquerylib_0.1.4        Rcpp_1.0.12           
-[124] globals_0.16.3         spatstat.random_3.2-3  png_0.1-8             
-[127] Rfast_2.1.0            parallel_4.3.2         dotCall64_1.1-1       
-[130] listenv_0.9.1          viridisLite_0.4.2      e1071_1.7-14          
-[133] scales_1.3.0           ggridges_0.5.6         leiden_0.4.3.1        
-[136] rlang_1.1.3            cowplot_1.1.3         </code></pre>
+ [22] zoo_1.8-12             cachem_1.1.0           whisker_0.4.1         
+ [25] igraph_2.1.4           mime_0.12              lifecycle_1.0.4       
+ [28] pkgconfig_2.0.3        Matrix_1.7-4           R6_2.5.1              
+ [31] fastmap_1.2.0          fitdistrplus_1.2-2     future_1.34.0         
+ [34] shiny_1.10.0           digest_0.6.37          colorspace_2.1-1      
+ [37] patchwork_1.3.0        ps_1.8.1               rprojroot_2.0.4       
+ [40] tensor_1.5             RSpectra_0.16-2        irlba_2.3.5.1         
+ [43] crosstalk_1.2.1        labeling_0.4.3         progressr_0.15.1      
+ [46] timechange_0.3.0       spatstat.sparse_3.1-0  httr_1.4.7            
+ [49] polyclip_1.10-7        abind_1.4-8            compiler_4.4.0        
+ [52] proxy_0.4-27           withr_3.0.2            DBI_1.2.3             
+ [55] fastDummies_1.7.5      MASS_7.3-64            classInt_0.4-11       
+ [58] units_0.8-5            tools_4.4.0            lmtest_0.9-40         
+ [61] httpuv_1.6.15          future.apply_1.11.3    Rfast2_0.1.5.4        
+ [64] goftest_1.2-3          glue_1.8.0             callr_3.7.6           
+ [67] nlme_3.1-166           promises_1.3.2         sf_1.0-19             
+ [70] grid_4.4.0             Rtsne_0.17             getPass_0.2-4         
+ [73] cluster_2.1.8          reshape2_1.4.4         generics_0.1.3        
+ [76] gtable_0.3.6           spatstat.data_3.1-4    tzdb_0.4.0            
+ [79] class_7.3-23           hms_1.1.3              data.table_1.16.4     
+ [82] spatstat.geom_3.3-5    RcppAnnoy_0.0.22       ggrepel_0.9.6         
+ [85] RANN_2.6.2             pillar_1.10.1          spam_2.11-1           
+ [88] RcppHNSW_0.6.0         later_1.4.1            splines_4.4.0         
+ [91] lattice_0.22-6         renv_1.0.5             survival_3.8-3        
+ [94] deldir_2.0-4           tidyselect_1.2.1       Rnanoflann_0.0.3      
+ [97] miniUI_0.1.1.1         pbapply_1.7-2          knitr_1.49            
+[100] git2r_0.33.0           gridExtra_2.3          scattermore_1.2       
+[103] xfun_0.50              matrixStats_1.5.0      stringi_1.8.4         
+[106] lazyeval_0.2.2         yaml_2.3.10            evaluate_1.0.3        
+[109] codetools_0.2-20       BiocManager_1.30.25    cli_3.6.3             
+[112] RcppParallel_5.1.11-1  uwot_0.2.2             xtable_1.8-4          
+[115] reticulate_1.40.0      munsell_0.5.1          processx_3.8.5        
+[118] jquerylib_0.1.4        Rcpp_1.0.14            zigg_0.0.2            
+[121] globals_0.16.3         spatstat.random_3.3-2  png_0.1-8             
+[124] Rfast_2.1.5.1          spatstat.univar_3.1-1  parallel_4.4.0        
+[127] dotCall64_1.2          listenv_0.9.1          viridisLite_0.4.2     
+[130] e1071_1.7-16           scales_1.3.0           ggridges_0.5.6        
+[133] rlang_1.1.5            cowplot_1.1.3         </code></pre>
 </div>
 </div>
 
