@@ -80,9 +80,17 @@ Load relevant libraries
 # install.packages('Rfast2')
 # install.packages('ape')
 
+
 library(Seurat)
 library(tidyverse)
 library(DT)
+
+
+# Certain stps may result in error:
+#Error in getGlobalsAndPackages(expr, envir = envir, globals = globals) : 
+#  The total size of the 14 globals exported for future expression (‘FUN()’) is 1.21 GiB.. This exceeds the maximum allowed size of 500.00 MiB (option 'future.globals.maxSize'). The three largest globals are ‘FUN’ (824.48 MiB of class ‘function’), ‘x’ (411.83 MiB of class ‘list’) and ‘over’ (940.20 KiB of class ‘function’)
+# this can be fixed by increaseing the future.globals.maxsize variable (to an acceptable amount of ram)
+options(future.globals.maxSize= 5*1024^3) # Set to 5Gb
 
 ```
 
@@ -104,7 +112,7 @@ routinely deteced with _FindVariableFeatures()_ during preprocessing. Non variab
 For the purpose of this demo, recalculate just the top 10 variable features. The actual number for a real experiment could be judged from the variable features plot below, e.g. 100-200-2000 (or whatever you use for PCA - it really depends on your panel!). 
 
 ```{r}
-num_variable_features = 10 # Test only! Should be much larger.
+num_variable_features = 30 # Test only! Should be much larger. Consider using all your VariableFeatures used for UMAPs, et.c.
 so <-  FindVariableFeatures(so, nfeatures=num_variable_features)
 VariableFeaturePlot(so)
 ```
@@ -137,31 +145,60 @@ so.sample <- FindSpatiallyVariableFeatures(
   layer = "counts")
 ```
 
-However, right now, there is a bug with the current FindSpatiallyVariableFeatures function, described [here](https://github.com/satijalab/seurat/issues/8226). Likely that issue will be closed when this is fixed!
+<!-- ### OLD BUG -->
 
-If you see the following error - try a workaround, using a customised version of this that avoids the issue in this dataset. The custom version, may be found [here](https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R)
+<!-- However, right now, there is a bug with the current FindSpatiallyVariableFeatures function, described [here](https://github.com/satijalab/seurat/issues/8226). Likely that issue will be closed when this is fixed! -->
 
-```
-Error in `LayerData<-`:
-! 'layer' must be a single non-empty string
-```
+<!-- If you see the following error - try a workaround, using a customised version of this that avoids the issue in this dataset. The custom version, may be found [here](https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R) -->
 
-The adjusted function is called as:
+<!-- ``` -->
+<!-- Error in `LayerData<-`: -->
+<!-- ! 'layer' must be a single non-empty string -->
+<!-- ``` -->
+
+<!-- The adjusted function is called as: -->
+<!-- ```{r} -->
+<!-- # Workaround  -->
+<!-- # Available: https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R -->
+<!-- source("code/spatially_variable_features_code.R") -->
+<!-- so.sample <- FindSpatiallyVariableFeatures.Seurat_EDITED( -->
+<!--   so.sample,  -->
+<!--   assay = "RNA",  -->
+<!--   features = VariableFeatures(so.sample),     -->
+<!--   selection.method = "moransi", -->
+<!--   layer = "counts") -->
+<!-- ``` -->
+
+
+However, right now, there is a bug with the current _FindSpatiallyVariableFeatures()_ function with this dataset. If you find the R code segfaults (ie. R exits entirely) with the message "*address (nil), cause 'memory not mapped'*", consider the workaroudn below. Also, check issue ticket [here](https://github.com/satijalab/seurat/issues/10099), it may be fixed.
+
 ```{r}
-# Workaround 
-# Available: https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R
-source("code/spatially_variable_features_code.R")
-so.sample <- FindSpatiallyVariableFeatures.Seurat_EDITED(
-  so.sample, 
-  assay = "RNA", 
-  features = VariableFeatures(so.sample),    
+so.sample.assay <- so.sample[['RNA']]
+# Or equivalently
+# so.sample.assay <- GetAssay(so.sample, "RNA")
+
+# Make sure that the rownames of the coordinate table is the cell names
+# Might not occur for certain types of data.
+tc <- GetTissueCoordinates(so.sample)
+rownames(tc)<- tc$cell
+
+# When given an 'assay' FindSpatiallyVariableFeatures returns an assay. Put it back in the seurat object.
+so.sample[['RNA']] <- FindSpatiallyVariableFeatures(
+  so.sample.assay,
+  layer = "scale.data",
+  spatial.location = tc,
+  features = VariableFeatures(so.sample),
   selection.method = "moransi",
-  layer = "counts")
+  nfeatures=10 # mark top 10 spatially variable
+  )
 ```
 
 
 
-_FindSpatiallyVariableFeatures()_ should return a seurat object with the moransI scores embedded in the feature metatdata of the 'RNA' assay.
+### Resume
+
+
+Now we have a a seurat object with the moransI scores embedded in the feature metatdata of the 'RNA' assay.
 
 
 ```{r}
@@ -239,14 +276,29 @@ for (the_sample in samples) {
   
   # Again, this should be: 
   #so.sample <- FindSpatiallyVariableFeatures(
-  so.sample <- FindSpatiallyVariableFeatures.Seurat_EDITED(
-    so.sample, 
-    assay = "RNA", 
-    features = VariableFeatures(so.sample),    
+  #  so.sample, 
+  #  assay = "RNA", 
+  #  features = VariableFeatures(so.sample),    
+  #  selection.method = "moransi",
+  #  layer = "counts"
+  #)
+  
+  # Workaround running FindSpatiallyVariableFeatures at the assay level
+  so.sample.assay <- so.sample[['RNA']]
+  tc <- GetTissueCoordinates(so.sample)
+  rownames(tc)<- tc$cell
+  
+  # When given an 'assay' FindSpatiallyVariableFeatures returns an assay. Put it back in the seurat object.
+  so.sample[['RNA']] <- FindSpatiallyVariableFeatures(
+    so.sample.assay,
+    layer = "scale.data",
+    spatial.location = tc,
+    features = VariableFeatures(so.sample),
     selection.method = "moransi",
-    layer = "counts"
-  )
-
+    nfeatures=10 # mark top 10 spatially variable
+    )
+  # --- end workaround
+  
   gene_metadata <- so.sample[["RNA"]]@meta.data
   results <- 
   select(gene_metadata, 
@@ -272,6 +324,21 @@ Display results for variable genes
 DT::datatable(results_all, width='100%') 
 ```
 
+Plot some of the moransI scores. We should keep in mind that the shape of the tissue itself limits where the targest can fall, but some genes are clearly more spatially restricted than others. 
+
+```{r}
+# unique set of genes that were top 10 morans in any sample
+plot_genes <- filter(results_all, moransi.spatially.variable.rank <= 10) %>% pull(feature) %>% unique()
+ggplot(filter(results_all, feature %in% plot_genes), aes(x=feature, y=MoransI_observed)) +
+  geom_boxplot() +
+  geom_point( mapping=aes(col=sample)) +
+  theme_bw() +
+  ggtitle("MoransI Per sample")
+
+```
+
+
+## Check an example
 
 Ttr had a much higher Moran's I in sample4 than sample1. Plotting its distribution in both demonstrates the difference - there's a very high expression region in sample4 not seen in sample1.
 
@@ -292,6 +359,9 @@ ImageDimPlot(
              boundaries   = "segmentation",
              border.color = 'black', axes = T, crop=TRUE)
 ```
+
+
+
 
 
 # Code Snippet
@@ -322,15 +392,34 @@ for (the_sample in samples) {
   
   so.sample <- subset( so, subset= sample == the_sample)
   
-  # Again, this should be: 
+  
+  # TRY THIS FIRST
+  # This is the Seurat method, and may have been fixed.
   #so.sample <- FindSpatiallyVariableFeatures(
-  so.sample <- FindSpatiallyVariableFeatures.Seurat_EDITED(
-    so.sample, 
-    assay = "RNA", 
-    features = VariableFeatures(so.sample),    
+  #  so.sample, 
+  #  assay = "RNA", 
+  #  features = VariableFeatures(so.sample),    
+  #  selection.method = "moransi",
+  #  layer = "counts"
+  #)
+  
+  # workaround
+  # If the Seurat method above crashes (segfault), a workaround is
+  # funning FindSpatiallyVariableFeatures at the assay level
+  so.sample.assay <- so.sample[['RNA']]
+  tc <- GetTissueCoordinates(so.sample)
+  rownames(tc)<- tc$cell
+  # When given an 'assay' FindSpatiallyVariableFeatures returns an assay. Put it back in the seurat object.
+  so.sample[['RNA']] <- FindSpatiallyVariableFeatures(
+    so.sample.assay,
+    layer = "scale.data",
+    spatial.location = tc,
+    features = VariableFeatures(so.sample),
     selection.method = "moransi",
-    layer = "counts"
-  )
+    nfeatures=10 # mark top 10 spatially variable
+    )
+  # --- end workaround
+  
   
   # Format output table
   gene_metadata <- so.sample[["RNA"]]@meta.data
@@ -365,9 +454,9 @@ DT::datatable(results_all, width='100%')
 
 * **sample**: _(not a default column, added by code)_: What tissue sample the test was run on.
 * **feature** : The gene being tested
-* **MoransI_observed** : The moransI statistic calculated. Higher values indicate more spatial correlation, 0 is completely random, and negative values indicate anti-correlation (ie repulsion).
+* **MoransI_observed** : The moransI statistic calculated. Higher values indicate more spatial correlation, 0 is completely random, and negative values indicate anti-correlation (ie repulsion). 
 * **MoransI_p.value** : P-value for the moransI test.
-* **moransi.spatially.variable** : Is this gene spatially restricted? True or false value. 
+* **moransi.spatially.variable** : Is this gene spatially restricted? True or false value. The number of TRUEs is controlled by the nfeatures parameter of _FindSpatiallyVariableFeatures_.
 * **moransi.spatially.variable.rank** : Ranking of the genes by spatial correlation, where 1 is the most distincly spatially restricted.
 
 
