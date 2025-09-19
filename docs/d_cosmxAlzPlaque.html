@@ -14,7 +14,7 @@
 
 <title>Dataset: Mouse Alzheimers Plaques cosMX Mallach et al 2024</title>
 
-<script src="site_libs/header-attrs-2.26/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -45,8 +45,8 @@
 <script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
 <link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
 <script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -358,7 +358,7 @@ div.tocify {
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">spatialsnippets</a>
+      <a class="navbar-brand" href="index.html">Spatial Sampler</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
@@ -367,6 +367,9 @@ div.tocify {
 </li>
 <li>
   <a href="index_data.html">Data</a>
+</li>
+<li>
+  <a href="contributing.html">Contributing</a>
 </li>
 <li>
   <a href="about.html">About</a>
@@ -399,327 +402,6 @@ Mallach et al 2024</h1>
 </div>
 
 
-<p>
-<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span>
-workflowr <span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span>
-</button>
-</p>
-<div id="workflowr-report" class="collapse">
-<ul class="nav nav-tabs">
-<li class="active">
-<a data-toggle="tab" href="#summary">Summary</a>
-</li>
-<li>
-<a data-toggle="tab" href="#checks"> Checks <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
-</a>
-</li>
-<li>
-<a data-toggle="tab" href="#versions">Past versions</a>
-</li>
-</ul>
-<div class="tab-content">
-<div id="summary" class="tab-pane fade in active">
-<p>
-<strong>Last updated:</strong> 2024-06-27
-</p>
-<p>
-<strong>Checks:</strong> <span
-class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7
-<span class="glyphicon glyphicon-exclamation-sign text-danger"
-aria-hidden="true"></span> 0
-</p>
-<p>
-<strong>Knit directory:</strong> <code>spatialsnippets/</code> <span
-class="glyphicon glyphicon-question-sign" aria-hidden="true"
-title="This is the local directory in which the code in this file was executed.">
-</span>
-</p>
-<p>
-This reproducible <a href="https://rmarkdown.rstudio.com">R Markdown</a>
-analysis was created with <a
-  href="https://github.com/workflowr/workflowr">workflowr</a> (version
-1.7.1). The <em>Checks</em> tab describes the reproducibility checks
-that were applied when the results were created. The <em>Past
-versions</em> tab lists the development history.
-</p>
-<hr>
-</div>
-<div id="checks" class="tab-pane fade">
-<div id="workflowr-checks" class="panel-group">
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date
-</a>
-</p>
-</div>
-<div id="strongRMarkdownfilestronguptodate"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great! Since the R Markdown file has been committed to the Git
-repository, you know the exact version of the code that produced these
-results.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
-</p>
-</div>
-<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great job! The global environment was empty. Objects defined in the
-global environment can affect the analysis in your R Markdown file in
-unknown ways. For reproduciblity it’s best to always run the code in an
-empty environment.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20231017code">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Seed:</strong>
-<code>set.seed(20231017)</code> </a>
-</p>
-</div>
-<div id="strongSeedstrongcodesetseed20231017code"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>The command <code>set.seed(20231017)</code> was run prior to running
-the code in the R Markdown file. Setting a seed ensures that any results
-that rely on randomness, e.g. subsampling or permutations, are
-reproducible.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongrecorded">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Session information:</strong>
-recorded </a>
-</p>
-</div>
-<div id="strongSessioninformationstrongrecorded"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great job! Recording the operating system, R version, and package
-versions is critical for reproducibility.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Cache:</strong> none </a>
-</p>
-</div>
-<div id="strongCachestrongnone" class="panel-collapse collapse">
-<div class="panel-body">
-<p>Nice! There were no cached chunks for this analysis, so you can be
-confident that you successfully produced the results during this
-run.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
-</p>
-</div>
-<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
-<div class="panel-body">
-<p>Great job! Using relative paths to the files within your workflowr
-project makes it easier to run your code on other machines.</p>
-</div>
-</div>
-</div>
-<div class="panel panel-default">
-<div class="panel-heading">
-<p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree37bd941a0ab834469e2ed0c8407a5b25e6bfed22targetblank37bd941a">
-<span class="glyphicon glyphicon-ok text-success"
-aria-hidden="true"></span> <strong>Repository version:</strong>
-<a href="https://github.com/swbioinf/spatialsnippets/tree/37bd941a0ab834469e2ed0c8407a5b25e6bfed22" target="_blank">37bd941</a>
-</a>
-</p>
-</div>
-<div
-id="strongRepositoryversionstrongahrefhttpsgithubcomswbioinfspatialsnippetstree37bd941a0ab834469e2ed0c8407a5b25e6bfed22targetblank37bd941a"
-class="panel-collapse collapse">
-<div class="panel-body">
-<p>
-Great! You are using Git for version control. Tracking code development
-and connecting the code version to the results is critical for
-reproducibility.
-</p>
-<p>
-The results in this page were generated with repository version
-<a href="https://github.com/swbioinf/spatialsnippets/tree/37bd941a0ab834469e2ed0c8407a5b25e6bfed22" target="_blank">37bd941</a>.
-See the <em>Past versions</em> tab to see a history of the changes made
-to the R Markdown and HTML files.
-</p>
-<p>
-Note that you need to be careful to ensure that all relevant files for
-the analysis have been committed to Git prior to generating the results
-(you can use <code>wflow_publish</code> or
-<code>wflow_git_commit</code>). workflowr only checks the R Markdown
-file, but you know if there are other scripts or data files that it
-depends on. Below is the status of the Git repository when the results
-were generated:
-</p>
-<pre><code>
-Ignored files:
-    Ignored:    .Rhistory
-    Ignored:    .Rproj.user/
-    Ignored:    analysis/figure/
-    Ignored:    analysis/glossary.nb.html
-    Ignored:    renv/library/
-    Ignored:    renv/staging/
-
-Untracked files:
-    Untracked:  code/multislide_niche.R
-
-Unstaged changes:
-    Modified:   analysis/e_DEPseudobulk_insitu.Rmd
-    Modified:   analysis/e_spatiallyRestrictedGenes.Rmd
-
-</code></pre>
-<p>
-Note that any generated files, e.g. HTML, png, CSS, etc., are not
-included in this status report because it is ok for generated content to
-have uncommitted changes.
-</p>
-</div>
-</div>
-</div>
-</div>
-<hr>
-</div>
-<div id="versions" class="tab-pane fade">
-
-<p>
-These are the previous versions of the repository in which changes were
-made to the R Markdown (<code>analysis/d_cosmxAlzPlaque.Rmd</code>) and
-HTML (<code>docs/d_cosmxAlzPlaque.html</code>) files. If you’ve
-configured a remote Git repository (see <code>?wflow_git_remote</code>),
-click on the hyperlinks in the table below to view the files as they
-were in that past version.
-</p>
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-File
-</th>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-<th>
-Message
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/37bd941a0ab834469e2ed0c8407a5b25e6bfed22/analysis/d_cosmxAlzPlaque.Rmd" target="_blank">37bd941</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-06-27
-</td>
-<td>
-wflow_publish("analysis/d_cosmxAlzPlaque.Rmd")
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/fd64e3009d2a3284f3a5e43d572c953497246b13/analysis/d_cosmxAlzPlaque.Rmd" target="_blank">fd64e30</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-06-18
-</td>
-<td>
-new plots
-</td>
-</tr>
-<tr>
-<td>
-html
-</td>
-<td>
-<a href="https://rawcdn.githack.com/swbioinf/spatialsnippets/cca966ca58670b19dcba0780f86d504b7f9a7029/docs/d_cosmxAlzPlaque.html" target="_blank">cca966c</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-06-11
-</td>
-<td>
-Build site.
-</td>
-</tr>
-<tr>
-<td>
-Rmd
-</td>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/71b766d7a7770eca8fa5b689fbafc12e5eeed962/analysis/d_cosmxAlzPlaque.Rmd" target="_blank">71b766d</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2024-06-11
-</td>
-<td>
-wflow_publish("analysis/d_cosmxAlzPlaque.Rmd")
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<hr>
-</div>
-</div>
-</div>
 <p>Paper <a
 href="https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub">Microglia-astrocyte
 crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse
@@ -766,14 +448,14 @@ GSM8199189_ID67-ID68_S18_tx_file.csv.gz</code></pre>
 <pre class="r"><code>library(Seurat)</code></pre>
 <pre><code>Loading required package: SeuratObject</code></pre>
 <pre><code>Loading required package: sp</code></pre>
-<pre><code>&#39;SeuratObject&#39; was built under R 4.3.0 but the current version is
-4.3.2; it is recomended that you reinstall &#39;SeuratObject&#39; as the ABI
-for R may have changed</code></pre>
+<pre><code>&#39;SeuratObject&#39; was built with package &#39;Matrix&#39; 1.7.3 but the current
+version is 1.7.4; it is recomended that you reinstall &#39;SeuratObject&#39; as
+the ABI for &#39;Matrix&#39; may have changed</code></pre>
 <pre><code>
 Attaching package: &#39;SeuratObject&#39;</code></pre>
-<pre><code>The following object is masked from &#39;package:base&#39;:
+<pre><code>The following objects are masked from &#39;package:base&#39;:
 
-    intersect</code></pre>
+    intersect, t</code></pre>
 <pre class="r"><code>library(magrittr) # %&lt;&gt;% is used somewhere (assignment pipe)
 library(SingleR) # Cell refernce</code></pre>
 <pre><code>Loading required package: SummarizedExperiment</code></pre>
@@ -815,7 +497,7 @@ Attaching package: &#39;BiocGenerics&#39;</code></pre>
     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
     get, grep, grepl, intersect, is.unsorted, lapply, Map, mapply,
     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-    Position, rank, rbind, Reduce, rownames, sapply, setdiff, sort,
+    Position, rank, rbind, Reduce, rownames, sapply, saveRDS, setdiff,
     table, tapply, union, unique, unsplit, which.max, which.min</code></pre>
 <pre><code>Loading required package: S4Vectors</code></pre>
 <pre><code>
@@ -864,6 +546,8 @@ Attaching package: &#39;SummarizedExperiment&#39;</code></pre>
     Assays</code></pre>
 <pre class="r"><code>library(scRNAseq) # dataset</code></pre>
 <pre><code>Loading required package: SingleCellExperiment</code></pre>
+<pre><code>Warning: replacing previous import &#39;S4Arrays::makeNindexFromArrayViewport&#39; by
+&#39;DelayedArray::makeNindexFromArrayViewport&#39; when loading &#39;HDF5Array&#39;</code></pre>
 <pre class="r"><code>library(scuttle) # sce normalisation
 
 library(viridis)</code></pre>
@@ -874,8 +558,8 @@ library(tidyverse) # last filter should be tidyverse. Order of import matters.</
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
 ✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.0     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
 ✔ purrr     1.0.2     </code></pre>
 <pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ lubridate::%within%()     masks IRanges::%within%()
@@ -897,6 +581,7 @@ library(tidyverse) # last filter should be tidyverse. Order of import matters.</
 ✖ dplyr::slice()            masks IRanges::slice()
 ✖ GenomicRanges::subtract() masks magrittr::subtract()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<pre class="r"><code>options(future.globals.maxSize= 5*1024^3) # Set to 5Gb</code></pre>
 <pre class="r"><code>dataset_dir      &lt;- &#39;~/projects/spatialsnippets/datasets/&#39;
 project_data_dir &lt;- file.path(dataset_dir,&#39;GSE263793_Mallach2024_AlzPlaque&#39;)
 sample_dir            &lt;- file.path(project_data_dir, &quot;raw_data/&quot;) 
@@ -913,7 +598,7 @@ predictions.cluster_file &lt;- file.path(data_dir, &quot;predictionsClusterVsZei
 min_count_per_cell &lt;- 100
 max_pc_negs        &lt;- 0.5
 
-source(&quot;code/subset_obj_seurat_v2.R&quot;)
+#source(&quot;code/subset_obj_seurat_v2.R&quot;) # no longer needed.
 
 
 
@@ -21628,16 +21313,8 @@ DT::datatable(available_ds)</code></pre>
 <!-- is RTCD good because it explicitly does two predictions per cell (spot), and you pick the primary? -->
 <!-- how is spatial data used??? -->
 <p>Download the reference dataset, see the cell types present.</p>
-<pre class="r"><code>sce.ref &lt;- scRNAseq::ZeiselBrainData()</code></pre>
-<pre><code>see ?scRNAseq and browseVignettes(&#39;scRNAseq&#39;) for documentation</code></pre>
-<pre><code>loading from cache</code></pre>
-<pre><code>see ?scRNAseq and browseVignettes(&#39;scRNAseq&#39;) for documentation</code></pre>
-<pre><code>loading from cache</code></pre>
-<pre><code>see ?scRNAseq and browseVignettes(&#39;scRNAseq&#39;) for documentation</code></pre>
-<pre><code>loading from cache</code></pre>
-<pre><code>see ?scRNAseq and browseVignettes(&#39;scRNAseq&#39;) for documentation</code></pre>
-<pre><code>loading from cache</code></pre>
-<pre class="r"><code>sce.ref &lt;- logNormCounts(sce.ref) # lognorm reference data
+<pre class="r"><code>sce.ref &lt;- scRNAseq::ZeiselBrainData()
+sce.ref &lt;- logNormCounts(sce.ref) # lognorm reference data
 table(sce.ref$level1class)</code></pre>
 <pre><code>
 astrocytes_ependymal    endothelial-mural         interneurons 
@@ -21677,10 +21354,11 @@ so$cluster_pred_deltanext &lt;- signif(predictions.cluster[so$cluster, &quot;del
 cluster_lookup     &lt;- 
   setNames(predictions.cluster$pruned.labels,
            nm=rownames(predictions.cluster))
+
 clustername_lookup &lt;- 
   setNames(paste0(names(cluster_lookup),&quot;: &quot;, cluster_lookup ),
            nm = names(cluster_lookup))
-so$cluster_name &lt;- factor(as.character(clustername_lookup[so$cluster]), levels=clustername_lookup)
+so$cluster_name &lt;- factor(as.character(clustername_lookup[as.character(so$cluster)]), levels=clustername_lookup)
 
 
 # cell level predictons
@@ -21726,6 +21404,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-25-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/cca966ca58670b19dcba0780f86d504b7f9a7029/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-25-1.png" target="_blank">cca966c</a>
 </td>
 <td>
@@ -21741,6 +21430,8 @@ swbioinf
 </div>
 <p>How do the cell level and cluster level assignments compare? -
 Clustered groupings are mostly matched to individual cell calls.</p>
+<p>Not trying to get this annotation perfect, its just enough to
+demonstrate the methods.</p>
 <pre class="r"><code>plottable &lt;- so@meta.data[,c(&#39;pred&#39;, &quot;cluster_pred&quot;)] %&gt;%
   group_by(pred, cluster_pred) %&gt;%
   summarise(n=n())</code></pre>
@@ -21778,6 +21469,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-26-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/cca966ca58670b19dcba0780f86d504b7f9a7029/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-26-1.png" target="_blank">cca966c</a>
 </td>
 <td>
@@ -21804,17 +21506,45 @@ swbioinf
   scale_y_continuous(expand = c(0,0)) +
   scale_fill_manual(values=cols_x30)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-26-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-26-2">
+Past versions of unnamed-chunk-26-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-26-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-26-2.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>And how each level of cell typing looks spatially;</p>
-<pre class="r"><code>so.s &lt;- subset_opt(so, cells=so$cell[so$sample == &#39;sample2&#39;])</code></pre>
-<pre><code>Updating object slots..</code></pre>
-<pre><code>Cloing object..</code></pre>
-<pre><code>Matching cells in FOVs..</code></pre>
-<pre><code>Cell subsets are found only in FOV: 
-AD2.AD3.CosMx</code></pre>
-<pre><code>Subsetting Centroids..</code></pre>
-<pre><code>Removing FOVs where cells are NOT found: 
-AD4.AD5.CosMx</code></pre>
-<pre><code>..subset final object</code></pre>
+<pre class="r"><code>so.s &lt;- subset(so, cells=so$cell[so$sample == &#39;sample2&#39;])</code></pre>
 <pre><code>Warning: Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating Centroids objects
 Not validating Centroids objects</code></pre>
@@ -21823,43 +21553,8 @@ Not validating Centroids objects</code></pre>
 <pre><code>Warning: Not validating FOV objects
 Not validating FOV objects
 Not validating FOV objects</code></pre>
-<pre><code>Warning: Not validating Seurat objects</code></pre>
-<pre><code>Updating object..</code></pre>
-<pre><code>Validating object structure</code></pre>
-<pre><code>Updating object slots</code></pre>
-<pre><code>Ensuring keys are in the proper structure</code></pre>
-<pre><code>Updating matrix keys for DimReduc &#39;pca&#39;</code></pre>
-<pre><code>Updating matrix keys for DimReduc &#39;umap&#39;</code></pre>
-<pre><code>Ensuring keys are in the proper structure</code></pre>
-<pre><code>Ensuring feature names don&#39;t have underscores or pipes</code></pre>
-<pre><code>Updating slots in RNA</code></pre>
-<pre><code>Updating slots in niche</code></pre>
-<pre><code>Updating slots in RNA_nn</code></pre>
-<pre><code>Setting default assay of RNA_nn to RNA</code></pre>
-<pre><code>Updating slots in RNA_snn</code></pre>
-<pre><code>Setting default assay of RNA_snn to RNA</code></pre>
-<pre><code>Updating slots in pca</code></pre>
-<pre><code>Updating slots in umap</code></pre>
-<pre><code>Setting umap DimReduc to global</code></pre>
-<pre><code>Updating slots in AD2.AD3.CosMx</code></pre>
-<pre><code>Setting assay used for NormalizeData.RNA to RNA</code></pre>
-<pre><code>Setting assay used for FindVariableFeatures.RNA to RNA</code></pre>
-<pre><code>Setting assay used for ScaleData.RNA to RNA</code></pre>
-<pre><code>Setting assay used for RunPCA.RNA to RNA</code></pre>
-<pre><code>Setting assay used for RunUMAP.RNA.pca to RNA</code></pre>
-<pre><code>Setting assay used for FindNeighbors.RNA.pca to RNA</code></pre>
-<pre><code>No assay information could be found for FindClusters</code></pre>
-<pre><code>Warning: Adding a command log without an assay associated with it</code></pre>
-<pre><code>Setting assay used for ScaleData.niche to niche</code></pre>
-<pre><code>Validating object structure for Assay5 &#39;RNA&#39;</code></pre>
-<pre><code>Validating object structure for Assay &#39;niche&#39;</code></pre>
-<pre><code>Validating object structure for Graph &#39;RNA_nn&#39;</code></pre>
-<pre><code>Validating object structure for Graph &#39;RNA_snn&#39;</code></pre>
-<pre><code>Validating object structure for DimReduc &#39;pca&#39;</code></pre>
-<pre><code>Validating object structure for DimReduc &#39;umap&#39;</code></pre>
-<pre><code>Validating object structure for FOV &#39;AD2.AD3.CosMx&#39;</code></pre>
-<pre><code>Object representation is consistent with the most current Seurat version</code></pre>
-<pre><code>Object is ready!</code></pre>
+<pre><code>Warning: Not validating Seurat objects
+Not validating Seurat objects</code></pre>
 <pre class="r"><code>cluster_cols &lt;- c(
   c0  = &#39;yellow&#39;,
   c1  = &#39;royalblue&#39;,
@@ -21907,6 +21602,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-29-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/cca966ca58670b19dcba0780f86d504b7f9a7029/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-29-1.png" target="_blank">cca966c</a>
 </td>
 <td>
@@ -21946,6 +21652,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-29-2.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/cca966ca58670b19dcba0780f86d504b7f9a7029/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-29-2.png" target="_blank">cca966c</a>
 </td>
 <td>
@@ -21961,9 +21678,83 @@ swbioinf
 </div>
 <pre class="r"><code>ImageDimPlot(so.s,  fov = &quot;AD2.AD3.CosMx&quot;,group.by = &#39;cluster_name&#39;, boundaries = &quot;segmentation&quot;, border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-29-3.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-29-3">
+Past versions of unnamed-chunk-29-3.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-29-3" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-29-3.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>With better colours</p>
 <pre class="r"><code>ImageDimPlot(so.s,  fov = &quot;AD2.AD3.CosMx&quot;,group.by = &#39;cluster_name&#39;, boundaries = &quot;segmentation&quot;, border.color = &#39;black&#39;, axes = T, crop=TRUE, cols = cluster_cols_names) </code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-30-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-30-1">
+Past versions of unnamed-chunk-30-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-30-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-30-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <!-- ```{r} -->
 <!-- # remove CR cells because there aren't enough of them for annotation -->
 <!-- allen.cortex.ref <- subset(allen.cortex.ref, subset = subclass != "CR") -->
@@ -21997,6 +21788,43 @@ saveRDS(so, file=seurat_file_01_preprocessed )</code></pre>
 <pre class="r"><code>celltype2niche &lt;- table(so$niches, so$cluster_name)
 heatmap(t(celltype2niche))</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-32-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-32-1">
+Past versions of unnamed-chunk-32-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-32-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-32-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <!-- ```{r} -->
 <!-- niche_names <- c( n1 = "n1: Astro Dendro Oligo", -->
 <!--      n2 = "n2: PyramidalCA1 Endo Intra", -->
@@ -22008,9 +21836,83 @@ heatmap(t(celltype2niche))</code></pre>
 <pre class="r"><code>ImageDimPlot(so, fov = &quot;AD2.AD3.CosMx&quot;,group.by = &#39;niches&#39;, axes = TRUE)</code></pre>
 <pre><code>Warning: Removing 6641 cells missing data for vars requested</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-33-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-33-1">
+Past versions of unnamed-chunk-33-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-33-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-33-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ImageDimPlot(so, fov = &quot;AD4.AD5.CosMx&quot;,group.by = &#39;niches&#39;, axes = TRUE)</code></pre>
 <pre><code>Warning: Removing 6641 cells missing data for vars requested</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-33-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-33-2">
+Past versions of unnamed-chunk-33-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-33-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-33-2.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="basic-plots" class="section level1">
@@ -22020,41 +21922,346 @@ heatmap(t(celltype2niche))</code></pre>
 <div id="slide" class="section level3">
 <h3>Slide</h3>
 <pre class="r"><code>DimPlot(so, group.by = &#39;slide_fov&#39;)</code></pre>
-<p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" />
-### Sample</p>
+<p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-34-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-34-1">
+Past versions of unnamed-chunk-34-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-34-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-34-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="sample" class="section level3">
+<h3>Sample</h3>
 <pre class="r"><code>DimPlot(so, group.by = &#39;sample&#39;)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-35-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-35-1">
+Past versions of unnamed-chunk-35-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-35-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-35-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster" class="section level3">
 <h3>Cluster</h3>
 <pre class="r"><code>DimPlot(so)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-36-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-36-1">
+Past versions of unnamed-chunk-36-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-36-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-36-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cluster-labelled" class="section level3">
 <h3>Cluster labelled</h3>
 <pre class="r"><code>DimPlot(so, group.by = &#39;cluster_pred&#39;)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-37-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-37-1">
+Past versions of unnamed-chunk-37-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-37-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-37-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="prediction" class="section level3">
 <h3>Prediction</h3>
 <pre class="r"><code>DimPlot(so, group.by = &#39;pred&#39;)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-38-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-38-1">
+Past versions of unnamed-chunk-38-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-38-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-38-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="niches" class="section level3">
 <h3>Niches</h3>
 <pre class="r"><code>DimPlot(so, group.by = &#39;niches&#39;)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-39-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-39-1">
+Past versions of unnamed-chunk-39-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-39-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-39-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="total-read-count" class="section level3">
 <h3>Total read count</h3>
 <pre class="r"><code>so$log_nCountRNA &lt;- log10(so$nCount_RNA)
 FeaturePlot(so, features = &#39;log_nCountRNA&#39;)</code></pre>
+<pre><code>Warning: The `slot` argument of `FetchData()` is deprecated as of SeuratObject 5.0.0.
+ℹ Please use the `layer` argument instead.
+ℹ The deprecated feature was likely used in the Seurat package.
+  Please report the issue at &lt;https://github.com/satijalab/seurat/issues&gt;.
+This warning is displayed once every 8 hours.
+Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+generated.</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-40-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-40-1">
+Past versions of unnamed-chunk-40-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-40-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-40-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="negative-probe-percentage" class="section level3">
 <h3>Negative probe percentage</h3>
 <pre class="r"><code>FeaturePlot(so, features = &#39;neg_pc&#39;)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-41-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-41-1">
+Past versions of unnamed-chunk-41-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-41-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-41-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -22063,17 +22270,45 @@ FeaturePlot(so, features = &#39;log_nCountRNA&#39;)</code></pre>
 <pre class="r"><code>ImageDimPlot(so, fov = &quot;AD2.AD3.CosMx&quot;,group.by = &#39;sample&#39;, axes = TRUE)</code></pre>
 <pre><code>Warning: Removing 6641 cells missing data for vars requested</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-42-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-42-1">
+Past versions of unnamed-chunk-42-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-42-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-42-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Just one sample?</p>
-<pre class="r"><code>so.s &lt;- subset_opt(so, cells=so$cell[so$sample == &#39;sample2&#39;])</code></pre>
-<pre><code>Updating object slots..</code></pre>
-<pre><code>Cloing object..</code></pre>
-<pre><code>Matching cells in FOVs..</code></pre>
-<pre><code>Cell subsets are found only in FOV: 
-AD2.AD3.CosMx</code></pre>
-<pre><code>Subsetting Centroids..</code></pre>
-<pre><code>Removing FOVs where cells are NOT found: 
-AD4.AD5.CosMx</code></pre>
-<pre><code>..subset final object</code></pre>
+<pre class="r"><code>so.s &lt;- subset(so, cells=so$cell[so$sample == &#39;sample2&#39;])</code></pre>
 <pre><code>Warning: Not validating FOV objects</code></pre>
 <pre><code>Warning: Not validating Centroids objects
 Not validating Centroids objects</code></pre>
@@ -22082,51 +22317,164 @@ Not validating Centroids objects</code></pre>
 <pre><code>Warning: Not validating FOV objects
 Not validating FOV objects
 Not validating FOV objects</code></pre>
-<pre><code>Warning: Not validating Seurat objects</code></pre>
-<pre><code>Updating object..</code></pre>
-<pre><code>Validating object structure</code></pre>
-<pre><code>Updating object slots</code></pre>
-<pre><code>Ensuring keys are in the proper structure</code></pre>
-<pre><code>Updating matrix keys for DimReduc &#39;pca&#39;</code></pre>
-<pre><code>Updating matrix keys for DimReduc &#39;umap&#39;</code></pre>
-<pre><code>Ensuring keys are in the proper structure</code></pre>
-<pre><code>Ensuring feature names don&#39;t have underscores or pipes</code></pre>
-<pre><code>Updating slots in RNA</code></pre>
-<pre><code>Updating slots in niche</code></pre>
-<pre><code>Updating slots in RNA_nn</code></pre>
-<pre><code>Setting default assay of RNA_nn to RNA</code></pre>
-<pre><code>Updating slots in RNA_snn</code></pre>
-<pre><code>Setting default assay of RNA_snn to RNA</code></pre>
-<pre><code>Updating slots in pca</code></pre>
-<pre><code>Updating slots in umap</code></pre>
-<pre><code>Setting umap DimReduc to global</code></pre>
-<pre><code>Updating slots in AD2.AD3.CosMx</code></pre>
-<pre><code>Setting assay used for NormalizeData.RNA to RNA</code></pre>
-<pre><code>Setting assay used for FindVariableFeatures.RNA to RNA</code></pre>
-<pre><code>Setting assay used for ScaleData.RNA to RNA</code></pre>
-<pre><code>Setting assay used for RunPCA.RNA to RNA</code></pre>
-<pre><code>Setting assay used for RunUMAP.RNA.pca to RNA</code></pre>
-<pre><code>Setting assay used for FindNeighbors.RNA.pca to RNA</code></pre>
-<pre><code>No assay information could be found for FindClusters</code></pre>
-<pre><code>Warning: Adding a command log without an assay associated with it</code></pre>
-<pre><code>Setting assay used for ScaleData.niche to niche</code></pre>
-<pre><code>Validating object structure for Assay5 &#39;RNA&#39;</code></pre>
-<pre><code>Validating object structure for Assay &#39;niche&#39;</code></pre>
-<pre><code>Validating object structure for Graph &#39;RNA_nn&#39;</code></pre>
-<pre><code>Validating object structure for Graph &#39;RNA_snn&#39;</code></pre>
-<pre><code>Validating object structure for DimReduc &#39;pca&#39;</code></pre>
-<pre><code>Validating object structure for DimReduc &#39;umap&#39;</code></pre>
-<pre><code>Validating object structure for FOV &#39;AD2.AD3.CosMx&#39;</code></pre>
-<pre><code>Object representation is consistent with the most current Seurat version</code></pre>
-<pre><code>Object is ready!</code></pre>
+<pre><code>Warning: Not validating Seurat objects
+Not validating Seurat objects</code></pre>
 <pre class="r"><code>ImageDimPlot(so.s,  fov = &quot;AD2.AD3.CosMx&quot;,group.by = &#39;seurat_clusters&#39;, boundaries = &quot;segmentation&quot;, border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-44-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-44-1">
+Past versions of unnamed-chunk-44-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-44-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-44-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ImageDimPlot(so.s,  fov = &quot;AD2.AD3.CosMx&quot;,group.by = &#39;niches&#39;, boundaries = &quot;segmentation&quot;, border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-45-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-45-1">
+Past versions of unnamed-chunk-45-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-45-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-45-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ImageFeaturePlot(so.s,  features = &#39;Apoe&#39;,fov = &quot;AD2.AD3.CosMx&quot;, boundaries = &#39;segmentation&#39;,border.color = &#39;black&#39;)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-46-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-1">
+Past versions of unnamed-chunk-46-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-46-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-46-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ImageFeaturePlot(so.s,  features = &#39;Lpl&#39;,fov = &quot;AD2.AD3.CosMx&quot;, boundaries = &#39;segmentation&#39;,border.color = &#39;black&#39;)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-46-2.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-46-2">
+Past versions of unnamed-chunk-46-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-46-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-46-2.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>And with some interesting genes (Needs SF package.)</p>
 <pre class="r"><code>genes &lt;- c(&#39;Apoe&#39;, &#39;Lpl&#39;, &#39;Trem2&#39;) # DAM markers - disease-associated microglia
 ImageDimPlot(so.s,  fov = &quot;AD2.AD3.CosMx&quot;,
@@ -22134,6 +22482,43 @@ ImageDimPlot(so.s,  fov = &quot;AD2.AD3.CosMx&quot;,
              group.by = &#39;sample&#39;, boundaries = &quot;segmentation&quot;,cols = c(&quot;grey30&quot;),
              border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-47-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-47-1">
+Past versions of unnamed-chunk-47-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-47-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-47-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ImageDimPlot(so.s,  fov = &quot;AD2.AD3.CosMx&quot;,
              molecules = genes[1], 
              group.by = &#39;cluster_name&#39;, boundaries = &quot;segmentation&quot;,
@@ -22143,6 +22528,43 @@ ImageDimPlot(so.s,  fov = &quot;AD2.AD3.CosMx&quot;,
              border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
 <pre><code>Warning in brewer.pal(n = length(x = levels(x = molecules$molecule)), name = &quot;Set1&quot;): minimal value for n is 3, returning requested palette with 3 different levels</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-48-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-48-1">
+Past versions of unnamed-chunk-48-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-48-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-48-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>ImageDimPlot(so.s,  fov = &quot;AD2.AD3.CosMx&quot;,
              molecules = genes[1], 
              group.by = &#39;niches&#39;, boundaries = &quot;segmentation&quot;,
@@ -22151,6 +22573,43 @@ ImageDimPlot(so.s,  fov = &quot;AD2.AD3.CosMx&quot;,
              border.color = &#39;black&#39;, axes = T, crop=TRUE)</code></pre>
 <pre><code>Warning in brewer.pal(n = length(x = levels(x = molecules$molecule)), name = &quot;Set1&quot;): minimal value for n is 3, returning requested palette with 3 different levels</code></pre>
 <p><img src="figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-49-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-49-1">
+Past versions of unnamed-chunk-49-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-49-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/af119616dfe732ea1b87009014d44233fa19afc0/docs/figure/d_cosmxAlzPlaque.Rmd/unnamed-chunk-49-1.png" target="_blank">af11961</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-06-27
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
@@ -22182,9 +22641,9 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.3.2 (2023-10-31)
-Platform: x86_64-pc-linux-gnu (64-bit)
-Running under: Ubuntu 22.04.4 LTS
+<pre><code>R version 4.4.0 (2024-04-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 22.04.5 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -22206,114 +22665,117 @@ attached base packages:
 [8] base     
 
 other attached packages:
- [1] lubridate_1.9.3             forcats_1.0.0              
+ [1] lubridate_1.9.4             forcats_1.0.0              
  [3] stringr_1.5.1               dplyr_1.1.4                
  [5] purrr_1.0.2                 readr_2.1.5                
  [7] tidyr_1.3.1                 tibble_3.2.1               
- [9] ggplot2_3.5.0               tidyverse_2.0.0            
+ [9] ggplot2_3.5.1               tidyverse_2.0.0            
 [11] pheatmap_1.0.12             viridis_0.6.5              
-[13] viridisLite_0.4.2           scuttle_1.12.0             
-[15] scRNAseq_2.16.0             SingleCellExperiment_1.24.0
-[17] SingleR_2.4.1               SummarizedExperiment_1.32.0
-[19] Biobase_2.62.0              GenomicRanges_1.54.1       
-[21] GenomeInfoDb_1.38.8         IRanges_2.36.0             
-[23] S4Vectors_0.40.2            BiocGenerics_0.48.1        
-[25] MatrixGenerics_1.14.0       matrixStats_1.2.0          
-[27] magrittr_2.0.3              Seurat_5.0.3               
-[29] SeuratObject_5.0.1          sp_2.1-3                   
+[13] viridisLite_0.4.2           scuttle_1.16.0             
+[15] scRNAseq_2.20.0             SingleCellExperiment_1.28.1
+[17] SingleR_2.8.0               SummarizedExperiment_1.36.0
+[19] Biobase_2.66.0              GenomicRanges_1.58.0       
+[21] GenomeInfoDb_1.42.1         IRanges_2.40.1             
+[23] S4Vectors_0.44.0            BiocGenerics_0.52.0        
+[25] MatrixGenerics_1.18.1       matrixStats_1.5.0          
+[27] magrittr_2.0.3              Seurat_5.3.0               
+[29] SeuratObject_5.2.0          sp_2.2-0                   
 [31] workflowr_1.7.1            
 
 loaded via a namespace (and not attached):
-  [1] fs_1.6.3                      ProtGenerics_1.34.0          
-  [3] spatstat.sparse_3.0-3         bitops_1.0-7                 
-  [5] sf_1.0-16                     httr_1.4.7                   
-  [7] RColorBrewer_1.1-3            tools_4.3.2                  
-  [9] sctransform_0.4.1             DT_0.33                      
- [11] utf8_1.2.4                    R6_2.5.1                     
- [13] mgcv_1.9-1                    lazyeval_0.2.2               
- [15] uwot_0.1.16                   withr_3.0.0                  
- [17] prettyunits_1.2.0             gridExtra_2.3                
- [19] progressr_0.14.0              cli_3.6.2                    
- [21] spatstat.explore_3.2-7        fastDummies_1.7.3            
- [23] labeling_0.4.3                sass_0.4.9                   
- [25] spatstat.data_3.0-4           proxy_0.4-27                 
- [27] ggridges_0.5.6                pbapply_1.7-2                
- [29] Rsamtools_2.18.0              parallelly_1.37.1            
- [31] rstudioapi_0.16.0             RSQLite_2.3.7                
- [33] generics_0.1.3                BiocIO_1.12.0                
- [35] crosstalk_1.2.1               ica_1.0-3                    
- [37] spatstat.random_3.2-3         Matrix_1.6-5                 
- [39] fansi_1.0.6                   abind_1.4-5                  
- [41] lifecycle_1.0.4               whisker_0.4.1                
- [43] yaml_2.3.8                    SparseArray_1.2.4            
- [45] BiocFileCache_2.10.2          Rtsne_0.17                   
- [47] grid_4.3.2                    blob_1.2.4                   
- [49] promises_1.2.1                ExperimentHub_2.10.0         
- [51] crayon_1.5.2                  miniUI_0.1.1.1               
- [53] lattice_0.22-6                beachmat_2.18.1              
- [55] cowplot_1.1.3                 GenomicFeatures_1.54.4       
- [57] KEGGREST_1.42.0               pillar_1.9.0                 
- [59] knitr_1.45                    rjson_0.2.21                 
- [61] future.apply_1.11.2           codetools_0.2-20             
- [63] leiden_0.4.3.1                glue_1.7.0                   
- [65] getPass_0.2-4                 data.table_1.15.4            
- [67] vctrs_0.6.5                   png_0.1-8                    
- [69] spam_2.10-0                   gtable_0.3.4                 
- [71] cachem_1.0.8                  xfun_0.43                    
- [73] S4Arrays_1.2.1                mime_0.12                    
- [75] survival_3.5-8                units_0.8-5                  
- [77] interactiveDisplayBase_1.40.0 fitdistrplus_1.1-11          
- [79] ROCR_1.0-11                   nlme_3.1-164                 
- [81] bit64_4.0.5                   progress_1.2.3               
- [83] filelock_1.0.3                RcppAnnoy_0.0.22             
- [85] rprojroot_2.0.4               bslib_0.7.0                  
- [87] irlba_2.3.5.1                 KernSmooth_2.23-22           
- [89] colorspace_2.1-0              DBI_1.2.2                    
- [91] tidyselect_1.2.1              processx_3.8.4               
- [93] bit_4.0.5                     compiler_4.3.2               
- [95] curl_5.2.1                    git2r_0.33.0                 
- [97] xml2_1.3.6                    DelayedArray_0.28.0          
- [99] plotly_4.10.4                 rtracklayer_1.62.0           
-[101] scales_1.3.0                  classInt_0.4-10              
-[103] lmtest_0.9-40                 callr_3.7.6                  
-[105] rappdirs_0.3.3                digest_0.6.35                
-[107] goftest_1.2-3                 spatstat.utils_3.0-4         
-[109] rmarkdown_2.26                XVector_0.42.0               
-[111] htmltools_0.5.8.1             pkgconfig_2.0.3              
-[113] sparseMatrixStats_1.14.0      highr_0.10                   
-[115] dbplyr_2.5.0                  fastmap_1.1.1                
-[117] ensembldb_2.26.0              rlang_1.1.3                  
-[119] htmlwidgets_1.6.4             shiny_1.8.1.1                
-[121] DelayedMatrixStats_1.24.0     farver_2.1.1                 
-[123] jquerylib_0.1.4               zoo_1.8-12                   
-[125] jsonlite_1.8.8                BiocParallel_1.36.0          
-[127] BiocSingular_1.18.0           RCurl_1.98-1.14              
-[129] GenomeInfoDbData_1.2.11       dotCall64_1.1-1              
-[131] patchwork_1.2.0               munsell_0.5.1                
-[133] Rcpp_1.0.12                   reticulate_1.35.0            
-[135] stringi_1.8.3                 zlibbioc_1.48.2              
-[137] MASS_7.3-60.0.1               AnnotationHub_3.10.1         
-[139] plyr_1.8.9                    parallel_4.3.2               
-[141] listenv_0.9.1                 ggrepel_0.9.5                
-[143] deldir_2.0-4                  Biostrings_2.70.3            
-[145] splines_4.3.2                 tensor_1.5                   
-[147] hms_1.1.3                     ps_1.7.6                     
-[149] igraph_2.0.3                  spatstat.geom_3.2-9          
-[151] RcppHNSW_0.6.0                reshape2_1.4.4               
-[153] biomaRt_2.58.2                ScaledMatrix_1.10.0          
-[155] BiocVersion_3.18.1            XML_3.99-0.16.1              
-[157] evaluate_0.23                 renv_1.0.5                   
-[159] BiocManager_1.30.22           tzdb_0.4.0                   
-[161] httpuv_1.6.15                 RANN_2.6.1                   
-[163] polyclip_1.10-6               future_1.33.2                
-[165] scattermore_1.2               rsvd_1.0.5                   
-[167] xtable_1.8-4                  restfulr_0.0.15              
-[169] AnnotationFilter_1.26.0       e1071_1.7-14                 
-[171] RSpectra_0.16-1               later_1.3.2                  
-[173] class_7.3-22                  memoise_2.0.1                
-[175] AnnotationDbi_1.64.1          GenomicAlignments_1.38.2     
-[177] cluster_2.1.6                 timechange_0.3.0             
-[179] globals_0.16.3               </code></pre>
+  [1] ProtGenerics_1.38.0       fs_1.6.5                 
+  [3] spatstat.sparse_3.1-0     bitops_1.0-9             
+  [5] sf_1.0-19                 httr_1.4.7               
+  [7] RColorBrewer_1.1-3        tools_4.4.0              
+  [9] sctransform_0.4.1         alabaster.base_1.6.1     
+ [11] DT_0.33                   R6_2.5.1                 
+ [13] HDF5Array_1.34.0          mgcv_1.9-1               
+ [15] lazyeval_0.2.2            uwot_0.2.2               
+ [17] rhdf5filters_1.18.0       withr_3.0.2              
+ [19] gridExtra_2.3             progressr_0.15.1         
+ [21] cli_3.6.3                 spatstat.explore_3.3-4   
+ [23] fastDummies_1.7.5         labeling_0.4.3           
+ [25] alabaster.se_1.6.0        sass_0.4.9               
+ [27] spatstat.data_3.1-4       proxy_0.4-27             
+ [29] ggridges_0.5.6            pbapply_1.7-2            
+ [31] Rsamtools_2.22.0          parallelly_1.42.0        
+ [33] rstudioapi_0.17.1         RSQLite_2.3.9            
+ [35] generics_0.1.3            BiocIO_1.16.0            
+ [37] crosstalk_1.2.1           ica_1.0-3                
+ [39] spatstat.random_3.3-2     Matrix_1.7-4             
+ [41] abind_1.4-8               lifecycle_1.0.4          
+ [43] whisker_0.4.1             yaml_2.3.10              
+ [45] rhdf5_2.50.2              SparseArray_1.6.1        
+ [47] BiocFileCache_2.14.0      Rtsne_0.17               
+ [49] grid_4.4.0                blob_1.2.4               
+ [51] promises_1.3.2            ExperimentHub_2.14.0     
+ [53] crayon_1.5.3              miniUI_0.1.1.1           
+ [55] lattice_0.22-6            beachmat_2.22.0          
+ [57] cowplot_1.1.3             GenomicFeatures_1.58.0   
+ [59] KEGGREST_1.46.0           pillar_1.10.1            
+ [61] knitr_1.49                rjson_0.2.23             
+ [63] future.apply_1.11.3       codetools_0.2-20         
+ [65] glue_1.8.0                getPass_0.2-4            
+ [67] spatstat.univar_3.1-1     data.table_1.16.4        
+ [69] vctrs_0.6.5               png_0.1-8                
+ [71] gypsum_1.2.0              spam_2.11-1              
+ [73] gtable_0.3.6              cachem_1.1.0             
+ [75] xfun_0.50                 S4Arrays_1.6.0           
+ [77] mime_0.12                 survival_3.8-3           
+ [79] units_0.8-5               fitdistrplus_1.2-2       
+ [81] ROCR_1.0-11               nlme_3.1-166             
+ [83] bit64_4.6.0-1             alabaster.ranges_1.6.0   
+ [85] filelock_1.0.3            RcppAnnoy_0.0.22         
+ [87] rprojroot_2.0.4           bslib_0.9.0              
+ [89] irlba_2.3.5.1             KernSmooth_2.23-26       
+ [91] colorspace_2.1-1          DBI_1.2.3                
+ [93] tidyselect_1.2.1          processx_3.8.5           
+ [95] bit_4.5.0.1               compiler_4.4.0           
+ [97] curl_7.0.0                git2r_0.33.0             
+ [99] httr2_1.2.1               BiocNeighbors_2.0.1      
+[101] DelayedArray_0.32.0       plotly_4.10.4            
+[103] rtracklayer_1.66.0        scales_1.3.0             
+[105] classInt_0.4-11           lmtest_0.9-40            
+[107] callr_3.7.6               rappdirs_0.3.3           
+[109] digest_0.6.37             goftest_1.2-3            
+[111] spatstat.utils_3.1-2      alabaster.matrix_1.6.1   
+[113] rmarkdown_2.29            XVector_0.46.0           
+[115] htmltools_0.5.8.1         pkgconfig_2.0.3          
+[117] sparseMatrixStats_1.18.0  dbplyr_2.5.0             
+[119] fastmap_1.2.0             ensembldb_2.30.0         
+[121] rlang_1.1.5               htmlwidgets_1.6.4        
+[123] UCSC.utils_1.2.0          shiny_1.10.0             
+[125] DelayedMatrixStats_1.28.1 farver_2.1.2             
+[127] jquerylib_0.1.4           zoo_1.8-12               
+[129] jsonlite_1.8.9            BiocParallel_1.40.0      
+[131] BiocSingular_1.22.0       RCurl_1.98-1.16          
+[133] GenomeInfoDbData_1.2.13   dotCall64_1.2            
+[135] patchwork_1.3.0           Rhdf5lib_1.28.0          
+[137] munsell_0.5.1             Rcpp_1.0.14              
+[139] reticulate_1.40.0         stringi_1.8.4            
+[141] alabaster.schemas_1.6.0   zlibbioc_1.52.0          
+[143] MASS_7.3-64               AnnotationHub_3.14.0     
+[145] plyr_1.8.9                parallel_4.4.0           
+[147] listenv_0.9.1             ggrepel_0.9.6            
+[149] deldir_2.0-4              Biostrings_2.74.1        
+[151] splines_4.4.0             tensor_1.5               
+[153] hms_1.1.3                 ps_1.8.1                 
+[155] igraph_2.1.4              spatstat.geom_3.3-5      
+[157] RcppHNSW_0.6.0            reshape2_1.4.4           
+[159] ScaledMatrix_1.14.0       BiocVersion_3.20.0       
+[161] XML_3.99-0.19             evaluate_1.0.3           
+[163] renv_1.0.5                BiocManager_1.30.25      
+[165] tzdb_0.4.0                httpuv_1.6.15            
+[167] RANN_2.6.2                polyclip_1.10-7          
+[169] alabaster.sce_1.6.0       future_1.34.0            
+[171] scattermore_1.2           rsvd_1.0.5               
+[173] xtable_1.8-4              restfulr_0.0.16          
+[175] AnnotationFilter_1.30.0   e1071_1.7-16             
+[177] RSpectra_0.16-2           later_1.4.1              
+[179] class_7.3-23              memoise_2.0.1            
+[181] AnnotationDbi_1.68.0      GenomicAlignments_1.42.0 
+[183] cluster_2.1.8             timechange_0.3.0         
+[185] globals_0.16.3           </code></pre>
 </div>
 </div>
 
