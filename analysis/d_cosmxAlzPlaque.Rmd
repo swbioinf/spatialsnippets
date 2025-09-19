@@ -70,6 +70,10 @@ library(viridis)
 library(pheatmap)
 
 library(tidyverse) # last filter should be tidyverse. Order of import matters.
+
+
+options(future.globals.maxSize= 5*1024^3) # Set to 5Gb
+ 
 ```
 
 
@@ -90,7 +94,7 @@ predictions.cluster_file <- file.path(data_dir, "predictionsClusterVsZeizel2015.
 min_count_per_cell <- 100
 max_pc_negs        <- 0.5
 
-source("code/subset_obj_seurat_v2.R")
+#source("code/subset_obj_seurat_v2.R") # no longer needed.
 
 
 
@@ -475,10 +479,11 @@ so$cluster_pred_deltanext <- signif(predictions.cluster[so$cluster, "delta.next"
 cluster_lookup     <- 
   setNames(predictions.cluster$pruned.labels,
            nm=rownames(predictions.cluster))
+
 clustername_lookup <- 
   setNames(paste0(names(cluster_lookup),": ", cluster_lookup ),
            nm = names(cluster_lookup))
-so$cluster_name <- factor(as.character(clustername_lookup[so$cluster]), levels=clustername_lookup)
+so$cluster_name <- factor(as.character(clustername_lookup[as.character(so$cluster)]), levels=clustername_lookup)
 
 
 # cell level predictons
@@ -515,6 +520,8 @@ plotScoreHeatmap(predictions.cluster)
 
 How do the cell level and cluster level assignments compare? - Clustered groupings are mostly matched to individual cell calls.
 
+Not trying to get this annotation perfect, its just enough to demonstrate the methods.
+
 ```{r}
 plottable <- so@meta.data[,c('pred', "cluster_pred")] %>%
   group_by(pred, cluster_pred) %>%
@@ -549,7 +556,8 @@ ggplot(plottable, aes(x=cluster_name, y=n, fill=pred)) +
 And how each level of cell typing looks spatially;
 
 ```{r}
-so.s <- subset_opt(so, cells=so$cell[so$sample == 'sample2'])
+so.s <- subset(so, cells=so$cell[so$sample == 'sample2'])
+
 ```
 
 ```{r}
@@ -732,7 +740,7 @@ ImageDimPlot(so, fov = "AD2.AD3.CosMx",group.by = 'sample', axes = TRUE)
 
 Just one sample?
 ```{r}
-so.s <- subset_opt(so, cells=so$cell[so$sample == 'sample2'])
+so.s <- subset(so, cells=so$cell[so$sample == 'sample2'])
 ```
 
 ```{r}
