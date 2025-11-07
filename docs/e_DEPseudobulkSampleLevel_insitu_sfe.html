@@ -435,7 +435,7 @@ Robinson 2018)</span>.</p>
 <p>This test requires:</p>
 <ul>
 <li>Biological replicates for each group</li>
-<li>Assigned cell types</li>
+<li>Assigned cell types (or clusters, or niches)</li>
 </ul>
 <p>For example:</p>
 <ul>
@@ -494,17 +494,12 @@ se_pseudobulk_file &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_pseudobul
 <h2>Experimental design</h2>
 <!-- Move this to own page? --->
 <p>There are three individuals per condition, one tissue sample from
-each individual. 9 slides in total. Each tissue sample has multiple FOVs
-captured.</p>
-<p>In the cosMX output an ‘fov’ refers to the rectangular regions on the
-slide that are measured; there are multiple fovs per sample, and in this
-experiment, only one sample per slide.</p>
-<!-- ### Level of pseudobulk pooling -->
-<!-- We will be pooling cells of the same type from the sample into 'pseudobulk' samples. We could do this at two levels -->
-<!-- 1. Individual fov on tissue : Each fov is its own 'pseudoreplicate', and there are multiple per tissue sample. -->
-<!-- 2. Entire tissue (or tissue region) : Pool cells from all fovs within a tissue. This is the simplest option, and is outlined here: (LINK EXAMPLE) -->
-<!-- If there are no explict fovs on the data (like Xenium), option 2 is best. And likewise, if the fovs are tiled across a large area of the sample, option 2 may be more sensible (conceptually, fov-fov variation would be averaged out). Option 1 may be considered if there are only a handful of disconnected fovs on the tissue, and it is desireable to model the variation between them.  -->
-<!-- Arguably, option 2 is the better option for this data (see example (LINK EXAMPLE)) - since largely the samples but this example will demonstrate option 1 - psedudo replicates. -->
+each individual. 9 slides in total.</p>
+<p>Note: Each tissue sample has multiple FOVs captured. In the cosMX
+output an ‘fov’ refers to the rectangular regions on the slide that are
+measured; there are multiple fovs per sample, and in this experiment,
+only one sample per slide. It may be neccessary to remove ‘poor’ FOVs or
+sampels with too few FOVs, but not in this experiment.</p>
 <pre class="r"><code>sample_table &lt;- select(as_tibble(colData(sfe)), condition, individual_code, fov_name) %&gt;%
   unique() %&gt;% 
   group_by(condition, individual_code) %&gt;% 
@@ -513,6 +508,7 @@ experiment, only one sample per slide.</p>
 DT::datatable(sample_table)</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-8839f08f82529a5247be" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-8839f08f82529a5247be">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9"],["Healthy controls","Healthy controls","Healthy controls","Ulcerative colitis","Ulcerative colitis","Ulcerative colitis","Crohn's disease","Crohn's disease","Crohn's disease"],["HC_a","HC_b","HC_c","UC_a","UC_b","UC_c","CD_a","CD_b","CD_c"],[19,20,16,19,22,21,19,18,16],["HC_a_001, HC_a_010, HC_a_011, HC_a_012, HC_a_013, HC_a_014, HC_a_015, HC_a_016, HC_a_018, HC_a_019, HC_a_002, HC_a_020, HC_a_004, HC_a_005, HC_a_006, HC_a_007, HC_a_008, HC_a_009, HC_a_003","HC_b_001, HC_b_010, HC_b_011, HC_b_012, HC_b_013, HC_b_014, HC_b_015, HC_b_016, HC_b_002, HC_b_003, HC_b_004, HC_b_005, HC_b_006, HC_b_007, HC_b_008, HC_b_009, HC_b_017, HC_b_018, HC_b_019, HC_b_020","HC_c_001, HC_c_011, HC_c_013, HC_c_014, HC_c_002, HC_c_003, HC_c_004, HC_c_006, HC_c_007, HC_c_008, HC_c_009, HC_c_005, HC_c_010, HC_c_015, HC_c_016, HC_c_012","UC_a_001, UC_a_010, UC_a_012, UC_a_013, UC_a_014, UC_a_015, UC_a_016, UC_a_017, UC_a_018, UC_a_019, UC_a_002, UC_a_020, UC_a_021, UC_a_022, UC_a_005, UC_a_007, UC_a_008, UC_a_009, UC_a_006","UC_b_001, UC_b_011, UC_b_012, UC_b_014, UC_b_015, UC_b_016, UC_b_017, UC_b_018, UC_b_002, UC_b_020, UC_b_021, UC_b_022, UC_b_023, UC_b_024, UC_b_003, UC_b_004, UC_b_005, UC_b_006, UC_b_007, UC_b_008, UC_b_009, UC_b_010","UC_c_001, UC_c_010, UC_c_011, UC_c_012, UC_c_013, UC_c_014, UC_c_015, UC_c_016, UC_c_017, UC_c_018, UC_c_019, UC_c_002, UC_c_020, UC_c_021, UC_c_003, UC_c_006, UC_c_007, UC_c_008, UC_c_009, UC_c_004, UC_c_005","CD_a_001, CD_a_010, CD_a_012, CD_a_014, CD_a_015, CD_a_017, CD_a_018, CD_a_019, CD_a_002, CD_a_004, CD_a_005, CD_a_006, CD_a_007, CD_a_008, CD_a_009, CD_a_011, CD_a_013, CD_a_016, CD_a_003","CD_b_010, CD_b_011, CD_b_012, CD_b_013, CD_b_014, CD_b_015, CD_b_016, CD_b_017, CD_b_018, CD_b_019, CD_b_002, CD_b_003, CD_b_004, CD_b_005, CD_b_006, CD_b_007, CD_b_008, CD_b_009","CD_c_001, CD_c_011, CD_c_012, CD_c_013, CD_c_014, CD_c_015, CD_c_017, CD_c_002, CD_c_003, CD_c_004, CD_c_005, CD_c_006, CD_c_007, CD_c_008, CD_c_009, CD_c_010"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>condition<\/th>\n      <th>individual_code<\/th>\n      <th>n_fovs<\/th>\n      <th>item<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":3},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"condition","targets":1},{"name":"individual_code","targets":2},{"name":"n_fovs","targets":3},{"name":"item","targets":4}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p>We have 5 broad celltypes defined already.</p>
 <pre class="r"><code>plot_one &lt;- function(sample) {
   p &lt;- plotSpatialFeature(sfe[,sfe$tissue_sample == sample], &quot;celltype_subset&quot;,colGeometryName = &quot;cellSeg&quot;) + 
     theme(legend.title=element_blank()) +
@@ -525,6 +521,43 @@ plots &lt;- lapply(FUN=plot_one, X=samples)
 p.all &lt;- wrap_plots(plots, ncol=3)
 plot(p.all)</code></pre>
 <p><img src="figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/44907e6988ada141496d67884744a27ae0847b9a/docs/figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-5-1.png" target="_blank">44907e6</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-11-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="cell-filtering" class="section level2">
 <h2>Cell filtering</h2>
@@ -535,6 +568,22 @@ particular celltype, within a tissue sample.</p>
 <p>If we had tiled fovs across a tissue sample with distinct regions
 (e.g. cancer, stroma) it might be necessary to group them by subregion
 as well.</p>
+<div class="rmdimportant">
+<p><strong>Testing other things</strong></p>
+<p>We are not limited to tests at the celltype level between conditions,
+tests could be at any informative grouping. E.g.</p>
+<ul>
+<li>Differences in expressesion at a tissue niche level (e.g. ) - Define
+pseudobulk groups as <em>tissue_sample + niche</em> and test between
+condition.</li>
+<li>Differences in expression of <em>celltype</em> localised within
+niche vs outside of niche - Design pseudubulk groups as
+<em>tissue_sample + celltype + niche</em></li>
+</ul>
+<p>This same approach can be used to these hypothesese by adjusting the
+pseudobulk grouping and limma design model (further below) accordingly.
+This example assumes tests between conditions at the celltype level.</p>
+</div>
 <p>Once the pseudobulk replicate grouping is decided, we need to check
 there will be enough cells to perform our analyses. Note there are
 several levels of filtering here!</p>
@@ -574,6 +623,43 @@ ggplot(colData(sfe), aes(x=total_count)) +
   theme_bw()+
   ggtitle(&quot;How many reads per cell?&quot;)</code></pre>
 <p><img src="figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/44907e6988ada141496d67884744a27ae0847b9a/docs/figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-6-1.png" target="_blank">44907e6</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-11-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>sfe &lt;- sfe[,sfe$total_count&gt;= min_reads_per_cell]</code></pre>
 </div>
 </div>
@@ -592,16 +678,19 @@ Even so, its well worth saving the ‘pseudobulk’ object to disk for later
 calculations and visualisations.</p>
 <pre class="r"><code>sfe$pdb_sample &lt;- paste0(sfe$tissue_sample, &#39;_&#39;, sfe$celltype_subset)
 
-se.pdb &lt;- aggregateAcrossCells(sfe, ids=sfe$pdb_sample,
-                               BPPARAM = MulticoreParam(workers=8) # Use 8 cores, requires BiocParallel, 
-                               )
+se.pdb &lt;- aggregateAcrossCells(sfe, ids=sfe$pdb_sample)
+# Use 8 cores, requires BiocParallel, 
+#se.pdb &lt;- aggregateAcrossCells(sfe, ids=sfe$pdb_sample,
+#                               BPPARAM = MulticoreParam(workers=8)  )
+
 # To save it
 saveRDS(se.pdb, se_pseudobulk_file)</code></pre>
 <p>Read in the previously prepared object.</p>
 <pre class="r"><code>se.pdb &lt;- readRDS( se_pseudobulk_file)</code></pre>
 <p>Now instead of counts for each individual cell, we have our
 pseodubulk matrix with the pooled sum of counts for each celltype within
-each fov region. So the numbers are much higher, with fewer zeros.</p>
+each tissue samples. So the numbers are much higher, with fewer
+zeros.</p>
 <p>But note that each pool is a different size, so we can’t compare
 counts directly. We will address this later with normalisation.</p>
 <pre class="r"><code>counts(se.pdb)[1:10,1:4]</code></pre>
@@ -645,6 +734,43 @@ ggplot(colData(se.pdb), aes(x=ncells, col=celltype_subset)) +
   theme_bw() +
   ggtitle(&quot;How many cells per pseduobulk sample?&quot;)</code></pre>
 <p><img src="figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-11-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/44907e6988ada141496d67884744a27ae0847b9a/docs/figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-11-1.png" target="_blank">44907e6</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-11-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Note there are much fewer t-cells overall. Its typical that some of
 the less common cell types are difficult or impossible to reliably
 test.</p>
@@ -663,7 +789,6 @@ biological samples are represented in our filtered table?</p>
 <p>In this experiment, there are enough samples to run the contrasts for
 every cell type.</p>
 <pre class="r"><code>celltype_summary_table.passed &lt;- data.frame(colData(se.pdb)[,c(&#39;pdb_sample&#39;,&#39;condition&#39;,&#39;individual_code&#39;,&#39;celltype_subset&#39;)])
-
 
 celltype_summary_table.passed %&gt;% select(condition, individual_code, celltype_subset) %&gt;%
   unique() %&gt;%
@@ -723,9 +848,11 @@ various by disease group, blocked on individual.</li>
 <li>Run the test.</li>
 </ol>
 <p>How to build the model and run the test will need to be customised
-for your experimental design. Online resources that describe approaches
-for bulk RNAseq analyses can be applied to pseudobulk analyses - see the
-‘More Information’ section of this document for suggestions.</p>
+for your experimental design - it is very flexible to support paired
+analyses, batches and other factors. Online resources that describe
+approaches for bulk RNAseq analyses can be applied to pseudobulk
+analyses - see the ‘More Information’ section of this document for
+suggestions.</p>
 <div id="the-model" class="section level3">
 <h3>The model</h3>
 <p>In this case the line <code>model.matrix( ~0 + group)</code> builds a
@@ -735,33 +862,29 @@ can include all 3 groups in our contrasts, rather than one of them being
 treated as the baseline. ( NB: Mathematically, you could use ~group
 alone without intercept, and define contrasts accordingly to get the
 same result. )</p>
-<p>But, we also need to take into account our individuals. We do this by
-<em>blocking</em> on individual, and calculating a intra duplicate
-correlation with <em>duplicateCorrelation()</em><span
+<p>Some example models:</p>
+<ul>
+<li><strong>~0 + group</strong> : Most straightforward approach taken
+here- one pooling fovs tile across a sample, tested in parallel for each
+celltype.</li>
+<li><strong>~0 + group, (blocked on individual with using duplicate
+Correlation)</strong> : Generally not needed, takes into account
+pseodureplicate fovs from the same samples (if we expect some
+particularly large variation between fovs it may be considered). We do
+this by <em>blocking</em> on individual, and calculating a intra
+duplicate correlation with <em>duplicateCorrelation()</em><span
 class="citation">(Smyth, Michaud, and Scott 2005)</span>. That’s a
 method from microarray times, see <a
 href="https://support.bioconductor.org/p/125489/">discussion</a> for how
-it is applied to bulk RNAseq data.</p>
-<p>If instead we didn’t have multiple fovs per replicate, can skip
-blocking or use of duplicateCorrelation(). That is more typical of a
-typical of a bulk rnaseq or single cell RNAseq pseuobulk analysis.</p>
-<p>Some example models:</p>
-<ul>
-<li><strong>~0 + group, (no blocking or duplicate correlation)</strong>
-: If there was only one pseudoreplicate per individual. Either from a
-single fov, or from pooling fovs tile across a sample.</li>
-<li><strong>~0 + group, (blocked on individual with using duplicate
-Correlation)</strong> : Used here, takes into account pseodureplicate
-fovs from the same samples.</li>
-<li><strong>~0 + group + individual (no blocking or duplicate
-correlation)</strong> : If this was a treatment / time point experiment
-with paired samples from individuals. But only one pseodureplicate per
-individual. If there were multiple fovs per tissue sample, you could add
-blocking and duplicate correlation on tissue ID.</li>
-<li><strong>~0 + group + celltype</strong> (with or without blocking +
-duplicate correlation) : Instead of subsetting to celltype, includes
-cell type in the model. This pulls more data into the statistics, but
-makes building the contrasts challenging! Not covered here.</li>
+it is applied to bulk RNAseq data.</li>
+<li><strong>~0 + group + individual</strong> : If this was a treatment /
+time point experiment with paired samples from individuals. Other
+experimental factors can be added this way as needed (e.g. slide,
+phenotype)</li>
+<li><strong>~0 + group + celltype</strong> : Instead of subsetting to
+celltype, includes cell type in the model. This pulls more data into the
+statistics, but makes building the contrasts challenging! Not covered
+here.</li>
 </ul>
 </div>
 <div id="about-filtering" class="section level3">
@@ -904,10 +1027,12 @@ to evaluate your differential expression results.</p>
 <li>Only big changes are significant at lower expressions, simply
 becuase higher expression means more statistical confidence.</li>
 <li>A lopsided plot might indicate some oddness around the normalisation
-of your data (e.g. extremely different cell counts).</li>
+of your data (e.g. extremely different cell counts). We can see that
+here, but note the significant genes are those deviating from the
+trend.</li>
 </ul>
 <!--[[ADD pvalue plot?]]-->
-<pre class="r"><code>make_ma_style_plot &lt;- function(res_table, pval_threshold = 0.01, n_genes_to_label = 10) {
+<pre class="r"><code>make_ma_style_plot &lt;- function(res_table, pval_threshold = 0.05, n_genes_to_label = 10) {
   p &lt;- ggplot(res_table, aes(x=AveExpr, y=logFC, col=adj.P.Val &lt; pval_threshold) ) +
     geom_hline(yintercept = c(0), col=&#39;grey80&#39;) +
     geom_point(pch=3) +
@@ -927,6 +1052,43 @@ p3 &lt;- make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot
 
 p1 + p2 + p3</code></pre>
 <p><img src="figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-18-1.png" width="1152" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
+Past versions of unnamed-chunk-18-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/44907e6988ada141496d67884744a27ae0847b9a/docs/figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-18-1.png" target="_blank">44907e6</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-11-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="check-some-examples" class="section level2">
 <h2>Check some examples</h2>
@@ -947,10 +1109,13 @@ norm_counts &lt;- cpm(dge)
 
 # Store normalised log2 scale expression in 
 assay(se.pdb, &quot;logcounts&quot;) &lt;- log2(norm_counts)</code></pre>
+<pre class="r"><code>DT::datatable(mutate(filter(de_results_sig, target == &quot;LYZ&quot;), across(is.numeric, signif, digits = 3)))</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-02919026514f0c819cc6" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-02919026514f0c819cc6">{"x":{"filter":"none","vertical":false,"data":[["1"],["epi"],["pairwise"],["UCvHC"],["LYZ"],[3.6],[10.7],[7.88],[3.25e-06],[0.00194],[4.87]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>plotExpression(se.pdb, &quot;LYZ&quot;, x=&quot;group&quot;, colour_by = &quot;group&quot;,
                other_fields = &quot;celltype_subset&quot;) + 
  facet_wrap(~celltype_subset)</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-20-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-20-2.png" width="960" style="display: block; margin: auto;" /></p>
 <p>PIGR was flagged more globally across multiple comparisons, in plasma
 and stroma in Crohns disease vs healthy, and stroma and myeloids when
 comparing Ulcerative colitis vs healthy. PIGR is a more specifically
@@ -958,35 +1123,39 @@ expressed at a higher level in the epithelia however - so we would want
 to interpet this carefully (e.g. Are stroma cells really expressing less
 PIGR, or could they be catching expression from more-oft co-located
 epithelia?)</p>
+<pre class="r"><code>DT::datatable(mutate(filter(de_results_sig, target == &quot;PIGR&quot;), across(is.numeric, signif, digits = 3)))</code></pre>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-33e8fa5db7297a737495" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-33e8fa5db7297a737495">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5"],["myeloids","plasmas","plasmas","stroma","stroma"],["pairwise","pairwise","pairwise","pairwise","pairwise"],["UCvHC","UCvHC","CDvHC","UCvHC","CDvHC"],["PIGR","PIGR","PIGR","PIGR","PIGR"],[-1.8,-1.53,-1.34,-1.9,-1.43],[9.66,9.52,9.52,9.699999999999999,9.699999999999999],[-5.49,-6.61,-5.86,-8.25,-6.63],[0.000101,2.42e-05,7.52e-05,2.06e-06,1.97e-05],[0.0332,0.0168,0.0376,0.00206,0.0195],[1.6,2.7,1.81,3.71,3.02]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>plotExpression(se.pdb, &quot;PIGR&quot;, x=&quot;group&quot;, colour_by = &quot;group&quot;,
                other_fields = &quot;celltype_subset&quot;) + 
  facet_wrap(~celltype_subset)</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-21-1.png" width="960" style="display: block; margin: auto;" /></p>
-<pre class="r"><code>plotExpression(se.pdb, &quot;IGHG1&quot;, x=&quot;group&quot;, colour_by = &quot;group&quot;,
-               other_fields = &quot;celltype_subset&quot;) + 
- facet_wrap(~celltype_subset)</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-22-1.png" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-21-2.png" width="960" style="display: block; margin: auto;" /></p>
 </div>
 </div>
 <div id="code-snippet" class="section level1">
 <h1>Code Snippet</h1>
-<!-- ```{r eval=FALSE} -->
-<!-- library(alabaster.sfe)  -->
-<!-- generic_sfe_file <- file.path(data_dir,'GSE234713_CosMx_IBD_seurat_01_generic4snippettests') -->
-<!-- sfe <- readObject(generic_sfe_file) -->
-<!-- ``` -->
-<ul>
-<li>And the following columns in the colData cell metadata
+<pre class="r"><code>library(alabaster.sfe)
+data_dir               &lt;- file.path(&quot;~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data&quot;)
+generic_sfe_file &lt;- file.path(data_dir,&#39;GSE234713_CosMx_IBD_sfe_01_generic4snippettests&#39;)
+sfe &lt;-  readObject(generic_sfe_file)
+
+
+sfe_file_01_generic_min200_pdb &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_sfe_01_generic4snippettests_min200_pdb.RDS&quot;)
+se.pdb &lt;- readRDS(sfe_file_01_generic_min200_pdb)</code></pre>
+<p>This code snippet would test for differential expression between
+groups, within each celltype or cluster independantly. It skips
+contrasts where there are not enough samples to test a given
+celltype.</p>
+<p>It assumes the following columns in the colData cell metadata:</p>
 <ul>
 <li><strong>total_counts</strong> : total number of counts per cell, for
 filtering</li>
 <li><strong>celltype</strong> : Celltype grouping of cells
 (alternatively, cluster)</li>
 <li><strong>group</strong> : Experimental group, e.g. test, control,
-d1_treated</li>
+d1_treated. In this code they are ‘GroupA’, ‘GroupB’ and ‘Control’</li>
 <li><strong>tissue_sample</strong> : Unique identifier of the tissue
 sample cell comes from</li>
-</ul></li>
 </ul>
 <pre class="r"><code>library(SpatialFeatureExperiment)
 library(scuttle)
@@ -995,36 +1164,34 @@ library(limma)
 library(edgeR)
 library(BiocParallel)
 
-
-# Set threhoehsolds
-min_reads_per_cell      &lt;- 200
-min_cells_per_pdbsample &lt;- 100
+# CUSTOMISE:
+# Set thresholds
+min_reads_per_cell      &lt;- 200  
+min_cells_per_pdbsample &lt;- 100  
 
 
 # Remove cells with too few counts
 sfe &lt;- sfe[,sfe$total_count &gt;= min_reads_per_cell]
 
-
+# CUSTOMISE:
 # Define pseodoreplicate groups, with all relevant sample annotation
 # remove those with too few cells.
 sfe$pdb_sample &lt;- paste0(sfe$tissue_sample,&quot;_&quot;, sfe$celltype)
-#celltype_summary_table &lt;- as.data.frame(colData(sfe)) %&gt;% 
-#  group_by(group, tissue_sample, celltype, pdb_sample) %&gt;%
-#  summarise(cells=n(), .groups = &#39;drop&#39;)
 
 
+# CUSTOMISE:
 ## Calculate pseudobulk 
-se.pdb &lt;- aggregateAcrossCells(sfe, ids=sfe$pdb_sample,
-                               BPPARAM = MulticoreParam(workers=8) # Use 8 cores, requires BiocParallel. Omit BPPARAM option when not avaoilble (e.g. windows)
-)
-# Slow running step, highly reccomended saving, thie object becomes useful for plotting also.
+#se.pdb &lt;- aggregateAcrossCells(sfe, ids=sfe$pdb_sample)
+se.pdb &lt;- aggregateAcrossCells(sfe, ids=sfe$pdb_sample, BPPARAM = MulticoreParam(workers=8)) # Use 8 cores, requires BiocParallel. 
+
+# CUSTOMISE:                            
+# Slow running step, highly reccomended saving pseubulk object, this is useful for plotting also.
 # saveRDS(se.pdb, &#39;~/path/to/pseudbulked_se.RDS&#39;)
+
 
 # Filter on minimum number of cells per pdb group
 # (ncells column was added by aggregateAcrossCells)
 se.pdb &lt;- se.pdb[,se.pdb$ncells &gt;= min_cells_per_pdbsample]
-
-
 
 
 # Pull out the pseudoboulk counts matrix for passed samples
@@ -1034,7 +1201,7 @@ pseudobulk_anno_table    &lt;- as_tibble(colData(se.pdb)[,c(&#39;pdb_sample&#39;
 
 
 
-
+# CUSTOMISE:
 # Build a table of each contrast we might want to do. 
 #GroupAvsControl   = GroupA - Control
 #GroubBvsControl  = GroupB - Control
@@ -1042,6 +1209,8 @@ contrasts_wanted &lt;- bind_cols(
   A= c(&quot;GroupA&quot;, &quot;GroupB&quot;), # First terms
   B= c(&quot;Control&quot;, &quot;Control&quot;)  # Second terms (usually control)
 )
+
+
 
 # Empty list to collect results
 de_result_list &lt;- list()
@@ -1091,6 +1260,7 @@ for (the_celltype in levels(se.pdb$celltype)) {
   # Build model
   group           &lt;- anno_table.this$group
 
+  # CUSTOMISE:
   # Model design 
   # Add other experimental factors here 
   # ~0 + group
@@ -1151,8 +1321,8 @@ de_results_sig &lt;- filter(de_results_all, adj.P.Val &lt; 0.05)</code></pre>
 <div id="results" class="section level1">
 <h1>Results</h1>
 <pre class="r"><code>DT::datatable(mutate(head(de_results_sig), across(is.numeric, signif, digits = 3)))</code></pre>
-<div class="datatables html-widget html-fill-item" id="htmlwidget-02919026514f0c819cc6" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-02919026514f0c819cc6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["epi","epi","epi","epi","epi","myeloids"],["pairwise","pairwise","pairwise","pairwise","pairwise","pairwise"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC"],["LYZ","IGHG2","IGHG1","REG1A","B3GNT7","NFKBIA"],[3.6,3.87,3.96,3.69,-2.45,-1.72],[10.7,10.7,11.3,10.4,10.2,10.9],[7.88,7.75,7.43,6.25,-5.63,-5.76],[3.25e-06,3.88e-06,6.02e-06,3.43e-05,9.26e-05,6.439999999999999e-05],[0.00194,0.00194,0.00201,0.008569999999999999,0.0185,0.0332],[4.87,4.71,4.25,2.63,1.68,1.94]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-6da6b1915fc0556a53a6" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-6da6b1915fc0556a53a6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["epi","epi","epi","epi","epi","myeloids"],["pairwise","pairwise","pairwise","pairwise","pairwise","pairwise"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC"],["LYZ","IGHG2","IGHG1","REG1A","B3GNT7","NFKBIA"],[3.6,3.87,3.96,3.69,-2.45,-1.72],[10.7,10.7,11.3,10.4,10.2,10.9],[7.88,7.75,7.43,6.25,-5.63,-5.76],[3.25e-06,3.88e-06,6.02e-06,3.43e-05,9.26e-05,6.439999999999999e-05],[0.00194,0.00194,0.00201,0.008569999999999999,0.0185,0.0332],[4.87,4.71,4.25,2.63,1.68,1.94]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>This table is the typical output of <em>limma</em> tests; With a
 couple of extra columns added by our code.</p>
 <ul>
