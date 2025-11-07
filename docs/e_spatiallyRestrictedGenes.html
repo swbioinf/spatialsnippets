@@ -516,6 +516,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/25bf4eeb6404aac4a5ce10d9756df282e2843645/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-3-1.png" target="_blank">25bf4ee</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-09-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/b9d1fcb91fcd2bcce32aabd75e8bdd6b60d4503a/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-3-1.png" target="_blank">b9d1fcb</a>
 </td>
 <td>
@@ -659,6 +670,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/25bf4eeb6404aac4a5ce10d9756df282e2843645/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-10-1.png" target="_blank">25bf4ee</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-09-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/0ce06a8fe9e3d0354b4cca882c8978ff95d0f1bf/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-10-1.png" target="_blank">0ce06a8</a>
 </td>
 <td>
@@ -784,6 +806,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/25bf4eeb6404aac4a5ce10d9756df282e2843645/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-13-1.png" target="_blank">25bf4ee</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-09-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/b9d1fcb91fcd2bcce32aabd75e8bdd6b60d4503a/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-13-1.png" target="_blank">b9d1fcb</a>
 </td>
 <td>
@@ -833,6 +866,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/25bf4eeb6404aac4a5ce10d9756df282e2843645/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-14-1.png" target="_blank">25bf4ee</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-09-19
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/b9d1fcb91fcd2bcce32aabd75e8bdd6b60d4503a/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-14-1.png" target="_blank">b9d1fcb</a>
@@ -891,6 +935,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/25bf4eeb6404aac4a5ce10d9756df282e2843645/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-14-2.png" target="_blank">25bf4ee</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-09-19
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/b9d1fcb91fcd2bcce32aabd75e8bdd6b60d4503a/docs/figure/e_spatiallyRestrictedGenes.Rmd/unnamed-chunk-14-2.png" target="_blank">b9d1fcb</a>
 </td>
 <td>
@@ -926,18 +981,13 @@ joinlayers.</p>
 library(tidyverse)
 library(DT)
 
-# Load edited function, see https://github.com/satijalab/seurat/issues/8226
-# Available here: https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R
-source(&quot;spatially_variable_features_code.R&quot;)
-
-
 ## If not alread run, find variable features
 #num_variable_features = 1000 # Choose based on likely results and acceptable runtime
 #so &lt;-  FindVariableFeatures(so, nfeatures=num_variable_features)
 
 
 # Record moransI results for each sample, one by one.
-samples &lt;- levels(so@meta.data$sample)
+samples &lt;- unique(so@meta.data$sample)
 results_list &lt;- list()
 for (the_sample in samples) {
   
@@ -973,6 +1023,7 @@ for (the_sample in samples) {
   
   
   # Format output table
+  so.sample[[&quot;RNA&quot;]]@meta.data$feature &lt;- rownames(so.sample[[&quot;RNA&quot;]])
   gene_metadata &lt;- so.sample[[&quot;RNA&quot;]]@meta.data
   results &lt;- 
   select(gene_metadata, 
