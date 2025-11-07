@@ -375,18 +375,13 @@ library(Seurat)
 library(tidyverse)
 library(DT)
 
-# Load edited function, see https://github.com/satijalab/seurat/issues/8226
-# Available here: https://github.com/swbioinf/spatialsnippets/blob/main/code/spatially_variable_features_code.R
-source("spatially_variable_features_code.R")
-
-
 ## If not alread run, find variable features
 #num_variable_features = 1000 # Choose based on likely results and acceptable runtime
 #so <-  FindVariableFeatures(so, nfeatures=num_variable_features)
 
 
 # Record moransI results for each sample, one by one.
-samples <- levels(so@meta.data$sample)
+samples <- unique(so@meta.data$sample)
 results_list <- list()
 for (the_sample in samples) {
   
@@ -422,6 +417,7 @@ for (the_sample in samples) {
   
   
   # Format output table
+  so.sample[["RNA"]]@meta.data$feature <- rownames(so.sample[["RNA"]])
   gene_metadata <- so.sample[["RNA"]]@meta.data
   results <- 
   select(gene_metadata, 
