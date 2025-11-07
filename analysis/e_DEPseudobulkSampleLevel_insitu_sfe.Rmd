@@ -103,7 +103,7 @@ library(ggrepel) # gg_repel, For non-overlapping gene labels
 ```{r}
 data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
 sfe_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_sfe_01_loaded")
-se_pseudobulk_file <- file.path(data_dir, "GSE234713_CosMx_IBD_pseudobulk_se.RDS")
+se_pseudobulk_file <- file.path(data_dir, "GSE234713_CosMx_IBD_pseudobulk_sample_se2.RDS")
 ```
 
 
@@ -216,7 +216,7 @@ Even so, its well worth saving the 'pseudobulk' object to disk for later calcula
 sfe$pdb_sample <- paste0(sfe$tissue_sample, '_', sfe$celltype_subset)
 
 se.pdb <- aggregateAcrossCells(sfe, ids=sfe$pdb_sample,
-                               BPPARAM = MulticoreParam(workers=8) # Use 8 cores, requires BiocParallel
+                               BPPARAM = MulticoreParam(workers=8) # Use 8 cores, requires BiocParallel, 
                                )
 # To save it
 saveRDS(se.pdb, se_pseudobulk_file)
@@ -253,7 +253,7 @@ DT::datatable(data.frame(colData(se.pdb))[,c('pdb_sample','individual_code','tis
 
 ```{r}
 # What is the minimum accepptable number of cells in a pool?
-min_cells_per_pdbsample <- 20
+min_cells_per_pdbsample <- 100
 
 ggplot(colData(se.pdb), aes(x=ncells, col=celltype_subset)) +
   geom_density() +
@@ -268,7 +268,7 @@ ggplot(colData(se.pdb), aes(x=ncells, col=celltype_subset)) +
 Note there are much fewer t-cells overall.  Its typical that some of the less common cell types are difficult or impossible to reliably test.
 
 
-We can then remove pools where there were too few cells - choosing a threshold of 20 in this instance.
+We can then remove pools where there were too few cells - choosing a threshold of 100 in this instance.
 ```{r}
 ncol(se.pdb)
 se.pdb <- se.pdb[,se.pdb$ncells >= min_cells_per_pdbsample]
@@ -365,9 +365,6 @@ What if you do need to skip constrasts? Often its easiest to count your biologic
 ### Actually calculate differential expression
 
 
-
-
-Next continuue on to 
 ```{r}                 
 
 # Build a table of each contrast we might want to do. 
@@ -409,7 +406,7 @@ for (the_celltype in levels(se.pdb$celltype_subset)) {
 
   # Are there enough Biological smples to consider the contrast?
   min_biosample_per_group <- 2
-    enough_biosamples <- 
+  enough_biosamples <- 
     (unname(biosample_per_group[contrasts_wanted$A]) >= min_biosample_per_group) &
     (unname(biosample_per_group[contrasts_wanted$B]) >= min_biosample_per_group)
     
@@ -429,14 +426,18 @@ for (the_celltype in levels(se.pdb$celltype_subset)) {
   individual_code <- anno_table.this$individual_code
 
   # Model design 
+  # Add other experimental factors here 
+  # ~0 + group
+  # ~0 + group + individual
+  # ~0 + group + individual + slide 
   design    <- model.matrix( ~0 + group)
   
   # Run Voom
   vm  <- voom(dge, design = design, plot = FALSE)
   
-  # Adding dupliate correlation to use individual fovs, rather than pooled per biosample
-  corrfit <- duplicateCorrelation(vm, design, block=individual_code)
-  fit     <- lmFit(vm, design, correlation = corrfit$consensus, block=individual_code) 
+
+  # Fit model
+  fit     <- lmFit(vm, design) 
 
   # Define and fit contrasts and run ebayes
   # Doing this in an automated way so we can include/exvlude contrasts where 
@@ -480,7 +481,7 @@ for (the_celltype in levels(se.pdb$celltype_subset)) {
   
 # Join together results for all celltypes, and pull out those with a singificant adjusted p-value
 de_results_all <- bind_rows(de_result_list)
-de_results_sig <- filter(de_results_all, adj.P.Val < 0.01)
+de_results_sig <- filter(de_results_all, adj.P.Val < 0.05)
 
 
 
@@ -542,8 +543,7 @@ p1 + p2 + p3
 
 Its always worth visualising how the expression of your differentially expressed genes really looks, with respect to your experimental design. How best to do this depends on your experiment. 
 
-
-The results suggests that XTNFRSF18 was significantly DE between individuals with Ulcerative Colitis and Healthy Controls in plasma cells. As a first step, there's some very convenient seurat plots below;
+The results suggests that LYZ was significantly DE between individuals with Ulcerative Colitis and Healthy Controls in epithelial cells. We can easily plot the log2 normalised pseudobulk scores for each grouping to see how it changes between groups, celltypes and conditions. There's a fair variability between individuals, not surprising for human data.
 
 ```{r}
 # Get some normalised values, purely for plotting.
@@ -556,14 +556,21 @@ norm_counts <- cpm(dge)
 assay(se.pdb, "logcounts") <- log2(norm_counts)
 ```
 
-
 ```{r fig.width=10, fig.height=6}
-plotExpression(se.pdb, "TNFRSF18", x="group", colour_by = "group",
+plotExpression(se.pdb, "LYZ", x="group", colour_by = "group",
                other_fields = "celltype_subset") + 
  facet_wrap(~celltype_subset)
 ```
 
-Compared with IGHG1, which was flagged at differentially expressed across multiple cell types.
+
+PIGR was flagged more globally across multiple comparisons, in plasma and stroma in Crohns disease vs healthy, and stroma and myeloids when comparing Ulcerative colitis vs healthy. PIGR is a more specifically expressed at a higher level in the epithelia however - so we would want to interpet this carefully (e.g. Are stroma cells really expressing less PIGR, or could they be catching expression from more-oft co-located epithelia?)
+
+```{r fig.width=10, fig.height=6}
+plotExpression(se.pdb, "PIGR", x="group", colour_by = "group",
+               other_fields = "celltype_subset") + 
+ facet_wrap(~celltype_subset)
+```
+
 
 ```{r fig.width=10, fig.height=6}
 plotExpression(se.pdb, "IGHG1", x="group", colour_by = "group",
@@ -571,10 +578,28 @@ plotExpression(se.pdb, "IGHG1", x="group", colour_by = "group",
  facet_wrap(~celltype_subset)
 ```
 
+
+
+
+
 # Code Snippet
 
+<!-- ```{r eval=FALSE} -->
+<!-- library(alabaster.sfe)  -->
+<!-- generic_sfe_file <- file.path(data_dir,'GSE234713_CosMx_IBD_seurat_01_generic4snippettests') -->
+<!-- sfe <- readObject(generic_sfe_file) -->
 
-TO BE UPDATED
+
+<!-- ``` -->
+
+
+
+* And the following columns in the colData cell metadata
+  * **total_counts** : total number of counts per cell, for filtering
+  * **celltype** : Celltype grouping of cells (alternatively, cluster)
+  * **group** : Experimental group, e.g. test, control, d1_treated
+  * **tissue_sample** : Unique identifier of the tissue sample cell comes from
+
 
 ```{r eval=FALSE}
 library(SpatialFeatureExperiment)
@@ -582,113 +607,166 @@ library(scuttle)
 library(tidyverse)
 library(limma)
 library(edgeR)
+library(BiocParallel)
 
 
 # Set threhoehsolds
-min_reads_per_cell       <- 200
-min_cells_per_pdbsample <- 20
+min_reads_per_cell      <- 200
+min_cells_per_pdbsample <- 100
 
 
 # Remove cells with too few counts
-spe <- spe[,spe$nCount_RNA >= min_reads_per_cell]
+sfe <- sfe[,sfe$total_count >= min_reads_per_cell]
 
 
 # Define pseodoreplicate groups, with all relevant sample annotation
 # remove those with too few cells.
-spe$pdb_sample <- paste0(spe$fov_name,"_", spe$celltype_subset)
-celltype_summary_table <- colData(spe) %>% 
-  group_by(condition, group, individual_code, fov_name, celltype_subset, pdb_sample) %>%
-  summarise(cells=n(), .groups = 'drop')
+sfe$pdb_sample <- paste0(sfe$tissue_sample,"_", sfe$celltype)
+#celltype_summary_table <- as.data.frame(colData(sfe)) %>% 
+#  group_by(group, tissue_sample, celltype, pdb_sample) %>%
+#  summarise(cells=n(), .groups = 'drop')
 
 
 ## Calculate pseudobulk 
-pseudobulk_counts <- aggregateAcrossCells(spe, ids=spe$pdb_sample )
-#pseudobulk_counts_matrix <- 
+se.pdb <- aggregateAcrossCells(sfe, ids=sfe$pdb_sample,
+                               BPPARAM = MulticoreParam(workers=8) # Use 8 cores, requires BiocParallel. Omit BPPARAM option when not avaoilble (e.g. windows)
+)
+# Slow running step, highly reccomended saving, thie object becomes useful for plotting also.
+# saveRDS(se.pdb, '~/path/to/pseudbulked_se.RDS')
 
-# Determine pdb_samples with enough cells
-# Filter both pseudobulk matrix and pseudobulk annotation 
-passed_pdb_samples <- celltype_summary_table$pdb_sample[celltype_summary_table$cells >= min_cells_per_pdbsample]
-pseudobulk_counts_matrix <- pseudobulk_counts_matrix[,passed_pdb_samples]
-pseudobulk_anno_table    <- celltype_summary_table[passed_pdb_samples,]
+# Filter on minimum number of cells per pdb group
+# (ncells column was added by aggregateAcrossCells)
+se.pdb <- se.pdb[,se.pdb$ncells >= min_cells_per_pdbsample]
 
 
-# Calculate DE across every celltype
+
+
+# Pull out the pseudoboulk counts matrix for passed samples
+pseudobulk_counts_matrix <- counts(se.pdb)
+# And the corresponding annotations
+pseudobulk_anno_table    <- as_tibble(colData(se.pdb)[,c('pdb_sample','group', 'tissue_sample', 'celltype', 'ncells')]) # + any other experimental factors
+
+
+
+
+# Build a table of each contrast we might want to do. 
+#GroupAvsControl   = GroupA - Control
+#GroubBvsControl  = GroupB - Control
+contrasts_wanted <- bind_cols(
+  A= c("GroupA", "GroupB"), # First terms
+  B= c("Control", "Control")  # Second terms (usually control)
+)
+
 # Empty list to collect results
 de_result_list <- list()
 
-# celltype_subset is a matrix
-for (the_celltype in levels(spe$celltype_subset)) {
+## Cycle through each celltype
+for (the_celltype in levels(se.pdb$celltype)) {
+
+  # Subset pseudobulk object to one celltype
+  se.pdb.this <- se.pdb[,se.pdb$celltype == the_celltype]
   
-  # Subset counts andn annotation to one cell type. 
-  # Ensure order remains identical!
-  print(the_celltype)
-  anno_table.this   <- pseudobulk_anno_table[pseudobulk_anno_table$celltype_subset == the_celltype,]
-  count_matrix.this <- pseudobulk_counts_matrix[,anno_table.this$pdb_sample]
+  # And pull out the annotation and counts
+  anno_table.this   <- as.tibble(colData(se.pdb.this))
+  count_matrix.this <- counts(se.pdb.this)
 
   
   ## Check for sufficient replicates ##
   # To do any calculations, we need at least 2 pseudobulk groups per contrast.
   # there are plenty in this experiemnt, but with less replicates and rare cell types
-  # it may be neccesary to check and skip certain contrasts. Here woudl be a good 
-  # if (not enouch samples to run test ) {next}
-  
+  # its very common to have to skip some contrats for some celltypes.
+
   # skip clusters with no samples after filtering
   if( nrow(anno_table.this) < 1 ) {next}
   
+  # Count how many bio samples per group (only need one fov to count it)
+  biosample_per_group <- anno_table.this %>% 
+    select(group, tissue_sample) %>%
+    pull(group) %>% # pull out group column, one entry per tissue sample
+    table() # count how many
+
+  # Are there enough Biological smples to consider the contrast?
+  min_biosample_per_group <- 2
+  enough_biosamples <- 
+    (unname(biosample_per_group[contrasts_wanted$A]) >= min_biosample_per_group) &
+    (unname(biosample_per_group[contrasts_wanted$B]) >= min_biosample_per_group)
+    
+  # Make a new table with contrasts that we have enough biosamples for.
+  contrasts_to_test <- contrasts_wanted[enough_biosamples,]
+  
+  
+  
+  ## Setup model
   
   # Setup objects for limma
   dge <- DGEList(count_matrix.this)
   dge <- calcNormFactors(dge)
   
-  
-  
   # Build model
   group           <- anno_table.this$group
-  individual_code <- anno_table.this$individual_code
 
   # Model design 
+  # Add other experimental factors here 
+  # ~0 + group
+  # ~0 + group + individual
+  # ~0 + group + individual + slide
   design    <- model.matrix( ~0 + group)
   
   # Run Voom
   vm  <- voom(dge, design = design, plot = FALSE)
   
   # Adding dupliate correlation to use individual fovs, rather than pooled per biosample
-  corrfit <- duplicateCorrelation(vm, design, block=individual_code)
-  fit     <- lmFit(vm, design, correlation = corrfit$consensus, block=individual_code) 
+  fit     <- lmFit(vm, design) 
 
   # Define and fit contrasts and run ebayes
-  contrasts <- makeContrasts(UCvHC  = groupUC - groupHC, 
-                             CDvHC  = groupCD - groupHC,
+  # Doing this in an automated way so we can include/exvlude contrasts where 
+  # there are / arenot enough replicates available. 
+  # That's why generatgin a string .
+  contrast_str_list <- paste0("group",contrasts_to_test$A,"-","group",contrasts_to_test$B)
+  
+  contrasts <- makeContrasts(contrasts=contrast_str_list,
                            levels=coef(fit))
+  
   fit <- contrasts.fit(fit, contrasts)
   fit <- eBayes(fit)
 
-  ## Look through each contrast, and extract a results table.
+  
+  
+  ## Loop through contrasts.
+  # You ccan run multiple contrasts at onces, but doing it this way allows us
+  # to skip individual contrasts within a celltype.
   for ( the_coef in colnames(contrasts) ) {
+    # Make a version of the coeffient name that doesn't include a '-', or the 
+    # factor name (group)
+    # Life is easier without special characters
+    # groupUC-groupHC => UCvHC
+    contrast_name <- gsub("group","", gsub("-","v",the_coef))
+    
     de_result.this <- topTable(fit, n = Inf, adjust.method = "BH", coef = the_coef) %>%
       rownames_to_column("target") %>%
-      mutate(contrast=the_coef,
+      mutate(contrast=contrast_name,
+             contrast_group="pairwise",
              celltype=the_celltype) %>%
-      select(celltype,contrast,target,everything()) %>%
+      select(celltype,contrast_group, contrast,target,everything()) %>%
       arrange(P.Value)
     
-    
-      de_result_list[[paste(the_celltype, the_coef, sep="_")]] <- de_result.this
+      # build a unique name for this result by adding
+      # <celltype>_<A>v<B>
+      de_result_list[[paste(the_celltype, contrast_name, sep="_")]] <- de_result.this
     
   }
 
-  
-
- 
 }
-
+  
 # Join together results for all celltypes, and pull out those with a singificant adjusted p-value
 de_results_all <- bind_rows(de_result_list)
-de_results_sig <- filter(de_results_all, adj.P.Val < 0.01)
+de_results_sig <- filter(de_results_all, adj.P.Val < 0.05)
+
+
+
 
 
 ```
-
 
 # Results
 
@@ -703,7 +781,7 @@ This table is the typical output of _limma_ tests; With a couple of extra column
 * **contrast**: The contrast being tested (Added by example code)
 * **target** : The gene name (Added by example code, is the rowname in limma output)
 * **rownames** : The tested cell types
-* **logFC** : Log 2 fold change between tested groups. For a test of Test-Con; 
+* **logFC** : Log 2 fold change between tested groups. For a test of A-B; 
     + At logFC +1, A is doubled B. 
     + At logFC -1, A is half of B.  
     + A logFC 0 indicates no change.
