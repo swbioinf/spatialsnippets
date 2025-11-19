@@ -110,3 +110,8 @@ More information on the source datasets may be found on the data tab.
 Initial examples use cosMX data, though approaches should be valid on other platforms like Xenium.
 
 Initial examples use the seurat toolkit, but single feature experiment (bioconductor) examples are in active development. 
+
+
+
+![](assets/qcif_logo.png) ![](assets/Australian-Biocommons-Logo.png)
+
