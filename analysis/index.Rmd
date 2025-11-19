@@ -113,5 +113,9 @@ Initial examples use the seurat toolkit, but single feature experiment (biocondu
 
 
 
-![](assets/qcif_logo.png) ![](assets/Australian-Biocommons-Logo.png)
+![](assets/qcif_logo.png){width=29%} ![](assets/Australian-Biocommons-Logo.png){width=29%} ![](griffith_logo.png){width=29%} 
+
+
+
+
 
