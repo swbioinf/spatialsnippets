@@ -11,7 +11,7 @@
 
 
 
-<title>Data</title>
+<title>Spatial omics analysis: Resources, Workshops and Vignettes</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -69,28 +72,6 @@ if (window.hljs) {
 
 
 
-<style type="text/css">
-/* for pandoc --citeproc since 2.11 */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-}
-.hanging div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}
-</style>
 
 
 
@@ -253,6 +234,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -260,6 +304,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -309,77 +363,53 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Data</h1>
+<h1 class="title toc-ignore">Spatial omics analysis: Resources,
+Workshops and Vignettes</h1>
 
 </div>
 
 
-<!-- * [Fuiten 2023 - Digits in a Dish](d_DigitsDish.html) : *Digits in a dish: An in vitro system to assess the molecular genetics of hand/foot development at single-cell resolution* Allison M. Fuiten, Yuki Yoshimoto, Chisa Shukunami, H. Scott Stadler. Fronteirs in Cell and Developmental Biology 2023. -->
-<p>These examples assume that the data has been loaded, preprocessed
-(e.g. QC-ed, UMAP) and annotated (e.g. sample names, cell types, cell
-niches). For information, the preprocessing applied here is included in
-data preparation below. Please note that these are not full annotations,
-and do not aim to reproduce the authors’ published analyses! These are
-simplified and rough annotations to enable running these tests.</p>
+<p>Below are some tutorials and workshop materials for getting started
+in single-cell spatial analyses. These all cover QC and preprocessing in
+some form.</p>
 <ul>
 <li><a
-href="https://www.ncbi.nlm.nih.gov/pubmed/37495570"><em>Macrophage and
-neutrophil heterogeneity at single-cell spatial resolution in human
-inflammatory bowel disease</em></a> from Garrido-Trigo et al 2023.<span
-class="citation">(Garrido-Trigo et al. 2023)</span> : This dataset
-includes cosmx samples across 9 individuals; 3 healthy, 3 with chrones
-disease and 3 with Ulcerative colitis.
-<ul>
-<li><a href="d_cosmxIBD.html">IBD cosmx dataset Seurat</a> : As a seurat
-object</li>
-<li><a href="d_cosmxIBD.html">IBD cosmx dataset SFE</a> : As a
-bioconductor SpatialFeatureExperiment object</li>
-</ul></li>
-<li><a href="d_cosmxAlzPlaque.html">Alzheimers Plaques cosmx</a>: <a
-href="https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub">Microglia-astrocyte
-crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse
-model, as revealed by spatial transcriptomics</a> <span
-class="citation">(Mallach et al. 2024)</span></li>
-<li><a href="d_Wnt4KO.html">Wnt4 KO in developing mouse kidney - 10X
-Chromium scRNAseq</a>: <a
-href="https://www.biorxiv.org/content/10.1101/2023.11.19.567482v1.full">Forming
-nephrons promote nephron progenitor maintenance and branching
-morphogenesis via paracrine BMP4 signalling under the control of
-Wnt4</a> <span class="citation">(Moreau et al. 2023)</span> : This
-dataset has 4 pools of single cell RNAseq data, total and conditional
-Wnt4 knockouts in E14.5 mouse kidney.</li>
+href="https://bioconductor.org/packages/release/workflows/vignettes/spicyWorkflow/inst/doc/spicyWorkflow.html">Spicy
+Workflow</a> Vignette on single cell spatial omics analysis using the <a
+href="https://sydneybiox.github.io/scdney/">‘SCDNEY’</a> collection of
+bioconductor packages. Covers the loading of image based data (of
+particular interest to protein imaging methods), through to QC and
+preprocessing and downstream analyses equally applicable to
+transcriptome based technologies.</li>
+<li><a
+href="https://swbioinf.github.io/intro-spatial-transcriptomics-workshop/index.html">Intro
+to spatial transcriptomics</a> : Training materials for an introductory
+spatial transcriptomics workshop. This workshop demonstrates spatial
+pre-processing and QC steps in Seurat on the same <a
+href="https://pubmed.ncbi.nlm.nih.gov/37495570/">Garrido-Trigo et
+al. 2023</a> IBD dataset used extensively within spatial sampler.</li>
+<li><a href="https://lmweber.org/OSTA/">OSTA (Orchestrating Spatial
+Transcriptomics Analysis with Bioconductor</a> : A detailed resource on
+how to perform spatial analyses using the bioconductor ecosystem of
+packages. This is a useful resource for detailed explanations of
+analysis tasks.</li>
+<li><a href="https://bioconductor.org/books/release/OSCA/">OSCA -
+(Orchestrating Single Cell Analayis with bioconductor )</a> A detailed
+resource on single cell analyses using the bioconductor ecosystem of
+packages - still very applicable to certain spatial analyses.</li>
+<li><a
+href="https://satijalab.org/seurat/articles/seurat5_spatial_vignette_2">Seurat
+Imaging based spatial</a> The seurat vignette for spatial analysis,
+covering how to load data from a number of technologies.</li>
 </ul>
-<div id="references" class="section level1 unnumbered">
-<h1 class="unnumbered">References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent">
-<div id="ref-garrido-trigoMacrophageNeutrophilHeterogeneity2023"
-class="csl-entry">
-Garrido-Trigo, Alba, Ana M. Corraliza, Marisol Veny, Isabella Dotti,
-Elisa Melón-Ardanaz, Aina Rill, Helena L. Crowell, et al. 2023.
-<span>“Macrophage and Neutrophil Heterogeneity at Single-Cell Spatial
-Resolution in Human Inflammatory Bowel Disease.”</span> <em>Nature
-Communications</em> 14 (1): 4506. <a
-href="https://doi.org/10.1038/s41467-023-40156-6">https://doi.org/10.1038/s41467-023-40156-6</a>.
-</div>
-<div id="ref-mallachMicrogliaastrocyteCrosstalkAmyloid2024"
-class="csl-entry">
-Mallach, Anna, Magdalena Zielonka, Veerle van Lieshout, Yanru An, Jia
-Hui Khoo, Marisa Vanheusden, Wei-Ting Chen, et al. 2024.
-<span>“Microglia-Astrocyte Crosstalk in the Amyloid Plaque Niche of an
-<span>Alzheimer</span>’s Disease Mouse Model, as Revealed by Spatial
-Transcriptomics.”</span> <em>Cell Reports</em> 43 (6): 114216. <a
-href="https://doi.org/10.1016/j.celrep.2024.114216">https://doi.org/10.1016/j.celrep.2024.114216</a>.
-</div>
-<div id="ref-moreauFormingNephronsPromote2023a" class="csl-entry">
-Moreau, Julie L. M., Sarah Williams, Jihane Homman-Ludiye, Andrew J.
-Mallett, and Alexander N. Combes. 2023. <span>“Forming Nephrons Promote
-Nephron Progenitor Maintenance and Branching Morphogenesis via Paracrine
-<span>BMP4</span> Signalling Under the Control of
-<span><em>Wnt4</em></span>.”</span> <a
-href="https://doi.org/10.1101/2023.11.19.567482">https://doi.org/10.1101/2023.11.19.567482</a>.
-</div>
-</div>
-</div>
+<!-- get permission for linking  - what form preferred? Overlap with spicyworkflow?
+* [Unlocking single cell spatial omics analysis with scdney](https://sydneybiox.github.io/scdneySpatial_ABACBS2025/articles/workshop.html#overview) : 
+Workshop materials from an excellent workshop on single cell spatial omics analysis using the ['SCDNEY'](https://sydneybiox.github.io/scdney/) collection of bioconductor packages. Includes image analyse methods of particular interest to protein imaging methods, as well as methods equally applicable to transcriptome based technologies.
+-->
+<!--
+Try out, link
+https://github.com/bhuvad/CosMxSpatialAnalysisWorkshop/tree/main
+-->
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
@@ -397,6 +427,8 @@ footer is added to webpages before the MathJax javascript. -->
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -429,6 +461,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>
