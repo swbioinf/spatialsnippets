@@ -1,0 +1,25 @@
+---
+title: "Spatial omics analysis: Resources, Workshops and Vignettes"
+output: html_notebook
+---
+
+
+Below are some tutorials and workshop materials for getting started in single-cell spatial analyses. These all cover QC and preprocessing in some form.
+
+* [Spicy Workflow](https://bioconductor.org/packages/release/workflows/vignettes/spicyWorkflow/inst/doc/spicyWorkflow.html) Vignette on single cell spatial omics analysis using the ['SCDNEY'](https://sydneybiox.github.io/scdney/) collection of bioconductor packages.
+Covers the loading of image based data (of particular interest to protein imaging methods), through to QC and preprocessing and downstream analyses equally applicable to transcriptome based technologies.
+* [Intro to spatial transcriptomics](https://swbioinf.github.io/intro-spatial-transcriptomics-workshop/index.html) : Training materials for an introductory spatial transcriptomics workshop. This workshop demonstrates spatial pre-processing and QC steps in Seurat on the same [Garrido-Trigo et al. 2023](https://pubmed.ncbi.nlm.nih.gov/37495570/) IBD dataset used extensively within spatial sampler.
+* [OSTA (Orchestrating Spatial Transcriptomics Analysis with Bioconductor](https://lmweber.org/OSTA/) :  A detailed resource on how to perform spatial analyses using the bioconductor ecosystem of packages. This is a useful resource for detailed explanations of analysis tasks.
+* [OSCA - (Orchestrating Single Cell Analayis with bioconductor )](https://bioconductor.org/books/release/OSCA/)
+A detailed resource on single cell analyses using the bioconductor ecosystem of packages - still very applicable to certain spatial analyses.
+* [Seurat Imaging based spatial ](https://satijalab.org/seurat/articles/seurat5_spatial_vignette_2) The seurat vignette for spatial analysis, covering how to load data from a number of technologies. 
+
+<!-- get permission for linking  - what form preferred? Overlap with spicyworkflow?
+* [Unlocking single cell spatial omics analysis with scdney](https://sydneybiox.github.io/scdneySpatial_ABACBS2025/articles/workshop.html#overview) : 
+Workshop materials from an excellent workshop on single cell spatial omics analysis using the ['SCDNEY'](https://sydneybiox.github.io/scdney/) collection of bioconductor packages. Includes image analyse methods of particular interest to protein imaging methods, as well as methods equally applicable to transcriptome based technologies.
+-->
+
+<!--
+Try out, link
+https://github.com/bhuvad/CosMxSpatialAnalysisWorkshop/tree/main
+-->

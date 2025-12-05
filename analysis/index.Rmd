@@ -1,5 +1,5 @@
 ---
-title: "Home"
+title: "Spatial Sampler"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
@@ -9,7 +9,19 @@ editor_options:
 bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 ---
 
-Below is a sampler of tests that can be performed on an in-situ single cell spatial datasets. Each example presents just one way of doing things - there are many, many other approaches! These are simply a starting point.
+
+Single cell resolution spatial technologies like CosMx, Xenium, vizgen and STOmics have moved paste the technology demo stages, and are now being applied to real world biological research problems. Many [excellent resources](g_tutorials.html) cover the preprocessing spatial data from these platforms, and many more package vignettes cover specific tools. 
+
+Spatial sampler is instead a collection of How-Tos framed around testing specific biological questions – ie comparative tests between experimental conditions. 
+
+Each HowTo includes:
+
+* A **worked example** using a real dataset, which explains why each step is neccessary
+* What **input data** is needed
+* What the **output** looks like
+* A **code snippet** that can be copy-pasted
+
+Explore these HowTos with the searchable table below.
 
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE}
@@ -101,14 +113,6 @@ reactable(
 ```
 
  
-
-## Further information
-
-
-More information on the source datasets may be found on the data tab.
-
-Initial examples use cosMX data, though approaches should be valid on other platforms like Xenium.
-
 
 
 ![](assets/qcif_logo.png){width=29%} ![](assets/Australian-Biocommons-Logo.png){width=29%} ![](assets/griffith_logo.png){width=29%} 

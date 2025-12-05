@@ -7,5 +7,43 @@ editor_options:
   chunk_output_type: console
 ---
 
+This work is supported by australian biocommons (workflow commons), QCIF and Griffith university.
 
-Copy-pasteable snippets. 
+![](assets/qcif_logo.png){width=29%} ![](assets/Australian-Biocommons-Logo.png){width=29%} ![](assets/griffith_logo.png){width=29%} 
+
+
+## Who spatial sampler for?
+
+These HowTos assume that you have already QC-ed, pre-processed and annotated celltype in your dataset, and are ready to ask questions of it. Or, perhaps you are exploring what questions you might be able to ask.
+
+NB: If you're looking for how to get your data ready check out some [other resources](g_tutorials.html).
+
+Spatial sampler is designed for: 
+
+* Newcomers to spatial omics: Check out the worked example, and try it on your own data
+* Busy bioinformaticians: Know what test you want but don’t want to write the code again? Grab the code snippet and continue on.
+* Training developors: This material is open and can be readily adapted for training - see [here](https://github.com/swbioinf/intro-spatial-transcriptomics-workshop) and [here](https://github.com/swbioinf/spatial-taster-workshop). Get in touch if you'd like to discuss. 
+
+
+## Scope of spatial sampler HowTos
+
+These examples emphasise practicality and the application of spatial omics as a tool for common analysis questions. They will never be a complete guide of what is possible!  Each example presents just one way of doing things but there are many, many other approaches! These examples aim to simply provide a starting point which can be optimised or adapted to your needs.
+
+Most HowTos use transcriptomic CosMx data, though approaches should be valid on other single-cell spatial platforms like Xenium, vizgen and STOmics, and may have applications in other omics. 
+
+Initial examples are mostly using Seurat, but more examples using the Bioconductor ecosystem are coming. All current examples are all in R – if you’re in a position to contribute python examples get in touch!
+
+
+## Data 
+
+More information on the source datasets, including citations and preprocessing scripts, may be found on the data tab.
+
+## Getting in touch
+
+Found a problem, got a question, a request or something to add?  Log a ticket here: https://github.com/swbioinf/spatialsnippets/issues
+
+
+
+
+
+
