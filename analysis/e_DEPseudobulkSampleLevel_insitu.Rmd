@@ -129,7 +129,7 @@ We need to define the grouping that will make one pseudobulk sample for analysis
 In this experiment, we can consider all cells within a tissue sample as somewhat equivalent. 
 Therefore that is all cells of a particular celltype, within a tissue sample.
 
-If we had a tiled fovs across a tissue sample with distinct regions (e.g. cancer, stroma) it would be necessary to group them by subregion as well.
+If we had tiled fovs across a tissue sample with distinct regions (e.g. cancer, stroma) it might be necessary to group them by subregion as well.
 
 Once the pseudobulk replicate grouping is decided, we need to check there will be enough cells 
 to perform our analyses. Note there are several levels of filtering here!
@@ -145,6 +145,8 @@ What these thresholds should be needs to be determined for each experiment.
 
 To start, check out the distribution of reads per cell. Here, we choose and apply a filter of 200 reads.
 This is low compared to what you might see in a single scRNAseq experiment, but we are working with only 1000 genes.
+
+Even if you have alreay applied a counts per cell filter across your dataset (e.g at least 50 counts per cell), you might choose to apply a second, higher, threshold for differnetial expression. We can afford to be more stringent for the differential expression threshold because the spatial information isn't being used, so there is no problem of 'gaps' between cells.  Exact thresholds will depend on your data. More counts in a cell tend to result in better cell type identification and smoother expression values and should theoretically yeild better differential expression results - if there are enough cells.
 
 ```{r}
 min_reads_per_cell <- 200
@@ -438,10 +440,10 @@ p1 / p2
 We might also want to seewhat that expression looks like spatially, on some representative groups. Though the changes aren't obvious at this broad level, (its hard to see very much with with size shape of this sample).
 
 ```{r fig.width=10, fig.height=5}
-so.sample1 <- so[,so$tissue_sample=='HC_a']
+so.sample1 <- so[,so$tissue_sample=='HC_b']
 so.sample2 <- so[,so$tissue_sample=='UC_c']
 p1 <- ImageFeaturePlot(so.sample1, 
-               fov          = 'GSM7473682_HC_a', # see names(so@images)
+               fov          = 'GSM7473682_HC_b', <<<<<<<<<<UPDATE # see names(so@images)
                feature      = 'TNFRSF13B', 
                axes         = TRUE, 
                border.color = "black", border.size = 0.1, 
