@@ -24,6 +24,13 @@ Covers the loading of image based data (of particular interest to protein imagin
 Training materials for an introductory spatial transcriptomics workshop. This workshop demonstrates spatial pre-processing and QC steps in Seurat on the same [Garrido-Trigo et al. 2023](https://pubmed.ncbi.nlm.nih.gov/37495570/) IBD dataset used extensively within spatial sampler. It includes a section on how to practically tackle celltype annotation.
 
 
+#### Voyager package documentation
+
+[Voyager website](https://pachterlab.github.io/voyager/index.html) : Analysis vignettes are listed by technology for  for [Xenium](https://pachterlab.github.io/voyager/articles/xenium_landing.html), [cosmx](https://pachterlab.github.io/voyager/articles/cosmx_landing.html), [vizgen/merscope](https://pachterlab.github.io/voyager/articles/merfish_landing.html) and others.
+
+Not a tutorial per se, but a collection of useful vignettes for loading, processing and testing data using the voyager package. Part of the bioconductor ecosystem, voyager uses the 'SpatialFeatureExperiment' object that builds on 'SpatialExperiment'. Voyager functions focus on implementing spatial tests, and also provide some useful plotting functions.
+
+
 #### OSTA (Orchestrating Spatial Transcriptomics Analysis with Bioconductor)
 
 [OSTA (Orchestrating Spatial Transcriptomics Analysis with Bioconductor](https://lmweber.org/OSTA/)
