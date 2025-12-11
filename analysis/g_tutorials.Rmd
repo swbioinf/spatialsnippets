@@ -28,7 +28,7 @@ Training materials for an introductory spatial transcriptomics workshop. This wo
 
 [Voyager website](https://pachterlab.github.io/voyager/index.html) : Analysis vignettes are listed by technology for  for [Xenium](https://pachterlab.github.io/voyager/articles/xenium_landing.html), [cosmx](https://pachterlab.github.io/voyager/articles/cosmx_landing.html), [vizgen/merscope](https://pachterlab.github.io/voyager/articles/merfish_landing.html) and others.
 
-Not a tutorial per se, but a collection of useful vignettes for loading, processing and testing data using the voyager package. Part of the bioconductor ecosystem, voyager uses the 'SpatialFeatureExperiment' object that builds on 'SpatialExperiment'. Voyager functions focus on implementing spatial tests, and also provide some useful plotting functions.
+Not a tutorial per se, but a collection of useful vignettes for loading, QC, processing and testing data using the voyager package. Part of the bioconductor ecosystem, voyager uses the 'SpatialFeatureExperiment' object that builds on 'SpatialExperiment'. Voyager functions focus on implementing spatial tests, and also provide some useful plotting functions.
 
 
 #### OSTA (Orchestrating Spatial Transcriptomics Analysis with Bioconductor)
