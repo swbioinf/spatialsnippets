@@ -12,11 +12,11 @@ bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 
 Single cell resolution spatial technologies like CosMx, Xenium, vizgen and STOmics have moved past the technology demo stages, and are now being applied to real world biological research problems. Many [excellent resources](g_tutorials.html) cover the preprocessing spatial data from these platforms, and many more package vignettes cover specific tools. 
 
-Spatial sampler is instead a collection of How-Tos framed around testing specific biological questions – ie comparative tests between experimental conditions. 
+Spatial sampler is instead a collection of How-Tos framed around testing specific biological questions – i.e. comparative tests between experimental conditions. 
 
 Each HowTo includes:
 
-* A **worked example** using a real dataset, which explains why each step is neccessary
+* A **worked example** using a real dataset, which explains why each step is necessary
 * What **input data** is needed
 * What the **output** looks like
 * A **code snippet** that can be copy-pasted
@@ -36,7 +36,7 @@ howto_info$image <- paste0("assets/",howto_info$image)
 
 
 ```{r echo=FALSE}
-#Defaine column widths;
+#Define column widths;
 #https://glin.github.io/reactable/articles/examples.html#column-widths
 
 # reactable leaves col order as is.

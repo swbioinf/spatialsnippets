@@ -17,7 +17,7 @@ These examples assume that the data has been loaded, preprocessed (e.g. QC-ed, U
 
 
 
-* [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570) from Garrido-Trigo et al 2023.[@garrido-trigoMacrophageNeutrophilHeterogeneity2023] : This dataset includes cosmx samples across 9 individuals; 3 healthy, 3 with chrones disease and 3 with  Ulcerative colitis.
+* [_Macrophage and neutrophil heterogeneity at single-cell spatial resolution in human inflammatory bowel disease_](https://www.ncbi.nlm.nih.gov/pubmed/37495570) from Garrido-Trigo et al 2023.[@garrido-trigoMacrophageNeutrophilHeterogeneity2023] : This dataset includes cosmx samples across 9 individuals; 3 healthy, 3 with Crohn's disease and 3 with ulcerative colitis.
     + [IBD cosmx dataset Seurat](d_cosmxIBD.html) : As a seurat object
     + [IBD cosmx dataset SFE](d_cosmxIBD.html) : As a bioconductor SpatialFeatureExperiment object
 * [Alzheimers Plaques cosmx ](d_cosmxAlzPlaque.html): [Microglia-astrocyte crosstalk in the amyloid plaque niche of an Alzheimer’s disease mouse model, as revealed by spatial transcriptomics](https://www.sciencedirect.com/science/article/pii/S2211124724005448?via%3Dihub)

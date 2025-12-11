@@ -18,10 +18,9 @@ Contributions welcome! The goal is to develop this into a community resource.
 
 Currently the main focus is on 
 
-* In-situ single cell spatial technologies, or scRNAseq
+* In-situ single cell spatial technologies
 * Tests for comparing groups, rather than QC or preprocessing.
 * That that aren't already covered in one place by a vignette ( e.g. No need to repeat the proportion tests in single cell data, since that's exactly covered in the [original propellar vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html#finding-significant-differences-in-cell-type-proportions-using-propeller))
-* Seurat - The only reason for this is familiarity!
 
 
 Template for writing new test examples available here. And some preprocessed datasets are linked above (data isn't hosted yet, but can be shared).

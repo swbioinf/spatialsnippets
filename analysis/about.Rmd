@@ -22,7 +22,7 @@ Spatial sampler is designed for:
 
 * Newcomers to spatial omics: Check out the worked example, and try it on your own data
 * Busy bioinformaticians: Know what test you want but don’t want to write the code again? Grab the code snippet and continue on.
-* Training developors: This material is [open](analysis/licence.html) and can be readily adapted for training - see [here](https://github.com/swbioinf/intro-spatial-transcriptomics-workshop) and [here](https://github.com/swbioinf/spatial-taster-workshop). Get in touch if you'd like to discuss. 
+* Training developers: This material is [open](analysis/licence.html) and can be readily adapted for training - see [here](https://github.com/swbioinf/intro-spatial-transcriptomics-workshop) and [here](https://github.com/swbioinf/spatial-taster-workshop). Get in touch if you'd like to discuss. 
 
 
 ## Scope of spatial sampler HowTos
