@@ -47,6 +47,13 @@ The seurat vignette for spatial analysis, covering how to load data from a numbe
 
 
 
+#### Intermediate spatial 'taster' workshop
+
+[Spatial taster workshop materials](https://github.com/swbioinf/spatial-taster-workshop/tree/main)
+
+Training materials (Rmd files only) for an intermediate spatial transcriptomics workshop for comparative analyses using bioconductor packages. It again uses the the same [Garrido-Trigo et al. 2023](https://pubmed.ncbi.nlm.nih.gov/37495570/) IBD dataset used extensively within spatial sampler, and walks through differential expression by celltype, defining region niches and using those for differential expression by localisation, and celltype proximity tests.
+
+
 
 <!-- get permission for linking  - what form preferred? Overlap with spicyworkflow?
 * [Unlocking single cell spatial omics analysis with scdney](https://sydneybiox.github.io/scdneySpatial_ABACBS2025/articles/workshop.html#overview) : 
