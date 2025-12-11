@@ -10,7 +10,7 @@ bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 ---
 
 
-Single cell resolution spatial technologies like CosMx, Xenium, vizgen and STOmics have moved paste the technology demo stages, and are now being applied to real world biological research problems. Many [excellent resources](g_tutorials.html) cover the preprocessing spatial data from these platforms, and many more package vignettes cover specific tools. 
+Single cell resolution spatial technologies like CosMx, Xenium, vizgen and STOmics have moved past the technology demo stages, and are now being applied to real world biological research problems. Many [excellent resources](g_tutorials.html) cover the preprocessing spatial data from these platforms, and many more package vignettes cover specific tools. 
 
 Spatial sampler is instead a collection of How-Tos framed around testing specific biological questions – ie comparative tests between experimental conditions. 
 

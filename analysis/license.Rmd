@@ -8,15 +8,9 @@ editor_options:
 ---
 
 
-What license are you using for your code? See [choosealicense.com][choose] for
-help deciding. It's a convention to save a file `LICENSE` in the root of your
-Git repo that contains the license text.
 
-What license are you using for the written content on your site? It is
-traditional to choose a [Creative Commons][cc] license for this type of content.
+Spatial sampler material distributed under a [CC-BY-SA-4.0](https://choosealicense.com/licenses/cc-by-sa-4.0/) licence.
 
-[choose]: https://choosealicense.com/
-[cc]: https://creativecommons.org/choose/
+Refer to publications and package documentaiton for data and packages used within.
 
-How should others cite your work? It's a convention to save a file `CITATION`
-in the root of your Git repo that contains the citation information.
+
