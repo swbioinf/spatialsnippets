@@ -12,4 +12,4 @@ analysis/site_libs
 notes/
 analysis/glossary.Rmd
 code_ignore/*
-
+docs/*
