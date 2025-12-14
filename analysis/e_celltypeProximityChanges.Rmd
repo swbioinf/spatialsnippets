@@ -46,11 +46,10 @@ _Include an image of what is being tested. Save it in docs/assets/, and link as 
 ![](assets/cluster_prop_diff.png)
 
 
-
-
 This requires:
 
-* Dot points of required input data and information
+* Celltypes
+* Optionally spatiall domains
 
 
 For example:
@@ -74,13 +73,196 @@ Steps:
 
 Long example on real dataset. 
 
-## Load Libraries and Data
 
-...
+## Load libraries and data
+
+```{r}
+library(alabaster.sfe) 
+library(SpatialExperiment)
+library(tidyverse)
+library(limma)
+library(DT)
+library(BiocParallel)
+library(Voyager)
+library(patchwork)
+
+library(pals) # SOme nice colour palettes
+library(spicyR)
+
+```
+
+```{r}
+data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
+sfe_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_sfe_01_loaded")
+se_pseudobulk_file <- file.path(data_dir, "GSE234713_CosMx_IBD_pseudobulk_sample_se2.RDS")
+```
+
+
+```{r}
+sfe <- readObject(sfe_01_loaded)
+```
+
+
+
+
 
 ## Experimental Design 
 
-...
+
+
+There are many (too many) of teh detailed celltypes.
+
+```{r}
+table(sfe$celltype_SingleR2, sfe$tissue_sample)
+```
+
+```{r}
+#interesting_celltypes <- c("Colonocytes", "M1", "M2")
+#interesting_celltypes <- c("Glia", "M1", "M2", 'Inflammatory fibroblasts', "Inflammatory monocytes" )# , 'PC IgG') 
+#interesting_celltypes <- c("B cell","Naïve B cell", "T cells CCL20", "Memory B cell")
+interesting_celltypes <- c("Goblet", "Secretory progenitor", "Inflammatory monocytes" , "Macrophage NRG1",  "M0",'M1', "M2")
+
+#interesting_celltypes <- c("Inflammatory monocytes" , "Macrophage NRG1")
+
+
+sfe$highlight <- ifelse(sfe$celltype_SingleR2 %in% interesting_celltypes , as.character(sfe$celltype_SingleR2), "Other")
+sfe$highlight <- factor(sfe$highlight, levels=c(interesting_celltypes, "Other"))
+
+
+# Want colours for out celltypes, and grey for 'other'
+highlight_cols <- c(pals::trubetskoy()[seq.int(from = 1, to=length(interesting_celltypes))], "grey80")
+names(highlight_cols) <- levels(sfe$highlight )
+
+```
+
+```{r}
+sfe.sample <- sfe[,sfe$tissue_sample == "HC_c"]
+sfe.sample2 <- sfe[,sfe$tissue_sample == "CD_c"]
+```
+
+```{r}
+p1 <- plotSpatialFeature(sfe.sample, "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p2 <- plotSpatialFeature(sfe.sample2, "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+p1 + p2
+```
+
+
+
+
+
+
+## pull in niches
+
+
+load in niches for testing
+
+```{r}
+banksy_res_file <- '/home/s.williams/projects/spatial-taster-workshop/data/banksy_res.RDS'
+banksy_res <- readRDS(banksy_res_file)
+
+niche_lookup <- setNames(banksy_res$clust_M0_lam0.8_k50_res0.3, nm=as.character( banksy_res$cell ))
+sfe$clust_M0_lam0.8_k50_res0.3 <- niche_lookup[as.character(sfe$cell)]
+sfe$niche <- factor(paste0('n', as.character(sfe$clust_M0_lam0.8_k50_res0.3)),
+                     levels=paste0('n',levels(sfe$clust_M0_lam0.8_k50_res0.3)))
+
+
+```
+
+
+
+
+```{r}
+sfe.sample <- sfe[,sfe$tissue_sample == "HC_c"]
+sfe.sample2 <- sfe[,sfe$tissue_sample == "CD_c"]
+```
+
+```{r}
+p1 <-  plotSpatialFeature(sfe.sample, "niche",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank())
+p2 <- plotSpatialFeature(sfe.sample2, "niche",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) 
+p1 + p2
+```
+
+
+
+
+Subset to just the one (two) regions to focus on
+```{r}
+lp_region_niches <- c('n1', 'n2')
+
+sfe.lp <- sfe[,sfe$niche %in% lp_region_niches]
+
+```
+
+
+Build table for spicy
+
+```{r}
+
+cell_info <- cbind(as.data.frame(colData(sfe.lp)), spatialCoords(sfe.lp))
+
+# Ok, so shoudltreate each fov as an image, since multipels are explictyly supported.
+# Or is that assuming true repeated measures?
+# But it avoids the issue of going across the jittered edges...so keep it.
+#$imageID    <- paste0(as.character(cell_info$samplenum),'_',cell_info$fov)
+cell_info$imageID    <- as.character(cell_info$tissue_sample)
+cell_info$tissue_sample <-   as.character(cell_info$tissue_sample) # No UC 
+  
+
+# rename x,y
+cell_info <- cell_info %>% rename(
+    x=CenterX_global_px, 
+    y=CenterY_global_px,
+)
+# Check if this is still neccessary
+# to avoid error: Error in owinInternalRect(xrange, yrange, ..., unitname = unitname): xrange should be a vector of length 2 giving (xmin, xmax)
+min_x <- min(cell_info$x)
+min_y <- min(cell_info$y)
+if (min_x < 0) {cell_info$x = cell_info$x + -(min_x) + 1 }
+if (min_y < 0) {cell_info$y = cell_info$y + -(min_y) + 1 }
+  
+  
+  
+  
+
+
+
+```
+
+
+
+
+
+```{r}
+spicy_res <- spicy(
+          cells     = cell_info ,
+          subject   = 'tissue_sample',
+          cellType  = 'highlight',
+          #sigma     = 20, # explain this
+          condition = 'group'
+          #from  = "Goblet",
+          #to = "M2"
+          )
+```
+
+
+```{r}
+topPairs(spicy_res )
+```
+
+```{r}
+signifPlot(spicy_res )
+
+```
+
+
+
 
 
 ## XXXX
