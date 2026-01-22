@@ -189,29 +189,49 @@ p2 <- plotSpatialFeature(sfe.sample2, "niche",colGeometryName = "cellSeg") +
 p1 + p2
 ```
 
-
-
-
-Subset to just the one (two) regions to focus on
 ```{r}
-lp_region_niches <- c('n1', 'n2')
+p1 <-  plotSpatialFeature(sfe.sample, "cluster_code",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank())
+p2 <- plotSpatialFeature(sfe.sample2, "cluster_code",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) 
+p1 + p2
+```
+
+
+Subset to just the one (two/three?) regions to focus on
+```{r}
+lp_region_niches <- c('n1', 'n2', 'n5')
 
 sfe.lp <- sfe[,sfe$niche %in% lp_region_niches]
 
 ```
 
+```{r}
 
-Build table for spicy
+# Temp for tests
+sfe.lp <- sfe
+```
+
+
+c11 + c14 clomp
+c15 / c8  avoid
+
+
+This will work much bettter if we had appropriate levels of annotation. Might have to label the cluster codes.
+
+
+
+## Build table for spicy
+
 
 ```{r}
 
 cell_info <- cbind(as.data.frame(colData(sfe.lp)), spatialCoords(sfe.lp))
 
-# Ok, so shoudltreate each fov as an image, since multipels are explictyly supported.
-# Or is that assuming true repeated measures?
-# But it avoids the issue of going across the jittered edges...so keep it.
-#$imageID    <- paste0(as.character(cell_info$samplenum),'_',cell_info$fov)
-cell_info$imageID    <- as.character(cell_info$tissue_sample)
+# In cosmx, we have multiple 'images' for each sample. ANd that is explicytly handled ok.
+# NB: From the docs: https://www.bioconductor.org/packages/release/bioc/vignettes/spicyR/inst/doc/spicyR.html
+# **"spicyR supports mixed effects modelling when multiple images are obtained for each subject. In this case, subject is treated as a random effect and condition is treated as a fixed effect."**
+cell_info$imageID    <- paste0(as.character(cell_info$tissue_sample),'_',cell_info$fov)
 cell_info$tissue_sample <-   as.character(cell_info$tissue_sample) # No UC 
   
 
@@ -226,29 +246,29 @@ min_x <- min(cell_info$x)
 min_y <- min(cell_info$y)
 if (min_x < 0) {cell_info$x = cell_info$x + -(min_x) + 1 }
 if (min_y < 0) {cell_info$y = cell_info$y + -(min_y) + 1 }
-  
-  
-  
-  
-
 
 
 ```
 
 
+TODO: Discuss Xenium / cosmx difference re ImageID and linear vs mixed model. Linear model should be pretty rare though.
 
 
+## Run spicy
 
 ```{r}
 spicy_res <- spicy(
           cells     = cell_info ,
           subject   = 'tissue_sample',
-          cellType  = 'highlight',
+          #cellType  = 'highlight',
+          cellType  = 'cluster_code',
           #sigma     = 20, # explain this
           condition = 'group'
           #from  = "Goblet",
           #to = "M2"
           )
+#  Your specified subject parameter has a one-to-one mapping with imageID. Converting to a linear model instead of mixed model.
+
 ```
 
 
@@ -260,6 +280,27 @@ topPairs(spicy_res )
 signifPlot(spicy_res )
 
 ```
+
+```{r}
+get_L_function_table <- function(spicy_res) {
+  #Based on code from spicyBoxPlot, which doesn't like : symbols 
+    L_function_table <- data.frame(
+      imageID   = spicy_res$imageID,
+      condition = spicy_res$condition,
+      subject   = spicy_res$subject,
+      as.data.frame(spicy_res$pairwiseAssoc)
+    ) %>% pivot_longer(cols = c( -imageID, -condition, -subject),
+                       names_to = 'pair',
+                       values_to = "L_function")
+}
+
+
+L_function_table <- get_L_function_table(spicy_res)
+```
+
+
+
+
 
 
 
@@ -306,4 +347,67 @@ List of useful resources. Papers, vignettes, pertinent forum posts
 # References
 
 <!-- nothing here, autopopulated from bibliography: in json -->
+
+
+
+
+
+
+## ASIDE: What level of Image ID?
+
+(Move this somewhere else. )
+
+Given the following experiment
+
+Slide 1 : sample 1 : covered by 10 fovs
+Slide 2 : sample 2 : covered by 10 fovs
+
+
+1. One entry per celltype per FOV per tissue sample? ImageID = Sample.   (1:1 ImageID:Sample)
+2. One entry per celltype per FOV per tissue sample? And ImageID = fov.  (m:1 ImageID:Sample)
+
+
+Dsicussion on L function; https://github.com/SydneyBioX/spicyR/issues/58
+*"That's right! You'd get one L-function value for each cell type pair/image combination. Having multiple images per subject only affects the final linear model that's built. Hope this clears things up!"*
+
+Hmm..
+
+From reading (https://us.sagepub.com/sites/default/files/upm-binaries/47528_ch_1.pdf) seems like a mixed model can cope perfectly fine with multiple images per fov (apparently good for repeated observations, or observations at multiple levels ), and should be able to test 'sample' without treating the mtuliple images as a billion replicates. And can handle the 'interaction terms' of variance across overlapping factors (e.g. ind + condition) implicetly. E.g. if we had multipel samples per slide that would model the slide variance, and the sample variance in its m:m glory (and the heircially lower fov variance too?).
+
+
+the answer is 2: from the docs: https://www.bioconductor.org/packages/release/bioc/vignettes/spicyR/inst/doc/spicyR.html
+
+**"spicyR supports mixed effects modelling when multiple images are obtained for each subject. In this case, subject is treated as a random effect and condition is treated as a fixed effect."**
+
+
+
+```{r}
+cell_info.1 <- cell_info
+cell_info.2 <- cell_info
+cell_info.2$imageID    <- paste0(as.character(paste0(cell_info.2$sample_id,'_',cell_info.2$fov) ))
+                                 
+table(cell_info.1$sample_id, cell_info.1$imageID)                                 
+table(cell_info.2$sample_id, cell_info.2$imageID)                                 
+```
+
+
+```{r}
+spicy_res.1 <- spicy(
+          cells     = cell_info ,
+          subject   = 'tissue_sample',
+          cellType  = 'highlight',
+          condition = 'group'
+          )
+#  Your specified subject parameter has a one-to-one mapping with imageID. Converting to a linear model instead of mixed model.
+
+spicy_res.2 <- spicy(
+          cells     = cell_info.2 ,
+          subject   = 'tissue_sample',
+          cellType  = 'highlight',
+          #sigma     = 20, # explain this
+          condition = 'group'
+          )
+```
+
+
 

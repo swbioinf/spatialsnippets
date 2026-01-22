@@ -12,7 +12,7 @@ This resource is supported by [Australian biocommons](https://www.biocommons.org
 ![](assets/qcif_logo.png){width=29%} ![](assets/Australian-Biocommons-Logo.png){width=29%} ![](assets/griffith_logo.png){width=29%} 
 
 
-## Who spatial sampler for?
+## Who is spatial sampler for?
 
 These HowTos assume that you have already QC-ed, pre-processed and annotated celltype in your dataset, and are ready to ask questions of it. Alternatively, perhaps you are planning a spatial experiment and exploring what questions you might be able to ask.
 
