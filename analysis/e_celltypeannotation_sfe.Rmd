@@ -1,0 +1,573 @@
+---
+title: "Dataset: IBD cosMX GarridoTrigo2023 - cluster annotation"
+author: "Sarah Williams (QCIF)"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+bibliography: /home/s.williams/zotero_export/MyLibrary.bib
+---
+
+
+**Note: **  This document does not include a code snippet for running a specific test, rather it is an example of celltype annotation. While less explanetory than the snippets, this document is included with them as it might be a useful resource for tackling celltype annotation in the bioconductor ecosystem. For a seurat-based approach see the cluster labelling section from an [intro to spatial (Seurat) workshop](https://swbioinf.github.io/intro-spatial-transcriptomics-workshop/ClusterLabelling.html). 
+
+
+
+Following on from [setting up the sfe object from the GarridoTrigo2023 IBD dataset](d_cosmxIBD_sfe.html), this doc generates some celltype labels for the clusters defined within. While some examples use the GarridoTrigo2023 broad celltypes (5x very broad categories) or their much more detailed celltype assignments (55x very specific types), some methods might be easier demonstrate with an intermediate classification level.
+
+
+## Setup 
+
+```{r message=FALSE, warning=FALSE}
+## Load libraries and data
+library(alabaster.sfe) 
+library(SpatialExperiment)
+library(tidyverse)
+library(Voyager)
+library(scater)
+library(scran) # scoremarkers
+library(BiocParallel) # allow parallelisation with MulticoreParam(). 
+library(pals)
+```
+
+```{r}
+data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
+
+# Data object.
+sfe_01_loaded         <- file.path(data_dir, "GSE234713_CosMx_IBD_sfe_01_loaded")
+sfe_02_celltypeanno   <- file.path(data_dir, "GSE234713_CosMx_IBD_sfe_01_celltypeanno")
+#se_pseudobulk_file    <- file.path(data_dir, "GSE234713_CosMx_IBD_pseudobulk_sample_se2.RDS")
+
+
+# Preprocessed singleR results
+predictions_broad_file    <- file.path(data_dir,"singleR_tabula_sapiens_predictions", "predictions_with_ts_intestine_broad_cell_class.RDS")
+predictions_detailed_file <-  file.path(data_dir,"singleR_tabula_sapiens_predictions","predictions_with_ts_intestine_detailed_celltype.RDS")
+
+
+```
+
+
+Load the dataset
+
+```{r}
+sfe <- readObject(sfe_01_loaded)
+```
+
+
+How many cells per cluster?
+```{r}
+table(sfe$cluster_code)
+```
+
+
+
+## UMAPs {.tabset}
+
+What is in the object already?
+
+### Samples
+
+```{r}
+plotUMAP(sfe, colour_by = 'tissue_sample', point_shape='.') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+```
+
+### Broad celltypes
+
+```{r}
+plotUMAP(sfe, colour_by = 'celltype_subset', text_by='celltype_subset', point_shape='.') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+```
+
+### Detailed celltypes
+
+```{r}
+plotUMAP(sfe, colour_by = 'celltype_SingleR2', point_shape='.') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+```
+
+### Unannotated cluster codes
+
+```{r}
+plotUMAP(sfe, colour_by = 'cluster_code', point_shape='.', text_by='cluster_code') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+```
+
+
+
+## Sources of information for celltype labelling
+
+
+### Marker genes
+
+
+Following OSCA examples; https://bioconductor.org/books/release/OSCA.basic/marker-detection.html
+
+```{r}
+marker_lists <- findMarkers(sfe, groups=sfe$cluster_code,
+                            BPPARAM=MulticoreParam(workers=8) # run on 8 cores.
+                            )
+```
+
+```{r}
+
+build_marker_summary_table <- function(marker_lists , the_group) {
+  # Make a gene/target column from the rownames, and add the group so we can make one big concatenated table. discard pairwise results.
+  tibble(cbind(cluster_code=the_group, rownames_to_column(as.data.frame(marker_lists[[the_group]][2:4]) ,var = "target" )))
+}
+
+marker_table <- bind_rows(lapply(FUN=build_marker_summary_table, X=names(marker_lists), marker_lists=marker_lists))
+
+```
+
+
+Many genes significantly enriched (not interested in specific 'absence' markers)
+```{r}
+marker_table.filt <- filter(marker_table, summary.logFC > 0, FDR < 0.01)
+table(marker_table.filt$cluster_code)
+```
+
+
+WIth a magnitude filter, this is more managable
+```{r}
+marker_table.filt <- filter(marker_table, summary.logFC > 0, FDR < 0.01)
+table(marker_table.filt$cluster_code)
+```
+
+```{r}
+marker_table.top <- filter(marker_table, summary.logFC > log2(2), FDR < 0.01) %>% group_by(cluster_code) %>% slice_min(order_by=p.value, n=3 )
+unique_top_genes <- unique(marker_table.top$target)
+ length(unique_top_genes )
+```
+
+The filtered DE genes 1.5-fold enriched
+```{r}
+DT::datatable(marker_table.filt)
+```
+
+
+Plot a heatmap (top 3 having log2FC > 1  for each) to see which genes are specific to which clusters. (This is agressively filtered, need the table for some clusters like c3)
+
+```{r fig.width=12, fig.height=12}
+plotGroupedHeatmap(sfe, features=unique_top_genes, group="cluster_code",center=TRUE)
+
+```
+
+
+### Celltypeing by reference
+
+```{sh eval=FALSE}
+wget https://datasets.cellxgene.cziscience.com/82e3b450-6704-43de-8036-af1838daa7df.h5ad
+mv 82e3b450-6704-43de-8036-af1838daa7df.h5ad tabula_sapiens_large_intestine_82e3b450-6704-43de-8036-af1838daa7df.h5ad
+```
+
+```{r}
+library(SingleR)
+library(schard) #https://github.com/cellgeni/schard
+
+ts_largeintestine_h5ad <- file.path("~/projects/spatialsnippets/reference/tabula_sapiens/tabula_sapiens_large_intestine_82e3b450-6704-43de-8036-af1838daa7df.h5ad")
+sce.ts_intestine = schard::h5ad2sce(ts_largeintestine_h5ad)
+```
+
+Lots of annotation within
+```{r}
+DT::datatable(head(as.data.frame(colData(sce.ts_intestine))))
+```
+
+
+This takes a while, so results were saved. 
+
+```{r eval=FALSE}
+## Do not run ##
+
+# Not needed, but first filter down to matched genes in our panel
+sce.ts_intestine.genename <- sce.ts_intestine[rowData(sce.ts_intestine)$feature_name %in% rownames(sfe),]
+
+# Are there any duplicates (we'd need to handle them, but there aren't)
+# takes the count of each feature, then checks that there aren't any >1
+stopifnot(sum(table(rowData(sce.ts_intestine.genename)$feature_name) != 1 ) == 0)
+
+# just rename the genes to the gene names
+rownames(sce.ts_intestine.genename) <-  rowData(sce.ts_intestine.genename)$feature_name
+
+# Pull out the normalised matrix.
+# Quirk of this coming from the python world, the normalised assay is called 'X'
+ref_norm_matrix <- assay(sce.ts_intestine.genename, 'X')
+
+
+library(BiocParallel) # allow parallelisation with MulticoreParam(). 
+
+#norm_matrix <- GetAssayData(so, assay = 'RNA', layer = 'data')
+
+predictions_broad <- SingleR::SingleR(test = sfe,
+                                ref   = ref_norm_matrix,
+                                labels = sce.ts_intestine.genename$broad_cell_class,
+                                aggr.ref = TRUE, # builds a pseudobulk reference , speedier processing
+                                BPPARAM = MulticoreParam(workers=12)
+                                )
+# Save results to disk
+saveRDS(predictions_broad, predictions_broad_file)
+
+
+predictions_detailed <- SingleR::SingleR(test = sfe,
+                                ref   = ref_norm_matrix,
+                                labels = sce.ts_intestine.genename$cell_type,
+                                aggr.ref = TRUE, # builds a pseudobulk reference , speedier processing
+                                BPPARAM = MulticoreParam(workers=12)
+)
+
+# Save results to disk
+saveRDS(predictions_detailed, predictions_detailed_file)
+
+```
+
+Load the previously saved results.
+
+```{r}
+predictions_broad    <- readRDS(predictions_broad_file)
+predictions_detailed <- readRDS(predictions_detailed_file)
+```
+
+The predictions look like this;
+
+```{r}
+DT::datatable(as.data.frame(head(predictions_broad)))
+```
+
+
+
+
+
+
+Pull them both into the annotation
+
+```{r}
+# Check that the order of cells is the same
+stopifnot(all(rownames(predictions_broad) == colnames(sfe)))
+
+# Then pull in the celltypes from pruned labels, and the 'delta.next' score for each.
+sfe$singleR_pred_broad          <- predictions_broad$pruned.labels
+sfe$singleR_pred_detailed       <- predictions_detailed$pruned.labels
+sfe$singleR_delta.next_broad    <- predictions_broad$delta.next
+sfe$singleR_delta.next_detailed <- predictions_detailed$delta.next
+```
+
+
+
+#### Predictions UMAPs 
+
+
+And plot on the UMAP
+
+Again, unannotated cluster codes:
+```{r}
+plotUMAP(sfe, colour_by = 'cluster_code', point_shape='.', text_by='cluster_code') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+```
+
+
+Broad categories:
+
+```{r}
+plotUMAP(sfe, colour_by = 'singleR_pred_broad', point_shape='.') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+```
+
+
+Detailed categories:
+
+Again, too detailed for this view. 
+
+```{r}
+plotUMAP(sfe, colour_by = 'singleR_pred_detailed', point_shape='.') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+```
+
+
+Instead visualise the detailed categories with a heatmap
+
+```{r fig.width=12, fig.height=12}
+## Celltype proportions
+celltype_summary_table<- colData(sfe) %>% as_tibble() %>%
+  group_by(cluster_code, singleR_pred_detailed ) %>%
+  summarise(n_cells = n())
+
+celltype_summary_table.wide <- pivot_wider(celltype_summary_table,names_from = singleR_pred_detailed, values_from=n_cells, values_fill = 0) %>% column_to_rownames(var = 'cluster_code')%>% t() %>% as.matrix() 
+
+heatmap(celltype_summary_table.wide, Colv = NA, Rowv = NA, scale = "column", margins=c(3,15))
+```
+
+
+
+#### Prediction composition plots
+
+```{r}
+## Celltype proportions
+celltype_summary_table<- colData(sfe) %>% as_tibble() %>%
+  group_by(cluster_code, singleR_pred_broad ) %>%
+  summarise(n_cells = n())
+
+
+ggplot(celltype_summary_table, aes(x=cluster_code, y=n_cells, fill=singleR_pred_broad)) +
+  geom_bar(position="fill", stat="identity") +
+  theme_bw() +
+  coord_flip() +
+  scale_fill_manual(values=unname( alphabet2())) + 
+  theme(legend.position = "bottom") +
+  scale_y_continuous(expand = c(0,0)) +
+  ggtitle( "Clusters vs tabular sapiens typing") 
+
+
+```
+
+
+### Tissue morphology
+
+Spatial location of the celltypes will make some celltypes very obvious, especially in a highly organised tissue like this. 
+Refer to desciption of colon mucosa histology [here](https://histology.siu.edu/erg/colon.htm)
+
+
+First pick out some example tissues samples. Some of these are long and skinny and hard to see, so zoom into a few fovs of each. (NB: quick way to figure out which fovs to select is to plot coloured by fov, not shown.)
+
+
+One healthy control sample (HC_a)
+
+```{r fig.width=12, fig.height=6}
+sfe.HC_a <-sfe[,sfe$tissue_sample == 'HC_a']
+p1 <-  plotSpatialFeature(sfe.HC_a, "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.position = "none")
+p2 <- plotSpatialFeature(sfe.HC_a[,sfe.HC_a$fov %in% c(18:20)], "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank())  + ggtitle("Zoom")
+p1 + p2
+```
+
+
+One Crohne's diease sample (CD_a)
+```{r fig.width=12, fig.height=6}
+sfe.CD_a <-sfe[,sfe$tissue_sample == 'CD_a']
+p1 <- plotSpatialFeature(sfe.CD_a, "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.position = "none")
+
+p2 <- plotSpatialFeature(sfe.CD_a[,sfe.CD_a$fov %in% c(4:8,19)], "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank()) + ggtitle("Zoom")
+
+p1 + p2
+```
+
+And a Ulcerative colitis representative.  
+
+Didn't plot UC_a as it was less contiguous than the rest (see below). Instead, plotted UC_b, but it doesn't have the same clear structure as the HC and CD samples. However - the fov that's predominately c7 suggests that c7 may be indicative of some technical signal (probably poor quality) rather than representing a biologically relevant cell state. 
+
+```{r fig.width=12, fig.height=6}
+sfe.UC_b <-sfe[,sfe$tissue_sample == 'UC_b'] # odd looking. 
+p1 <- plotSpatialFeature(sfe.UC_b, "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.position = "none")
+
+p2 <-  plotSpatialFeature(sfe.UC_b[,sfe.UC_b$fov %in% c(1:12)], "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank()) + ggtitle("Zoom")
+
+p1 + p2
+```
+
+So checkign UC_c as well, mostly to see if it looks like UC_b (not really), or like the HC and CD samples (yes). Suggest UC_b is the odd one out. 
+
+```{r fig.width=12, fig.height=6}
+sfe.UC_c <-sfe[,sfe$tissue_sample == 'UC_c'] 
+p1 <- plotSpatialFeature(sfe.UC_c, "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.position = "none")
+p2 <-  plotSpatialFeature(sfe.UC_c[,sfe.UC_c$fov %in% c(6:10)], "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank()) + ggtitle("Zoom")
+p1 + p2
+```
+
+
+### Over quick check of the rest 
+
+And a quick plot of all the others - nothing too odd here.
+
+```{r fig.width=12, fig.height=6}
+p1 <- plotSpatialFeature(sfe[,sfe$tissue_sample == 'HC_b'] , "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank()) +  ggtitle('HC_b') 
+p2 <- plotSpatialFeature(sfe[,sfe$tissue_sample == 'HC_c'] , "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank()) +  ggtitle('HC_c')
+p1 + p2
+
+p1 <- plotSpatialFeature(sfe[,sfe$tissue_sample == 'CD_b'] , "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank()) +  ggtitle('CD_b') 
+p2 <- plotSpatialFeature(sfe[,sfe$tissue_sample == 'CD_c'] , "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank()) +  ggtitle('CD_c')
+p1 + p2
+
+p1 <- plotSpatialFeature(sfe[,sfe$tissue_sample == 'UC_a'] , "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank()) +  ggtitle('UC_a') 
+p2 <- plotSpatialFeature(sfe[,sfe$tissue_sample == 'UC_c'] , "cluster_code",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank()) +  ggtitle('UC_c')
+p1 + p2
+```
+
+
+
+## Labelling celltypes
+
+
+### Pull it all together to decide on celltypes 
+
+Some examination of the above plots and note-taking in a spreadsheet yeilded the following cell type assignments. Some celltype labels were manually decided on the basis this evidence. These could be refined later (NB: These celltype calls are approximate for demonstrative purposes, and have not been validated by a domain expert!!)
+
+| cluster_code | Tabula sapiens broad Notes | Tabula sapiens detailed notes        | Notable Markers                   | Marker notes                                    | Spatial notes                                | Celltype label             |
+|--------------|----------------------------|--------------------------------------|-----------------------------------|-------------------------------------------------|----------------------------------------------|----------------------------|
+| c1           | Dendritic cells            | Dendritic/macrophage                 | CD74, IGHG1, IGHG2,               |                                                 |                                              | Monocytic Cells            |
+| c2           | B cells                    | B                                    | CD74, HLA-DRB1, MALAT1            | Like C1, but without IGHG1/IGHG2                | Lymphoid structures (see HC_b)               | B Cells                    |
+| c3           | mixed                      | endothelial/fibroblast/myfiboroblast | MZT2A                             | proliferative?                                  | in/beneath crypt layer, lymphoid regions     | Cell Cycle                 |
+| c4           | B cells                    | Plasma                               | IGHA, JCHAIN, IGKC                | Not CD74                                        | non epithelia crypt                          | Plasma Cells               |
+| c5           | Stem cells                 | Intestinal crypt cell                | PIGR,KRT8, MZT2A                  | c5/c6/c15 similarity, Less PIGR/keratin than c6 | crypt edge                                   | Stem cells                 |
+| c6           | Intestinal Epithelial cell | enterocyte                           | PIGR, KRT8, AQP8, KRT20           | c5/c6/c15 similarity                            | Outer edge                                   | Intesinal Epithelial Cells |
+| c7           | mixed / fibroblast?        | fibroblast                           | DCN, GSN,CFD (weakly)             |                                                 | Makes up one FOV. Technical / quality issue? | Unknown                    |
+| c8           | mixed / T/ B               | plasma/B                             | IGHG1, MZT2A, NPPC,PTPRC          | T or B or plasma?                               | lymphoid structure edge                      | Lymphocytes                |
+| c9           | Endothelial                | endothelial                          | IGFBP7                            |                                                 |                                              | Endothelial Cells          |
+| c10          | Contractile cell           | myfibroblast                         | TAGLN                             |                                                 | beneath crypt layer                          | Myofibroblasts             |
+| c11          | B Cells                    | plasma                               | IGKC, IGHG1, IGHG2                | c11, c14 similarity, not CD74                   |                                              | Plasma Cells               |
+| c12          | Fibroblasts                | fibroblast                           | COL1A1, COL3A1                    |                                                 |                                              | Fibroblasts                |
+| c13          | Granulocytes               | mast cell                            | TPSAB1, TPSB2                     |                                                 |                                              | Granulocytes               |
+| c14          | B Cells                    | plasma                               | IGKC, IGHG1, IGHG2, IGHA1, JCHAIN | c11, c14 similarity, not CD74                   | patchy                                       | Plasma Cells               |
+| c15          | Stem cells                 | Intestinal crypt cell                | PIGR, KRT8, S100A6                | c5/c6/c15 similarity, some CD74                 |                                              | Stem Cells                 |
+
+
+
+### Record celltypes labels
+
+Record in data object
+
+```{r}
+cluster_content <- c(
+  c1 = "Monocytic Cells",
+  c2 = "B Cells",
+  c3 = "Cell Cycle",
+  c4 = "Plasma Cells",  
+  c5 = "Stem Cells",
+  c6 = "Intestinal Epithelial Cells",
+  c7 = "Unknown",
+  c8 = "Lymphocytes",
+  c9 = "Endothelial Cells",
+  c10 = "Myofibroblasts",
+  c11 = "Plasma Cells",
+  c12 = "Fibroblasts",
+  c13 = "Granulocytes",
+  c14 = "Plasma Cells",
+  c15 = "Stem Cells"
+)
+  
+# c15 => c15: Stem cell
+sfe$cluster_content <- factor(cluster_content[as.character(sfe$cluster_code)])
+
+
+sfe$cluster_label <- factor (
+  paste0(names(cluster_content[as.character(sfe$cluster_code)]), ": ", cluster_content[as.character(sfe$cluster_code)]) ,
+  levels = paste0( names(cluster_content), ": ", cluster_content)
+)
+
+```
+
+
+
+We have both 'celltypes' (where there are multiple clusters labelled plasma), and pretty labelled cluster levels.
+```{r}
+table(sfe$cluster_content)
+table(sfe$cluster_label)
+```
+
+
+
+Save annotations for later use.
+
+```{r eval=FALSE}
+saveObject(sfe, sfe_02_celltypeanno )
+```
+
+### Check assigned celltypes
+
+Plot on UMAP, along with the broad celltypes for reference. 
+
+NB: Labels sit at average centre of cells, which isn't always a density of that given celltype (check colours) - e.g. unknown, granulocytes.
+```{r}
+plotUMAP(sfe, colour_by = 'cluster_content', text_by='cluster_content', point_shape='.') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+plotUMAP(sfe, colour_by = 'cluster_label', text_by='cluster_label', point_shape='.') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+plotUMAP(sfe, colour_by = 'celltype_subset', text_by='celltype_subset', point_shape='.') +
+  guides(colour = guide_legend(override.aes = list(shape=15)))
+```
+
+
+
+
+
+
+
+
+
+<!-- ## Cell cycle -->
+
+
+<!-- ```{r} -->
+<!-- library(org.Hs.eg.db) -->
+
+<!-- # A human reference dataset is provided, but it uses ensmebl ids. -->
+<!-- hs.pairs <- readRDS(system.file("exdata", "human_cycle_markers.rds", package="scran")) -->
+<!-- all_listed_ens_genes <- unique(c(bind_rows(hs.pairs)$first, bind_rows(hs.pairs)$second)) -->
+
+
+
+
+<!-- gene_name_table <- AnnotationDbi::select(org.Hs.eg.db,  -->
+<!--                           keys=all_listed_ens_genes,  keytype = 'ENSEMBL', -->
+<!--                           columns=c("ENSEMBL", "ALIAS","GENENAME"), -->
+<!--                           multiVals='filter' # drop one:many relationships -->
+<!--                           ) -->
+
+<!-- gene_names <- AnnotationDbi::mapIds(org.Hs.eg.db,  -->
+<!--                           keys=all_listed_ens_genes,  keytype = 'ENSEMBL', -->
+<!--                           column=c("SYMBOL"), -->
+<!--                           #multiVals='asNA' # NA for drop one:many relationships -->
+<!--                           ) -->
+<!-- # 9 NA?, really don't care. -->
+<!-- sum(is.na(gene_names)) -->
+
+<!-- # Convert the 'first' and s'econd' columns of a cell state into gene symbols, -->
+<!-- # and drop anything that has NA (probably a 1:many relationship) -->
+<!-- convert_it <- function(pairset, gene_names) { -->
+<!--   converted_set <- data.frame(cbind(first=gene_names[pairset$first],  -->
+<!--                                     second=gene_names[pairset$second])) -->
+<!--   rownames(converted_set) <- NULL -->
+<!--   has_na <- rowSums(is.na(converted_set)) -->
+<!--   return(converted_set[has_na == 0,]) -->
+<!-- } -->
+
+<!-- # Now we have that in gene symbols -->
+<!-- hs.pairs.symbol <- list(G1=convert_it(hs.pairs$G1, gene_names), -->
+<!--                         G2M=convert_it(hs.pairs$G2M, gene_names), -->
+<!--                         S=convert_it(hs.pairs$S, gene_names)) -->
+
+
+<!-- # Not enough genes in the panel for this to work.  -->
+<!-- # Leave it be for now. -->
+
+<!-- table(rownames(sfe) %in% gene_names ) -->
+
+<!-- rownames(sfe)[rownames(sfe) %in% gene_names ] -->
+<!-- rownames(sfe)[!rownames(sfe) %in% gene_names ] -->
+<!-- cyclone.result <- cyclone( -->
+<!--   sfe[,1:100], -->
+<!--   pairs = hs.pairs.symbol, -->
+<!--   BPPARAM = MulticoreParam(workers=8) -->
+<!-- ) -->
+<!-- ``` -->
+
+
+
