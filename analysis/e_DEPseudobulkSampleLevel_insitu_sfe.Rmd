@@ -576,7 +576,7 @@ plotExpression(se.pdb, "PIGR", x="group", colour_by = "group",
 
 
 
-```{r eval=FALSE}
+```{r eval=FALSE, echo=FALSE}
 library(alabaster.sfe)
 data_dir               <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data")
 generic_sfe_file <- file.path(data_dir,'GSE234713_CosMx_IBD_sfe_01_generic4snippettests')
