@@ -14,7 +14,7 @@
 
 <title>Differential expression between groups using pseudobulk</title>
 
-<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -36,17 +36,26 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<link href="site_libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
 <script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="site_libs/datatables-binding-0.33/datatables.js"></script>
+<script src="site_libs/datatables-binding-0.34.0/datatables.js"></script>
 <link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
 <link href="site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
 <script src="site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
-<link href="site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
-<script src="site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="site_libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="site_libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
 <link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P3P13KEPZW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P3P13KEPZW');
+</script>
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -87,6 +96,7 @@ if (window.hljs) {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -1015,7 +1025,7 @@ de_results_sig &lt;- filter(de_results_all, adj.P.Val &lt; 0.05)</code></pre>
 <p>Table of significant results.</p>
 <pre class="r"><code>DT::datatable(mutate(de_results_sig, across(is.numeric, signif, digits = 3)))</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-0b50cf44ed0c70fb0261" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-0b50cf44ed0c70fb0261">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],["epi","epi","epi","epi","epi","myeloids","myeloids","myeloids","myeloids","plasmas","plasmas","plasmas","plasmas","stroma","stroma","stroma","stroma"],["pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","UCvHC","CDvHC","CDvHC","CDvHC"],["LYZ","IGHG2","IGHG1","REG1A","B3GNT7","NFKBIA","EZR","PIGR","JCHAIN","PIGR","TNFRSF13B","ADAMDEC1","PIGR","PIGR","PIGR","GPX3","SELENOP"],[3.6,3.87,3.96,3.69,-2.45,-1.72,-1.28,-1.8,-3.37,-1.53,-1.83,-2.52,-1.34,-1.9,-1.43,-1.25,-1.04],[10.7,10.7,11.3,10.4,10.2,10.9,9.65,9.66,11.9,9.52,9.470000000000001,9.890000000000001,9.52,9.699999999999999,9.699999999999999,10.2,9.68],[7.88,7.75,7.43,6.25,-5.63,-5.76,-5.69,-5.49,-5.33,-6.61,-6.39,-6.06,-5.86,-8.25,-6.63,-6.18,-5.77],[3.25e-06,3.88e-06,6.02e-06,3.43e-05,9.26e-05,6.439999999999999e-05,7.25e-05,0.000101,0.000133,2.42e-05,3.36e-05,5.54e-05,7.52e-05,2.06e-06,1.97e-05,3.9e-05,7.57e-05],[0.00194,0.00194,0.00201,0.008569999999999999,0.0185,0.0332,0.0332,0.0332,0.0332,0.0168,0.0168,0.0376,0.0376,0.00206,0.0195,0.0195,0.0252],[4.87,4.71,4.25,2.63,1.68,1.94,1.91,1.6,1.02,2.7,2.45,2.05,1.81,3.71,3.02,2.43,1.86]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-0b50cf44ed0c70fb0261">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"],["epi","epi","epi","epi","epi","myeloids","myeloids","myeloids","myeloids","plasmas","plasmas","plasmas","plasmas","stroma","stroma","stroma","stroma"],["pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise","pairwise"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","CDvHC","CDvHC","UCvHC","CDvHC","CDvHC","CDvHC"],["LYZ","IGHG2","IGHG1","REG1A","B3GNT7","NFKBIA","EZR","PIGR","JCHAIN","PIGR","TNFRSF13B","ADAMDEC1","PIGR","PIGR","PIGR","GPX3","SELENOP"],[3.61,3.88,3.96,3.69,-2.46,-1.72,-1.28,-1.8,-3.38,-1.53,-1.83,-2.52,-1.34,-1.9,-1.43,-1.24,-1.05],[10.7,10.7,11.3,10.4,10.2,10.9,9.65,9.66,11.9,9.52,9.470000000000001,9.890000000000001,9.52,9.699999999999999,9.699999999999999,10.2,9.68],[7.93,7.79,7.48,6.27,-5.66,-5.77,-5.7,-5.5,-5.32,-6.61,-6.39,-6.07,-5.86,-8.210000000000001,-6.62,-6.16,-5.78],[3.05e-06,3.67e-06,5.62e-06,3.31e-05,8.87e-05,6.329999999999999e-05,7.04e-05,9.93e-05,0.000135,2.41e-05,3.34e-05,5.39e-05,7.46e-05,2.15e-06,1.97e-05,4e-05,7.34e-05],[0.00184,0.00184,0.00187,0.008279999999999999,0.0177,0.0331,0.0331,0.0331,0.0338,0.0167,0.0167,0.0372,0.0372,0.00214,0.0197,0.02,0.0244],[4.93,4.76,4.32,2.66,1.72,1.96,1.94,1.62,1.01,2.71,2.45,2.12,1.86,3.64,3.02,2.41,1.89]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div id="de-plots" class="section level2">
@@ -1076,6 +1086,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/755e4ca4b587c34be13f3503a2308ed94a8f8e7f/docs/figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-18-1.png" target="_blank">755e4ca</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-11-07
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/44907e6988ada141496d67884744a27ae0847b9a/docs/figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-18-1.png" target="_blank">44907e6</a>
 </td>
 <td>
@@ -1111,11 +1132,48 @@ norm_counts &lt;- cpm(dge)
 assay(se.pdb, &quot;logcounts&quot;) &lt;- log2(norm_counts)</code></pre>
 <pre class="r"><code>DT::datatable(mutate(filter(de_results_sig, target == &quot;LYZ&quot;), across(is.numeric, signif, digits = 3)))</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-02919026514f0c819cc6" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-02919026514f0c819cc6">{"x":{"filter":"none","vertical":false,"data":[["1"],["epi"],["pairwise"],["UCvHC"],["LYZ"],[3.6],[10.7],[7.88],[3.25e-06],[0.00194],[4.87]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-02919026514f0c819cc6">{"x":{"filter":"none","vertical":false,"data":[["1"],["epi"],["pairwise"],["UCvHC"],["LYZ"],[3.61],[10.7],[7.93],[3.05e-06],[0.00184],[4.93]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>plotExpression(se.pdb, &quot;LYZ&quot;, x=&quot;group&quot;, colour_by = &quot;group&quot;,
                other_fields = &quot;celltype_subset&quot;) + 
  facet_wrap(~celltype_subset)</code></pre>
 <p><img src="figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-20-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-2">
+Past versions of unnamed-chunk-20-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/755e4ca4b587c34be13f3503a2308ed94a8f8e7f/docs/figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-20-2.png" target="_blank">755e4ca</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-11-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>PIGR was flagged more globally across multiple comparisons, in plasma
 and stroma in Crohns disease vs healthy, and stroma and myeloids when
 comparing Ulcerative colitis vs healthy. PIGR is a more specifically
@@ -1125,23 +1183,52 @@ PIGR, or could they be catching expression from more-oft co-located
 epithelia?)</p>
 <pre class="r"><code>DT::datatable(mutate(filter(de_results_sig, target == &quot;PIGR&quot;), across(is.numeric, signif, digits = 3)))</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-33e8fa5db7297a737495" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-33e8fa5db7297a737495">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5"],["myeloids","plasmas","plasmas","stroma","stroma"],["pairwise","pairwise","pairwise","pairwise","pairwise"],["UCvHC","UCvHC","CDvHC","UCvHC","CDvHC"],["PIGR","PIGR","PIGR","PIGR","PIGR"],[-1.8,-1.53,-1.34,-1.9,-1.43],[9.66,9.52,9.52,9.699999999999999,9.699999999999999],[-5.49,-6.61,-5.86,-8.25,-6.63],[0.000101,2.42e-05,7.52e-05,2.06e-06,1.97e-05],[0.0332,0.0168,0.0376,0.00206,0.0195],[1.6,2.7,1.81,3.71,3.02]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-33e8fa5db7297a737495">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5"],["myeloids","plasmas","plasmas","stroma","stroma"],["pairwise","pairwise","pairwise","pairwise","pairwise"],["UCvHC","UCvHC","CDvHC","UCvHC","CDvHC"],["PIGR","PIGR","PIGR","PIGR","PIGR"],[-1.8,-1.53,-1.34,-1.9,-1.43],[9.66,9.52,9.52,9.699999999999999,9.699999999999999],[-5.5,-6.61,-5.86,-8.210000000000001,-6.62],[9.93e-05,2.41e-05,7.46e-05,2.15e-06,1.97e-05],[0.0331,0.0167,0.0372,0.00214,0.0197],[1.62,2.71,1.86,3.64,3.02]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <pre class="r"><code>plotExpression(se.pdb, &quot;PIGR&quot;, x=&quot;group&quot;, colour_by = &quot;group&quot;,
                other_fields = &quot;celltype_subset&quot;) + 
  facet_wrap(~celltype_subset)</code></pre>
 <p><img src="figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-21-2.png" width="960" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-2">
+Past versions of unnamed-chunk-21-2.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-2" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/755e4ca4b587c34be13f3503a2308ed94a8f8e7f/docs/figure/e_DEPseudobulkSampleLevel_insitu_sfe.Rmd/unnamed-chunk-21-2.png" target="_blank">755e4ca</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-11-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="code-snippet" class="section level1">
 <h1>Code Snippet</h1>
-<pre class="r"><code>library(alabaster.sfe)
-data_dir               &lt;- file.path(&quot;~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data&quot;)
-generic_sfe_file &lt;- file.path(data_dir,&#39;GSE234713_CosMx_IBD_sfe_01_generic4snippettests&#39;)
-sfe &lt;-  readObject(generic_sfe_file)
-
-
-sfe_file_01_generic_min200_pdb &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_sfe_01_generic4snippettests_min200_pdb.RDS&quot;)
-se.pdb &lt;- readRDS(sfe_file_01_generic_min200_pdb)</code></pre>
 <p>This code snippet would test for differential expression between
 groups, within each celltype or cluster independantly. It skips
 contrasts where there are not enough samples to test a given
@@ -1322,7 +1409,7 @@ de_results_sig &lt;- filter(de_results_all, adj.P.Val &lt; 0.05)</code></pre>
 <h1>Results</h1>
 <pre class="r"><code>DT::datatable(mutate(head(de_results_sig), across(is.numeric, signif, digits = 3)))</code></pre>
 <div class="datatables html-widget html-fill-item" id="htmlwidget-6da6b1915fc0556a53a6" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-6da6b1915fc0556a53a6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["epi","epi","epi","epi","epi","myeloids"],["pairwise","pairwise","pairwise","pairwise","pairwise","pairwise"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC"],["LYZ","IGHG2","IGHG1","REG1A","B3GNT7","NFKBIA"],[3.6,3.87,3.96,3.69,-2.45,-1.72],[10.7,10.7,11.3,10.4,10.2,10.9],[7.88,7.75,7.43,6.25,-5.63,-5.76],[3.25e-06,3.88e-06,6.02e-06,3.43e-05,9.26e-05,6.439999999999999e-05],[0.00194,0.00194,0.00201,0.008569999999999999,0.0185,0.0332],[4.87,4.71,4.25,2.63,1.68,1.94]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<script type="application/json" data-for="htmlwidget-6da6b1915fc0556a53a6">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["epi","epi","epi","epi","epi","myeloids"],["pairwise","pairwise","pairwise","pairwise","pairwise","pairwise"],["UCvHC","UCvHC","UCvHC","UCvHC","UCvHC","UCvHC"],["LYZ","IGHG2","IGHG1","REG1A","B3GNT7","NFKBIA"],[3.61,3.88,3.96,3.69,-2.46,-1.72],[10.7,10.7,11.3,10.4,10.2,10.9],[7.93,7.79,7.48,6.27,-5.66,-5.77],[3.05e-06,3.67e-06,5.62e-06,3.31e-05,8.87e-05,6.329999999999999e-05],[0.00184,0.00184,0.00187,0.008279999999999999,0.0177,0.0331],[4.93,4.76,4.32,2.66,1.72,1.96]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>celltype<\/th>\n      <th>contrast_group<\/th>\n      <th>contrast<\/th>\n      <th>target<\/th>\n      <th>logFC<\/th>\n      <th>AveExpr<\/th>\n      <th>t<\/th>\n      <th>P.Value<\/th>\n      <th>adj.P.Val<\/th>\n      <th>B<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[5,6,7,8,9,10]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"celltype","targets":1},{"name":"contrast_group","targets":2},{"name":"contrast","targets":3},{"name":"target","targets":4},{"name":"logFC","targets":5},{"name":"AveExpr","targets":6},{"name":"t","targets":7},{"name":"P.Value","targets":8},{"name":"adj.P.Val","targets":9},{"name":"B","targets":10}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>This table is the typical output of <em>limma</em> tests; With a
 couple of extra columns added by our code.</p>
 <ul>
@@ -1403,7 +1490,8 @@ the useful plots are from this package.</li>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
 <div id="ref-garrido-trigoMacrophageNeutrophilHeterogeneity2023"
 class="csl-entry">
 Garrido-Trigo, Alba, Ana M. Corraliza, Marisol Veny, Isabella Dotti,
@@ -1444,7 +1532,7 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.4.0 (2024-04-24)
+<pre><code>R version 4.5.2 (2025-10-31)
 Platform: x86_64-pc-linux-gnu
 Running under: Ubuntu 22.04.5 LTS
 
@@ -1468,105 +1556,105 @@ attached base packages:
 [8] base     
 
 other attached packages:
- [1] ggrepel_0.9.6                  patchwork_1.3.0               
- [3] Voyager_1.8.1                  BiocParallel_1.40.0           
- [5] edgeR_4.4.2                    DT_0.33                       
- [7] limma_3.62.2                   lubridate_1.9.4               
- [9] forcats_1.0.0                  stringr_1.5.1                 
-[11] dplyr_1.1.4                    purrr_1.0.2                   
-[13] readr_2.1.5                    tidyr_1.3.1                   
-[15] tibble_3.2.1                   tidyverse_2.0.0               
-[17] scater_1.34.1                  ggplot2_3.5.1                 
-[19] scuttle_1.16.0                 SpatialExperiment_1.16.0      
-[21] SingleCellExperiment_1.28.1    SummarizedExperiment_1.36.0   
-[23] Biobase_2.66.0                 GenomicRanges_1.58.0          
-[25] GenomeInfoDb_1.42.1            IRanges_2.40.1                
-[27] S4Vectors_0.44.0               BiocGenerics_0.52.0           
-[29] MatrixGenerics_1.18.1          matrixStats_1.5.0             
-[31] alabaster.sfe_0.99.2001        alabaster.base_1.6.1          
-[33] SpatialFeatureExperiment_1.9.8 workflowr_1.7.1               
+ [1] ggrepel_0.9.6                   patchwork_1.3.2                
+ [3] Voyager_1.13.0                  BiocParallel_1.44.0            
+ [5] edgeR_4.8.1                     DT_0.34.0                      
+ [7] limma_3.66.0                    lubridate_1.9.4                
+ [9] forcats_1.0.1                   stringr_1.6.0                  
+[11] dplyr_1.1.4                     purrr_1.2.0                    
+[13] readr_2.1.6                     tidyr_1.3.1                    
+[15] tibble_3.3.0                    tidyverse_2.0.0                
+[17] scater_1.38.0                   ggplot2_4.0.1                  
+[19] scuttle_1.20.0                  SpatialExperiment_1.20.0       
+[21] SingleCellExperiment_1.32.0     SummarizedExperiment_1.40.0    
+[23] Biobase_2.70.0                  GenomicRanges_1.62.1           
+[25] Seqinfo_1.0.0                   IRanges_2.44.0                 
+[27] S4Vectors_0.48.0                BiocGenerics_0.56.0            
+[29] generics_0.1.4                  MatrixGenerics_1.22.0          
+[31] matrixStats_1.5.0               alabaster.sfe_1.2.0            
+[33] alabaster.base_1.10.0           SpatialFeatureExperiment_1.12.1
+[35] workflowr_1.7.2                
 
 loaded via a namespace (and not attached):
-  [1] fs_1.6.5                  spatialreg_1.3-6         
-  [3] bitops_1.0-9              sf_1.0-19                
-  [5] EBImage_4.48.0            httr_1.4.7               
-  [7] tools_4.4.0               utf8_1.2.4               
-  [9] R6_2.5.1                  HDF5Array_1.34.0         
- [11] rhdf5filters_1.18.0       withr_3.0.2              
- [13] sp_2.2-0                  gridExtra_2.3            
- [15] cli_3.6.3                 RBioFormats_1.6.0        
- [17] sandwich_3.1-1            alabaster.se_1.6.0       
- [19] labeling_0.4.3            sass_0.4.9               
- [21] mvtnorm_1.3-3             arrow_19.0.1             
- [23] proxy_0.4-27              R.utils_2.12.3           
- [25] scico_1.5.0               rstudioapi_0.17.1        
- [27] generics_0.1.3            crosstalk_1.2.1          
- [29] spdep_1.3-10              Matrix_1.7-4             
- [31] ggbeeswarm_0.7.2          abind_1.4-8              
- [33] R.methodsS3_1.8.2         terra_1.8-21             
- [35] lifecycle_1.0.4           whisker_0.4.1            
- [37] multcomp_1.4-28           yaml_2.3.10              
- [39] rhdf5_2.50.2              SparseArray_1.6.1        
- [41] grid_4.4.0                promises_1.3.2           
- [43] dqrng_0.4.1               crayon_1.5.3             
- [45] alabaster.spatial_1.6.1   lattice_0.22-6           
- [47] beachmat_2.22.0           cowplot_1.1.3            
- [49] magick_2.8.5              zeallot_0.1.0            
- [51] pillar_1.10.1             knitr_1.49               
- [53] rjson_0.2.23              boot_1.3-31              
- [55] sfarrow_0.4.1             codetools_0.2-20         
- [57] wk_0.9.4                  glue_1.8.0               
- [59] getPass_0.2-4             data.table_1.16.4        
- [61] memuse_4.2-3              vctrs_0.6.5              
- [63] png_0.1-8                 gtable_0.3.6             
- [65] assertthat_0.2.1          cachem_1.1.0             
- [67] xfun_0.50                 S4Arrays_1.6.0           
- [69] DropletUtils_1.26.0       coda_0.19-4.1            
- [71] survival_3.8-3            sfheaders_0.4.4          
- [73] rJava_1.0-11              units_0.8-5              
- [75] statmod_1.5.0             bluster_1.16.0           
- [77] TH.data_1.1-3             nlme_3.1-166             
- [79] bit64_4.6.0-1             alabaster.ranges_1.6.0   
- [81] BumpyMatrix_1.14.0        rprojroot_2.0.4          
- [83] bslib_0.9.0               irlba_2.3.5.1            
- [85] vipor_0.4.7               KernSmooth_2.23-26       
- [87] colorspace_2.1-1          spData_2.3.4             
- [89] DBI_1.2.3                 tidyselect_1.2.1         
- [91] processx_3.8.5            bit_4.5.0.1              
- [93] compiler_4.4.0            git2r_0.33.0             
- [95] BiocNeighbors_2.0.1       xml2_1.3.6               
- [97] DelayedArray_0.32.0       scales_1.3.0             
- [99] classInt_0.4-11           callr_3.7.6              
-[101] tiff_0.1-12               digest_0.6.37            
-[103] fftwtools_0.9-11          alabaster.matrix_1.6.1   
-[105] rmarkdown_2.29            XVector_0.46.0           
-[107] htmltools_0.5.8.1         pkgconfig_2.0.3          
-[109] jpeg_0.1-10               sparseMatrixStats_1.18.0 
-[111] fastmap_1.2.0             rlang_1.1.5              
-[113] htmlwidgets_1.6.4         UCSC.utils_1.2.0         
-[115] DelayedMatrixStats_1.28.1 farver_2.1.2             
-[117] jquerylib_0.1.4           zoo_1.8-12               
-[119] jsonlite_1.8.9            R.oo_1.27.0              
-[121] BiocSingular_1.22.0       RCurl_1.98-1.16          
-[123] magrittr_2.0.3            GenomeInfoDbData_1.2.13  
-[125] s2_1.1.7                  Rhdf5lib_1.28.0          
-[127] munsell_0.5.1             Rcpp_1.0.14              
-[129] ggnewscale_0.5.1          viridis_0.6.5            
-[131] stringi_1.8.4             alabaster.schemas_1.6.0  
-[133] zlibbioc_1.52.0           MASS_7.3-64              
-[135] alabaster.bumpy_1.6.0     parallel_4.4.0           
-[137] deldir_2.0-4              splines_4.4.0            
-[139] hms_1.1.3                 locfit_1.5-9.11          
-[141] ps_1.8.1                  igraph_2.1.4             
-[143] ScaledMatrix_1.14.0       LearnBayes_2.15.1        
-[145] evaluate_1.0.3            renv_1.0.5               
-[147] BiocManager_1.30.25       tzdb_0.4.0               
-[149] httpuv_1.6.15             alabaster.sce_1.6.0      
-[151] rsvd_1.0.5                e1071_1.7-16             
-[153] RSpectra_0.16-2           later_1.4.1              
-[155] viridisLite_0.4.2         class_7.3-23             
-[157] beeswarm_0.4.0            cluster_2.1.8            
-[159] timechange_0.3.0         </code></pre>
+  [1] fs_1.6.6                  spatialreg_1.4-2         
+  [3] bitops_1.0-9              sf_1.0-23                
+  [5] EBImage_4.52.0            httr_1.4.7               
+  [7] RColorBrewer_1.1-3        tools_4.5.2              
+  [9] utf8_1.2.6                R6_2.6.1                 
+ [11] HDF5Array_1.38.0          rhdf5filters_1.22.0      
+ [13] withr_3.0.2               sp_2.2-0                 
+ [15] gridExtra_2.3             cli_3.6.5                
+ [17] RBioFormats_1.10.0        sandwich_3.1-1           
+ [19] alabaster.se_1.10.0       labeling_0.4.3           
+ [21] sass_0.4.10               mvtnorm_1.3-3            
+ [23] arrow_22.0.0              S7_0.2.1                 
+ [25] proxy_0.4-28              R.utils_2.13.0           
+ [27] dichromat_2.0-0.1         scico_1.5.0              
+ [29] rstudioapi_0.17.1         crosstalk_1.2.2          
+ [31] spdep_1.4-1               Matrix_1.7-4             
+ [33] ggbeeswarm_0.7.3          abind_1.4-8              
+ [35] R.methodsS3_1.8.2         terra_1.8-86             
+ [37] lifecycle_1.0.4           whisker_0.4.1            
+ [39] multcomp_1.4-29           yaml_2.3.12              
+ [41] rhdf5_2.54.1              SparseArray_1.10.7       
+ [43] grid_4.5.2                promises_1.5.0           
+ [45] dqrng_0.4.1               alabaster.spatial_1.10.0 
+ [47] lattice_0.22-7            cowplot_1.2.0            
+ [49] beachmat_2.26.0           magick_2.9.0             
+ [51] zeallot_0.2.0             pillar_1.11.1            
+ [53] knitr_1.50                rjson_0.2.23             
+ [55] boot_1.3-32               sfarrow_0.4.1            
+ [57] codetools_0.2-20          wk_0.9.4                 
+ [59] glue_1.8.0                getPass_0.2-4            
+ [61] data.table_1.17.8         memuse_4.2-3             
+ [63] vctrs_0.6.5               png_0.1-8                
+ [65] gtable_0.3.6              assertthat_0.2.1         
+ [67] cachem_1.1.0              xfun_0.55                
+ [69] S4Arrays_1.10.1           DropletUtils_1.30.0      
+ [71] coda_0.19-4.1             survival_3.8-3           
+ [73] sfheaders_0.4.5           rJava_1.0-11             
+ [75] units_1.0-0               statmod_1.5.1            
+ [77] bluster_1.20.0            TH.data_1.1-5            
+ [79] nlme_3.1-168              bit64_4.6.0-1            
+ [81] alabaster.ranges_1.10.0   BumpyMatrix_1.18.0       
+ [83] rprojroot_2.1.1           bslib_0.9.0              
+ [85] irlba_2.3.5.1             vipor_0.4.7              
+ [87] KernSmooth_2.23-26        otel_0.2.0               
+ [89] spData_2.3.4              DBI_1.2.3                
+ [91] tidyselect_1.2.1          processx_3.8.6           
+ [93] bit_4.6.0                 compiler_4.5.2           
+ [95] git2r_0.36.2              BiocNeighbors_2.4.0      
+ [97] h5mread_1.2.1             xml2_1.5.1               
+ [99] DelayedArray_0.36.0       scales_1.4.0             
+[101] classInt_0.4-11           callr_3.7.6              
+[103] tiff_0.1-12               digest_0.6.39            
+[105] fftwtools_0.9-11          alabaster.matrix_1.10.0  
+[107] rmarkdown_2.30            XVector_0.50.0           
+[109] htmltools_0.5.9           pkgconfig_2.0.3          
+[111] jpeg_0.1-11               sparseMatrixStats_1.22.0 
+[113] fastmap_1.2.0             rlang_1.1.6              
+[115] htmlwidgets_1.6.4         DelayedMatrixStats_1.32.0
+[117] farver_2.1.2              jquerylib_0.1.4          
+[119] zoo_1.8-15                jsonlite_2.0.0           
+[121] R.oo_1.27.1               BiocSingular_1.26.1      
+[123] RCurl_1.98-1.17           magrittr_2.0.4           
+[125] s2_1.1.9                  Rhdf5lib_1.32.0          
+[127] Rcpp_1.1.0                ggnewscale_0.5.2         
+[129] viridis_0.6.5             stringi_1.8.7            
+[131] alabaster.schemas_1.10.0  MASS_7.3-65              
+[133] alabaster.bumpy_1.10.0    parallel_4.5.2           
+[135] deldir_2.0-4              splines_4.5.2            
+[137] hms_1.1.4                 locfit_1.5-9.12          
+[139] ps_1.9.1                  igraph_2.2.1             
+[141] ScaledMatrix_1.18.0       LearnBayes_2.15.1        
+[143] evaluate_1.0.5            renv_1.1.5               
+[145] BiocManager_1.30.27       tzdb_0.5.0               
+[147] httpuv_1.6.16             alabaster.sce_1.10.0     
+[149] rsvd_1.0.5                e1071_1.7-16             
+[151] RSpectra_0.16-2           later_1.4.4              
+[153] viridisLite_0.4.2         class_7.3-23             
+[155] beeswarm_0.4.0            cluster_2.1.8.1          
+[157] timechange_0.3.0         </code></pre>
 </div>
 </div>
 
