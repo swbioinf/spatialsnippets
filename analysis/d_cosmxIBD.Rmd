@@ -107,9 +107,11 @@ sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Crohn's dise
 
 ## Load data
 
+NB: The LoadNanostring.X function workaround is in the [LoadNanostring.R script](https://github.com/swbioinf/spatialsnippets/blob/main/code/LoadNanostring.R) in the code directory of this repo. See [Seurat ticket](https://github.com/satijalab/seurat/discussions/9261).
+
 ```{r}
 # Load LoadNanostring.X for keeping metadata e.t.c
-source('/home/s.williams/projects/loadnanostring/code/LoadNanostring.R')
+source('code/LoadNanostring.R')
 
 
 load_sample_into_seurat <- function(the_sample){
