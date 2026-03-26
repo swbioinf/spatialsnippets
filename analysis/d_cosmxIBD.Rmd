@@ -107,12 +107,12 @@ sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Crohn's dise
 
 ## Load data
 
-NB: The LoadNanostring.X function workaround is in the [LoadNanostring.R script](https://github.com/swbioinf/spatialsnippets/blob/main/code/LoadNanostring.R) in the code directory of this repo. See [Seurat ticket](https://github.com/satijalab/seurat/discussions/9261).
+NB: The LoadNanostring.X function workaround is in the [LoadNanostring.R script](https://github.com/swbioinf/spatialsnippets/blob/main/code/LoadNanostring.R) in the code directory of this repo. See [Seurat ticket](https://github.com/satijalab/seurat/discussions/9261). This issue may have been fixed.
 
 ```{r}
 # Load LoadNanostring.X for keeping metadata e.t.c
 source('code/LoadNanostring.R')
-
+library(progressr) # used within
 
 load_sample_into_seurat <- function(the_sample){
   
@@ -281,6 +281,10 @@ From paper: _"Cells with an average negative control count greater than 0.5 and 
 
 Also remove cell with no cell type annotations.
 ```{r}
+# This dataset was originally loaded some time ago with a previous Seurat version,
+# so its neccessary to update the object
+so.raw <- UpdateSeuratObject(so.raw)
+
 ###so.raw <- JoinLayers(so.raw)
 
 so <- so.raw[ ,so.raw$nCount_RNA >= min_count_per_cell &
