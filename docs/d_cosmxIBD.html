@@ -14,7 +14,7 @@
 
 <title>Dataset: IBD cosMX GarridoTrigo2023</title>
 
-<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -38,6 +38,15 @@
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 <link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
 <link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P3P13KEPZW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P3P13KEPZW');
+</script>
 
 <link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
 <!-- Add a small amount of space between sections. -->
@@ -78,6 +87,7 @@ if (window.hljs) {
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging div.csl-entry {
   margin-left:2em;
@@ -415,9 +425,6 @@ class="uri">https://servidor2-ciberehd.upc.es/external/garrido/app/</a></p>
 <pre class="r"><code>library(Seurat)</code></pre>
 <pre><code>Loading required package: SeuratObject</code></pre>
 <pre><code>Loading required package: sp</code></pre>
-<pre><code>&#39;SeuratObject&#39; was built with package &#39;Matrix&#39; 1.6.5 but the current
-version is 1.7.1; it is recomended that you reinstall &#39;SeuratObject&#39; as
-the ABI for &#39;Matrix&#39; may have changed</code></pre>
 <pre><code>
 Attaching package: &#39;SeuratObject&#39;</code></pre>
 <pre><code>The following objects are masked from &#39;package:base&#39;:
@@ -426,11 +433,11 @@ Attaching package: &#39;SeuratObject&#39;</code></pre>
 <pre class="r"><code>library(SeuratObject)
 library(tidyverse)</code></pre>
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ dplyr     1.1.4     ✔ readr     2.1.6
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.1     ✔ tibble    3.3.0
 ✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     </code></pre>
+✔ purrr     1.2.0     </code></pre>
 <pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()
@@ -495,9 +502,14 @@ sample_codes &lt;- c(HC=&quot;Healthy controls&quot;,UC=&quot;Ulcerative colitis
 </div>
 <div id="load-data" class="section level2">
 <h2>Load data</h2>
+<p>NB: The LoadNanostring.X function workaround is in the <a
+href="https://github.com/swbioinf/spatialsnippets/blob/main/code/LoadNanostring.R">LoadNanostring.R
+script</a> in the code directory of this repo. See <a
+href="https://github.com/satijalab/seurat/discussions/9261">Seurat
+ticket</a>. This issue may have been fixed.</p>
 <pre class="r"><code># Load LoadNanostring.X for keeping metadata e.t.c
-source(&#39;/home/s.williams/projects/loadnanostring/code/LoadNanostring.R&#39;)
-
+source(&#39;code/LoadNanostring.R&#39;)
+library(progressr) # used within
 
 load_sample_into_seurat &lt;- function(the_sample){
   
@@ -681,6 +693,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-10-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-10-1.png" target="_blank">a722f36</a>
 </td>
 <td>
@@ -742,6 +765,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-11-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-11-1.png" target="_blank">a722f36</a>
 </td>
 <td>
@@ -772,6 +806,43 @@ Sarah Williams
   theme_bw() +
   ggtitle(&quot;Negative probe average&quot;)</code></pre>
 <p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-12-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-12-1">
+Past versions of unnamed-chunk-12-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-12-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-12-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Use bottom right corner;</p>
 <pre class="r"><code>ggplot(so.raw@meta.data, aes(y=avg_neg, x=nCount_RNA)) +
   geom_point(pch=3, alpha=0.1) + 
@@ -782,12 +853,80 @@ Sarah Williams
   ggtitle(&quot;Negative probes vs counts&quot;)</code></pre>
 <pre><code>Warning in scale_x_log10(): log-10 transformation introduced infinite values.</code></pre>
 <p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
+Past versions of unnamed-chunk-13-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-13-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-13-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="apply-filteres" class="section level2">
 <h2>Apply filteres</h2>
 <p>From paper: <em>“Cells with an average negative control count greater
 than 0.5 and less than 20 detected features were filtered out.”</em></p>
 <p>Also remove cell with no cell type annotations.</p>
+<pre class="r"><code># This dataset was originally loaded some time ago with a previous Seurat version,
+# so its neccessary to update the object
+so.raw &lt;- UpdateSeuratObject(so.raw)</code></pre>
+<pre><code>Validating object structure</code></pre>
+<pre><code>Updating object slots</code></pre>
+<pre><code>Ensuring keys are in the proper structure</code></pre>
+<pre><code>Ensuring keys are in the proper structure</code></pre>
+<pre><code>Ensuring feature names don&#39;t have underscores or pipes</code></pre>
+<pre><code>Updating slots in RNA</code></pre>
+<pre><code>Updating slots in negprobes</code></pre>
+<pre><code>Updating slots in GSM7473682_HC_a</code></pre>
+<pre><code>Updating slots in GSM7473683_HC_b</code></pre>
+<pre><code>Updating slots in GSM7473684_HC_c</code></pre>
+<pre><code>Updating slots in GSM7473685_UC_a</code></pre>
+<pre><code>Updating slots in GSM7473686_UC_b</code></pre>
+<pre><code>Updating slots in GSM7473687_UC_c</code></pre>
+<pre><code>Updating slots in GSM7473688_CD_a</code></pre>
+<pre><code>Updating slots in GSM7473689_CD_b</code></pre>
+<pre><code>Updating slots in GSM7473690_CD_c</code></pre>
+<pre><code>Validating object structure for Assay5 &#39;RNA&#39;</code></pre>
+<pre><code>Validating object structure for Assay5 &#39;negprobes&#39;</code></pre>
+<pre><code>Validating object structure for FOV &#39;GSM7473682_HC_a&#39;</code></pre>
+<pre><code>Validating object structure for FOV &#39;GSM7473683_HC_b&#39;</code></pre>
+<pre><code>Validating object structure for FOV &#39;GSM7473684_HC_c&#39;</code></pre>
+<pre><code>Validating object structure for FOV &#39;GSM7473685_UC_a&#39;</code></pre>
+<pre><code>Validating object structure for FOV &#39;GSM7473686_UC_b&#39;</code></pre>
+<pre><code>Validating object structure for FOV &#39;GSM7473687_UC_c&#39;</code></pre>
+<pre><code>Validating object structure for FOV &#39;GSM7473688_CD_a&#39;</code></pre>
+<pre><code>Validating object structure for FOV &#39;GSM7473689_CD_b&#39;</code></pre>
+<pre><code>Validating object structure for FOV &#39;GSM7473690_CD_c&#39;</code></pre>
+<pre><code>Object representation is consistent with the most current Seurat version</code></pre>
 <pre class="r"><code>###so.raw &lt;- JoinLayers(so.raw)
 
 so &lt;- so.raw[ ,so.raw$nCount_RNA &gt;= min_count_per_cell &amp;
@@ -940,6 +1079,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-18-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/697815489cd801e303185e38f2e764cb06d42d16/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-18-1.png" target="_blank">6978154</a>
 </td>
 <td>
@@ -1006,6 +1156,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-19-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-19-1.png" target="_blank">a722f36</a>
 </td>
 <td>
@@ -1059,6 +1220,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-20-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-20-1.png" target="_blank">a722f36</a>
@@ -1118,6 +1290,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-21-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-21-1.png" target="_blank">a722f36</a>
 </td>
 <td>
@@ -1173,6 +1356,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-22-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-22-1.png" target="_blank">a722f36</a>
 </td>
 <td>
@@ -1205,6 +1399,43 @@ Sarah Williams
 <pre><code>Rasterizing points since number of points exceeds 100,000.
 To disable this behavior set `raster=FALSE`</code></pre>
 <p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-23-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-23-1">
+Past versions of unnamed-chunk-23-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-23-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-23-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="celltype_singler2" class="section level3">
 <h3>celltype_SingleR2</h3>
@@ -1235,6 +1466,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-24-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-24-1.png" target="_blank">a722f36</a>
@@ -1329,12 +1571,50 @@ Sarah Williams
 <p>Composition</p>
 <pre class="r"><code>heatmap(table(so$celltype_subset,so$celltype_SingleR2))</code></pre>
 <p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-26-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-26-1">
+Past versions of unnamed-chunk-26-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-26-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-26-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div id="save-data" class="section level1">
 <h1>Save data</h1>
 <pre class="r"><code>saveRDS(so, seurat_file_01_loaded)</code></pre>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
 <div id="ref-garrido-trigoMacrophageNeutrophilHeterogeneity2023"
 class="csl-entry">
 Garrido-Trigo, Alba, Ana M. Corraliza, Marisol Veny, Isabella Dotti,
@@ -1354,7 +1634,7 @@ Session information
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.4.0 (2024-04-24)
+<pre><code>R version 4.5.2 (2025-10-31)
 Platform: x86_64-pc-linux-gnu
 Running under: Ubuntu 22.04.5 LTS
 
@@ -1377,54 +1657,54 @@ attached base packages:
 [1] stats     graphics  grDevices datasets  utils     methods   base     
 
 other attached packages:
- [1] lubridate_1.9.4    forcats_1.0.0      stringr_1.5.1      dplyr_1.1.4       
- [5] purrr_1.0.2        readr_2.1.5        tidyr_1.3.1        tibble_3.2.1      
- [9] ggplot2_3.5.1      tidyverse_2.0.0    Seurat_5.2.1       SeuratObject_5.0.2
-[13] sp_2.2-0           workflowr_1.7.1   
+ [1] progressr_0.18.0   lubridate_1.9.4    forcats_1.0.1      stringr_1.6.0     
+ [5] dplyr_1.1.4        purrr_1.2.0        readr_2.1.6        tidyr_1.3.1       
+ [9] tibble_3.3.0       ggplot2_4.0.1      tidyverse_2.0.0    Seurat_5.4.0      
+[13] SeuratObject_5.3.0 sp_2.2-0           workflowr_1.7.2   
 
 loaded via a namespace (and not attached):
-  [1] RColorBrewer_1.1-3     rstudioapi_0.17.1      jsonlite_1.8.9        
-  [4] magrittr_2.0.3         spatstat.utils_3.1-2   farver_2.1.2          
-  [7] rmarkdown_2.29         fs_1.6.5               vctrs_0.6.5           
- [10] ROCR_1.0-11            spatstat.explore_3.3-4 htmltools_0.5.8.1     
- [13] sass_0.4.9             sctransform_0.4.1      parallelly_1.42.0     
+  [1] RColorBrewer_1.1-3     rstudioapi_0.17.1      jsonlite_2.0.0        
+  [4] magrittr_2.0.4         spatstat.utils_3.2-0   farver_2.1.2          
+  [7] rmarkdown_2.30         fs_1.6.6               vctrs_0.6.5           
+ [10] ROCR_1.0-11            spatstat.explore_3.6-0 htmltools_0.5.9       
+ [13] sass_0.4.10            sctransform_0.4.2      parallelly_1.46.0     
  [16] KernSmooth_2.23-26     bslib_0.9.0            htmlwidgets_1.6.4     
- [19] ica_1.0-3              plyr_1.8.9             plotly_4.10.4         
- [22] zoo_1.8-12             cachem_1.1.0           whisker_0.4.1         
- [25] igraph_2.1.4           mime_0.12              lifecycle_1.0.4       
- [28] pkgconfig_2.0.3        Matrix_1.7-1           R6_2.5.1              
- [31] fastmap_1.2.0          fitdistrplus_1.2-2     future_1.34.0         
- [34] shiny_1.10.0           digest_0.6.37          colorspace_2.1-1      
- [37] patchwork_1.3.0        ps_1.8.1               rprojroot_2.0.4       
- [40] tensor_1.5             RSpectra_0.16-2        irlba_2.3.5.1         
- [43] labeling_0.4.3         progressr_0.15.1       timechange_0.3.0      
- [46] spatstat.sparse_3.1-0  httr_1.4.7             polyclip_1.10-7       
- [49] abind_1.4-8            compiler_4.4.0         bit64_4.6.0-1         
- [52] withr_3.0.2            fastDummies_1.7.5      MASS_7.3-64           
- [55] tools_4.4.0            lmtest_0.9-40          httpuv_1.6.15         
- [58] future.apply_1.11.3    goftest_1.2-3          glue_1.8.0            
- [61] callr_3.7.6            nlme_3.1-166           promises_1.3.2        
- [64] grid_4.4.0             Rtsne_0.17             getPass_0.2-4         
- [67] cluster_2.1.8          reshape2_1.4.4         generics_0.1.3        
- [70] gtable_0.3.6           spatstat.data_3.1-4    tzdb_0.4.0            
- [73] hms_1.1.3              data.table_1.16.4      spatstat.geom_3.3-5   
+ [19] ica_1.0-3              plyr_1.8.9             plotly_4.11.0         
+ [22] zoo_1.8-15             cachem_1.1.0           whisker_0.4.1         
+ [25] igraph_2.2.1           mime_0.13              lifecycle_1.0.4       
+ [28] pkgconfig_2.0.3        Matrix_1.7-4           R6_2.6.1              
+ [31] fastmap_1.2.0          fitdistrplus_1.2-4     future_1.68.0         
+ [34] shiny_1.12.1           digest_0.6.39          patchwork_1.3.2       
+ [37] ps_1.9.1               rprojroot_2.1.1        tensor_1.5.1          
+ [40] RSpectra_0.16-2        irlba_2.3.5.1          labeling_0.4.3        
+ [43] timechange_0.3.0       spatstat.sparse_3.1-0  httr_1.4.7            
+ [46] polyclip_1.10-7        abind_1.4-8            compiler_4.5.2        
+ [49] bit64_4.6.0-1          withr_3.0.2            S7_0.2.1              
+ [52] fastDummies_1.7.5      MASS_7.3-65            tools_4.5.2           
+ [55] lmtest_0.9-40          otel_0.2.0             httpuv_1.6.16         
+ [58] future.apply_1.20.1    goftest_1.2-3          glue_1.8.0            
+ [61] callr_3.7.6            nlme_3.1-168           promises_1.5.0        
+ [64] grid_4.5.2             Rtsne_0.17             getPass_0.2-4         
+ [67] cluster_2.1.8.1        reshape2_1.4.5         generics_0.1.4        
+ [70] gtable_0.3.6           spatstat.data_3.1-9    tzdb_0.5.0            
+ [73] hms_1.1.4              data.table_1.17.8      spatstat.geom_3.6-1   
  [76] RcppAnnoy_0.0.22       ggrepel_0.9.6          RANN_2.6.2            
- [79] pillar_1.10.1          vroom_1.6.5            spam_2.11-1           
- [82] RcppHNSW_0.6.0         later_1.4.1            splines_4.4.0         
- [85] lattice_0.22-6         bit_4.5.0.1            renv_1.0.5            
+ [79] pillar_1.11.1          vroom_1.6.7            spam_2.11-1           
+ [82] RcppHNSW_0.6.0         later_1.4.4            splines_4.5.2         
+ [85] lattice_0.22-7         bit_4.6.0              renv_1.1.5            
  [88] survival_3.8-3         deldir_2.0-4           tidyselect_1.2.1      
- [91] miniUI_0.1.1.1         pbapply_1.7-2          knitr_1.49            
- [94] git2r_0.33.0           gridExtra_2.3          scattermore_1.2       
- [97] xfun_0.50              matrixStats_1.5.0      stringi_1.8.4         
-[100] lazyeval_0.2.2         yaml_2.3.10            evaluate_1.0.3        
-[103] codetools_0.2-20       BiocManager_1.30.25    cli_3.6.3             
-[106] uwot_0.2.2             xtable_1.8-4           reticulate_1.40.0     
-[109] munsell_0.5.1          processx_3.8.5         jquerylib_0.1.4       
-[112] Rcpp_1.0.14            globals_0.16.3         spatstat.random_3.3-2 
-[115] png_0.1-8              spatstat.univar_3.1-1  parallel_4.4.0        
-[118] dotCall64_1.2          listenv_0.9.1          viridisLite_0.4.2     
-[121] scales_1.3.0           ggridges_0.5.6         crayon_1.5.3          
-[124] rlang_1.1.5            cowplot_1.1.3         </code></pre>
+ [91] miniUI_0.1.2           pbapply_1.7-4          knitr_1.50            
+ [94] git2r_0.36.2           gridExtra_2.3          scattermore_1.2       
+ [97] xfun_0.55              matrixStats_1.5.0      stringi_1.8.7         
+[100] lazyeval_0.2.2         yaml_2.3.12            evaluate_1.0.5        
+[103] codetools_0.2-20       BiocManager_1.30.27    cli_3.6.5             
+[106] uwot_0.2.4             xtable_1.8-4           reticulate_1.44.1     
+[109] processx_3.8.6         jquerylib_0.1.4        dichromat_2.0-0.1     
+[112] Rcpp_1.1.0             globals_0.18.0         spatstat.random_3.4-3 
+[115] png_0.1-8              spatstat.univar_3.1-5  parallel_4.5.2        
+[118] dotCall64_1.2          listenv_0.10.0         viridisLite_0.4.2     
+[121] scales_1.4.0           ggridges_0.5.7         crayon_1.5.3          
+[124] rlang_1.1.6            cowplot_1.2.0         </code></pre>
 </div>
 </div>
 
