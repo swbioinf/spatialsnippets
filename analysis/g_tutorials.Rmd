@@ -60,6 +60,11 @@ The seurat vignette for spatial analysis, covering how to load data from a numbe
 
 Training materials (Rmd files only) for an intermediate spatial transcriptomics workshop for comparative analyses using bioconductor packages. It again uses the the same [Garrido-Trigo et al. 2023](https://pubmed.ncbi.nlm.nih.gov/37495570/) IBD dataset used extensively within spatial sampler, and walks through differential expression by celltype, defining region niches and using those for differential expression by localisation, and celltype proximity tests.
 
+#### Scverse python examples
+
+This page links to many resources for using the python-based 'scverse' ecosystem.
+
+[scverse](https://scverse.org/learn/)
 
 
 <!-- get permission for linking  - what form preferred? Overlap with spicyworkflow?
