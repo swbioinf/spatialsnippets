@@ -62,9 +62,11 @@ Training materials (Rmd files only) for an intermediate spatial transcriptomics 
 
 #### Scverse python examples
 
+
+[scverse getting started page](https://scverse.org/learn/)
+
 This page links to many resources for using the python-based 'scverse' ecosystem.
 
-[scverse](https://scverse.org/learn/)
 
 
 <!-- get permission for linking  - what form preferred? Overlap with spicyworkflow?
