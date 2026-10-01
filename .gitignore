@@ -13,6 +13,8 @@ notes/
 analysis/glossary.Rmd
 code_ignore/*
 other/*
+docs/*
+docs/*.html
 # Ignoring docs on dev branch, Use wflow_build, not wflow_publish
 # Do not merge this gitignore back to main!!
 docs/*
