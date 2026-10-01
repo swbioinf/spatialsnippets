@@ -38,13 +38,16 @@ Not a tutorial per se, but a collection of useful vignettes for loading, QC, pro
 A detailed resource on how to perform spatial analyses using the bioconductor ecosystem of packages. This is a useful resource for detailed explanations of analysis tasks.
 
 
+_HL Crowell, Y Dong, I Billato, P Cai, M Emons, S Gunz, B Guo, M Li, A Mahmoud, A Manukyan, H Pagès, P Panwar, S Rao, CJ Sargeant, L Shepherd Kern, M Ramos, J Sun, M Totty, VJ Carey, Y Chen, L Collado-Torres, S Ghazanfar, KD Hansen, K Martinowich, KR Maynard, E Patrick, D Righelli, D Risso, S Tiberi, L Waldron, R Gottardo†°, MD Robinson, SC Hicks, LM Weber. Orchestrating spatial transcriptomics analysis with Bioconductor. bioRxiv (2025). DOI: 10.1101/2025.11.20.688607_
+
+
 #### OSCA - (Orchestrating Single Cell Analayis with bioconductor 
 
 [OSCA - (Orchestrating Single Cell Analayis with bioconductor )](https://bioconductor.org/books/release/OSCA/)
 
 A detailed resource on single cell analyses using the bioconductor ecosystem of packages. Many of these tools and approaches can be directly applied to a spatial spatial analyses. 
 
-
+_Amezquita, R.A., Lun, A.T.L., Becht, E. et al. Orchestrating single-cell analysis with Bioconductor. Nat Methods 17, 137–145 (2020). https://doi.org/10.1038/s41592-019-0654-x _
 
 #### Seurat Imaging based spatial Vignette
 
@@ -60,12 +63,21 @@ The seurat vignette for spatial analysis, covering how to load data from a numbe
 
 Training materials (Rmd files only) for an intermediate spatial transcriptomics workshop for comparative analyses using bioconductor packages. It again uses the the same [Garrido-Trigo et al. 2023](https://pubmed.ncbi.nlm.nih.gov/37495570/) IBD dataset used extensively within spatial sampler, and walks through differential expression by celltype, defining region niches and using those for differential expression by localisation, and celltype proximity tests.
 
+#### Scverse python examples
+
+[scverse getting started page](https://scverse.org/learn/)
+
+This page links to many resources for using the python-based 'scverse' ecosystem.
 
 
-<!-- get permission for linking  - what form preferred? Overlap with spicyworkflow?
-* [Unlocking single cell spatial omics analysis with scdney](https://sydneybiox.github.io/scdneySpatial_ABACBS2025/articles/workshop.html#overview) : 
-Workshop materials from an excellent workshop on single cell spatial omics analysis using the ['SCDNEY'](https://sydneybiox.github.io/scdney/) collection of bioconductor packages. Includes image analyse methods of particular interest to protein imaging methods, as well as methods equally applicable to transcriptome based technologies.
--->
+#### 'Unlocking single cell spatial omics analysis with scdney' Workshop
+
+[Unlocking single cell spatial omics analysis with scdney](https://sydneybiox.github.io/scdneySpatial_ABACBS2025/articles/workshop.html#overview)
+
+
+Excellent workshop materials on single cell spatial omics analysis using the ['SCDNEY'](https://sydneybiox.github.io/scdney/) collection of bioconductor packages. Includes image analyse methods of particular interest to protein imaging methods, as well as methods equally applicable to transcriptome based technologies.
+
+_Ameen F, Kim D, Rao S, Yu L, Patrick E, Yang J, Sydney Data Science Centre (2025). scdneySpatialABACBS2025: Unlocking single cell spatial omics analyses with scdney. R package version 0.1.0, https://sydneybiox.github.io/scdneySpatial_ABACBS2025/ _ 
 
 <!--
 Try out, link
