@@ -95,6 +95,7 @@ data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE23471
 seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
 
 so <- readRDS(seurat_file_01_loaded)
+so <- UpdateSeuratObject(so) #This data was saved in an older version of seurat, update it.
 ```
 
 ## Experimental design
