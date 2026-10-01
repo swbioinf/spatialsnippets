@@ -101,7 +101,8 @@ reactable(
       width = 50,
         cell = function(value) {
           # If its an internal page use the erro, else indicate link.
-          link_symbol <- ifelse(grepl('spatialsnippets', value),"▶️","🔗")
+          link_symbol <- ifelse(grepl('spatialsnippets', value),"▶️",value)
+          
           tags$a(href = value, target = "_blank",  link_symbol)
       }
       
