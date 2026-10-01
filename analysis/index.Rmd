@@ -100,7 +100,11 @@ reactable(
       name = "",
       width = 50,
         cell = function(value) {
-          tags$a(href = value, target = "_blank",  "▶️")
+          # If its an internal page use the erro, else indicate link.
+          # External pathws start with http
+          link_symbol <- ifelse(grepl('http', value),"🔗","▶️")
+          
+          tags$a(href = value, target = "_blank",  link_symbol)
       }
       
     )
