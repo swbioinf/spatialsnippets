@@ -1,0 +1,180 @@
+---
+title: "Getting Compute"
+author: "Sarah Williams"
+output:
+  html_notebook: 
+    toc: yes
+    code_folding: hide
+  html_document:
+    toc: yes
+    df_print: paged
+    code_folding: hide
+editor_options:
+  chunk_output_type: console
+bibliography: /home/s.williams/zotero_export/MyLibrary.bib
+---
+
+
+
+## Getting a VM with R and Rstudio
+
+
+
+
+## Installing R packages
+
+
+These can be fast effienct C libraries that R uses in the background to handle number crunching, file format processing, other programming languages or programs. 
+
+
+
+### Suggested system libraries
+
+
+To save time, consider installing the following before trying to install R packages
+
+```{sh eval=FALSE}
+
+
+```
+
+
+### Installing R packages
+
+
+Suggested package installs for a new setup - You'll likely want more later!
+
+These's installations will takes some time to run (by default they'll compile from source).
+
+ * Might stop respongind - just reconnect if needed, the command can be rerun and will pcik up from where it left.
+ * Might throw some errors - see next section;
+
+Install some R packages from CRAN;
+
+```{r}
+
+install.packages ( c(
+  "BiocManager",
+  'tidyverse',
+  'DT',
+  'patchwork',
+  'ggrepel'
+  ) )
+
+```
+
+
+Install some R packages from bioconductor
+
+```{r}
+BiocManager::install(c(
+  'alabaster.sfe', 
+  'SpatialExperiment',
+  'scuttle',
+  'scater',
+  'limma',
+  'edgeR',
+  'BiocParallel',
+  'Voyager'
+))
+```
+
+
+
+Install a few things from github.
+
+```{r}
+devtools::install_github("immunogenomics/presto") # Dramatic speed up of certain operations in Seurat.
+```
+
+
+
+
+
+
+### Its not working! Handling R package install errors
+
+
+
+If you get an error in install
+
+
+Look for 'depencancy 'x' was not installed. Try to install package 'x' on its own - you'll get the error much quicker and can fix it. 
+
+
+Issues
+
+* Missing system library
+* System library configuration issue (e.g. rJava)
+* Its a bioconductor package (install.packages can't see it)
+* Its not in CRAN either - install from a github repo
+* The package you want is on a newer version of bioconductor. 
+
+
+Check out the 
+
+https://bookdown.org/guokai8/mastering-r-through-errors/docs/installation-environment.html#debugging-installation-issues
+
+
+
+
+
+
+
+
+
+```
+...
+Error: package ‘SpatialFeatureExperiment’ 1.4.0 was found, but >= 1.9.3 is required by ‘alabaster.sfe’
+Execution halted
+....
+```
+I am installing alabaster.sfe form github, which expects the latest version of SpatialFeatureExperiment
+
+
+
+
+### Upgrading R
+
+Bioconductor has a 6-monthly release cycle, and strict versioning requirements. Each bioconductor version has a minimum R requirement - and for the very latests this could be less than what is on bioshell!
+
+If you want to work with packages (or versions) only available in 
+
+
+|Release |	Date 	        |  	R  |
+|------|------------------|------|
+| 3.23 | April 29, 2026   |  4.6 |
+| 3.22 | October 30, 2025 |  4.5 |
+| 3.21 | April 16, 2025   |  4.5 |
+| 3.2  | October 30, 2024 |  4.4 |
+| 3.19 | May 1, 2024      |  4.4 |
+| 3.18 | October 25, 2023 |  4.3 |
+
+
+```{sh eval=FALSE}
+ shelley build r/4.6.1
+```
+
+
+
+
+
+
+
+## Getting the data there.
+
+
+### Example datasets
+
+
+
+```{sh eval=FALSE}
+mkdir data
+cd data
+#wget --content-disposition "https://filesender.aarnet.edu.au/download.php?token=378da83e-7c11-40d8-a90c-eddb5da9c109&files_ids=29832957"
+# wget <nectar object store link>
+tar -xzf GSE234713_CosMx_IBD_sfe_03_banksyniche.tar.gz
+```
+
+
+
