@@ -2,6 +2,15 @@ library(Seurat)
 #library(SeuratObject)
 library(tidyverse)
 library(progressr) # used within LoadNanostring functions
+library(data.table)
+# revision of loading the data to use LoadNanostring function from Seurat now
+# have to load metadata manually after, but that's easier than a whole other function!
+#
+# This should make data more consistant with typical case (ie. don't put negatives in their own assay anymore.)
+# Will require some changes to downstream analysis, but worth it for consistancy.
+#
+# Neeed to have older sp version atm: https://github.com/satijalab/seurat/issues/10527
+
 
 
 dataset_dir      <- '~/projects/spatialsnippets/datasets/'
@@ -9,6 +18,7 @@ project_data_dir <- file.path(dataset_dir,'GSE234713_IBDcosmx_GarridoTrigo2023')
 sample_dir            <- file.path(project_data_dir, "raw_data_for_sfe/")
 annotation_file       <- file.path(project_data_dir,"GSE234713_CosMx_annotation.csv.gz")
 data_dir              <- file.path(project_data_dir, "processed_data/")
+tempdir               <- '~/temp/' # working on a server with a very small default tmp, which causes silent incomplete fread data.table reads on very large data (e.g. tx)
 
 
 seurat_file_00_raw    <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_00_raw_v2.RDS")
@@ -22,49 +32,85 @@ max_avg_neg        <- 0.5
 sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Crohn's disease")
 
 
-# Load LoadNanostring.X for keeping metadata e.t.c
-# As of September 2026, readnanostring explicitly names feilds that can be loaded from metadata (and there are more than named there)
-# other aspesct of this function may be outdated
-source('code/LoadNanostring.R')
 
-
+#the_sample <- 'GSM7473682_HC_a'
 
 load_sample_into_seurat <- function(the_sample){
 
-  # Using a modified version of the LoadNanostring function, which keeps metadata, and loads a litte more effiently for large datasets (which is not this one.)
-  # ..../datasets//GSE234713_IBDcosmx_GarridoTrigo2023/raw_data_for_sfe//GSM7473682_HC_a
-  so <- LoadNanostring.X(file.path(sample_dir, the_sample),
-                         project = the_sample,
-                         assay='RNA',
-                         fov=the_sample, tempdir= '~/tmp')
+  so <- LoadNanostring(file.path(sample_dir, the_sample),
+                       fov = the_sample,
+                       assay='RNA')
 
   # sample info
-  so$individual_code <- factor(substr(so$orig.ident,12,16))
-  so$tissue_sample   <- factor(substr(so$orig.ident,12,16))
+  # This is easy beecause there is only one sample per slide.
+  so$individual_code <- factor(substr(the_sample,12,16))
+  so$tissue_sample   <- factor(substr(the_sample,12,16))
   so$group     <- factor(substr(the_sample, 12, 13), levels=names(sample_codes))
   so$condition <- factor(as.character(sample_codes[so$group]), levels=sample_codes)
 
+
+  #Seurat ignores the metadata (or can only load certain (not all) hardcoded columns if specified)
+  # So manually add all of the metadata!
+  metadata.file = file.path(sample_dir,the_sample,  paste0(the_sample,'_metadata_file.csv'))
+  so <- add_metadata_file_content_to_seurat_metadata(so, metadata.file)
+
+
+  # Add fov name tool (fov came with metadata)
   so$fov_name        <- paste0(so$individual_code,"_", str_pad(so$fov, 3, 'left',pad='0'))
 
-
-  # Put neg probes into their own assay.
+  # Previously put neg probes into their own assay, but going to stop doing this, as it doesn't seem standard.
+  # Will,however, populate the probe annotation
+  # only have negative probes in ths one,not system controls,
   neg_probes <- rownames(so)[grepl(x=rownames(so), pattern="NegPrb")]
-  neg_matrix         <- GetAssayData(so,assay = 'RNA', layer = 'counts')[neg_probes,]
-  #so[["negprobes"]] <- CreateAssayObject(counts = neg_matrix)
-  so[["negprobes"]] <- CreateAssay5Object(counts = neg_matrix)
+  so@assays[['RNA']]@meta.data$target <- rownames(so@assays[['RNA']])
+  so@assays[['RNA']]@meta.data$CodeClass <- ifelse(so@assays[['RNA']]@meta.data$target %in% neg_probes , "Negative","RNA")
 
-  ## and remove from the main one
-  rna_probes  <- rownames(so)[(! rownames(so) %in% neg_probes)]
-  so[['RNA']] <- subset( so[['RNA']],features = rna_probes)
 
+  neg_matrix          <- GetAssayData(so,assay = 'RNA', layer = 'counts')[neg_probes,]
+  so$nCount_negprobes <-   colSums(neg_matrix)
+  so$avg_neg          <-  colMeans(neg_matrix)
 
   return(so)
 
 }
 
+
+
+
+
+
+add_metadata_file_content_to_seurat_metadata <- function(so, metadata.file) {
+  # Pull in full metadata
+
+  md <- data.table::fread(metadata.file,  sep = ',',  data.table = FALSE,  verbose = FALSE, tmpdir  = tempdir)
+
+  # Seurat cell identifiers constructed within ReadNanostring (matrix rownames) as:
+  # https://github.com/satijalab/seurat/blob/5f67c701ecc6738e9e47dc21dbd202d335df5ec3/R/preprocessing.R#L2251
+  # Combination of Cell ID (for non-zero cell_IDs) and FOV are assumed to be unique. Used to create barcodes / rownames.
+  #bcs <- paste0(as.character(tx$cell_ID), "_", tx$fov)
+  # Checking
+  ## expect a small number of 'cells' to have been filtered out.
+  ##table(md$so_cell_id %in% colnames(so))
+  # ANd everything from seurat should be in metadata
+  #table(colnames(so) %in% md$so_cell_id)
+  # MD is not a data.table here (and its only ever going to be one slide so that's fine)!
+  md$so_cell_id <- paste0(as.character(md$cell_ID), "_", md$fov)
+  coords <- match(rownames(so@meta.data), md$so_cell_id)
+  md <- md[coords,]
+  stopifnot(all(md$so_cell_id == colnames(so)))
+  md$so_cell_id <- NULL # remove col, don't need it.
+
+  so <- AddMetaData(so, md)
+
+}
+
+
+
+
+
 samples <- c('GSM7473682_HC_a','GSM7473683_HC_b','GSM7473684_HC_c',
              'GSM7473685_UC_a','GSM7473686_UC_b','GSM7473687_UC_c',
-             'GSM7473688_CD_a','GSM7473689_CD_b','GSM7473690_CD_c')[1:2]
+             'GSM7473688_CD_a','GSM7473689_CD_b','GSM7473690_CD_c')
 sample_prefix <- paste0(substr(samples, 12,15))
 
 # Allow skipping of this step
@@ -95,8 +141,8 @@ so.raw <- readRDS(seurat_file_00_raw)
 # Negative probe handling
 so.raw$pc_neg <-  ( so.raw$nCount_negprobes / so.raw$nCount_RNA ) * 100
 
-so.raw[["negprobes"]] <- JoinLayers(so.raw[["negprobes"]]) # For caluclating these, need to have the negprobes merged
-so.raw$avg_neg <-  colMeans(so.raw[["negprobes"]])   # only defined firsts sample.
+#so.raw[["negprobes"]] <- JoinLayers(so.raw[["negprobes"]]) # For caluclating these, need to have the negprobes merged
+#so.raw$avg_neg <-  colMeans(so.raw[["negprobes"]])   # only defined firsts sample.
 
 
 
