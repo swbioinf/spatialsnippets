@@ -1,7 +1,5 @@
 library(Seurat)
-#library(SeuratObject)
 library(tidyverse)
-library(progressr) # used within LoadNanostring functions
 library(data.table)
 # revision of loading the data to use LoadNanostring function from Seurat now
 # have to load metadata manually after, but that's easier than a whole other function!
@@ -9,9 +7,7 @@ library(data.table)
 # This should make data more consistant with typical case (ie. don't put negatives in their own assay anymore.)
 # Will require some changes to downstream analysis, but worth it for consistancy.
 #
-# Neeed to have older sp version atm: https://github.com/satijalab/seurat/issues/10527
-
-
+# NB Note sp version, fixed in latest: https://github.com/satijalab/seurat/issues/10527
 
 dataset_dir      <- '~/projects/spatialsnippets/datasets/'
 project_data_dir <- file.path(dataset_dir,'GSE234713_IBDcosmx_GarridoTrigo2023')
@@ -31,9 +27,6 @@ max_avg_neg        <- 0.5
 
 sample_codes <- c(HC="Healthy controls",UC="Ulcerative colitis",CD="Crohn's disease")
 
-
-
-#the_sample <- 'GSM7473682_HC_a'
 
 load_sample_into_seurat <- function(the_sample){
 
@@ -75,10 +68,6 @@ load_sample_into_seurat <- function(the_sample){
 }
 
 
-
-
-
-
 add_metadata_file_content_to_seurat_metadata <- function(so, metadata.file) {
   # Pull in full metadata
 
@@ -105,16 +94,14 @@ add_metadata_file_content_to_seurat_metadata <- function(so, metadata.file) {
 }
 
 
-
-
-
 samples <- c('GSM7473682_HC_a','GSM7473683_HC_b','GSM7473684_HC_c',
              'GSM7473685_UC_a','GSM7473686_UC_b','GSM7473687_UC_c',
              'GSM7473688_CD_a','GSM7473689_CD_b','GSM7473690_CD_c')
 sample_prefix <- paste0(substr(samples, 12,15))
 
+
 # Allow skipping of this step
-LOAD_RAW=TRUE
+LOAD_RAW=FALSE
 if (LOAD_RAW) {
 
 so.list <- lapply(FUN=load_sample_into_seurat, X=samples)
@@ -141,11 +128,9 @@ so.raw <- readRDS(seurat_file_00_raw)
 # Negative probe handling
 so.raw$pc_neg <-  ( so.raw$nCount_negprobes / so.raw$nCount_RNA ) * 100
 
-#so.raw[["negprobes"]] <- JoinLayers(so.raw[["negprobes"]]) # For caluclating these, need to have the negprobes merged
-#so.raw$avg_neg <-  colMeans(so.raw[["negprobes"]])   # only defined firsts sample.
 
-
-
+##############################################
+# see rmd
 # Pull in annotation
 
 anno_table <- read_csv(annotation_file)
@@ -165,14 +150,29 @@ so.raw$condition      <- factor(so.raw$condition, levels=c("Crohn's disease",  '
 table(is.na(so.raw$celltype_subset))
 
 
-
-
 so <- so.raw[ ,so.raw$nCount_RNA >= min_count_per_cell &
                 so.raw$avg_neg <= max_avg_neg &
                 !(is.na(so.raw$celltype_subset) )]
 
 
+## Preprocessing
 
+num_dims <- 15
+# Run through preprocessing
+so <- NormalizeData(so)
+
+## Do per sample to mimic paper approach somewhat.
+so <- FindVariableFeatures(so, nfeatures = 200)
+
+so <- ScaleData(so) # Just 2k variable features
+so <- RunPCA(so, features = VariableFeatures(so))
+so <- RunUMAP(so, dims=1:num_dims)
+so <- FindNeighbors(so, dims = 1:num_dims)
+so <- FindClusters(so)
+
+
+
+saveRDS(so, seurat_file_01_loaded)
 
 
 

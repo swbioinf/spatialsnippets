@@ -151,9 +151,90 @@ If you want to work with packages (or versions) only available in
 | 3.18 | October 25, 2023 |  4.3 |
 
 
+
+#### The easy way with shelley
+
 ```{sh eval=FALSE}
  shelley build r/4.6.1
 ```
+
+
+
+#### The hard way - by 'hand'
+
+Shelley searches galaxy singularity repositories to find the latest packaged version of R. Sometimes, there are more recent versions of R in use.  And occassionally, you will need to use bleeding edge packages that require that later version of R than is curreently found in bioshelley.
+
+This can happen with bioconductor's hard versioned 6-monthly release cycle.
+
+Because you shoudl have full rights to these VMs, its still possible to update to a later R version in a 'standard' way.
+
+
+
+**Step 1 Determine **
+
+```{sh eval=FALSE}
+# check ubuntu version t0 grabe the right command (others might install fine then give librayy.so errors.)
+cat /etc/os-release
+
+export R_VERSION=4.6.1
+curl -O https://cdn.posit.co/r/ubuntu-2604/pkgs/r-${R_VERSION}_1_$(dpkg --print-architecture).deb
+sudo apt-get update
+sudo apt-get install ./r-${R_VERSION}_1_$(dpkg --print-architecture).deb
+```
+
+Now we have a new version of R installed. The old version is still there. 
+
+For whatever reason, all the docs seem to assume that the system R is in /usr/local/bin/, but on this server, i is in /usr/bin. 
+
+
+
+```{sh}
+cd /usr/bin
+# Keep the old R links around just in case
+sudo mv R Roldsymlink
+sudo mv Rscript Rscriptoldsymlink
+
+# Remake them, but this time to R 4.6.1
+cd /usr/bin
+sudo ln -s /opt/R/${R_VERSION}/bin/R R
+sudo ln -s /opt/R/${R_VERSION}/bin/Rscript Rscript
+
+#Stop and restart rstudio server
+module load rstudio
+sudo rstudio-server stop
+sudo rstudio-server start
+
+```
+
+
+## Update biocmanager
+
+After the R version update - reinstall all packages.
+```{r eval=FALSE}
+BiocManager::install(version = "3.23")
+
+BiocManager::install('alabaster.sfe')
+BiocManager::install('alabaster.bumpy')
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
