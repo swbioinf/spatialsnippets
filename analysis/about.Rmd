@@ -9,7 +9,7 @@ editor_options:
 
 This resource is supported by [Australian biocommons](https://www.biocommons.org.au/) as part of the [ workflow commons](https://www.biocommons.org.au/workflow-commons), [QCIF](https://www.qcif.edu.au/) and Griffith university.
 
-![](assets/qcif_logo.png){width=29%} ![](assets/Australian-Biocommons-Logo.png){width=29%} ![](assets/griffith_logo.png){width=29%} 
+[![qcif logo](assets/qcif_logo.png){width=29%}](https://www.qcif.edu.au/) [![biocommons logo](assets/Australian-Biocommons-Logo.png){width=29%}](https://www.biocommons.org.au/) [![griffith logo](assets/griffith_logo.png){width=29%}](https://www.griffith.edu.au/research/health/central-facility-genomics)
 
 
 ## Who is spatial sampler for?
