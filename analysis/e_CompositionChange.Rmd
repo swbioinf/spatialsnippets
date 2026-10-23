@@ -84,7 +84,7 @@ library(DT)
 
 ```{r}
 data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
-seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
+seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded_v2.RDS")
 ```
 
 
@@ -93,8 +93,6 @@ so <- readRDS(seurat_file_01_loaded)
 ```
 
 ## Experimental design
-
-<!-- Move this to own page? --->
 
 There are three individuals per condition (one tissue sample from each individual). With multiple fovs on each physical tissue sample.
 
@@ -144,7 +142,7 @@ DT::datatable(celltype_summary_table.SingleR)
 
 ## Check your celltype categories
 
-For both categories, plot how many we see per FOV on average.
+For both categories, plot how many we see per FOV on average. (Or per sample, if not using per-FOV pseudoreplicates - see 'Calculate Stats' section)
 
 
 In the 'celltype_subset' category, T cells are rare, but there are still a decent distribution of them with 10-100+ cells in a FOV. We should be able to see changes in these.
@@ -318,7 +316,9 @@ DT::datatable(results_table.UCvsHC)
 
 <!-- ``` -->
 
-With multiple fovs per tissue sample handled as pseudoreplicates
+With multiple fovs per tissue sample handled as pseudoreplicates. 
+
+NB: Where not using pseudoreplicates - see  [speckle vignette](https://www.bioconductor.org/packages/release/bioc/vignettes/speckle/inst/doc/speckle.html)
 
 <!--
 so.orig <- so

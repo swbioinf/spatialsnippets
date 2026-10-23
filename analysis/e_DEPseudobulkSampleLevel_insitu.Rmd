@@ -92,7 +92,7 @@ library(DT)
 library(edgeR)
 
 data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
-seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded.RDS")
+seurat_file_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_seurat_01_loaded_v2.RDS")
 
 so <- readRDS(seurat_file_01_loaded)
 ```
@@ -408,14 +408,11 @@ make_ma_style_plot <- function(res_table, pval_threshold = 0.01, n_genes_to_labe
 ```
 
 ```{r fig.width=12}
-#res_table.UCvHC.epi <- filter(de_results_all, contrast == "UCvHC", celltype=="epi")
-
 p1 <- make_ma_style_plot(res_table = filter(de_results_all, contrast == "UCvHC", celltype=="epi")) + ggtitle("UC vs HC - epi")
 p2 <- make_ma_style_plot(res_table = filter(de_results_all, contrast == "UCvHC", celltype=="tcells"))+ ggtitle("UC vs HC - T-cells")
 p3 <- make_ma_style_plot(res_table = filter(de_results_all, contrast == "UCvHC", celltype=="stroma")) + ggtitle("UC vs HC - stroma")
 
 p1 + p2 + p3
-
 ```
 
 
@@ -443,7 +440,7 @@ We might also want to seewhat that expression looks like spatially, on some repr
 so.sample1 <- so[,so$tissue_sample=='HC_b']
 so.sample2 <- so[,so$tissue_sample=='UC_c']
 p1 <- ImageFeaturePlot(so.sample1, 
-               fov          = 'GSM7473682_HC_b', <<<<<<<<<<UPDATE # see names(so@images)
+               fov          = names(so.sample1@images), #'GSM7473682_HC_b', 
                feature      = 'TNFRSF13B', 
                axes         = TRUE, 
                border.color = "black", border.size = 0.1, 
@@ -451,7 +448,7 @@ p1 <- ImageFeaturePlot(so.sample1,
                crop=TRUE,
                nmols = 10000) 
 p2 <- ImageFeaturePlot(so.sample2, 
-               fov          = 'GSM7473687_UC_c', # 'GSM7473686_UC_b', # see names(so@images)
+               fov          = names(so.sample2@images), # 'GSM7473687_UC_c'
                feature      = 'TNFRSF13B', 
                axes         = TRUE, 
                border.color = "black", border.size = 0.1, 

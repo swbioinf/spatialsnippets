@@ -87,27 +87,46 @@ library(Voyager)
 library(patchwork)
 
 library(pals) # SOme nice colour palettes
+
+
+# Note - as of 27 Feb 2026, using devel version from github rather than the bioconductor version (v.1.22.0)
+# There was a fix flipped lable bug in the bubble plot fixed at https://github.com/SydneyBioX/spicyR/commit/4c8c1dac6e0cc5ba6a335893307b8b4171c938b1 , which didn't seme to have made it acrross yet.
+# TPresumably this'll be be fixed in next bioconductor release.
+# till then, remotes::install_github("SydneyBioX/spicyR"), which installs spicyR_1.21.8 (note lower version number) which works. 
 library(spicyR)
+
+
+
 
 ```
 
 ```{r}
 data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
-sfe_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_sfe_01_loaded")
-se_pseudobulk_file <- file.path(data_dir, "GSE234713_CosMx_IBD_pseudobulk_sample_se2.RDS")
+#sfe_02_celltypeanno   <- file.path(data_dir, "GSE234713_CosMx_IBD_sfe_01_celltypeanno")
+####se_pseudobulk_file <- file.path(data_dir, "GSE234713_CosMx_IBD_pseudobulk_sample_se2.RDS")
+sfe_03_banksyniche   <- file.path(data_dir, "GSE234713_CosMx_IBD_sfe_03_banksyniche")
+
+
 ```
 
 
 ```{r}
-sfe <- readObject(sfe_01_loaded)
+sfe <- readObject(sfe_03_banksyniche )
+```
+
+For plotting
+```{r}
+sfe.sample <- sfe[,sfe$tissue_sample == "HC_c"]
+sfe.sample2 <- sfe[,sfe$tissue_sample == "CD_c"]
+#sfe.sample3 <- sfe[,sfe$tissue_sample == "HC_a"]
+#sfe.sample4 <- sfe[,sfe$tissue_sample == "UC_a"]
 ```
 
 
-
-
+Lymphocyte + endothelia?
+Plasma cells
 
 ## Experimental Design 
-
 
 
 There are many (too many) of teh detailed celltypes.
@@ -116,39 +135,33 @@ There are many (too many) of teh detailed celltypes.
 table(sfe$celltype_SingleR2, sfe$tissue_sample)
 ```
 
-```{r}
-#interesting_celltypes <- c("Colonocytes", "M1", "M2")
-#interesting_celltypes <- c("Glia", "M1", "M2", 'Inflammatory fibroblasts', "Inflammatory monocytes" )# , 'PC IgG') 
-#interesting_celltypes <- c("B cell","Naïve B cell", "T cells CCL20", "Memory B cell")
-interesting_celltypes <- c("Goblet", "Secretory progenitor", "Inflammatory monocytes" , "Macrophage NRG1",  "M0",'M1', "M2")
 
-#interesting_celltypes <- c("Inflammatory monocytes" , "Macrophage NRG1")
+## Check the niches
 
+* The different shapes of these tissues means that no cell will really be random - cells are non-randomly arranged in the tissue themselves. Contrast that with a TMA where each sample exists within a round core. 
 
-sfe$highlight <- ifelse(sfe$celltype_SingleR2 %in% interesting_celltypes , as.character(sfe$celltype_SingleR2), "Other")
-sfe$highlight <- factor(sfe$highlight, levels=c(interesting_celltypes, "Other"))
+* Additionally there are very distinct tissue niches in this tissue. It may not make sense to consider the tissue as a whole. We will instead subset to a niche of 'the same type of strucutre' 
 
 
-# Want colours for out celltypes, and grey for 'other'
-highlight_cols <- c(pals::trubetskoy()[seq.int(from = 1, to=length(interesting_celltypes))], "grey80")
-names(highlight_cols) <- levels(sfe$highlight )
+Plot all niches
 
-```
-
-```{r}
-sfe.sample <- sfe[,sfe$tissue_sample == "HC_c"]
-sfe.sample2 <- sfe[,sfe$tissue_sample == "CD_c"]
-```
-
-```{r}
-p1 <- plotSpatialFeature(sfe.sample, "highlight",colGeometryName = "cellSeg") + 
-  theme(legend.title=element_blank()) +
-  scale_fill_manual(values=highlight_cols ) 
-p2 <- plotSpatialFeature(sfe.sample2, "highlight",colGeometryName = "cellSeg") + 
-  theme(legend.title=element_blank()) +
-  scale_fill_manual(values=highlight_cols ) 
-
-p1 + p2
+```{r fig.width=12, fig.height=15 eval=FALSE}
+# make a named list of colours for the niches, using pals col25 palette.
+# stops the colours swapping when a plot doesn't have all niches.
+niche_cols <- pals::polychrome()[3:(length(levels(sfe$niche))+3)]
+names(niche_cols) <- levels(sfe$niche)     
+plot_one <- function(sample) {
+  p <- plotSpatialFeature(sfe[,sfe$tissue_sample == sample], "niche",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank(), legend.position = "bottom") +
+    scale_fill_manual(values=niche_cols) +
+    ggtitle(sample) 
+  
+  return(p)
+}
+samples <- levels(sfe$tissue_sample)
+plots <- lapply(FUN=plot_one, X=samples)
+p.all <- wrap_plots(plots, ncol=3)
+plot(p.all)
 ```
 
 
@@ -156,39 +169,7 @@ p1 + p2
 
 
 
-## pull in niches
-
-
-load in niches for testing
-
-```{r}
-banksy_res_file <- '/home/s.williams/projects/spatial-taster-workshop/data/banksy_res.RDS'
-banksy_res <- readRDS(banksy_res_file)
-
-niche_lookup <- setNames(banksy_res$clust_M0_lam0.8_k50_res0.3, nm=as.character( banksy_res$cell ))
-sfe$clust_M0_lam0.8_k50_res0.3 <- niche_lookup[as.character(sfe$cell)]
-sfe$niche <- factor(paste0('n', as.character(sfe$clust_M0_lam0.8_k50_res0.3)),
-                     levels=paste0('n',levels(sfe$clust_M0_lam0.8_k50_res0.3)))
-
-
-```
-
-
-
-
-```{r}
-sfe.sample <- sfe[,sfe$tissue_sample == "HC_c"]
-sfe.sample2 <- sfe[,sfe$tissue_sample == "CD_c"]
-```
-
-```{r}
-p1 <-  plotSpatialFeature(sfe.sample, "niche",colGeometryName = "cellSeg") + 
-  theme(legend.title=element_blank())
-p2 <- plotSpatialFeature(sfe.sample2, "niche",colGeometryName = "cellSeg") + 
-  theme(legend.title=element_blank()) 
-p1 + p2
-```
-
+The clusters:
 ```{r}
 p1 <-  plotSpatialFeature(sfe.sample, "cluster_code",colGeometryName = "cellSeg") + 
   theme(legend.title=element_blank())
@@ -198,42 +179,109 @@ p1 + p2
 ```
 
 
-Subset to just the one (two/three?) regions to focus on
-```{r}
-lp_region_niches <- c('n1', 'n2', 'n5')
+Here a niche reqpresnets a region where whe might want to look within. 
+And the niches:
+```{r fig.width=12, fig.height=6, eval=FALSE}
+                      
 
-sfe.lp <- sfe[,sfe$niche %in% lp_region_niches]
+p1 <-  plotSpatialFeature(sfe.sample, "niche",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_manual(values=niche_cols)
+p2 <- plotSpatialFeature(sfe.sample2, "niche",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_manual(values=niche_cols)
+p1 + p2
+
+
+p3 <-  plotSpatialFeature(sfe.sample3, "niche",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_manual(values=niche_cols)
+p4 <- plotSpatialFeature(sfe.sample4, "niche",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_manual(values=niche_cols)
+p3 + p4
 
 ```
 
 ```{r}
-
-# Temp for tests
-sfe.lp <- sfe
+heatmap(t(table(sfe$niche, sfe$cluster_label)), margins=c(5,5))
 ```
 
 
-c11 + c14 clomp
-c15 / c8  avoid
+
+```{r}
+heatmap(table(sfe$niche, sfe$tissue_sample), margins=c(5,5))
+```
 
 
-This will work much bettter if we had appropriate levels of annotation. Might have to label the cluster codes.
 
+Make some niche subsets
 
+```{r}
+crypt_niches <- c("n2",'n3','n4', 'n7')
+sfe.crypt   <- sfe[, sfe$niche %in% crypt_niches]
+sfe.stromal <- sfe[, sfe$niche %in% c("n1","n5")]
+sfe.lymphoid <- sfe[, sfe$niche %in% c("n6")]
+```
+
+```{r}
+table(sfe.crypt$cluster_label)
+table(sfe.stromal$cluster_label)
+table(sfe.lymphoid$cluster_label)
+```
 
 ## Build table for spicy
 
+Why do some of these error out? Workin with crypt set which should have enough.
+
+We are choosing to test cluster ids rather than the pretty celltypes - the inclusion of punctuation doesn't play nicely with some of the downstream functions.
 
 ```{r}
+#cell_info <- cbind(as.data.frame(colData(sfe)), spatialCoords(sfe))
+cell_info <- cbind(as.data.frame(colData(sfe.crypt)), spatialCoords(sfe.crypt))
+#cell_info <- cbind(as.data.frame(colData(sfe.stromal)), spatialCoords(sfe.stromal))
+#cell_info <- cbind(as.data.frame(colData(sfe.lymphoid)), spatialCoords(sfe.lymphoid))
 
-cell_info <- cbind(as.data.frame(colData(sfe.lp)), spatialCoords(sfe.lp))
+
+# Filter to pair
+cell_info         <- filter(cell_info, group %in% c('HC', 'CD'))
+cell_info$group  <- droplevels(cell_info$group)
+cell_info$tissue_sample  <- droplevels(cell_info$tissue_sample)
+
+## Exclude celltypes that are very rare
+# with fewr than this. (Very small number, to exclude 0)
+min_cells <- 50
+celltype_counts <- table(cell_info$cluster_content)
+cell_info <- filter(cell_info, cluster_content %in% names(celltype_counts)[celltype_counts > min_cells])
+
 
 # In cosmx, we have multiple 'images' for each sample. ANd that is explicytly handled ok.
 # NB: From the docs: https://www.bioconductor.org/packages/release/bioc/vignettes/spicyR/inst/doc/spicyR.html
 # **"spicyR supports mixed effects modelling when multiple images are obtained for each subject. In this case, subject is treated as a random effect and condition is treated as a fixed effect."**
-cell_info$imageID    <- paste0(as.character(cell_info$tissue_sample),'_',cell_info$fov)
+#cell_info$imageID    <- paste0(as.character(cell_info$tissue_sample),'_',cell_info$fov)
+cell_info$imageID    <- paste0(as.character(cell_info$tissue_sample))
+
 cell_info$tissue_sample <-   as.character(cell_info$tissue_sample) # No UC 
   
+
+
+# Workaround
+# When there are a very small number  (specifically 1 or 2, 0 is fine)  of a given cell type within a given ImageID (FOV in our case), spicyR may yeild errors. 
+# This may be more likely with very specific celltypes, or on cosmx data if we are using fovs as ImageID (e.g. edge of tissue.)
+# This as of spicyR_1.22.0. Error ticket here; https://github.com/SydneyBioX/spicyR/issues/78 
+# But, its not like 2 cells can be informative.
+# So, as a workaround, removing cells that are are on a fov with less than 2 total of that given celltype. Ie. not removing the celltype, nor the fov, just 1-2 cells.
+lonely_cells_table <- cell_info %>% group_by(imageID, cluster_code) %>%
+  summarise(ncells=n()) %>% filter(ncells < 3 )  
+lonely_cells_fovcluster <- paste0(lonely_cells_table$imageID, "-",lonely_cells_table$cluster_code)
+cell_info <- cell_info[! (paste0(cell_info$imageID, "-",cell_info$cluster_code) %in% lonely_cells_fovcluster), ]
+
+
+
+cell_info$cluster_content <- droplevels(cell_info$cluster_content)
+cell_info$cluster_label   <- droplevels(cell_info$cluster_label)
+cell_info$cluster_code    <- droplevels(cell_info$cluster_code)
+
+# seem reasonable?
+table(cell_info$cluster_code, cell_info$tissue_sample)
+
+
 
 # rename x,y
 cell_info <- cell_info %>% rename(
@@ -248,6 +296,8 @@ if (min_x < 0) {cell_info$x = cell_info$x + -(min_x) + 1 }
 if (min_y < 0) {cell_info$y = cell_info$y + -(min_y) + 1 }
 
 
+
+
 ```
 
 
@@ -255,20 +305,26 @@ TODO: Discuss Xenium / cosmx difference re ImageID and linear vs mixed model. Li
 
 
 ## Run spicy
-
 ```{r}
 spicy_res <- spicy(
           cells     = cell_info ,
           subject   = 'tissue_sample',
-          #cellType  = 'highlight',
           cellType  = 'cluster_code',
+          
+          
+          imageID   =  'imageID', # 'fov',
+          #cellType  = 'cluster_content',
           #sigma     = 20, # explain this
-          condition = 'group'
-          #from  = "Goblet",
-          #to = "M2"
+          condition = 'group',
+          
+          # So its c7 and c12 that are problematic?
+          #from='c2', to='c7' # seems so
+          from='c7', to='c2'
           )
 #  Your specified subject parameter has a one-to-one mapping with imageID. Converting to a linear model instead of mixed model.
 
+
+#table(cell_info$cluster_code, cell_info$tissue_sample)
 ```
 
 
@@ -276,32 +332,757 @@ spicy_res <- spicy(
 topPairs(spicy_res )
 ```
 
+
+Or, test all vs all
+
 ```{r}
-signifPlot(spicy_res )
+
+spicy_res <- spicy(
+          cells     = cell_info ,
+          subject   = 'tissue_sample',
+          #cellType  = 'cluster_code',
+          cellType  = 'cluster_content',          # test with clusterc ontent.
+          imageID   =  'imageID', 
+          sigma     = 50, # explain this
+          condition = 'group'
+          )
+
 
 ```
 
 ```{r}
-get_L_function_table <- function(spicy_res) {
-  #Based on code from spicyBoxPlot, which doesn't like : symbols 
-    L_function_table <- data.frame(
-      imageID   = spicy_res$imageID,
-      condition = spicy_res$condition,
-      subject   = spicy_res$subject,
-      as.data.frame(spicy_res$pairwiseAssoc)
-    ) %>% pivot_longer(cols = c( -imageID, -condition, -subject),
-                       names_to = 'pair',
-                       values_to = "L_function")
-}
+topPairs(spicy_res )
+```
+
+There is a very nice visualisation when you're testing two conditions, across all combinations
+
+```{r}
+signifPlot(spicy_res)
+```
+
+Remembering our pretty cluster lables:
+```{r}
+levels(sfe$cluster_label)
+# [1] "c1: Monocytic Cells"             "c2: B Cells"                     "c3: Cell Cycle"                 
+# [4] "c4: Plasma Cells"                "c5: Stem Cells"                  "c6: Intestinal Epithelial Cells"
+# [7] "c7: Unknown"                     "c8: Lymphocytes"                 "c9: Endothelial Cells"          
+#[10] "c10: Myofibroblasts"             "c11: Plasma Cells"               "c12: Fibroblasts"               
+#[13] "c13: Granulocytes"               "c14: Plasma Cells"               "c15: Stem Cells"        
+```
+
+Seems to be a loss of attraciton between c4(Plamsa) c5 (Stem) in the UC samples - is that real?
 
 
-L_function_table <- get_L_function_table(spicy_res)
+
+
+```{r}
+L_table <- bind(spicy_res)
+L_table_long <- pivot_longer(L_table, cols=! c(imageID, condition, subject ),
+                             names_to = 'pair', values_to="L") %>%
+  filter(! is.na(L)) # Remove pairs not tested, where L is NA
+
+```
+
+
+
+<!-- ```{r} -->
+<!-- ggplot(filter(L_table_long, pair %in% c('c3__c3', 'c4__c4', 'c5__c5', 'c4__c5', 'c4__c4')),  -->
+<!--        aes(x=subject, y=L, col=condition)) +  -->
+<!--   geom_boxplot() + -->
+<!--   geom_jitter( width = 0.2) + -->
+<!--   theme_bw() + -->
+<!--   facet_wrap(~pair) -->
+<!-- ``` -->
+
+
+
+
+
+
+
+
+### Check out on tissue.
+
+NB: with how small the fovs are, using fov as ImageID is giving pretty garbage results.
+
+
+#### Crypt region - plasma and endothelia
+
+```{r}
+ggplot(filter(L_table_long, pair %in% c('c9__c11', "c11__c9", 'c14__c11', "c11__c14")), 
+       aes(x=subject, y=L, col=condition)) + 
+  geom_boxplot() +
+  geom_jitter( width = 0.2) +
+  theme_bw() +
+  facet_wrap(~pair)
+
+```
+
+
+
+
+Why does c9__c11 plot as attraction (red) on the bubble plot?
+         intercept coefficient      p.value  adj.pvalue from  to
+c11__c9  -19.72530    45.69740 5.105443e-06 0.000822114  c11  c9
+c9__c11  -19.84347    45.83324 7.307680e-06 0.000822114   c9 c11
+c7__c6   -37.15872    19.67960 2.290510e-03 0.171788285   c7  c6
+c6__c7   -35.73660    18.74839 6.729118e-03 0.378512884   c6  c7
+c14__c11  46.24007    40.62259 2.003956e-02 0.715509510  c14 c11
+c11__c14  47.07843    40.28908 2.201862e-02 0.715509510  c11 c14
+
+The intercepts are positive.
+
+HC L values all about -75 (lack of data), and the CD are mostly positive. 
+
+
+
+```{r}
+#interesting_celltypes <- c("c9: Endothelial Cells", "c11: Plasma Cells","c14: Plasma Cells"   )
+interesting_celltypes <- c("c9: Endothelial Cells", "c11: Plasma Cells")
+
+crypt_niches <- c("n2",'n3','n4', 'n7')
+
+sfe.this <- sfe[,sfe$niche %in% crypt_niches]
+
+sfe.this$highlight <- "Other"
+sfe.this$highlight <- ifelse (sfe.this$cluster_label %in% interesting_celltypes,
+                         as.character(sfe.this$cluster_label),
+                         sfe.this$highlight)
+
+# Add the L statistic in as cell metadata, so we can plot it spatially.
+L_table_long_pair <- filter(L_table_long, pair == "c11__c9")
+L_table_pair_lookup <- set_names(L_table_long_pair$L, nm=L_table_long_pair$imageID)
+
+sfe.this$imageID    <- paste0(as.character(sfe.this$tissue_sample),'_',sfe.this$fov)
+sfe.this$L_c11__c9 <- L_table_pair_lookup[as.character(sfe.this$imageID)]
+
+
+
+highlight_cols <- c(
+  'c9: Endothelial Cells' = 'red',
+  'c11: Plasma Cells' = "purple4" ,  
+  #'c14: Plasma Cells' = "royalblue" ,
+  'Other'      = "grey80"
+)
+
+```
+
+
+
+
+```{r}
+
+plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_c"], 
+                         "L_c11__c9",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank())
+
+plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_c"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+```
+
+
+```{r fig.width=12, fig.height=4}
+p1 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_a"], 
+                         "L_c11__c9",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_gradient2()
+p2 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_b"], 
+                         "L_c11__c9",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank())+ scale_fill_gradient2()
+p3 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_c"], 
+                         "L_c11__c9",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank())+ scale_fill_gradient2()
+
+p1 + p2 + p3
+
+p1 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_a"], 
+                         "L_c11__c9",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_gradient2()
+p2 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_b"], 
+                         "L_c11__c9",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_gradient2()
+p3 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_c"], 
+                         "L_c11__c9",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_gradient2()
+
+p1 + p2 + p3
+
+```
+
+
+
+
+```{r fig.width=12, fig.height=4}
+p1 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_a"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p2 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_b"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p3 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_c"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+p1 + p2 + p3
+
+
+# And the CD samples
+p1 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_a"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p2 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_b"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p3 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_c"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+p1 + p2 + p3
+
+
+```
+
+
+
+#### Crypt region Monocytic
+
+usinc cluster content
+```{r}
+L_table <- bind(spicy_res)
+L_table_long <- pivot_longer(L_table, cols=! c(imageID, condition, subject ),
+                             names_to = 'pair', values_to="L") %>%
+  filter(! is.na(L)) # Remove pairs not tested, where L is NA
+
+```
+
+
+
+```{r}
+interesting_celltypes <- c("Monocytic Cells", "Intestinal Epithelial Cells")
+
+crypt_niches <- c("n2",'n3','n4', 'n7')
+
+sfe.this <- sfe[,sfe$niche %in% crypt_niches]
+
+sfe.this$highlight <- "Other"
+sfe.this$highlight <- ifelse (sfe.this$cluster_content %in% interesting_celltypes,
+                         as.character(sfe.this$cluster_content),
+                         sfe.this$highlight)
+
+# Add the L statistic in as cell metadata, so we can plot it spatially.
+L_table_long_pair <- filter(L_table_long, pair == "Monocytic Cells__Monocytic Cells")
+L_table_pair_lookup <- set_names(L_table_long_pair$L, nm=L_table_long_pair$imageID)
+
+sfe.this$imageID    <- paste0(as.character(sfe.this$tissue_sample),'_',sfe.this$fov)
+sfe.this$L_monomono <- L_table_pair_lookup[as.character(sfe.this$imageID)]
+
+
+
+highlight_cols <- c(
+  'Monocytic Cells'= 'red',
+  'Intestinal Epithelial Cells' = "blue" ,  
+  #'c14: Plasma Cells' = "royalblue" ,
+  'Other'      = "grey80"
+)
+
+```
+
+
+
+
+```{r}
+
+plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_c"], 
+                         "L_monomono",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_gradient2()
+
+plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_c"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+```
+
+
+
+
+#### Crypt region Monocytic / Myofibroblast
+
+usinc cluster content
+```{r}
+L_table <- bind(spicy_res)
+L_table_long <- pivot_longer(L_table, cols=! c(imageID, condition, subject ),
+                             names_to = 'pair', values_to="L") %>%
+  filter(! is.na(L)) # Remove pairs not tested, where L is NA
+
+```
+```{r}
+ggplot(filter(L_table_long, pair %in% c("Myofibroblasts__Monocytic Cells")), 
+       aes(x=subject, y=L, col=condition)) + 
+  geom_boxplot() +
+  geom_jitter( width = 0.2) +
+  theme_bw() 
+
+```
+
+
+
+```{r}
+interesting_celltypes <- c("Monocytic Cells", "Myofibroblasts")
+
+crypt_niches <- c("n2",'n3','n4', 'n7')
+
+sfe.this <- sfe[,sfe$niche %in% crypt_niches]
+
+sfe.this$highlight <- "Other"
+sfe.this$highlight <- ifelse (sfe.this$cluster_content %in% interesting_celltypes,
+                         as.character(sfe.this$cluster_content),
+                         sfe.this$highlight)
+
+# Add the L statistic in as cell metadata, so we can plot it spatially.
+L_table_long_pair <- filter(L_table_long, pair == "Myofibroblasts__Monocytic Cells")
+L_table_pair_lookup <- set_names(L_table_long_pair$L, nm=L_table_long_pair$imageID)
+
+sfe.this$imageID    <- paste0(as.character(sfe.this$tissue_sample),'_',sfe.this$fov)
+sfe.this$L_monomono <- L_table_pair_lookup[as.character(sfe.this$imageID)]
+
+
+
+highlight_cols <- c(
+  'Monocytic Cells'= 'blue',
+  'Myofibroblasts' = 'red' ,  
+  'Other'      = "grey80"
+)
+
+```
+
+
+
+
+```{r}
+
+plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_c"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+```
+
+
+
+
+#### Crypt region - c14 plasma and c11 plasma
+
+```{r}
+ggplot(filter(L_table_long, pair %in% c('c9__c11', "c11__c9", 'c14__c11', "c11__c14")), 
+       aes(x=subject, y=L, col=condition)) + 
+  geom_boxplot() +
+  geom_jitter( width = 0.2) +
+  theme_bw() +
+  facet_wrap(~pair)
+
+```
+
+
+
+```{r}
+interesting_celltypes <- c( "c11: Plasma Cells","c14: Plasma Cells"   )
+
+crypt_niches <- c("n2",'n3','n4', 'n7')
+
+sfe.this <- sfe[,sfe$niche %in% crypt_niches]
+
+sfe.this$highlight <- "Other"
+sfe.this$highlight <- ifelse (sfe.this$cluster_label %in% interesting_celltypes,
+                         as.character(sfe.this$cluster_label),
+                         sfe.this$highlight)
+
+# Add the L statistic in as cell metadata, so we can plot it spatially.
+L_table_long_pair <- filter(L_table_long, pair == "c11__c14")
+L_table_pair_lookup <- set_names(L_table_long_pair$L, nm=L_table_long_pair$imageID)
+
+sfe.this$imageID    <- paste0(as.character(sfe.this$tissue_sample),'_',sfe.this$fov)
+sfe.this$L_c11__c14 <- L_table_pair_lookup[as.character(sfe.this$imageID)]
+
+
+
+highlight_cols <- c(
+  #'c9: Endothelial Cells' = 'red',
+  'c11: Plasma Cells' = "purple4" ,  
+  'c14: Plasma Cells' = "green2" ,
+  'Other'      = "grey80"
+)
+
+```
+
+
+
+
+```{r}
+
+plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_c"], 
+                         "L_c11__c14",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank())
+
+plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_c"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+```
+
+
+```{r fig.width=12, fig.height=4}
+p1 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_a"], 
+                         "L_c11__c14",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_gradient2()
+p2 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_b"], 
+                         "L_c11__c14",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank())+ scale_fill_gradient2()
+p3 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_c"], 
+                         "L_c11__c14",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank())+ scale_fill_gradient2()
+
+p1 + p2 + p3
+
+p1 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_a"], 
+                         "L_c11__c14",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_gradient2()
+p2 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_b"], 
+                         "L_c11__c14",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_gradient2()
+p3 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_c"], 
+                         "L_c11__c14",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) + scale_fill_gradient2()
+
+p1 + p2 + p3
+
+```
+
+
+
+
+```{r fig.width=12, fig.height=4}
+p1 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_a"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p2 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_b"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p3 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_c"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+p1 + p2 + p3
+
+
+# And the CD samples
+p1 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_a"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p2 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_b"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p3 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_c"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+p1 + p2 + p3
+
+
+```
+
+
+
+
+#### c4 Plasma cells / stem cells
+
+```{r}
+ggplot(filter(L_table_long, pair %in% c('c4__c4', "c4__c5")), 
+       aes(x=subject, y=L, col=condition)) + 
+  geom_boxplot() +
+  geom_jitter( width = 0.2) +
+  theme_bw() +
+  facet_wrap(~pair)
+
+```
+
+
+```{r}
+stromal_niches <- c("n1","n5")
+interesting_celltypes <- c("c4: Plasma Cells",  "c3: Cell Cycle"  )
+
+sfe$highlight <- "Other"
+sfe$highlight[sfe$niche %in% stromal_niches] <- "Stromal"
+sfe$highlight <- ifelse (sfe$cluster_label %in% interesting_celltypes,
+                         as.character(sfe$cluster_label),
+                         sfe$highlight)
+#sfe$highlight <- ifelse (sfe$cluster_label %in% interesting_celltypes,
+#                         ifelse(sfe$highlight == "Other", 
+#                                paste(as.character(sfe$cluster_label), "(Other)"), # celltype (Other)
+#                                as.character(sfe$cluster_label)), # celltype (stromal).
+#                         sfe$highlight)
+
+
+
+
+highlight_cols <- c(
+  'c4: Plasma Cells' = "purple4" ,
+  'c3: Cell Cycle' = 'chartreuse4'  ,   
+  'c4: Plasma Cells (Other)' = "plum" ,
+  'c3: Cell Cycle (Other)' = 'olivedrab1'  ,  
+  'Stromal'    = "grey40",
+  'Other'      = "grey80"
+)
+
+
+```
+
+```{r eval=FALSE}
+sfe.this <- sfe.crypt
+
+
+p1 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_a"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p2 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_b"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p3 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "HC_c"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+p1 + p2 + p3
+
+
+
+# And the CD samples
+p1 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_a"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p2 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_b"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p3 <- plotSpatialFeature(sfe.this[,sfe.this$tissue_sample == "CD_c"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+p1 + p2 + p3
+
 ```
 
 
 
 
 
+
+
+
+#### B ceslls c3 cell cycle
+
+B cells near cell cycle cells - indicative of B cells undergoing cell division?
+
+"c2: B Cells"                     "c3: Cell Cycle" 
+
+```{r}
+ggplot(filter(L_table_long, pair %in% c('c3__c2')), 
+       aes(x=subject, y=L, col=condition)) + 
+  geom_boxplot() +
+  geom_jitter( width = 0.2) +
+  theme_bw() +
+  facet_wrap(~pair)
+```
+
+
+```{r}
+stromal_niches <- c("n1","n5")
+interesting_celltypes <- c("c2: B Cells",  "c3: Cell Cycle"  )
+
+sfe.this$highlight <- "Other"
+sfe$highlight[sfe$niche %in% stromal_niches] <- "Stromal"
+sfe$highlight <- ifelse (sfe$cluster_label %in% interesting_celltypes,
+                         as.character(sfe$cluster_label),
+                         sfe$highlight)
+
+highlight_cols <- c(
+  'c2: B Cells' = "blue" ,
+  'c3: Cell Cycle' = 'chartreuse3'  ,   
+  'Stromal'    = "grey40",
+  'Other'      = "grey80"
+)
+
+
+sfe.sample  <- sfe[,sfe$tissue_sample == "HC_c"]
+sfe.sample2 <- sfe[,sfe$tissue_sample == "CD_c"]
+```
+
+```{r eval=FALSE}
+
+p1 <- plotSpatialFeature(sfe[,sfe$tissue_sample == "HC_a"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p2 <- plotSpatialFeature(sfe[,sfe$tissue_sample == "HC_b"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p3 <- plotSpatialFeature(sfe[,sfe$tissue_sample == "HC_c"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+p1 + p2 + p3
+
+
+
+# And the CD samples
+p1 <- plotSpatialFeature(sfe[,sfe$tissue_sample == "CD_a"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p2 <- plotSpatialFeature(sfe[,sfe$tissue_sample == "CD_b"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p3 <- plotSpatialFeature(sfe[,sfe$tissue_sample == "CD_c"], 
+                         "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+p1 + p2 + p3
+
+```
+
+
+
+
+
+
+
+
+
+### Aside: get L statistics for all samples
+
+In more complex experiments you might want to pull out the L values to run
+own statistical tests, or simply plot L values of all groups together. Here 
+by not filtering to out the UC samples, we can plot the HC, UC and CD samples all together.
+
+```{r}
+cell_info <- cbind(as.data.frame(colData(sfe.stromal)), spatialCoords(sfe.stromal))
+
+## Exclude celltypes that are very rare
+# with fewr than this. (Very small number, to exclude 0)
+min_cells <- 50
+celltype_counts <- table(cell_info$cluster_content)
+cell_info <- filter(cell_info, cluster_content %in% names(celltype_counts)[celltype_counts > min_cells])
+
+
+# In cosmx, we have multiple 'images' for each sample. ANd that is explicytly handled ok.
+# NB: From the docs: https://www.bioconductor.org/packages/release/bioc/vignettes/spicyR/inst/doc/spicyR.html
+# **"spicyR supports mixed effects modelling when multiple images are obtained for each subject. In this case, subject is treated as a random effect and condition is treated as a fixed effect."**
+cell_info$imageID    <- paste0(as.character(cell_info$tissue_sample),'_',cell_info$fov)
+cell_info$tissue_sample <-   as.character(cell_info$tissue_sample) # No UC 
+  
+# Workaround
+# When there are a very small number  (specifically 1 or 2, 0 is fine)  of a given cell type within a given ImageID (FOV in our case), spicyR may yeild errors. 
+# This may be more likely with very specific celltypes, or on cosmx data if we are using fovs as ImageID (e.g. edge of tissue.)
+# This as of spicyR_1.22.0. Error ticket here; https://github.com/SydneyBioX/spicyR/issues/78 
+# But, its not like 2 cells can be informative.
+# So, as a workaround, removing cells that are are on a fov with less than 2 total of that given celltype. Ie. not removing the celltype, nor the fov, just 1-2 cells.
+lonely_cells_table <- cell_info %>% group_by(imageID, cluster_code) %>%
+  summarise(ncells=n()) %>% filter(ncells < 3 )  
+lonely_cells_fovcluster <- paste0(lonely_cells_table$imageID, "-",lonely_cells_table$cluster_code)
+cell_info <- cell_info[! (paste0(cell_info$imageID, "-",cell_info$cluster_code) %in% lonely_cells_fovcluster), ]
+
+
+cell_info$cluster_content <- droplevels(cell_info$cluster_content)
+cell_info$cluster_label   <- droplevels(cell_info$cluster_label)
+cell_info$cluster_code    <- droplevels(cell_info$cluster_code)
+
+# seem reasonable?
+table(cell_info$cluster_code, cell_info$tissue_sample)
+
+
+
+# rename x,y
+cell_info <- cell_info %>% rename(
+    x=CenterX_global_px, 
+    y=CenterY_global_px,
+)
+# Check if this is still neccessary
+# to avoid error: Error in owinInternalRect(xrange, yrange, ..., unitname = unitname): xrange should be a vector of length 2 giving (xmin, xmax)
+min_x <- min(cell_info$x)
+min_y <- min(cell_info$y)
+if (min_x < 0) {cell_info$x = cell_info$x + -(min_x) + 1 }
+if (min_y < 0) {cell_info$y = cell_info$y + -(min_y) + 1 }
+
+
+spicy_res <- spicy(
+          cells     = cell_info ,
+          subject   = 'tissue_sample',
+          cellType  = 'cluster_code',
+          imageID   =  'imageID', 
+          sigma     = 20, # explain this
+          condition = 'group'
+          )
+
+
+# L_function_table <- get_L_function_table(spicy_res)
+L_table <- bind(spicy_res)
+L_table_long <- pivot_longer(L_table, cols=! c(imageID, condition, subject ),
+                             names_to = 'pair', values_to="L") %>%
+  filter(! is.na(L)) # Remove pairs not tested, where L is NA
+
+
+```
+
+```{r}
+ggplot(filter(L_table_long, pair %in% c('c3__c3', 'c4__c4', 'c5__c5', 'c4__c5', 'c4__c4')), 
+       aes(x=subject, y=L, col=condition)) + 
+  geom_boxplot() +
+  geom_jitter( width = 0.2) +
+  theme_bw() +
+  facet_wrap(~pair)
+```
+
+
+```{r}
+ggplot(filter(L_table_long, pair %in% c('c2__c3')), 
+       aes(x=subject, y=L, col=condition)) + 
+  geom_boxplot() +
+  geom_jitter( width = 0.2) +
+  theme_bw() 
+```
+
+
+
+### Check results.
+
+
+
+
+
+#############
 
 
 
@@ -409,5 +1190,622 @@ spicy_res.2 <- spicy(
           )
 ```
 
+
+
+# Scratch
+
+
+```{r eval=FALSE}
+#interesting_celltypes <- c("Colonocytes", "M1", "M2")
+#interesting_celltypes <- c("Glia", "M1", "M2", 'Inflammatory fibroblasts', "Inflammatory monocytes" )# , 'PC IgG') 
+#interesting_celltypes <- c("B cell","Naïve B cell", "T cells CCL20", "Memory B cell")
+#interesting_celltypes <- c("Goblet", "Secretory progenitor", "Inflammatory monocytes" , "Macrophage NRG1",  "M0",'M1', "M2")
+#interesting_celltypes <- c("Inflammatory monocytes" , "Macrophage NRG1")
+#sfe$highlight <- ifelse(sfe$celltype_SingleR2 %in% interesting_celltypes , as.character(sfe$celltype_SingleR2), "Other")
+#sfe$highlight <- factor(sfe$highlight, levels=c(interesting_celltypes, "Other"))
+
+interesting_celltypes <- c("Endothelial Cells", "Lymphocytes", "Monocytic Cells")
+sfe$highlight <- ifelse(sfe$cluster_content %in% interesting_celltypes , as.character(sfe$cluster_content), "Other")
+sfe$highlight <- factor(sfe$highlight, levels=c(interesting_celltypes, "Other"))
+
+# Want colours for out celltypes, and grey for 'other'
+highlight_cols <- c(pals::trubetskoy()[seq.int(from = 1, to=length(interesting_celltypes))], "grey80")
+names(highlight_cols) <- levels(sfe$highlight )
+
+
+sfe.sample  <- sfe[,sfe$tissue_sample == "HC_c"]
+sfe.sample2 <- sfe[,sfe$tissue_sample == "CD_c"]
+```
+
+```{r eval=FALSE}
+p1 <- plotSpatialFeature(sfe.sample, "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+p2 <- plotSpatialFeature(sfe.sample2, "highlight",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) +
+  scale_fill_manual(values=highlight_cols ) 
+
+p1 + p2
+```
+
+
+
+```{r eval=FALSE}
+p1 <- plotSpatialFeature(sfe.sample, "cluster_content",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) 
+p2 <- plotSpatialFeature(sfe.sample2, "cluster_content",colGeometryName = "cellSeg") + 
+  theme(legend.title=element_blank()) 
+
+p1 + p2
+```
+
+
+
+
+
+<!-- load in niches for testing -->
+
+<!-- ```{r} -->
+<!-- banksy_res_file <- '/home/s.williams/projects/spatial-taster-workshop/data/banksy_res.RDS' -->
+<!-- banksy_res <- readRDS(banksy_res_file) -->
+
+<!-- niche_lookup <- setNames(banksy_res$clust_M0_lam0.8_k50_res0.3, nm=as.character( banksy_res$cell )) -->
+<!-- sfe$clust_M0_lam0.8_k50_res0.3 <- niche_lookup[as.character(sfe$cell)] -->
+<!-- sfe$niche <- factor(paste0('n', as.character(sfe$clust_M0_lam0.8_k50_res0.3)), -->
+<!--                      levels=paste0('n',levels(sfe$clust_M0_lam0.8_k50_res0.3))) -->
+
+
+<!-- ``` -->
+
+
+### Kontextual
+
+
+
+
+
+
+```{r}
+plotSpatialFeature(sfe[,sfe$tissue_sample == 'HC_c'] , "cluster_label",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank()) +  ggtitle('HC_c')
+```
+
+```{r}
+library(Statial)
+
+#biologicalHierarchy = list(
+#  "crypt" = c("c6: Intestinal Epithelial Cells", "c5: Stem Cells","c15: Stem Cells",
+#               "c4: Plasma Cells","c11: Plasma Cells","c14: Plasma Cells" ),
+#  "stroma"= c("c10: Myofibroblasts") ,
+#  "immune" = c("c1: Monocytic Cells", "c2: B Cells", "c8: Lymphocytes"  )
+#)
+
+biologicalHierarchy = list(
+  "crypt" = c("c6", "c5","c15",
+               "c4","c11","c14" ),
+  "stroma"= c("c10") ,
+  "immune" = c("c1", "c2", "c8")
+)
+
+    
+
+sfe$toplevel <- "Other"
+sfe$toplevel[sfe$cluster_code %in% biologicalHierarchy[["crypt"]]] <- 'crypt'
+sfe$toplevel[sfe$cluster_code %in% biologicalHierarchy[["stroma"]]] <- 'stroma'
+sfe$toplevel[sfe$cluster_code %in% biologicalHierarchy[["immune"]]] <- 'immune'
+table(sfe$toplevel)
+
+
+plotSpatialFeature(sfe[,sfe$tissue_sample == 'HC_c'] , "toplevel",colGeometryName = "cellSeg") + 
+    theme(legend.title=element_blank()) +  ggtitle('HC_c')
+
+
+ 
+table(sfe$toplevel, sfe$cluster_label)
+
+```
+
+```{r}
+cell_info <- cbind(as.data.frame(colData(sfe)), spatialCoords(sfe))
+
+# Filter to pair
+cell_info         <- filter(cell_info, group %in% c('HC', 'CD'))
+cell_info$group  <- droplevels(cell_info$group)
+cell_info$tissue_sample  <- droplevels(cell_info$tissue_sample)
+
+## Exclude celltypes that are very rare
+# with fewr than this. (Very small number, to exclude 0)
+min_cells <- 50
+celltype_counts <- table(cell_info$cluster_content)
+cell_info <- filter(cell_info, cluster_content %in% names(celltype_counts)[celltype_counts > min_cells])
+
+
+# In cosmx, we have multiple 'images' for each sample. ANd that is explicytly handled ok.
+# NB: From the docs: https://www.bioconductor.org/packages/release/bioc/vignettes/spicyR/inst/doc/spicyR.html
+# **"spicyR supports mixed effects modelling when multiple images are obtained for each subject. In this case, subject is treated as a random effect and condition is treated as a fixed effect."**
+#cell_info$imageID    <- paste0(as.character(cell_info$tissue_sample),'_',cell_info$fov)
+cell_info$imageID    <- paste0(as.character(cell_info$tissue_sample))
+
+cell_info$tissue_sample <-   as.character(cell_info$tissue_sample) # No UC 
+  
+
+
+# Workaround
+# When there are a very small number  (specifically 1 or 2, 0 is fine)  of a given cell type within a given ImageID (FOV in our case), spicyR may yeild errors. 
+# This may be more likely with very specific celltypes, or on cosmx data if we are using fovs as ImageID (e.g. edge of tissue.)
+# This as of spicyR_1.22.0. Error ticket here; https://github.com/SydneyBioX/spicyR/issues/78 
+# But, its not like 2 cells can be informative.
+# So, as a workaround, removing cells that are are on a fov with less than 2 total of that given celltype. Ie. not removing the celltype, nor the fov, just 1-2 cells.
+lonely_cells_table <- cell_info %>% group_by(imageID, cluster_code) %>%
+  summarise(ncells=n()) %>% filter(ncells < 3 )  
+lonely_cells_fovcluster <- paste0(lonely_cells_table$imageID, "-",lonely_cells_table$cluster_code)
+cell_info <- cell_info[! (paste0(cell_info$imageID, "-",cell_info$cluster_code) %in% lonely_cells_fovcluster), ]
+
+
+
+cell_info$cluster_content <- droplevels(cell_info$cluster_content)
+cell_info$cluster_label   <- droplevels(cell_info$cluster_label)
+cell_info$cluster_code    <- droplevels(cell_info$cluster_code)
+
+cell_info$toplevel    <- as.factor(cell_info$toplevel)
+
+
+# seem reasonable?
+table(cell_info$cluster_code, cell_info$tissue_sample)
+
+# Convert px to um
+# um per pixel can vary between experimenrts.
+#https://github.com/jinworks/CellChat/issues/292
+# https://nanostring-biostats.github.io/CosMx-Analysis-Scratch-Space/posts/flat-file-exports/flat-files-compare.html
+#Thus, to convert to microns multiply the pixel value by 0.12028 m per pixel.
+um_per_pixel <- 0.12028 
+cell_info$x <-cell_info$CenterX_global_px * um_per_pixel
+cell_info$y <-cell_info$CenterY_global_px * um_per_pixel
+
+# Check if this is still neccessary
+# to avoid error: Error in owinInternalRect(xrange, yrange, ..., unitname = unitname): xrange should be a vector of length 2 giving (xmin, xmax)
+min_x <- min(cell_info$x)
+min_y <- min(cell_info$y)
+if (min_x < 0) {cell_info$x = cell_info$x + -(min_x) + 1 }
+if (min_y < 0) {cell_info$y = cell_info$y + -(min_y) + 1 }
+
+
+```
+
+
+What radius is important for context. I think we are using different units (x and y are pixes!)
+```{r}
+# quick and dirty plot to see the radius
+radius <- seq(50, 550, 50)
+cell_info.this <- filter(cell_info, imageID == "HC_c")
+xpos <- mean(c(min(cell_info.this$x), max(cell_info.this$x)))
+ypos <- mean(c(min(cell_info.this$y), max(cell_info.this$y)))
+circle_scales <- bind_cols(radius=radius, x=xpos, y=ypos)
+
+ggplot(cell_info.this, aes(x=x, y=y, col=toplevel)) +
+  geom_point() +
+  ggforce::geom_circle(data=circle_scales, mapping=aes(x0=x,y0=y, r=radius ), col='black')   +
+  theme_bw()
+
+```
+
+
+```{r}
+
+
+# Get all relationships between cell types and their parents
+parentDf <- parentCombinations(
+  all = levels(cell_info$cluster_code),
+  parentList = biologicalHierarchy
+)
+
+
+# Running Kontextual on all relationships across all images.
+resKontextual.full <- Kontextual(
+  cells         = cell_info,
+  parentDf      = parentDf,
+  spatialCoords = c("x","y"),
+  cellType      = 'cluster_code',
+  r = 100,
+  cores = 8,
+  inhom=TRUE
+)
+
+resKontextual.full$group <- substr(resKontextual.full$imageID, start = 1, stop=2)
+
+```
+
+```{r}
+
+plottable <- separate(resKontextual.full, test, into=c('to', 'from', 'context'), sep = '__', remove = FALSE)
+plottable <- pivot_longer(plottable, cols=c('original', 'kontextual'), names_to = 'metric', values_to = 'value' )
+plottable$plotgroup <- paste(plottable$group, plottable$metric)
+ggplot(filter(plottable, to == "c2", context == "crypt" )  , aes(x=plotgroup, y=value,fill=group)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position=position_dodge(width=0.75), aes(group=plotgroup)) +
+  theme_bw() + facet_wrap(~test)
+  
+
+```
+
+```{r}
+ggplot(filter(plottable, context == "crypt" )  , aes(x=plotgroup, y=value,fill=group)) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point(position=position_dodge(width=0.75), aes(group=plotgroup)) +
+  theme_bw() + facet_wrap(~test)
+  
+```
+
+
+
+c8 lymphocytes - c11 plasma
+c2 b cells -> c11 plasma
+
+
+
+```{r}
+# Run just one in one context
+#when all to/from/parent are klspecified, parentDf gets overwrittend, and parnet is set to just 'crypt' , not a list of what it is supposed to be.
+kontextualVals <- Kontextual(
+    cells = cell_info,
+    from = 'c2',
+    to = 'c11',
+    parent = biologicalHierarchy[['crypt']],
+    #image = c("HC_c"),
+    r = 100,
+    includeOriginal = TRUE,
+    spatialCoords = c("x","y"),
+    cellType      = 'cluster_code',
+    # and this is ignored anwyay....
+    # parentDf      = parentDf
+  )
+
+
+
+
+
+
+  
+  
+# Try out differnt radiauses of intereaction, which one is important.
+# NB: What are the units????
+# this works.
+curves <- kontextCurve(
+   cells = cell_info,
+   parent = biologicalHierarchy[['crypt']], # NOT 'crypt'
+   from='c2',
+   to = 'c11',
+   rs = radius, # 510
+   #image = "HC_c",
+   spatialCoords = c("x","y"),
+   cellType = 'cluster_code',
+   cores = 8
+ )
+kontextPlot(curves)
+
+
+
+```
+
+
+```{r}
+# i could just run ttests on everything and plot that.
+resKontextual.this <-filter(resKontextual.full, test == 'c2__c11__crypt')
+#resKontextual.full$group <- substr(resKontextual.full$imageID, start = 1, stop=2)
+colTest(resKontextual.this$kontextual, condition=resKontextual.this$group == "HC")
+  
+# how is this any different???
+res <- t.test(resKontextual.this$kontextual[resKontextual.this$group == "CD"], resKontextual.this$kontextual[resKontextual.this$group == "HC"])
+
+```
+
+
+
+
+
+Try to generate signif plot
+```{r}
+
+sample_info <- unique(cell_info[,c('tissue_sample',"imageID",'group' )])
+rownames(sample_info) <- sample_info$imageID
+
+# Converting Kontextual result into data matrix
+kontextMat <- prepMatrix(resKontextual.full)
+# Ensuring rownames of kontextMat match up with the image IDs of the SCE object
+#kontextMat <- kontextMat[ |> unique(), ]
+kontextMat <- kontextMat[sample_info$imageID,]
+
+
+# Replace NAs with 0
+kontextMat[is.na(kontextMat)] <- 0
+
+
+## Is attr set - YES.
+attr(kontextMat, "kontextualResult")
+
+```
+
+
+
+```{r}
+
+spicyRes = spicy(cells = cell_info,
+                        alternateResult = kontextMat,
+                        cellType  = 'cluster_content',
+                        condition = "group",
+                        imageID   =  'imageID', 
+                        weights = TRUE,
+                 verbose = TRUE
+                 )
+#No column called cellID. Creating one.
+#No column called imageCellID. Creating one.
+#Dropping unused levels. Using group = HC as base comparison group. If this is not the desired base group, please convert cells$group into a factor and change the order of levels(cells$group) so that the base group is at index #1.
+# Error in `[.default`(nCells, , M1) : subscript out of bounds
+
+
+spicyRes = spicy(cells = cell_info,
+                        alternateResult = kontextMat,
+                        cellType  = 'cluster_content',
+                        condition = "group",
+                        imageID   =  'imageID', 
+                        weights =FALSE,
+                 verbose = TRUE
+                 )
+#No column called cellID. Creating one.
+#No column called imageCellID. Creating one.
+#Dropping unused levels. Using group = HC as base comparison group. If this is not the desired base group, please convert cells$group into a factor and change the order of levels(cells$group) so that the base group is at index #1.
+#Testing for spatial differences across conditions
+#Error in `[.default`(cellCounts, , from) : subscript out of bounds
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r}
+
+pairwiseAssoc <- alternateResult
+
+labels <- names(pairwiseAssoc)
+
+comparisons <- data.frame(labels) |>
+  tidyr::separate(
+    col = labels,
+    into = c("from", "to", "parent"),
+    sep = "__"
+  ) |>
+  dplyr::mutate(labels = paste(.data$from, .data$to, .data$parent, sep = "__"))
+
+m1 <- comparisons$from
+m2 <- comparisons$to
+
+spicyResult$isKontextual = TRUE
+  
+  
+weightFunction <- spicyR:::getWeightFunction(pairwiseAssoc, nCells, m1, m2, BPPARAM, weights, weightsByPair, weightFactor)
+  
+# Matrix needed for survival analysis
+#pairwiseAssocMatrix = pairwiseAssoc
+
+  
+conditionVector <- as.data.frame(spicyR:::getImagePheno(cells))[condition][, 1]
+
+
+
+  pairwiseAssoc <- as.list(data.frame(pairwiseAssoc))
+  names(pairwiseAssoc) <- labels
+  
+
+  
+  
+  
+  #Don't think we get this far but;
+      MoreArgs2 <-
+      list(
+        cells = cells,
+        condition = condition,
+        covariates = covariates,
+        cellCounts = table(spicyR:::getImageID(cells), spicyR:::getCellType(cells)),
+        pheno = as.data.frame(spicyR:::getImagePheno(cells))
+      )
+
+
+    linearModels <- mapply(
+      spicyR:::spatialLM,
+      spatAssoc = pairwiseAssoc,
+      from = m1,
+      to = m2,
+      weightFunction = weightFunction,
+      MoreArgs = MoreArgs2,
+      SIMPLIFY = FALSE
+    )
+
+    lmResult <- spicyR:::cleanLM(linearModels, BPPARAM = BPPARAM)
+    spicyResult = append(spicyResult, lmResult)
+  
+    
+    
+    
+      if(!is.null(condition)){
+    spicyResult$condition <- conditionVector
+  }
+
+  if (!is.null(subject)) {
+    spicyResult$subject <- as.data.frame(getImagePheno(cells))[subject][, 1]
+  }
+  
+  spicyResult$pairwiseAssoc <- pairwiseAssoc
+  spicyResult$comparisons <- comparisons
+  
+  spicyResult$weights <- weightFunction
+  spicyResult$nCells <- nCells
+  
+  spicyResult$imageIDs <- as.data.frame(spicyR:::getImagePheno(cells))["imageID"][, 1]
+  spicyResult$alternateResult <- ifelse(is.null(alternateResult), FALSE, TRUE)
+  
+  spicyResult <- methods::new("SpicyResults", spicyResult)
+  spicyResult
+  
+  
+  ^^^WOrking through that seems to run, so why the error?
+  
+```
+
+
+The error occurs in the weight calculation somehow.
+e.g. withibn getWeightFunction
+
+
+
+
+
+
+
+
+spicyRes = spicy(cells = cell_info,
++                         alternateResult = kontextMat,
++                         cellType  = 'cluster_content',
++                         condition = "group",
++                         imageID   =  'imageID', 
++                         weights = TRUE,
++                  verbose = TRUE
++                  )
+No column called cellID. Creating one.
+No column called imageCellID. Creating one.
+Dropping unused levels. Using group = HC as base comparison group. If this is not the desired base group, please convert cells$group into a factor and change the order of levels(cells$group) so that the base group is at index 1.
+ Error in `[.default`(nCells, , M1) : subscript out of bounds
+
+
+
+
+
+
+```{r}
+weightFunction <- spicyR:::getWeightFunction(pairwiseAssoc, nCells, m1, m2, BPPARAM, weights, weightsByPair, weightFactor)
+
+
+
+#' @importFrom BiocParallel bpmapply
+getWeightFunction <- function(
+    pairwiseAssoc,
+    nCells,
+    m1,
+    m2,
+    BPPARAM,
+    weights,
+    weightsByPair,
+    weightFactor) {
+  if (!weights) {
+    weightFunction <- rep(1, nrow(pairwiseAssoc) * ncol(pairwiseAssoc))
+    pair <- rep(colnames(pairwiseAssoc), each = nrow(pairwiseAssoc))
+    weightFunction <- split(weightFunction, pair)
+    return(weightFunction)
+  }
+
+
+  resSq <- apply(pairwiseAssoc, 2, function(x) {
+    if (sum(!is.na(x)) > 1) {
+      if (stats::sd(x, na.rm = TRUE) > 0) {
+        return((x - mean(x, na.rm = TRUE))^2)
+      } else {
+        return(rep(NA, length(x)))
+      }
+    } else {
+      return(rep(NA, length(x)))
+    }
+  })
+
+  if (weightsByPair) {
+    weightFunction <- BiocParallel::bpmapply(
+      calcWeights,
+      rS = as.list(as.data.frame(resSq)), M1 = m1, M2 = m2, BPPARAM = BPPARAM,
+      MoreArgs = list(nCells = nCells, weightFactor), SIMPLIFY = FALSE
+    )
+  } else {
+    weightFunction <- calcWeights(m1, m2, rS = resSq, nCells, weightFactor)
+    pair <- rep(colnames(pairwiseAssoc), each = nrow(pairwiseAssoc))
+    weightFunction <- split(weightFunction, pair)
+  }
+  weightFunction[colnames(pairwiseAssoc)]
+}
+
+#' @importFrom scam scam
+#' @importFrom stats quantile
+calcWeights <- function(rS, M1, M2, nCells, weightFactor) {
+  count1 <- as.vector(nCells[, M1])
+  count2 <- as.vector(nCells[, M2])
+  rS <- as.vector(rS)
+  toWeight <- !is.na(rS)
+  resSqToWeight <- rS[toWeight]
+  count1ToWeight <- count1[toWeight]
+  count2ToWeight <- count2[toWeight]
+  if (length(count1ToWeight) <= 20) {
+    warning("A cell type pair is seen less than 20 times, not using weights for this pair.") # nolint
+    weightFunction <- rep(1, length(count1))
+    return(weightFunction)
+  }
+  weightFunction <- scam::scam(
+    log10(resSqToWeight + 1) ~ s(log10(count1ToWeight + 1), bs = "mpd") + s(log10(count2ToWeight + 1), bs = "mpd") # nolint
+  ) # , optimizer = "nlm.fd")
+
+  z1 <- suppressWarnings(stats::predict(weightFunction, data.frame(
+    count1ToWeight = as.numeric(count1),
+    count2ToWeight = as.numeric(count2)
+  )))
+  w <- 1 / pmax(z1, stats::quantile(z1[z1 > 0.1], 0.01, na.rm = TRUE))
+  w <- w / mean(w, na.rm = TRUE)
+  w^weightFactor
+}
+
+```
+
+
+
+
+
+```{r}
+
+spicyRes = spicy(cells = cell_info,
+                        alternateResult = kontextMat,
+                        cellType  = 'cluster_content',
+                        condition = "group",
+                        imageID   =  'imageID', 
+                        weights = FALSE, #TEST
+                 verbose = TRUE
+                 )
+#Testing for spatial differences across conditions
+#Error in `[.default`(cellCounts, , from) : subscript out of bounds
+
+
+linearModels <- mapply(
+      spicyR:::spatialLM,
+      spatAssoc = pairwiseAssoc,
+      from = m1,
+      to = m2,
+      weightFunction = weightFunction,
+      MoreArgs = MoreArgs2,
+      SIMPLIFY = FALSE
+    )
+
+lmResult <- spicyR:::cleanLM(linearModels, BPPARAM = BPPARAM)
+    spicyResult = append(spicyResult, lmResult)
+
+```
 
 
