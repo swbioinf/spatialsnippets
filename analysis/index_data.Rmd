@@ -10,9 +10,6 @@ bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 ---
 
 
-
-<!-- * [Fuiten 2023 - Digits in a Dish](d_DigitsDish.html) : *Digits in a dish: An in vitro system to assess the molecular genetics of hand/foot development at single-cell resolution* Allison M. Fuiten, Yuki Yoshimoto, Chisa Shukunami, H. Scott Stadler. Fronteirs in Cell and Developmental Biology 2023. -->
-
 These examples assume that the data has been loaded, preprocessed (e.g. QC-ed, UMAP) and annotated (e.g. sample names, cell types, cell niches). For information, the preprocessing applied here is included in data preparation below. Please note that these are not full annotations, and do not aim to reproduce the authors' published analyses! These are simplified and rough annotations to enable running these tests.
 
 
