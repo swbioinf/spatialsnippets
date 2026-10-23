@@ -1,0 +1,1875 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Sarah Williams" />
+
+
+<title>Dataset: IBD cosMX GarridoTrigo2023</title>
+
+<script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P3P13KEPZW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P3P13KEPZW');
+</script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Spatial Sampler</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Tests</a>
+</li>
+<li>
+  <a href="index_data.html">Data</a>
+</li>
+<li>
+  <a href="contributing.html">Contributing</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/swbioinf/spatialsnippets">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Dataset: IBD cosMX GarridoTrigo2023</h1>
+<h4 class="author">Sarah Williams</h4>
+
+</div>
+
+
+<p>Data is from paper <a
+href="https://www.ncbi.nlm.nih.gov/pubmed/37495570"><em>Macrophage and
+neutrophil heterogeneity at single-cell spatial resolution in human
+inflammatory bowel disease</em></a> from Garrido-Trigo et al 2023, <span
+class="citation">(Garrido-Trigo et al. 2023)</span></p>
+<p>The study included 9 cosmx slides of colonic biopsies</p>
+<ul>
+<li>3x HC - Healthy controls</li>
+<li>3x UC - Ulcerative colitis</li>
+<li>3x CD - Chrones’s disease</li>
+</ul>
+<p>Fastantically - not only have they made their raw and annotated data
+available, but have also shared their analysis code; <a
+href="https://github.com/HelenaLC/CosMx-SMI-IBD"
+class="uri">https://github.com/HelenaLC/CosMx-SMI-IBD</a></p>
+<p>They have also shared browseable interface here: <a
+href="https://servidor2-ciberehd.upc.es/external/garrido/app/"
+class="uri">https://servidor2-ciberehd.upc.es/external/garrido/app/</a></p>
+<div id="libraries" class="section level1">
+<h1>Libraries</h1>
+<pre class="r"><code>library(Seurat)</code></pre>
+<pre><code>Loading required package: SeuratObject</code></pre>
+<pre><code>Loading required package: sp</code></pre>
+<pre><code>
+Attaching package: &#39;SeuratObject&#39;</code></pre>
+<pre><code>The following objects are masked from &#39;package:base&#39;:
+
+    intersect, t</code></pre>
+<pre class="r"><code>library(SeuratObject)
+library(tidyverse)</code></pre>
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.2.1     ✔ readr     2.2.0
+✔ forcats   1.0.1     ✔ stringr   1.6.0
+✔ ggplot2   4.0.3     ✔ tibble    3.3.1
+✔ lubridate 1.9.5     ✔ tidyr     1.3.2
+✔ purrr     1.2.2     </code></pre>
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<pre class="r"><code>library(data.table) </code></pre>
+<pre><code>
+Attaching package: &#39;data.table&#39;
+
+The following objects are masked from &#39;package:lubridate&#39;:
+
+    hour, isoweek, isoyear, mday, minute, month, quarter, second, wday,
+    week, yday, year
+
+The following objects are masked from &#39;package:dplyr&#39;:
+
+    between, first, last
+
+The following object is masked from &#39;package:purrr&#39;:
+
+    transpose
+
+The following object is masked from &#39;package:base&#39;:
+
+    %notin%</code></pre>
+</div>
+<div id="data-download" class="section level1">
+<h1>Data download</h1>
+<p>From the project description:</p>
+<p>Raw data on GEO here; <a
+href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE234713"
+class="uri">https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE234713</a></p>
+<p><em>Inflammatory bowel diseases (IBDs) including ulcerative colitis
+(UC) and Crohn’s disease (CD) are chronic inflammatory diseases with
+increasing worldwide prevalence that show a perplexing heterogeneity in
+manifestations and response to treatment. We applied spatial
+transcriptomics at single-cell resolution (CosMx Spatial Molecular
+Imaging) to human inflamed and uninflamed intestine.</em></p>
+<p>The following files were download from GEO</p>
+<ul>
+<li>GSE234713_CosMx_annotation.csv.gz</li>
+<li>GSE234713_CosMx_normalized_matrix.txt.gz</li>
+<li>GSE234713_RAW.tar: RAW data was downloaded via custom downlod in 3
+batches, one per group
+<ul>
+<li>GSE234713_RAW_CD.tar</li>
+<li>GSE234713_RAW_HC.tar</li>
+<li>GSE234713_RAW_UC.tar</li>
+</ul></li>
+<li>GSE234713_ReadMe_SMI_Data_File.html</li>
+</ul>
+<p>The polygon files defining the cell outlines were provided
+separately. Typically these would be included with the other files.</p>
+<ul>
+<li>CD_a.csv : A .csv file which defines the outline of every cell. One
+file per slide.</li>
+</ul>
+<pre class="sh"><code>cd raw_data
+tar -xf GSE234713_RAW_CD.tar
+tar -xf GSE234713_RAW_HC.tar
+tar -xf GSE234713_RAW_UC.tar</code></pre>
+</div>
+<div id="data-load" class="section level1">
+<h1>Data load</h1>
+<pre class="r"><code>dataset_dir      &lt;- &#39;~/projects/spatialsnippets/datasets/&#39;
+project_data_dir &lt;- file.path(dataset_dir,&#39;GSE234713_IBDcosmx_GarridoTrigo2023&#39;)
+sample_dir            &lt;- file.path(project_data_dir, &quot;raw_data_for_sfe/&quot;) 
+annotation_file       &lt;- file.path(project_data_dir,&quot;GSE234713_CosMx_annotation.csv.gz&quot;)
+data_dir              &lt;- file.path(project_data_dir, &quot;processed_data/&quot;) 
+tempdir               &lt;- &#39;~/temp/&#39; # working on a server with a very small default tmp, which causes silent incomplete fread data.table reads on very large data (e.g. tx)
+
+
+# Prevvious version of these files generated with an older seurat version
+# Negative probes are now handled in a more standard way also (in main assay, rather than their own separate assay)
+# Updated to use Seurats updated loadNanostring function
+seurat_file_00_raw    &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_seurat_00_raw_v2.RDS&quot;)
+seurat_file_01_loaded &lt;- file.path(data_dir, &quot;GSE234713_CosMx_IBD_seurat_01_loaded_v2.RDS&quot;)
+
+
+# config
+min_count_per_cell &lt;- 100
+max_pc_negs        &lt;- 1.5
+max_avg_neg        &lt;- 0.5
+
+sample_codes &lt;- c(HC=&quot;Healthy controls&quot;,UC=&quot;Ulcerative colitis&quot;,CD=&quot;Crohn&#39;s disease&quot;)</code></pre>
+<div id="raw-data" class="section level2">
+<h2>Raw data</h2>
+</div>
+<div id="load-data" class="section level2">
+<h2>Load data</h2>
+<p>This code will load each slide/sample individually, then merge
+together. Note that metadata is read from the metadata flat file
+separately after initial load, as LoadNanostring() only permits a
+certain list of feilds to be imported.</p>
+<pre class="r"><code># This is a long running step, and was actually run via d_cosmxIBD_reload.R 
+# Code copied here for clarity. 
+
+load_sample_into_seurat &lt;- function(the_sample){
+
+  so &lt;- LoadNanostring(file.path(sample_dir, the_sample),
+                       fov = the_sample,
+                       assay=&#39;RNA&#39;)
+
+  # sample info
+  # This is easy beecause there is only one sample per slide.
+  so$individual_code &lt;- factor(substr(the_sample,12,16))
+  so$tissue_sample   &lt;- factor(substr(the_sample,12,16))
+  so$group     &lt;- factor(substr(the_sample, 12, 13), levels=names(sample_codes))
+  so$condition &lt;- factor(as.character(sample_codes[so$group]), levels=sample_codes)
+
+
+  #Seurat ignores the metadata (or can only load certain (not all) hardcoded columns if specified)
+  # So manually add all of the metadata!
+  metadata.file = file.path(sample_dir,the_sample,  paste0(the_sample,&#39;_metadata_file.csv&#39;))
+  so &lt;- add_metadata_file_content_to_seurat_metadata(so, metadata.file)
+
+
+  # Add fov name tool (fov came with metadata)
+  so$fov_name        &lt;- paste0(so$individual_code,&quot;_&quot;, str_pad(so$fov, 3, &#39;left&#39;,pad=&#39;0&#39;))
+
+  # Previously put neg probes into their own assay, but going to stop doing this, as it doesn&#39;t seem standard.
+  # Will,however, populate the probe annotation
+  # only have negative probes in ths one,not system controls,
+  neg_probes &lt;- rownames(so)[grepl(x=rownames(so), pattern=&quot;NegPrb&quot;)]
+  so@assays[[&#39;RNA&#39;]]@meta.data$target &lt;- rownames(so@assays[[&#39;RNA&#39;]])
+  so@assays[[&#39;RNA&#39;]]@meta.data$CodeClass &lt;- ifelse(so@assays[[&#39;RNA&#39;]]@meta.data$target %in% neg_probes , &quot;Negative&quot;,&quot;RNA&quot;)
+
+
+  neg_matrix          &lt;- GetAssayData(so,assay = &#39;RNA&#39;, layer = &#39;counts&#39;)[neg_probes,]
+  so$nCount_negprobes &lt;-   colSums(neg_matrix)
+  so$avg_neg          &lt;-  colMeans(neg_matrix)
+
+  return(so)
+
+}
+
+
+add_metadata_file_content_to_seurat_metadata &lt;- function(so, metadata.file) {
+  # Pull in full metadata
+
+  md &lt;- data.table::fread(metadata.file,  sep = &#39;,&#39;,  data.table = FALSE,  verbose = FALSE, tmpdir  = tempdir)
+
+  # Seurat cell identifiers constructed within ReadNanostring (matrix rownames) as:
+  # https://github.com/satijalab/seurat/blob/5f67c701ecc6738e9e47dc21dbd202d335df5ec3/R/preprocessing.R#L2251
+  # Combination of Cell ID (for non-zero cell_IDs) and FOV are assumed to be unique. Used to create barcodes / rownames.
+  #bcs &lt;- paste0(as.character(tx$cell_ID), &quot;_&quot;, tx$fov)
+  # Checking
+  ## expect a small number of &#39;cells&#39; to have been filtered out.
+  ##table(md$so_cell_id %in% colnames(so))
+  # ANd everything from seurat should be in metadata
+  #table(colnames(so) %in% md$so_cell_id)
+  # MD is not a data.table here (and its only ever going to be one slide so that&#39;s fine)!
+  md$so_cell_id &lt;- paste0(as.character(md$cell_ID), &quot;_&quot;, md$fov)
+  coords &lt;- match(rownames(so@meta.data), md$so_cell_id)
+  md &lt;- md[coords,]
+  stopifnot(all(md$so_cell_id == colnames(so)))
+  md$so_cell_id &lt;- NULL # remove col, don&#39;t need it.
+
+  so &lt;- AddMetaData(so, md)
+
+}
+
+
+samples &lt;- c(&#39;GSM7473682_HC_a&#39;,&#39;GSM7473683_HC_b&#39;,&#39;GSM7473684_HC_c&#39;,
+             &#39;GSM7473685_UC_a&#39;,&#39;GSM7473686_UC_b&#39;,&#39;GSM7473687_UC_c&#39;,
+             &#39;GSM7473688_CD_a&#39;,&#39;GSM7473689_CD_b&#39;,&#39;GSM7473690_CD_c&#39;)
+sample_prefix &lt;- paste0(substr(samples, 12,15))
+
+
+so.list &lt;- lapply(FUN=load_sample_into_seurat, X=samples)
+
+#NB: merge is in SeuratObject packages, but must be called without ::
+options(future.globals.maxSize= 10*1024^3) # 10G.
+so.raw &lt;- merge(so.list[[1]], y=so.list[2:length(so.list)], add.cell.ids=sample_prefix)
+#Error in getGlobalsAndPackages(expr, envir = envir, globals = globals) :
+#  The total size of the 8 globals exported for future expression (‘FUN()’) is 5.90 GiB.. This exceeds the maximum #allowed size of 500.00 MiB (option &#39;future.globals.maxSize&#39;). The three largest globals are ‘FUN’ (5.90 GiB of #class ‘function’), ‘p’ (25.22 KiB of class ‘function’) and ‘slot&lt;-’ (1.36 KiB of class ‘function’)
+rm(so.list)
+
+# save
+saveRDS(so.raw, seurat_file_00_raw)</code></pre>
+<pre class="r"><code># load previously saved.
+so.raw &lt;- readRDS(seurat_file_00_raw)</code></pre>
+</div>
+</div>
+<div id="negative-probe-handling" class="section level1">
+<h1>Negative probe handling</h1>
+<pre class="r"><code>so.raw$pc_neg &lt;-  ( so.raw$nCount_negprobes / so.raw$nCount_RNA ) * 100</code></pre>
+</div>
+<div id="pull-in-annotation" class="section level1">
+<h1>Pull in annotation</h1>
+<p>Pull in annotations from the paper. Most cell’s have annotations,
+occasional ones don’t.</p>
+<pre class="r"><code>anno_table &lt;- read_csv(annotation_file)</code></pre>
+<pre><code>Rows: 463967 Columns: 3
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: &quot;,&quot;
+chr (3): id, subset, SingleR2
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>anno_table &lt;- as.data.frame(anno_table)
+rownames(anno_table) &lt;- anno_table$id
+
+head(so.raw@meta.data)</code></pre>
+<pre><code>            orig.ident nCount_RNA nFeature_RNA individual_code tissue_sample
+HC_a_1_1 SeuratProject        368          189            HC_a          HC_a
+HC_a_2_1 SeuratProject        810          286            HC_a          HC_a
+HC_a_3_1 SeuratProject        119           74            HC_a          HC_a
+HC_a_4_1 SeuratProject        106           59            HC_a          HC_a
+HC_a_5_1 SeuratProject        465          209            HC_a          HC_a
+HC_a_6_1 SeuratProject       1322          441            HC_a          HC_a
+         group        condition fov cell_ID  Area AspectRatio CenterX_local_px
+HC_a_1_1    HC Healthy controls   1       1  6153        0.67             2119
+HC_a_2_1    HC Healthy controls   1       2 16178        0.85             1847
+HC_a_3_1    HC Healthy controls   1       3  3119        1.52             1986
+HC_a_4_1    HC Healthy controls   1       4  3988        1.52             2362
+HC_a_5_1    HC Healthy controls   1       5  4773        0.53             2159
+HC_a_6_1    HC Healthy controls   1       6 11588        0.87             1664
+         CenterY_local_px CenterX_global_px CenterY_global_px Width Height
+HC_a_1_1             3443          19274.56          173198.6    79    118
+HC_a_2_1             3404          19002.56          173159.6   137    161
+HC_a_3_1             3458          19141.56          173213.6    79     52
+HC_a_4_1             3454          19517.56          173209.6    91     60
+HC_a_5_1             3415          19314.56          173170.6    63    118
+HC_a_6_1             3402          18819.56          173157.6   116    134
+         Mean.MembraneStain Max.MembraneStain Mean.PanCK Max.PanCK Mean.CD45
+HC_a_1_1                680              2218      17170     29735       198
+HC_a_2_1                615              4453      16775     29702       222
+HC_a_3_1                989              2827      24033     29662       171
+HC_a_4_1                449              2099      13575     29651       146
+HC_a_5_1               1002              2425      24946     29670       299
+HC_a_6_1               1024              2320      25700     29712       354
+         Max.CD45 Mean.CD3 Max.CD3 Mean.DAPI Max.DAPI fov_name nCount_negprobes
+HC_a_1_1     9639      234    1237        20      131 HC_a_001                2
+HC_a_2_1    21371      234    1520        12      122 HC_a_001                5
+HC_a_3_1     6858      298    1721        13       58 HC_a_001                1
+HC_a_4_1      935      206    1402         6       56 HC_a_001                0
+HC_a_5_1     6387      330    1443        22      116 HC_a_001                3
+HC_a_6_1    23243      328    1610        23      113 HC_a_001                8
+            avg_neg    pc_neg
+HC_a_1_1 0.10526316 0.5434783
+HC_a_2_1 0.26315789 0.6172840
+HC_a_3_1 0.05263158 0.8403361
+HC_a_4_1 0.00000000 0.0000000
+HC_a_5_1 0.15789474 0.6451613
+HC_a_6_1 0.42105263 0.6051437</code></pre>
+<pre class="r"><code>head(anno_table)</code></pre>
+<pre><code>               id   subset             SingleR2
+HC_c_2_1 HC_c_2_1   stroma            Pericytes
+HC_c_3_1 HC_c_3_1   stroma          Endothelium
+HC_c_4_1 HC_c_4_1   stroma            Pericytes
+HC_c_5_1 HC_c_5_1      epi Secretory progenitor
+HC_c_7_1 HC_c_7_1 myeloids                   M2
+HC_c_8_1 HC_c_8_1      epi           Tuft cells</code></pre>
+<pre class="r"><code>so.raw$full_cell_id      &lt;- as.character(rownames(so.raw@meta.data))
+so.raw$celltype_subset   &lt;- factor(anno_table[so.raw$full_cell_id,]$subset)
+so.raw$celltype_SingleR2 &lt;- factor(anno_table[so.raw$full_cell_id,]$SingleR2)
+so.raw$fov_name          &lt;- factor(so.raw$fov_name)
+so.raw$group          &lt;- factor(so.raw$group, levels=c(&quot;CD&quot;,&quot;UC&quot;,&quot;HC&quot;))
+so.raw$condition      &lt;- factor(so.raw$condition, levels=c(&quot;Crohn&#39;s disease&quot;,  &#39;Ulcerative colitis&#39;, &#39;Healthy controls&#39;))
+
+table(is.na(so.raw$celltype_subset))</code></pre>
+<pre><code>
+ FALSE   TRUE 
+459145  21240 </code></pre>
+</div>
+<div id="basic-qc-filter" class="section level1">
+<h1>Basic QC filter</h1>
+<div id="min-count-per-cell" class="section level2">
+<h2>Min count per cell</h2>
+<pre class="r"><code>ggplot(so.raw@meta.data, aes(x=nCount_RNA, col=orig.ident)) +
+  geom_density() + 
+  geom_vline(xintercept = min_count_per_cell, lty=3) +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle(&quot;Counts per cell&quot;)</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-8-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-8-1">
+Past versions of unnamed-chunk-8-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-8-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-8-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-8-1.png" target="_blank">a722f36</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-8-1.png" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="percent-negative-probes" class="section level2">
+<h2>Percent Negative probes</h2>
+<pre class="r"><code>ggplot(so.raw@meta.data, aes(x=pc_neg, col=orig.ident)) +
+  geom_density() + 
+  geom_vline(xintercept = max_pc_negs, lty=3) +
+  scale_x_log10() +
+  theme_bw() +
+  ggtitle(&quot;Negative probe composition&quot;)</code></pre>
+<pre><code>Warning in scale_x_log10(): log-10 transformation introduced infinite values.</code></pre>
+<pre><code>Warning: Removed 227705 rows containing non-finite outside the scale range
+(`stat_density()`).</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-9-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-9-1">
+Past versions of unnamed-chunk-9-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-9-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-9-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-9-1.png" target="_blank">a722f36</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-9-1.png" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<pre class="r"><code>ggplot(so.raw@meta.data, aes(x=avg_neg, col=orig.ident)) +
+  geom_density() + 
+  geom_vline(xintercept = max_avg_neg, lty=3) +
+  theme_bw() +
+  ggtitle(&quot;Negative probe average&quot;)</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-10-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-10-1">
+Past versions of unnamed-chunk-10-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-10-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/c214dc349adad1dfe886853b18cff4e37017b3f5/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-10-1.png" target="_blank">c214dc3</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2026-10-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/9489a908af77ceb61843fdbf3506f00af8abd648/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-10-1.png" target="_blank">9489a90</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2026-03-26
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-10-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-10-1.png" target="_blank">a722f36</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-10-1.png" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Use bottom right corner;</p>
+<pre class="r"><code>ggplot(so.raw@meta.data, aes(y=avg_neg, x=nCount_RNA)) +
+  geom_point(pch=3, alpha=0.1) + 
+  geom_hline(yintercept = max_avg_neg, lty=3) +
+  geom_vline(xintercept = min_count_per_cell, lty=3) +
+  scale_x_log10() + 
+  theme_bw() +
+  ggtitle(&quot;Negative probes vs counts&quot;)</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-11-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-11-1">
+Past versions of unnamed-chunk-11-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-11-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/c214dc349adad1dfe886853b18cff4e37017b3f5/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-11-1.png" target="_blank">c214dc3</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2026-10-01
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/9489a908af77ceb61843fdbf3506f00af8abd648/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-11-1.png" target="_blank">9489a90</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2026-03-26
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-11-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-11-1.png" target="_blank">a722f36</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-11-1.png" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="apply-filteres" class="section level2">
+<h2>Apply filteres</h2>
+<p>From paper: <em>“Cells with an average negative control count greater
+than 0.5 and less than 20 detected features were filtered out.”</em></p>
+<p>Also remove cell with no cell type annotations.</p>
+<pre class="r"><code>###so.raw &lt;- JoinLayers(so.raw)
+so &lt;- so.raw[ ,so.raw$nCount_RNA &gt;= min_count_per_cell &amp;
+               so.raw$avg_neg &lt;= max_avg_neg &amp;
+               !(is.na(so.raw$celltype_subset) )]
+# ncol(so.raw)
+# ncol(so)</code></pre>
+<p>Loading already pre-processed version for plots</p>
+<pre class="r"><code>rm(so.raw)
+so &lt;- readRDS(seurat_file_01_loaded)</code></pre>
+</div>
+<div id="how-many-cells-per-sample" class="section level2">
+<h2>How many cells per sample?</h2>
+<pre class="r"><code>table(so@meta.data$orig.ident)</code></pre>
+<pre><code>
+SeuratProject 
+       354191 </code></pre>
+</div>
+</div>
+<div id="basic-preprocessing" class="section level1">
+<h1>Basic preprocessing</h1>
+<pre class="r"><code>num_dims &lt;- 15
+# Run through preprocessing
+so &lt;- NormalizeData(so)
+
+## Do per sample to mimic paper approach somewhat.
+so &lt;- FindVariableFeatures(so, nfeatures = 200) 
+
+
+so &lt;- ScaleData(so) # Just 2k variable features
+so &lt;- RunPCA(so, features = VariableFeatures(so))
+so &lt;- RunUMAP(so, dims=1:num_dims)
+so &lt;- FindNeighbors(so, dims = 1:num_dims)
+so &lt;- FindClusters(so)</code></pre>
+</div>
+<div id="basic-plots" class="section level1">
+<h1>Basic plots</h1>
+<div id="umap" class="section level2 tabset tabset-pills">
+<h2 class="tabset tabset-pills">UMAP</h2>
+<div id="sample" class="section level3">
+<h3>Sample</h3>
+<pre class="r"><code>DimPlot(so, group.by = &#39;tissue_sample&#39;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-16-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
+Past versions of unnamed-chunk-16-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-16-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-16-1.png" target="_blank">a722f36</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-16-1.png" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="condition" class="section level3">
+<h3>Condition</h3>
+<pre class="r"><code>DimPlot(so, group.by = &#39;condition&#39;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-17-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
+Past versions of unnamed-chunk-17-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-17-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-17-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/697815489cd801e303185e38f2e764cb06d42d16/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-17-1.png" target="_blank">6978154</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-30
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-17-1.png" target="_blank">a722f36</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-17-1.png" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="condition-x-sample" class="section level3">
+<h3>Condition X Sample</h3>
+<pre class="r"><code>DimPlot(so, group.by = &#39;orig.ident&#39;,split.by = &quot;condition&quot;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-18-1.png" alt="" width="1152" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
+Past versions of unnamed-chunk-18-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-18-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-18-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/697815489cd801e303185e38f2e764cb06d42d16/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-18-1.png" target="_blank">6978154</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-05-30
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-18-1.png" target="_blank">a722f36</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-18-1.png" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="total-counts" class="section level3">
+<h3>Total counts</h3>
+<pre class="r"><code>FeaturePlot(so, &#39;nCount_RNA&#39;) + scale_colour_viridis_c(option=&quot;magma&quot;, direction = -1)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<pre><code>Scale for colour is already present.
+Adding another scale for colour, which will replace the existing scale.</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-19-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-19-1">
+Past versions of unnamed-chunk-19-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-19-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-19-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-19-1.png" target="_blank">a722f36</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-19-1.png" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="clustered" class="section level3">
+<h3>Clustered</h3>
+<pre class="r"><code>DimPlot(so, group.by = &#39;seurat_clusters&#39;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-20-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
+Past versions of unnamed-chunk-20-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-20-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-20-1.png" target="_blank">a722f36</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-20-1.png" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="celltype_subset" class="section level3">
+<h3>celltype_subset</h3>
+<p>Classifications from Garrido-Trigo et al 2023.</p>
+<pre class="r"><code>DimPlot(so, group.by = &#39;celltype_subset&#39;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-21-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-21-1">
+Past versions of unnamed-chunk-21-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-21-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-21-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-21-1.png" target="_blank">a722f36</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-21-1.png" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="celltype_singler2" class="section level3">
+<h3>celltype_SingleR2</h3>
+<p>Classifications from Garrido-Trigo et al 2023.</p>
+<pre class="r"><code>DimPlot(so, group.by = &#39;celltype_SingleR2&#39;)</code></pre>
+<pre><code>Rasterizing points since number of points exceeds 100,000.
+To disable this behavior set `raster=FALSE`</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-22-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-22-1">
+Past versions of unnamed-chunk-22-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-22-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-22-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-22-1.png" target="_blank">a722f36</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-22-1.png" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="clustering" class="section level2">
+<h2>Clustering</h2>
+<p>Double checking the clusters line up with annotaiaon</p>
+<pre class="r"><code>table(so$celltype_subset)</code></pre>
+<pre><code>
+     epi myeloids  plasmas   stroma   tcells 
+   82743    44006   130781    84915    11746 </code></pre>
+<pre class="r"><code>table(so$celltype_SingleR2)</code></pre>
+<pre><code>
+                      B cell                  BEST4 OTOP2 
+                        5314                        10155 
+                         CD4                          CD8 
+                        2733                         2881 
+                 Colonocytes              Cycling T cells 
+                       17673                          323 
+                  Cycling TA                Cycling cells 
+                        1846                         2112 
+             Cycling myeloid                          DCs 
+                        1287                         1469 
+                          DN                  Endothelium 
+                         608                        13808 
+             Enteroendocrine                  Eosinophils 
+                         852                          194 
+            Epithelium Ribhi                         FRCs 
+                        4379                        10027 
+                 Fibroblasts                    GC B cell 
+                        1666                         3566 
+                        Glia                       Goblet 
+                        4353                         8864 
+                        ILC4     Inflammatory fibroblasts 
+                         115                        12593 
+      Inflammatory monocytes                           M0 
+                        1735                         3001 
+                          M1                           M2 
+                         937                        21296 
+                        MAIT                   MT T cells 
+                        1233                          175 
+             Macrophage NRG1                         Mast 
+                        9581                         2939 
+               Memory B cell               Myofibroblasts 
+                        7040                        16697 
+                          N1                           N2 
+                         556                          433 
+                          N3                           NK 
+                         578                          240 
+                Naïve B cell PC  immediate early response 
+                        8906                         9826 
+                      PC IgA                   PC IgA IgM 
+                        1299                        12245 
+           PC IgA heat shock                       PC IgG 
+                        5090                        75381 
+                 Paneth-like                    Pericytes 
+                        1820                         9303 
+               Ribhi T cells                           S1 
+                          87                         5214 
+                         S2a                          S2b 
+                        3567                         4606 
+                          S3         Secretory progenitor 
+                        3081                        34665 
+               T cells CCL20                        Tregs 
+                         817                         2167 
+                  Tuft cells                       gd IEL 
+                        2489                          367 </code></pre>
+<p>Composition</p>
+<pre class="r"><code>heatmap(table(so$celltype_subset,so$celltype_SingleR2))</code></pre>
+<p><img src="figure/d_cosmxIBD.Rmd/unnamed-chunk-24-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-24-1">
+Past versions of unnamed-chunk-24-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-24-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/298e9b20a438eccdb421a0320ef206febd4e9a54/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-24-1.png" target="_blank">298e9b2</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-07-22
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/a722f3633532c1313b267999809c48b047d27fbe/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-24-1.png" target="_blank">a722f36</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2024-04-18
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/cf8a2ee50b7775199ac0db3b77a063375425ccd9/docs/figure/d_cosmxIBD.Rmd/unnamed-chunk-24-1.png" target="_blank">cf8a2ee</a>
+</td>
+<td>
+Sarah Williams
+</td>
+<td>
+2024-03-08
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div id="save-data" class="section level1">
+<h1>Save data</h1>
+<pre class="r"><code>saveRDS(so, seurat_file_01_loaded)</code></pre>
+<div id="refs" class="references csl-bib-body hanging-indent"
+entry-spacing="0">
+<div id="ref-garrido-trigoMacrophageNeutrophilHeterogeneity2023"
+class="csl-entry">
+Garrido-Trigo, Alba, Ana M. Corraliza, Marisol Veny, Isabella Dotti,
+Elisa Melón-Ardanaz, Aina Rill, Helena L. Crowell, et al. 2023.
+<span>“Macrophage and Neutrophil Heterogeneity at Single-Cell Spatial
+Resolution in Human Inflammatory Bowel Disease.”</span> <em>Nature
+Communications</em> 14 (1): 4506. <a
+href="https://doi.org/10.1038/s41467-023-40156-6">https://doi.org/10.1038/s41467-023-40156-6</a>.
+</div>
+</div>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.6.1 (2026-06-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 26.04.1 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
+
+locale:
+ [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8    
+ [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
+ [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Etc/UTC
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices datasets  utils     methods   base     
+
+other attached packages:
+ [1] data.table_1.18.6.1 lubridate_1.9.5     forcats_1.0.1      
+ [4] stringr_1.6.0       dplyr_1.2.1         purrr_1.2.2        
+ [7] readr_2.2.0         tidyr_1.3.2         tibble_3.3.1       
+[10] ggplot2_4.0.3       tidyverse_2.0.0     Seurat_5.5.1       
+[13] SeuratObject_5.4.0  sp_2.2-4            workflowr_1.7.2    
+
+loaded via a namespace (and not attached):
+  [1] RColorBrewer_1.1-3     rstudioapi_0.19.0      jsonlite_2.0.0        
+  [4] magrittr_2.0.5         spatstat.utils_3.2-5   farver_2.1.2          
+  [7] rmarkdown_2.32         fs_2.1.0               vctrs_0.7.3           
+ [10] ROCR_1.0-12            spatstat.explore_3.8-3 htmltools_0.5.9       
+ [13] sass_0.4.10            sctransform_0.4.3      parallelly_1.48.0     
+ [16] KernSmooth_2.23-26     bslib_0.12.0           htmlwidgets_1.6.4     
+ [19] ica_1.0-3              plyr_1.8.9             plotly_4.12.1         
+ [22] zoo_1.9-0              cachem_1.1.0           whisker_0.4.1         
+ [25] igraph_2.3.3           mime_0.13              lifecycle_1.0.5       
+ [28] pkgconfig_2.0.3        Matrix_1.7-5           R6_2.6.1              
+ [31] fastmap_1.2.0          fitdistrplus_1.2-6     future_1.75.0         
+ [34] shiny_1.14.0           digest_0.6.39          patchwork_1.3.2       
+ [37] ps_1.9.3               rprojroot_2.1.1        tensor_1.5.1          
+ [40] RSpectra_0.16-2        irlba_2.3.7            labeling_0.4.3        
+ [43] progressr_1.0.0        timechange_0.4.0       spatstat.sparse_3.2-0 
+ [46] httr_1.4.9             polyclip_1.10-7        abind_1.4-8           
+ [49] compiler_4.6.1         bit64_4.8.6            withr_3.0.3           
+ [52] S7_0.2.2               fastDummies_1.7.6      MASS_7.3-65           
+ [55] tools_4.6.1            lmtest_0.9-40          otel_0.2.0            
+ [58] httpuv_1.6.17          future.apply_1.20.2    goftest_1.2-3         
+ [61] glue_1.8.1             callr_3.8.0            nlme_3.1-169          
+ [64] promises_1.5.0         grid_4.6.1             Rtsne_0.17            
+ [67] getPass_0.2-4          cluster_2.1.8.2        reshape2_1.4.5        
+ [70] generics_0.1.4         gtable_0.3.6           spatstat.data_3.1-9   
+ [73] tzdb_0.5.0             hms_1.1.4              spatstat.geom_3.8-3   
+ [76] RcppAnnoy_0.0.23       ggrepel_0.9.8          RANN_2.6.3            
+ [79] pillar_1.11.1          vroom_1.7.1            spam_2.11-4           
+ [82] RcppHNSW_0.7.0         later_1.4.8            splines_4.6.1         
+ [85] lattice_0.22-9         bit_4.6.0              renv_1.2.4            
+ [88] survival_3.8-6         deldir_2.0-4           tidyselect_1.2.1      
+ [91] miniUI_0.1.2           pbapply_1.7-5          knitr_1.52            
+ [94] git2r_0.36.2           gridExtra_2.3.1        scattermore_1.2       
+ [97] xfun_0.61              matrixStats_1.5.0      stringi_1.8.9         
+[100] yaml_2.3.12            evaluate_1.0.5         codetools_0.2-20      
+[103] BiocManager_1.30.27    cli_3.6.6              uwot_0.2.5            
+[106] xtable_1.8-8           reticulate_1.47.0      processx_3.9.0        
+[109] jquerylib_0.1.4        dichromat_2.0-1        Rcpp_1.1.2            
+[112] globals_0.19.1         spatstat.random_3.5-2  png_0.1-9             
+[115] spatstat.univar_3.2-0  parallel_4.6.1         dotCall64_1.2         
+[118] listenv_1.0.0          viridisLite_0.4.3      scales_1.4.0          
+[121] ggridges_0.5.7         crayon_1.5.3           rlang_1.3.0           
+[124] cowplot_1.2.0         </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
