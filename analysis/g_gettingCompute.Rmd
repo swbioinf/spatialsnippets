@@ -115,6 +115,8 @@ Check out the
 
 https://bookdown.org/guokai8/mastering-r-through-errors/docs/installation-environment.html#debugging-installation-issues
 
+And if using renv: https://www.r-bloggers.com/2024/05/things-that-can-go-wrong-when-using-renv/
+
 
 
 

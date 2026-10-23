@@ -117,7 +117,7 @@ This code will load each slide/sample individually, then merge together. Note th
 
 ```{r eval=FALSE}
 # This is a long running step, and was actually run via d_cosmxIBD_reload.R 
-# Code copied here for clarity.
+# Code copied here for clarity. 
 
 load_sample_into_seurat <- function(the_sample){
 
@@ -296,7 +296,7 @@ ggplot(so.raw@meta.data, aes(y=avg_neg, x=nCount_RNA)) +
 From paper: _"Cells with an average negative control count greater than 0.5 and less than 20 detected features were filtered out."_
 
 Also remove cell with no cell type annotations.
-```{r}
+```{r eval=FALSE}
 ###so.raw <- JoinLayers(so.raw)
 so <- so.raw[ ,so.raw$nCount_RNA >= min_count_per_cell &
                so.raw$avg_neg <= max_avg_neg &
@@ -349,7 +349,7 @@ so <- FindClusters(so)
 ### Sample
 
 ```{r}
-DimPlot(so, group.by = 'orig.ident')
+DimPlot(so, group.by = 'tissue_sample')
 ```
 
 

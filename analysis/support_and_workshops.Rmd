@@ -1,0 +1,34 @@
+---
+title: "Workshops and further support"
+output:
+  workflowr::wflow_html:
+    toc: false
+editor_options:
+  chunk_output_type: console
+---
+
+
+
+
+
+
+
+
+[![qcif logo](assets/qcif_logo.png){width=29%}](https://www.qcif.edu.au/) [![biocommons logo](assets/Australian-Biocommons-Logo.png){width=29%}](https://www.biocommons.org.au/) [![griffith logo](assets/griffith_logo.png){width=29%}](https://www.griffith.edu.au/research/health/central-facility-genomics)
+
+
+
+
+
+Hands on workshops
+
+
+
+https://www.biocommons.org.au/webinars-workshops
+
+
+
+
+
+Direct support
+
