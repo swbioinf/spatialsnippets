@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Sarah Williams" />
+
+
+<title>Getting Compute</title>
+
+<script src="site_libs/header-attrs-2.32/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-P3P13KEPZW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-P3P13KEPZW');
+</script>
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/main/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Spatial Sampler</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Tests</a>
+</li>
+<li>
+  <a href="index_data.html">Data</a>
+</li>
+<li>
+  <a href="contributing.html">Contributing</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/swbioinf/spatialsnippets">
+    <span class="fab fa-github"></span>
+     
+    Source code
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Getting Compute</h1>
+<h4 class="author">Sarah Williams</h4>
+
+</div>
+
+
+<p>Spatial transcriptomics analyses tend have moderate computational
+needs and a high degree of interactivity. They can need more ram that is
+available on a typical laptop or desktop computer, and the continuous
+need to check and evaluate results makes them ill suited to traditional
+HPC. A shared managed R server may be available in
+bioinformatics-focussed groups, but not every bioinformatician has
+that.</p>
+<p>This document outlines how an individual researcher (or group) may
+get access to a self-managed Rstudio environment, and then set it up for
+real spatial transcriptomic analyses. It assumes that you have some
+familiarity with the linux command line and R (or, a willingness to
+learn).</p>
+<p>Specifically - this is via use of the <a
+href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/"><strong>BioShell</strong></a>
+service; you can check your elegibility <a
+href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/access#eligibility">here</a></p>
+<p><a
+href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/index"><img
+src="images/bioshell_Logo.png" style="width:29.0%"
+alt="bios logo" /></a></p>
+<p>Breifly thes steps outlined are:</p>
+<ol style="list-style-type: decimal">
+<li>Apply for a bishell VM</li>
+<li>Login to VM, start rstudio</li>
+<li>Decide if R version needs to be upgraded (see <a
+href="#When-should-R-be-upgraded?">here</a>), do so only if
+required.</li>
+<li>Install system libraries</li>
+<li>Install R packages</li>
+<li>Transfer your data across</li>
+<li>Analysis!</li>
+</ol>
+<div id="getting-a-vm-with-r-and-rstudio" class="section level2">
+<h2>Getting a VM with R and Rstudio</h2>
+<p>For Australian researchers it is reccomended to apply for a
+‘bioshell’ VM . These machines are built for bioinformatics workloads
+and come with Rstudio and JupyterLab ready to run.</p>
+<p>See the extensive docs and how to apply here: <a
+href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/"
+class="uri">https://sydney-informatics-hub.github.io/BioShell-User-Guide/</a></p>
+<p>Alternatively, if you already have a nectar allocation for your
+project, you can also build your instance using the bioshell image
+(e.g. bioshell-v1.0.0)</p>
+<p>These instructions assume you’ve got a newly minted bioshell machine,
+and have successfully logged in (see bioshell docs). They may still be
+helpful if your VM is from another source.</p>
+</div>
+<div id="installing-r-packages" class="section level2">
+<h2>Installing R packages</h2>
+<div id="suggested-system-libraries" class="section level3">
+<h3>Suggested system libraries</h3>
+<p>To save time, consider installing some system libraries before trying
+to install all your R packages.</p>
+<p>System libraries can be fast effienct C libraries that R uses in the
+background to handle number crunching, file format processing, other
+programming languages or programs.</p>
+<p>Installation of system libraries needs root access (sudo), which we
+should have on our bioshell machine. Once installed, any user may use
+them.</p>
+<p>The posit website provides a command for installation of a collection
+of oft-used system libraries - a good place to start; <a
+href="https://docs.posit.co/resources/install-r.html#optional-install-system-dependencies-of-common-r-packages"
+class="uri">https://docs.posit.co/resources/install-r.html#optional-install-system-dependencies-of-common-r-packages</a></p>
+<!--
+
+``` sh
+apt install -y cmake default-jdk gdal-bin git gsfonts libabsl-dev libcairo2-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libgdal-dev libgeos-dev libgl1-mesa-dev libglpk-dev libglu1-mesa-dev libharfbuzz-dev libicu-dev libjpeg-dev libmagick++-dev libmysqlclient-dev libnode-dev libpng-dev libpoppler-cpp-dev libproj-dev libprotobuf-dev libprotoc-dev libsodium-dev libsqlite3-dev libssh2-1-dev libssl-dev libtiff-dev libudunits2-dev libuv1-dev libwebp-dev libx11-dev libxml2-dev make poppler-data protobuf-compiler python3 tcl texlive tk tk-dev tk-table unixodbc-dev zlib1g-dev
+```
+-->
+<p>Some futher installs that are helpful for spatial analyses;</p>
+<pre class="sh"><code></code></pre>
+</div>
+<div id="installing-r-packages-1" class="section level3">
+<h3>Installing R packages</h3>
+<p>Next, you’ll want to install some R packages. Some typical examples
+for a new setup are listed below, - You’ll likely want more later!</p>
+<p>Consider use of a package manager system <a
+href="https://rstudio.github.io/renv/articles/renv.html">renv</a>,
+particularly if you’ll be working with multiple projects.</p>
+<p>These’s installations will takes some time to run (by default they’ll
+compile from source). You might find your session stops responding or
+disconnects - just reconnect and run again if needed, the commands will
+pick up from where they left. See next section for dealing with some
+common errors.</p>
+<p>Install some R packages from CRAN;</p>
+<pre class="r"><code>install.packages ( c(
+  &quot;BiocManager&quot;,
+  &#39;tidyverse&#39;,
+  &#39;DT&#39;,
+  &#39;patchwork&#39;,
+  &#39;ggrepel&#39;
+  ) )</code></pre>
+<p>Install some R packages from bioconductor</p>
+<pre class="r"><code>BiocManager::install(c(
+  &#39;alabaster.sfe&#39;, 
+  &#39;SpatialExperiment&#39;,
+  &#39;scuttle&#39;,
+  &#39;scater&#39;,
+  &#39;limma&#39;,
+  &#39;edgeR&#39;,
+  &#39;BiocParallel&#39;,
+  &#39;Voyager&#39;
+))</code></pre>
+<p>Install a few things from github.</p>
+<pre class="r"><code>devtools::install_github(&quot;immunogenomics/presto&quot;) # Dramatic speed up of certain operations in Seurat.</code></pre>
+</div>
+<div id="its-not-working-handling-r-package-install-errors"
+class="section level3">
+<h3>Its not working! Handling R package install errors</h3>
+<p>If you get an error in install, it is often due to a dependancy of a
+package you need, not the package itself. It can be helpful to look for
+a message like <em>‘depencancy ’x’ was not installed’</em>. Try to
+install package ‘x’ on its own - you’ll get to the error much quicker
+and can fix it!</p>
+<p>Some common problems:</p>
+<ul>
+<li><strong>Package not available</strong> : ’ <em>package ‘XYZ’ is not
+available for this version of R</em>
+<ul>
+<li>Typo in package name</li>
+<li>This is a bioconductor package, and you’re trying to install it with
+‘install.packages()’. Use BiocManager()</li>
+<li>This is a bioconductor package, but it is too new to be on the
+bioconductor release you are using (which in term is limited to your R
+version - see <a href="#When-should-R-be-upgraded?">here</a>. On your
+packages’s bioconductor page (<a
+href="https://bioconductor.org/packages/3.23/bioc/html/alabaster.sce.html">example</a>)
+you can see ‘in bioconductor since’ for the release version needed, (and
+the ‘all versions’ link for finding out what version was availble for
+previous bioconductor releases.</li>
+<li>This package isn’t in CRAN or bioconductor - Typically you’ll
+install these directly from a github repo with devtools (see above)</li>
+</ul></li>
+<li><strong>Missing system library</strong> : Typically this error will
+offer up ‘apt install’ command or name of a system library that is
+needed. Sometimes it doesn’t, and you’ll need to search online for what
+you do need to install.</li>
+<li><strong>System library configuration issue</strong>: Some packages
+need further configuration before they work, consult installation
+instructions for those libraries (e.g. rJava)</li>
+</ul>
+<p>For further infomation on R installation errors * <a
+href="Installation%20issues">Mastering R Through Errors and
+Warnings</a><em>(<a
+href="https://bookdown.org/guokai8/mastering-r-through-errors/docs/installation-environment.html#debugging-installation-issues"
+class="uri">https://bookdown.org/guokai8/mastering-r-through-errors/docs/installation-environment.html#debugging-installation-issues</a>)
+</em> <a
+href="https://www.r-bloggers.com/2024/05/things-that-can-go-wrong-when-using-renv/">Things
+that can go wrong when using renv</a></p>
+</div>
+</div>
+<div id="a-note-on-r-versions" class="section level2">
+<h2>A note on R versions</h2>
+<div id="when-should-r-be-upgraded" class="section level3">
+<h3>When should R be upgraded?</h3>
+<p>Ideally, you won’t need to update R. The bioshell VMs come with a
+pre-configured R installation ready to go.</p>
+<p>However - issues may arise when you need to use ‘bleeding edge’
+bioconductor packages.</p>
+<p>Bioconductor has a 6-monthly release cycle, and strict versioning
+requirements. Each bioconductor version has a minimum R requirement -
+and for the very latests this could be less than what is on
+bioshell!</p>
+<p>If you need to work with packages (or versions of those packages)
+that are only available in a more recent bioconductor release than runs
+on your R version, then you might consider upgrading your R version.</p>
+<p>See <a
+href="https://bioconductor.org/about/release-announcements/">Bioconductor
+release announcements</a></p>
+</div>
+<div id="upgrading-r" class="section level3">
+<h3>Upgrading R</h3>
+<div id="the-easy-way-with-shelley" class="section level4">
+<h4>The easy way with shelley</h4>
+<p>On the command line, list the R versions that shelley knows
+about.</p>
+<pre class="sh"><code>shelley find R</code></pre>
+<p>If the version you need is there, install it!</p>
+<pre class="sh"><code>shelley build r</code></pre>
+<p>Restart your rstudio server, and see what version of R it is using.
+You may still need to update your system R to the freshly installed
+version.</p>
+</div>
+<div id="the-hard-way---by-hand" class="section level4">
+<h4>The hard way - by ‘hand’</h4>
+<p>Shelley searches galaxy singularity repositories to find the latest
+packaged version of R. Sometimes, there are more recent versions of R in
+use.</p>
+<p>Because you shoudl have full rights to these VMs, its still possible
+to update to a later R version in a ‘standard’ way, but its alot more
+work.</p>
+<p><strong>Step 1 Determine </strong></p>
+<pre class="sh"><code># check ubuntu version to grabe the right command (others might install fine then give librayy.so errors!)
+cat /etc/os-release
+
+export R_VERSION=4.6.1
+curl -O https://cdn.posit.co/r/ubuntu-2604/pkgs/r-${R_VERSION}_1_$(dpkg --print-architecture).deb
+sudo apt-get update
+sudo apt-get install ./r-${R_VERSION}_1_$(dpkg --print-architecture).deb</code></pre>
+<p>Now we have a new version of R installed. The old version is still
+there.</p>
+<p>For whatever reason, all the docs seem to assume that the system R is
+in /usr/local/bin/, but on this server, i is in /usr/bin.</p>
+<pre class="sh"><code>cd /usr/bin
+
+# Keep the old R links around just in case
+sudo mv R Roldsymlink
+sudo mv Rscript Rscriptoldsymlink
+
+# Remake them, but this time to R 4.6.1
+cd /usr/bin
+sudo ln -s /opt/R/${R_VERSION}/bin/R R
+sudo ln -s /opt/R/${R_VERSION}/bin/Rscript Rscript
+
+#Stop and restart rstudio server
+module load rstudio
+sudo rstudio-server stop
+sudo rstudio-server start
+</code></pre>
+</div>
+</div>
+<div id="update-biocmanager" class="section level3">
+<h3>Update biocmanager</h3>
+<p>After the R version update - dupdate to the bioconductor version you
+need and reinstall all R packages.</p>
+<pre class="r"><code>BiocManager::install(version = &quot;3.23&quot;)</code></pre>
+</div>
+</div>
+<div id="getting-the-data-there-and-back-again" class="section level2">
+<h2>Getting the data there (and back again)</h2>
+<p>Perhaps the simplest way to trasnfer your data is to use SFTP via a
+tool like <a href="https://filezilla-project.org/">filezilla</a>
+(client).</p>
+<p>You can add a site with your server IP address, the ‘SFTP’ protocol,
+and your username and password, then transfer data via the graphical
+interface.</p>
+<p>More information about transfering data to your bioshell machine is
+here: <a
+href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/globus-howto"
+class="uri">https://sydney-informatics-hub.github.io/BioShell-User-Guide/globus-howto</a></p>
+<!-- ### Example datasets -->
+<!-- ```{sh eval=FALSE} -->
+<!-- mkdir data -->
+<!-- cd data -->
+<!-- #wget --content-disposition "https://filesender.aarnet.edu.au/download.php?token=378da83e-7c11-40d8-a90c-eddb5da9c109&files_ids=29832957" -->
+<!-- # wget <nectar object store link> -->
+<!-- tar -xzf GSE234713_CosMx_IBD_sfe_03_banksyniche.tar.gz -->
+<!-- ``` -->
+<p>Happy analysis - May your data be clean and your sample sizes be
+adequate!</p>
+<div id="refs">
+
+</div>
+<br>
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
+<span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+Session information
+</button>
+</p>
+<div id="workflowr-sessioninfo" class="collapse">
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 4.6.1 (2026-06-24)
+Platform: x86_64-pc-linux-gnu
+Running under: Ubuntu 26.04.1 LTS
+
+Matrix products: default
+BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
+LAPACK: /usr/lib/x86_64-linux-gnu/openblas-pthread/libopenblasp-r0.3.32.so;  LAPACK version 3.12.0
+
+locale:
+ [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8    
+ [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
+ [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+
+time zone: Etc/UTC
+tzcode source: system (glibc)
+
+attached base packages:
+[1] stats     graphics  grDevices datasets  utils     methods   base     
+
+other attached packages:
+[1] workflowr_1.7.2
+
+loaded via a namespace (and not attached):
+ [1] jsonlite_2.0.0      compiler_4.6.1      BiocManager_1.30.27
+ [4] renv_1.2.4          promises_1.5.0      Rcpp_1.1.2         
+ [7] stringr_1.6.0       git2r_0.36.2        callr_3.8.0        
+[10] later_1.4.8         jquerylib_0.1.4     yaml_2.3.12        
+[13] fastmap_1.2.0       R6_2.6.1            knitr_1.52         
+[16] tibble_3.3.1        rprojroot_2.1.1     bslib_0.12.0       
+[19] pillar_1.11.1       rlang_1.3.0         cachem_1.1.0       
+[22] stringi_1.8.9       httpuv_1.6.17       xfun_0.61          
+[25] getPass_0.2-4       fs_2.1.0            sass_0.4.10        
+[28] otel_0.2.0          cli_3.6.6           magrittr_2.0.5     
+[31] ps_1.9.3            digest_0.6.39       processx_3.9.0     
+[34] rstudioapi_0.19.0   lifecycle_1.0.5     vctrs_0.7.3        
+[37] evaluate_1.0.5      glue_1.8.1          whisker_0.4.1      
+[40] rmarkdown_2.32      httr_1.4.9          tools_4.6.1        
+[43] pkgconfig_2.0.3     htmltools_0.5.9    </code></pre>
+</div>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+https://docs.mathjax.org/en/latest/web/configuration.html. This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
