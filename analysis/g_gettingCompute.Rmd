@@ -23,7 +23,7 @@ This document outlines how an individual researcher (or group) may get access to
 
 Specifically - this is via use of the [**BioShell**](https://sydney-informatics-hub.github.io/BioShell-User-Guide/) service; you can check your elegibility [here](https://sydney-informatics-hub.github.io/BioShell-User-Guide/access#eligibility)
 
-[![bios logo](images/bioshell_Logo.png){width=29%}](https://sydney-informatics-hub.github.io/BioShell-User-Guide/index)
+[![bios logo](assets/bioshell_Logo.png){width=29%}](https://sydney-informatics-hub.github.io/BioShell-User-Guide/index)
 
 
 Breifly thes steps outlined are:
@@ -74,6 +74,23 @@ Some futher installs that are helpful for spatial analyses;
 
 ```{sh eval=FALSE}
 
+# for fs package
+sudo apt install libuv1-dev
+
+# Image magcik tools
+#Configuration failed to find the Magick++ library. Try installing:
+sudo apt install libmagick++-dev
+
+# Reuired for packages sf (spatial features, underlies some other packages)
+#ERROR: configuration failed for package ‘sf’
+sudo apt install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev
+
+# fftw (used by alabaster.sfe) via fftwtools
+sudo apt install libfftw3-dev libfftw3-doc
+
+# rJava
+sudo apt install default-jre
+
 ```
 
 
@@ -97,6 +114,7 @@ Install some R packages from CRAN;
 
 install.packages ( c(
   "BiocManager",
+  'remotes',
   'tidyverse',
   'DT',
   'patchwork',
@@ -124,7 +142,7 @@ BiocManager::install(c(
 Install a few things from github.
 
 ```{r eval=FALSE}
-devtools::install_github("immunogenomics/presto") # Dramatic speed up of certain operations in Seurat.
+remotes::install_github("immunogenomics/presto") # Dramatic speed up of certain operations in Seurat.
 ```
 
 
@@ -196,9 +214,12 @@ Restart your rstudio server, and see what version of R it is using. You may stil
 
 Shelley searches galaxy singularity repositories to find the latest packaged version of R. Sometimes, there are more recent versions of R in use.  
 
-Because you shoudl have full rights to these VMs, its still possible to update to a later R version in a 'standard' way, but its alot more work.
+Because you shoudl have full rights to these VMs, its still possible to update to a later R version in a 'standard' way, but its alot more work and best to have some command line and sysadmin confidence to do this.
 
-**Step 1 Determine **
+**Step 1: Install R **
+
+You'll first need to determine your OS version, and the R version you want. It is easy to get from the posit servers. See https://docs.posit.co/resources/install-r.html
+
 
 ```{sh eval=FALSE}
 # check ubuntu version to grabe the right command (others might install fine then give librayy.so errors!)
@@ -212,9 +233,15 @@ sudo apt-get install ./r-${R_VERSION}_1_$(dpkg --print-architecture).deb
 
 Now we have a new version of R installed. The old version is still there. 
 
-For whatever reason, all the docs seem to assume that the system R is in /usr/local/bin/, but on this server, i is in /usr/bin. 
+
+**Step 2: Switch system R to new version**
 
 ```{sh eval=FALSE}
+# where is my default R?
+# Do not have any R modules loaded
+which R
+
+# For whatever reason, all the docs seem to assume that the system R is in /usr/local/bin/, but on this server, i is in /usr/bin. 
 cd /usr/bin
 
 # Keep the old R links around just in case
@@ -225,19 +252,25 @@ sudo mv Rscript Rscriptoldsymlink
 cd /usr/bin
 sudo ln -s /opt/R/${R_VERSION}/bin/R R
 sudo ln -s /opt/R/${R_VERSION}/bin/Rscript Rscript
+```
 
-#Stop and restart rstudio server
+**Step 3: Restart Rstudio server**
+
+Stop and restart rstudio server
+
+```{sh eval=FALSE}
 module load rstudio
 sudo rstudio-server stop
 sudo rstudio-server start
-
 ```
 
 
-### Update biocmanager
+**Step 4: Update Bioconductor release**
 
-After the R version update - dupdate to the bioconductor version you need and reinstall all R packages.
+After the R version update, jump back into Rstudio and update the bioconductor release to the lastest: https://bioconductor.org/install/
+
 ```{r eval=FALSE}
+install.packages("BiocManager")
 BiocManager::install(version = "3.23")
 ```
 
