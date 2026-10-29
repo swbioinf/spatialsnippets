@@ -31,20 +31,20 @@ Much of this material has been developed at QCIF Digital research via support an
 
 
 
-QCIF Digital research can provide provide you with further supports in several ways. These services are available to all, but are subsidised for QCIF's member organisations - you can check if you're at one of the [member organisations here](https://www.qcif.edu.au/form). As of 2026 that' includes; QUT, GU, JCU, CQU, UniSC, SCU, Bond and Malaghan
+QCIF Digital research can provide provide you with further supports in several ways. These services are available to all, and are subsidised for QCIF's member organisations - you can check if you're at one of the [member organisations here](https://www.qcif.edu.au/form). As of 2026 that' includes; QUT, GU, JCU, CQU, UniSC, SCU, Bond and Malaghan
 
 * [**Free Consultation Support:**](https://www.qcif.edu.au/form) Researchers and PhD students at our member universities have access to some (fully subsidised!) consultation support. If you have a question about your research at any stage of the process, get in touch!
  Go to the [form](https://www.qcif.edu.au/form) and request _'Member's support'_
 * [**Project work:**](https://www.qcif.edu.au/form) Project analysis: QCIF staff can work on a fee-for-service model, usually provided as a fractional FTE contribution over a period of time. [Enquire here](https://www.qcif.edu.au/form)
-* [**Bioinformatics Accelerator:**](https://www.qcif.edu.au/products/bioinformatics-accelerator) Additionally QCIF provides the [Bioinformatics accelerator](https://www.qcif.edu.au/products/bioinformatics-accelerator) program - one-on-one project guidance and expert advice for PhD students and researchers who are picking up a new bioinformatics analysis skillset, including spatial and single cell analyses! Partly subsidised for member universities and organisations; [program details here](https://www.qcif.edu.au/products/bioinformatics-accelerator), [apply here](https://comms3528.wixforms.com/f/7480822400074908698) .
+* [**Bioinformatics Accelerator:**](https://www.qcif.edu.au/products/bioinformatics-accelerator) Additionally QCIF provides the [Bioinformatics accelerator](https://www.qcif.edu.au/products/bioinformatics-accelerator) program - one-on-one project guidance and expert advice for PhD students and researchers who are picking up a new bioinformatics analysis skillset, including spatial and single cell analyses! [Program details here](https://www.qcif.edu.au/products/bioinformatics-accelerator), [apply here](https://comms3528.wixforms.com/f/7480822400074908698) .
 * [**Grant application support**](https://www.qcif.edu.au/form)
 
 
 
 Extensive collaboration from the University of Sydney's Sydney Informatics Hub (SIH) has also enabled training - material development and delivery, and streamlined compute environments via bioshell.
 
-* [Bioshell project](https://sydney-informatics-hub.github.io/BioShell-User-Guide/index): Compute environments for training and bioinformatics analysis.
-* [Get in touch with SIH here](https://www.sydney.edu.au/research/facilities/sydney-informatics-hub.html)
+* [**Bioshell**](https://sydney-informatics-hub.github.io/BioShell-User-Guide/index): Compute environments for training and bioinformatics analysis.
+* [**SIH contact**](https://www.sydney.edu.au/research/facilities/sydney-informatics-hub.html)
 
 
 
