@@ -15,43 +15,85 @@ bibliography: /home/s.williams/zotero_export/MyLibrary.bib
 ---
 
 
+Spatial transcriptomics analyses tend have moderate computational needs and a high degree of interactivity. They can need more ram that is available on a typical laptop or desktop computer, and the continuous need to check and evaluate results makes them ill suited to traditional HPC. A shared managed R server may be available in bioinformatics-focussed groups, but not every bioinformatician has that.
+
+
+This document outlines how an individual researcher (or group) may get access to a self-managed Rstudio environment, and then set it up for real spatial transcriptomic analyses. It assumes that you have some familiarity with the linux command line and R (or, a willingness to learn). 
+
+
+Specifically - this is via use of the [**BioShell**](https://sydney-informatics-hub.github.io/BioShell-User-Guide/) service; you can check your elegibility [here](https://sydney-informatics-hub.github.io/BioShell-User-Guide/access#eligibility)
+
+[![bios logo](images/bioshell_Logo.png){width=29%}](https://sydney-informatics-hub.github.io/BioShell-User-Guide/index)
+
+
+Breifly thes steps outlined are:
+
+1) Apply for a bishell VM
+2) Login to VM, start rstudio
+3) Decide if R version needs to be upgraded (see [here](#When-should-R-be-upgraded?)), do so only if required.
+4) Install system libraries
+5) Install R packages
+6) Transfer your data across
+7) Analysis!
+
+
+
 
 ## Getting a VM with R and Rstudio
 
+For Australian researchers it is reccomended to apply for a 'bioshell' VM . These machines are built for bioinformatics workloads and come with Rstudio and JupyterLab ready to run.
 
+See the extensive docs and how to apply here: https://sydney-informatics-hub.github.io/BioShell-User-Guide/
+
+Alternatively, if you already have a nectar allocation for your project, you can also build your instance using the bioshell image (e.g. bioshell-v1.0.0)
+
+These instructions assume you've got a newly minted bioshell machine, and have successfully logged in (see bioshell docs). They may still be helpful if your VM is from another source. 
 
 
 ## Installing R packages
 
 
-These can be fast effienct C libraries that R uses in the background to handle number crunching, file format processing, other programming languages or programs. 
-
-
-
 ### Suggested system libraries
 
 
-To save time, consider installing the following before trying to install R packages
+To save time, consider installing some system libraries before trying to install all your R packages.
+
+System libraries can be fast effienct C libraries that R uses in the background to handle number crunching, file format processing, other programming languages or programs. 
+
+Installation of system libraries needs root access (sudo), which we should have on our bioshell machine. Once installed, any user may use them.
+
+The posit website provides a command for installation of a collection of oft-used system libraries - a good place to start; https://docs.posit.co/resources/install-r.html#optional-install-system-dependencies-of-common-r-packages
+
+<!--
+```{sh eval=FALSE}
+apt install -y cmake default-jdk gdal-bin git gsfonts libabsl-dev libcairo2-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libgdal-dev libgeos-dev libgl1-mesa-dev libglpk-dev libglu1-mesa-dev libharfbuzz-dev libicu-dev libjpeg-dev libmagick++-dev libmysqlclient-dev libnode-dev libpng-dev libpoppler-cpp-dev libproj-dev libprotobuf-dev libprotoc-dev libsodium-dev libsqlite3-dev libssh2-1-dev libssl-dev libtiff-dev libudunits2-dev libuv1-dev libwebp-dev libx11-dev libxml2-dev make poppler-data protobuf-compiler python3 tcl texlive tk tk-dev tk-table unixodbc-dev zlib1g-dev
+```
+--> 
+
+Some futher installs that are helpful for spatial analyses;
 
 ```{sh eval=FALSE}
-
 
 ```
 
 
+
+
+
+
 ### Installing R packages
 
+Next, you'll want to install some R packages. Some typical examples for a new setup are listed below, - You'll likely want more later! 
 
-Suggested package installs for a new setup - You'll likely want more later!
+Consider use of a package manager system [renv](https://rstudio.github.io/renv/articles/renv.html), particularly if you'll be working with multiple projects.
 
-These's installations will takes some time to run (by default they'll compile from source).
+These's installations will takes some time to run (by default they'll compile from source). You might find your session stops responding or disconnects - just reconnect and run again if needed, the commands will pick up from where they left. See next section for dealing with some common errors.
 
- * Might stop respongind - just reconnect if needed, the command can be rerun and will pcik up from where it left.
- * Might throw some errors - see next section;
+
 
 Install some R packages from CRAN;
 
-```{r}
+```{r eval=FALSE}
 
 install.packages ( c(
   "BiocManager",
@@ -66,7 +108,7 @@ install.packages ( c(
 
 Install some R packages from bioconductor
 
-```{r}
+```{r eval=FALSE}
 BiocManager::install(c(
   'alabaster.sfe', 
   'SpatialExperiment',
@@ -79,103 +121,87 @@ BiocManager::install(c(
 ))
 ```
 
-
-
 Install a few things from github.
 
-```{r}
+```{r eval=FALSE}
 devtools::install_github("immunogenomics/presto") # Dramatic speed up of certain operations in Seurat.
 ```
-
-
-
 
 
 
 ### Its not working! Handling R package install errors
 
 
-
-If you get an error in install
-
-
-Look for 'depencancy 'x' was not installed. Try to install package 'x' on its own - you'll get the error much quicker and can fix it. 
+If you get an error in install, it is often due to a dependancy of a package you need, not the package itself. It can be helpful to look for a message like  *'depencancy 'x' was not installed'*. Try to install package 'x' on its own - you'll get to the error much quicker and can fix it! 
 
 
-Issues
+Some common problems:
 
-* Missing system library
-* System library configuration issue (e.g. rJava)
-* Its a bioconductor package (install.packages can't see it)
-* Its not in CRAN either - install from a github repo
-* The package you want is on a newer version of bioconductor. 
-
-
-Check out the 
-
-https://bookdown.org/guokai8/mastering-r-through-errors/docs/installation-environment.html#debugging-installation-issues
-
-And if using renv: https://www.r-bloggers.com/2024/05/things-that-can-go-wrong-when-using-renv/
+* **Package not available** : ' _package ‘XYZ’ is not available for this version of R_
+    * Typo in package name
+    * This is a bioconductor package, and you're trying to install it with 'install.packages()'. Use BiocManager()
+    * This is a bioconductor package, but it is too new to be on the bioconductor release you are using (which in term is limited to your R version - see [here](#When-should-R-be-upgraded?). 
+    On your packages's bioconductor page ([example](https://bioconductor.org/packages/3.23/bioc/html/alabaster.sce.html)) you can see 'in bioconductor since' for the release version needed, (and the 'all versions' link for finding out what version was availble for previous bioconductor releases.
+    * This package isn't in CRAN or bioconductor - Typically you'll install these directly from a github repo with devtools (see above)
+* **Missing system library** : Typically this error will offer up 'apt install' command or name of a system library that is needed. Sometimes it doesn't, and you'll need to search online for what you do need to install.
+* **System library configuration issue**: Some packages need further configuration before they work, consult installation instructions for those libraries (e.g. rJava)
 
 
+For further infomation on R installation errors
+* [Mastering R Through Errors and Warnings](Installation issues)*(https://bookdown.org/guokai8/mastering-r-through-errors/docs/installation-environment.html#debugging-installation-issues)
+* [Things that can go wrong when using renv](https://www.r-bloggers.com/2024/05/things-that-can-go-wrong-when-using-renv/)
 
 
+## A note on R versions
 
 
+### When should R be upgraded?
+
+Ideally, you won't need to update R. The bioshell VMs come with a pre-configured R installation ready to go. 
 
 
+However - issues may arise when you need to use 'bleeding edge' bioconductor packages. 
 
-```
-...
-Error: package ‘SpatialFeatureExperiment’ 1.4.0 was found, but >= 1.9.3 is required by ‘alabaster.sfe’
-Execution halted
-....
-```
-I am installing alabaster.sfe form github, which expects the latest version of SpatialFeatureExperiment
+Bioconductor has a 6-monthly release cycle, and strict versioning requirements. Each bioconductor version has a minimum R requirement - and for the very latests this could be less than what is on bioshell!
 
+If you need to work with packages (or versions of those packages) that are only available in a more recent bioconductor release than runs on your R version, then you might consider upgrading your R version.
 
+See [Bioconductor release announcements](https://bioconductor.org/about/release-announcements/)
 
 
 ### Upgrading R
 
-Bioconductor has a 6-monthly release cycle, and strict versioning requirements. Each bioconductor version has a minimum R requirement - and for the very latests this could be less than what is on bioshell!
-
-If you want to work with packages (or versions) only available in 
-
-
-|Release |	Date 	        |  	R  |
-|------|------------------|------|
-| 3.23 | April 29, 2026   |  4.6 |
-| 3.22 | October 30, 2025 |  4.5 |
-| 3.21 | April 16, 2025   |  4.5 |
-| 3.2  | October 30, 2024 |  4.4 |
-| 3.19 | May 1, 2024      |  4.4 |
-| 3.18 | October 25, 2023 |  4.3 |
-
-
 
 #### The easy way with shelley
 
+
+On the command line, list the R versions that shelley knows about.  
+
 ```{sh eval=FALSE}
- shelley build r/4.6.1
+shelley find R
 ```
 
+
+If the version you need is there, install it! 
+
+```{sh eval=FALSE}
+shelley build r
+```
+
+
+Restart your rstudio server, and see what version of R it is using. You may still need to update your system R to the freshly installed version.
 
 
 #### The hard way - by 'hand'
 
-Shelley searches galaxy singularity repositories to find the latest packaged version of R. Sometimes, there are more recent versions of R in use.  And occassionally, you will need to use bleeding edge packages that require that later version of R than is curreently found in bioshelley.
+Shelley searches galaxy singularity repositories to find the latest packaged version of R. Sometimes, there are more recent versions of R in use.  
 
-This can happen with bioconductor's hard versioned 6-monthly release cycle.
-
-Because you shoudl have full rights to these VMs, its still possible to update to a later R version in a 'standard' way.
-
-
+Because you shoudl have full rights to these VMs, its still possible to update to a later R version in a 'standard' way, but its alot more work.
 
 **Step 1 Determine **
 
 ```{sh eval=FALSE}
-# check ubuntu version t0 grabe the right command (others might install fine then give librayy.so errors.)
+# check ubuntu version to grabe the right command (others might install fine then give librayy.so errors!)
 cat /etc/os-release
 
 export R_VERSION=4.6.1
@@ -188,10 +214,9 @@ Now we have a new version of R installed. The old version is still there.
 
 For whatever reason, all the docs seem to assume that the system R is in /usr/local/bin/, but on this server, i is in /usr/bin. 
 
-
-
-```{sh}
+```{sh eval=FALSE}
 cd /usr/bin
+
 # Keep the old R links around just in case
 sudo mv R Roldsymlink
 sudo mv Rscript Rscriptoldsymlink
@@ -209,55 +234,36 @@ sudo rstudio-server start
 ```
 
 
-## Update biocmanager
+### Update biocmanager
 
-After the R version update - reinstall all packages.
+After the R version update - dupdate to the bioconductor version you need and reinstall all R packages.
 ```{r eval=FALSE}
 BiocManager::install(version = "3.23")
-
-BiocManager::install('alabaster.sfe')
-BiocManager::install('alabaster.bumpy')
-
 ```
 
 
 
+## Getting the data there (and back again)
 
 
+Perhaps the simplest way to trasnfer your data is to use SFTP via a tool like [filezilla](https://filezilla-project.org/) (client). 
+
+You can add a site with your server IP address, the 'SFTP' protocol, and your username and password, then transfer data via the graphical interface.
+
+More information about transfering data to your bioshell machine is here: https://sydney-informatics-hub.github.io/BioShell-User-Guide/globus-howto
 
 
+<!-- ### Example datasets -->
 
+<!-- ```{sh eval=FALSE} -->
+<!-- mkdir data -->
+<!-- cd data -->
+<!-- #wget --content-disposition "https://filesender.aarnet.edu.au/download.php?token=378da83e-7c11-40d8-a90c-eddb5da9c109&files_ids=29832957" -->
+<!-- # wget <nectar object store link> -->
+<!-- tar -xzf GSE234713_CosMx_IBD_sfe_03_banksyniche.tar.gz -->
+<!-- ``` -->
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Getting the data there.
-
-
-### Example datasets
-
-
-
-```{sh eval=FALSE}
-mkdir data
-cd data
-#wget --content-disposition "https://filesender.aarnet.edu.au/download.php?token=378da83e-7c11-40d8-a90c-eddb5da9c109&files_ids=29832957"
-# wget <nectar object store link>
-tar -xzf GSE234713_CosMx_IBD_sfe_03_banksyniche.tar.gz
-```
+Happy analysis - May your data be clean and your sample sizes be adequate!
 
 
 
