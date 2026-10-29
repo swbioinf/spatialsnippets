@@ -419,7 +419,7 @@ service; you can check your elegibility <a
 href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/access#eligibility">here</a></p>
 <p><a
 href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/index"><img
-src="images/bioshell_Logo.png" style="width:29.0%"
+src="assets/bioshell_Logo.png" style="width:29.0%"
 alt="bios logo" /></a></p>
 <p>Breifly thes steps outlined are:</p>
 <ol style="list-style-type: decimal">
@@ -471,7 +471,24 @@ apt install -y cmake default-jdk gdal-bin git gsfonts libabsl-dev libcairo2-dev 
 ```
 -->
 <p>Some futher installs that are helpful for spatial analyses;</p>
-<pre class="sh"><code></code></pre>
+<pre class="sh"><code>
+# for fs package
+sudo apt install libuv1-dev
+
+# Image magcik tools
+#Configuration failed to find the Magick++ library. Try installing:
+sudo apt install libmagick++-dev
+
+# Reuired for packages sf (spatial features, underlies some other packages)
+#ERROR: configuration failed for package ‘sf’
+sudo apt install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev
+
+# fftw (used by alabaster.sfe) via fftwtools
+sudo apt install libfftw3-dev libfftw3-doc
+
+# rJava
+sudo apt install default-jre
+</code></pre>
 </div>
 <div id="installing-r-packages-1" class="section level3">
 <h3>Installing R packages</h3>
@@ -488,6 +505,7 @@ common errors.</p>
 <p>Install some R packages from CRAN;</p>
 <pre class="r"><code>install.packages ( c(
   &quot;BiocManager&quot;,
+  &#39;remotes&#39;,
   &#39;tidyverse&#39;,
   &#39;DT&#39;,
   &#39;patchwork&#39;,
@@ -505,7 +523,7 @@ common errors.</p>
   &#39;Voyager&#39;
 ))</code></pre>
 <p>Install a few things from github.</p>
-<pre class="r"><code>devtools::install_github(&quot;immunogenomics/presto&quot;) # Dramatic speed up of certain operations in Seurat.</code></pre>
+<pre class="r"><code>remotes::install_github(&quot;immunogenomics/presto&quot;) # Dramatic speed up of certain operations in Seurat.</code></pre>
 </div>
 <div id="its-not-working-handling-r-package-install-errors"
 class="section level3">
@@ -591,8 +609,13 @@ packaged version of R. Sometimes, there are more recent versions of R in
 use.</p>
 <p>Because you shoudl have full rights to these VMs, its still possible
 to update to a later R version in a ‘standard’ way, but its alot more
-work.</p>
-<p><strong>Step 1 Determine </strong></p>
+work and best to have some command line and sysadmin confidence to do
+this.</p>
+<p><strong>Step 1: Install R </strong></p>
+<p>You’ll first need to determine your OS version, and the R version you
+want. It is easy to get from the posit servers. See <a
+href="https://docs.posit.co/resources/install-r.html"
+class="uri">https://docs.posit.co/resources/install-r.html</a></p>
 <pre class="sh"><code># check ubuntu version to grabe the right command (others might install fine then give librayy.so errors!)
 cat /etc/os-release
 
@@ -602,9 +625,13 @@ sudo apt-get update
 sudo apt-get install ./r-${R_VERSION}_1_$(dpkg --print-architecture).deb</code></pre>
 <p>Now we have a new version of R installed. The old version is still
 there.</p>
-<p>For whatever reason, all the docs seem to assume that the system R is
-in /usr/local/bin/, but on this server, i is in /usr/bin.</p>
-<pre class="sh"><code>cd /usr/bin
+<p><strong>Step 2: Switch system R to new version</strong></p>
+<pre class="sh"><code># where is my default R?
+# Do not have any R modules loaded
+which R
+
+# For whatever reason, all the docs seem to assume that the system R is in /usr/local/bin/, but on this server, i is in /usr/bin. 
+cd /usr/bin
 
 # Keep the old R links around just in case
 sudo mv R Roldsymlink
@@ -613,20 +640,20 @@ sudo mv Rscript Rscriptoldsymlink
 # Remake them, but this time to R 4.6.1
 cd /usr/bin
 sudo ln -s /opt/R/${R_VERSION}/bin/R R
-sudo ln -s /opt/R/${R_VERSION}/bin/Rscript Rscript
-
-#Stop and restart rstudio server
-module load rstudio
+sudo ln -s /opt/R/${R_VERSION}/bin/Rscript Rscript</code></pre>
+<p><strong>Step 3: Restart Rstudio server</strong></p>
+<p>Stop and restart rstudio server</p>
+<pre class="sh"><code>module load rstudio
 sudo rstudio-server stop
-sudo rstudio-server start
-</code></pre>
+sudo rstudio-server start</code></pre>
+<p><strong>Step 4: Update Bioconductor release</strong></p>
+<p>After the R version update, jump back into Rstudio and update the
+bioconductor release to the lastest: <a
+href="https://bioconductor.org/install/"
+class="uri">https://bioconductor.org/install/</a></p>
+<pre class="r"><code>install.packages(&quot;BiocManager&quot;)
+BiocManager::install(version = &quot;3.23&quot;)</code></pre>
 </div>
-</div>
-<div id="update-biocmanager" class="section level3">
-<h3>Update biocmanager</h3>
-<p>After the R version update - dupdate to the bioconductor version you
-need and reinstall all R packages.</p>
-<pre class="r"><code>BiocManager::install(version = &quot;3.23&quot;)</code></pre>
 </div>
 </div>
 <div id="getting-the-data-there-and-back-again" class="section level2">
