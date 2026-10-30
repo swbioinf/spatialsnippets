@@ -43,11 +43,11 @@ More information on the source datasets, including citations and preprocessing s
 Found a problem, got a question, a request or something to add?  Log a github ticket [here](https://github.com/swbioinf/spatialsnippets/issues)
 
 
-## Contributions
-
-Main repo: https://github.com/swbioinf/spatialsnippets
+## Contributing
 
 Contributions welcome! The goal is to develop this into a community resource. 
+
+Chheck out the project repo at https://github.com/swbioinf/spatialsnippets - get in touch with a ticket.
 
 Currently the main focus is on 
 
