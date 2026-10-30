@@ -15,7 +15,7 @@ Hands on workshops are a great way to pick up spatial analysis skills in a commu
 Such workshops are regularly delivered for the Australian research community through a few different avenues. Check these links for upcoming sessions:
 
 * [**Biocommons Workshops**](https://www.biocommons.org.au/webinars-workshops): Australia-wide, covering a wide array of bioinformatics analyses, including spatial transcriptomics. Past webinars are also [available online](https://www.biocommons.org.au/past-events). These workshops are often very popular and can fill up, so registration is essential!
-* [**QCIF Digitial Research workshops**](https://www.qcif.edu.au/training-calendar): QCIF offers a regular calendar of bioinformatics, statistics, AI and programming workshops. Spatial transcriptomics and single cell transcriptomics are in the rotation. These are free for those at QCIF member organisations, others may attend for a small fee. Registration again essential!
+* [**QCIF Digitial Research workshops**](https://www.qcif.edu.au/training-calendar): QCIF offers a regular calendar of bioinformatics, statistics, AI and programming workshops. Spatial transcriptomics and single cell transcriptomics are in the rotation. Registration again essential!
 
 
 
