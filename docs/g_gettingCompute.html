@@ -369,7 +369,7 @@ div.tocify {
   <a href="index_data.html">Data</a>
 </li>
 <li>
-  <a href="contributing.html">Contributing</a>
+  <a href="support_and_workshops.html">Workshops + Support</a>
 </li>
 <li>
   <a href="about.html">About</a>
@@ -415,27 +415,28 @@ familiarity with the linux command line and R (or, a willingness to
 learn).</p>
 <p>Specifically - this is via use of the <a
 href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/"><strong>BioShell</strong></a>
-service; you can check your elegibility <a
+service; you can check your eligibility <a
 href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/access#eligibility">here</a></p>
 <p><a
 href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/index"><img
 src="assets/bioshell_Logo.png" style="width:29.0%"
 alt="bios logo" /></a></p>
-<p>Breifly thes steps outlined are:</p>
+<p>Briefly the steps outlined are:</p>
 <ol style="list-style-type: decimal">
-<li>Apply for a bishell VM</li>
-<li>Login to VM, start rstudio</li>
+<li>Apply for a bioshell VM</li>
+<li>Login to your VM</li>
+<li>Install system libraries</li>
 <li>Decide if R version needs to be upgraded (see <a
 href="#When-should-R-be-upgraded?">here</a>), do so only if
 required.</li>
-<li>Install system libraries</li>
 <li>Install R packages</li>
 <li>Transfer your data across</li>
 <li>Analysis!</li>
 </ol>
-<div id="getting-a-vm-with-r-and-rstudio" class="section level2">
-<h2>Getting a VM with R and Rstudio</h2>
-<p>For Australian researchers it is reccomended to apply for a
+<div id="apply-for-a-bioshell-vm-with-r-and-rstudio"
+class="section level2">
+<h2>Apply for a bioshell VM : with R and Rstudio</h2>
+<p>For Australian researchers it is recommended to apply for a
 ‘bioshell’ VM . These machines are built for bioinformatics workloads
 and come with Rstudio and JupyterLab ready to run.</p>
 <p>See the extensive docs and how to apply here: <a
@@ -448,13 +449,18 @@ project, you can also build your instance using the bioshell image
 and have successfully logged in (see bioshell docs). They may still be
 helpful if your VM is from another source.</p>
 </div>
-<div id="installing-r-packages" class="section level2">
-<h2>Installing R packages</h2>
-<div id="suggested-system-libraries" class="section level3">
-<h3>Suggested system libraries</h3>
+<div id="login-to-your-vm" class="section level2">
+<h2>Login to your VM</h2>
+<p>See instructions here to connect via SSH</p>
+<p><a
+href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/connecting"
+class="uri">https://sydney-informatics-hub.github.io/BioShell-User-Guide/connecting</a></p>
+</div>
+<div id="install-system-libraries" class="section level2">
+<h2>Install system libraries</h2>
 <p>To save time, consider installing some system libraries before trying
 to install all your R packages.</p>
-<p>System libraries can be fast effienct C libraries that R uses in the
+<p>System libraries can be fast efficient C libraries that R uses in the
 background to handle number crunching, file format processing, other
 programming languages or programs.</p>
 <p>Installation of system libraries needs root access (sudo), which we
@@ -464,22 +470,18 @@ them.</p>
 of oft-used system libraries - a good place to start; <a
 href="https://docs.posit.co/resources/install-r.html#optional-install-system-dependencies-of-common-r-packages"
 class="uri">https://docs.posit.co/resources/install-r.html#optional-install-system-dependencies-of-common-r-packages</a></p>
-<!--
-
-``` sh
-apt install -y cmake default-jdk gdal-bin git gsfonts libabsl-dev libcairo2-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libgdal-dev libgeos-dev libgl1-mesa-dev libglpk-dev libglu1-mesa-dev libharfbuzz-dev libicu-dev libjpeg-dev libmagick++-dev libmysqlclient-dev libnode-dev libpng-dev libpoppler-cpp-dev libproj-dev libprotobuf-dev libprotoc-dev libsodium-dev libsqlite3-dev libssh2-1-dev libssl-dev libtiff-dev libudunits2-dev libuv1-dev libwebp-dev libx11-dev libxml2-dev make poppler-data protobuf-compiler python3 tcl texlive tk tk-dev tk-table unixodbc-dev zlib1g-dev
-```
--->
-<p>Some futher installs that are helpful for spatial analyses;</p>
+<p>E.g. for the Ubuntu 22.04 in Bioshell v1 image, thats:</p>
+<pre class="sh"><code>apt install -y cmake default-jdk gdal-bin git gsfonts libabsl-dev libcairo2-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libgdal-dev libgeos-dev libgl1-mesa-dev libglpk-dev libglu1-mesa-dev libharfbuzz-dev libicu-dev libjpeg-dev libmagick++-dev libmysqlclient-dev libnode-dev libpng-dev libpoppler-cpp-dev libproj-dev libprotobuf-dev libprotoc-dev libsodium-dev libsqlite3-dev libssh2-1-dev libssl-dev libtiff-dev libudunits2-dev libuv1-dev libwebp-dev libx11-dev libxml2-dev make poppler-data protobuf-compiler python3 tcl texlive tk tk-dev tk-table unixodbc-dev zlib1g-dev</code></pre>
+<p>Some further installs that are helpful for spatial analyses;</p>
 <pre class="sh"><code>
 # for fs package
 sudo apt install libuv1-dev
 
-# Image magcik tools
+# Image magick tools
 #Configuration failed to find the Magick++ library. Try installing:
 sudo apt install libmagick++-dev
 
-# Reuired for packages sf (spatial features, underlies some other packages)
+# Required for packages sf (spatial features, underlies some other packages)
 #ERROR: configuration failed for package ‘sf’
 sudo apt install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev
 
@@ -490,14 +492,117 @@ sudo apt install libfftw3-dev libfftw3-doc
 sudo apt install default-jre
 </code></pre>
 </div>
-<div id="installing-r-packages-1" class="section level3">
-<h3>Installing R packages</h3>
-<p>Next, you’ll want to install some R packages. Some typical examples
-for a new setup are listed below, - You’ll likely want more later!</p>
-<p>Consider use of a package manager system <a
+<div id="upgrate-r-if-necessary" class="section level2">
+<h2>Upgrate R if necessary</h2>
+<div id="when-should-r-be-upgraded" class="section level3">
+<h3>When should R be upgraded?</h3>
+<p>Ideally, you won’t need to update R. The bioshell VMs come with a
+pre-configured R installation ready to go.</p>
+<p>However - issues may arise when you need to use ‘bleeding edge’
+bioconductor packages. Bioconductor has a 6-monthly release cycle, and
+strict versioning requirements. Each bioconductor version has a minimum
+R requirement - and for the very latest this could be less than what is
+on bioshell!</p>
+<p>If you need to work with packages (or versions of those packages)
+that are only available in a more recent bioconductor release than runs
+on your R version, then you might consider upgrading your R version.</p>
+<p>See <a
+href="https://bioconductor.org/about/release-announcements/">Bioconductor
+release announcements</a></p>
+<p>If you are planning to work primarily within the Seurat ecosystem,
+this might not be needed.</p>
+</div>
+<div id="upgrading-r" class="section level3">
+<h3>Upgrading R</h3>
+<p>The version of R on the bioshell image is the lastest packaged
+version of R that shelley could install. So if you need to use a newer
+version then that, it’ll have to be installed ‘by hand’.</p>
+<p>Since you should have full rights to these VMs, its still possible to
+update to a later R version in a ‘standard’ way, but its a lot more work
+and best to have some command line and sysadmin confidence to do this.
+(Or get assistance from someone who does!)</p>
+<details>
+<summary>
+Future - Upgrading R with shelley
+</summary>
+<p>In the future, it should be possible to upgrade R to a newer version
+via shelley. However, currently, the latest version that shelley has
+access to is the one installed!</p>
+<p>On the command line, list the R versions that Shelley knows
+about.</p>
+<pre class="sh"><code>  shelley find R</code></pre>
+<p>If the version you need is there, install it!</p>
+<pre class="sh"><code>  shelley build r</code></pre>
+<p>Restart your rstudio server, and see what version of R it is using.
+You may still need to update your system R to the freshly installed
+version.</p>
+</details>
+<p><strong>Step 1: Install R </strong></p>
+<p>You’ll first need to determine your OS version, and the R version you
+want. It is easy to get from the posit servers. See <a
+href="https://docs.posit.co/resources/install-r.html"
+class="uri">https://docs.posit.co/resources/install-r.html</a></p>
+<pre class="sh"><code># check ubuntu version to grab the right command (others might install fine then give library.so errors!)
+cat /etc/os-release
+
+export R_VERSION=4.6.1
+curl -O https://cdn.posit.co/r/ubuntu-2404/pkgs/r-${R_VERSION}_1_$(dpkg --print-architecture).deb
+sudo apt-get update
+sudo apt-get install ./r-${R_VERSION}_1_$(dpkg --print-architecture).deb
+</code></pre>
+<p>Now we have a new version of R installed. The old version is still
+there.</p>
+<p>Check it works by opening up an R console on the command line.</p>
+<pre class="sh"><code>/opt/R/${R_VERSION}/bin/R</code></pre>
+<p><strong>Step 2: Switch system R to new version</strong></p>
+<p>When you have multiple versions of R installed, Rstudio uses the
+‘system’ version R of R. Make the newly installed version the ‘system’
+version by replacing the R and Rscript symlinks.</p>
+<pre class="sh"><code># where is my default R?
+# Do not have any R modules loaded
+which R
+
+# For whatever reason, all the docs seem to assume that the system R is in /usr/local/bin/, but on this server, R is in /usr/bin. 
+cd /usr/bin
+
+# Keep the old R links around just in case
+sudo mv R Roldsymlink
+sudo mv Rscript Rscriptoldsymlink
+
+# Remake them, but this time to R 4.6.1
+cd /usr/bin
+sudo ln -s /opt/R/${R_VERSION}/bin/R R
+sudo ln -s /opt/R/${R_VERSION}/bin/Rscript Rscript</code></pre>
+<p><strong>Step 3: Restart Rstudio server</strong></p>
+<p>Start rstudio server - refer to the bioshell instructions here: <a
+href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/interactive"
+class="uri">https://sydney-informatics-hub.github.io/BioShell-User-Guide/interactive</a></p>
+<pre class="sh"><code>module load rstudio
+#sudo rstudio-server stop # stop it if it was already running. 
+sudo rstudio-server start</code></pre>
+<p><strong>Step 4: Update Bioconductor release</strong></p>
+<p>After the R version update, jump back into Rstudio and check what
+version of R is running.</p>
+<p>If this is a brand new install, its ready to start installing
+packages.</p>
+<p>If you’ve already been installing things on a previous R version, you
+might need to explicly update the bioconductor release version (<a
+href="https://bioconductor.org/install/"
+class="uri">https://bioconductor.org/install/</a>) and reinstall
+packages.</p>
+<pre class="r"><code>install.packages(&quot;BiocManager&quot;)
+BiocManager::install(version = &quot;3.23&quot;)</code></pre>
+</div>
+</div>
+<div id="installing-r-packages" class="section level2">
+<h2>Installing R packages</h2>
+<p>Next, you’ll want to install some R packages. Some typical
+<em>examples</em> for a new setup are listed below, you might not need
+all of them and almostly certainly will want more later!</p>
+<p>Consider use of a package manager system like <a
 href="https://rstudio.github.io/renv/articles/renv.html">renv</a>,
 particularly if you’ll be working with multiple projects.</p>
-<p>These’s installations will takes some time to run (by default they’ll
+<p>These installations will takes some time to run (by default they’ll
 compile from source). You might find your session stops responding or
 disconnects - just reconnect and run again if needed, the commands will
 pick up from where they left. See next section for dealing with some
@@ -509,30 +614,30 @@ common errors.</p>
   &#39;tidyverse&#39;,
   &#39;DT&#39;,
   &#39;patchwork&#39;,
-  &#39;ggrepel&#39;
+  &#39;ggrepel&#39;,
+  &#39;Seurat&#39;
   ) )</code></pre>
 <p>Install some R packages from bioconductor</p>
 <pre class="r"><code>BiocManager::install(c(
-  &#39;alabaster.sfe&#39;, 
   &#39;SpatialExperiment&#39;,
   &#39;scuttle&#39;,
   &#39;scater&#39;,
   &#39;limma&#39;,
   &#39;edgeR&#39;,
   &#39;BiocParallel&#39;,
-  &#39;Voyager&#39;
+  &#39;alabaster.sfe&#39;, # skip if not planning to use bioconductor pagackages on upgraded R, requires &#39;bleeding edge&#39; packages.
+  &#39;Voyager&#39;        # skip if not planning to use bioconductor pagackages on upgraded R, requires &#39;bleeding edge&#39; packages.
 ))</code></pre>
 <p>Install a few things from github.</p>
 <pre class="r"><code>remotes::install_github(&quot;immunogenomics/presto&quot;) # Dramatic speed up of certain operations in Seurat.</code></pre>
-</div>
 <div id="its-not-working-handling-r-package-install-errors"
 class="section level3">
 <h3>Its not working! Handling R package install errors</h3>
-<p>If you get an error in install, it is often due to a dependancy of a
+<p>If you get an error in install, it is often due to a dependency of a
 package you need, not the package itself. It can be helpful to look for
-a message like <em>‘depencancy ’x’ was not installed’</em>. Try to
+a message like <em>‘dependency ’x’ was not installed’</em>. Try to
 install package ‘x’ on its own - you’ll get to the error much quicker
-and can fix it!</p>
+and can fix it.</p>
 <p>Some common problems:</p>
 <ul>
 <li><strong>Package not available</strong> : ’ <em>package ‘XYZ’ is not
@@ -544,10 +649,10 @@ available for this version of R</em>
 <li>This is a bioconductor package, but it is too new to be on the
 bioconductor release you are using (which in term is limited to your R
 version - see <a href="#When-should-R-be-upgraded?">here</a>. On your
-packages’s bioconductor page (<a
+package’s bioconductor page (<a
 href="https://bioconductor.org/packages/3.23/bioc/html/alabaster.sce.html">example</a>)
 you can see ‘in bioconductor since’ for the release version needed, (and
-the ‘all versions’ link for finding out what version was availble for
+the ‘all versions’ link for finding out what version was available for
 previous bioconductor releases.</li>
 <li>This package isn’t in CRAN or bioconductor - Typically you’ll
 install these directly from a github repo with devtools (see above)</li>
@@ -560,122 +665,58 @@ you do need to install.</li>
 need further configuration before they work, consult installation
 instructions for those libraries (e.g. rJava)</li>
 </ul>
-<p>For further infomation on R installation errors * <a
-href="Installation%20issues">Mastering R Through Errors and
-Warnings</a><em>(<a
+<p>For further information on R installation errors;</p>
+<ul>
+<li><a href="Installation%20issues">Mastering R Through Errors and
+Warnings</a>*(<a
 href="https://bookdown.org/guokai8/mastering-r-through-errors/docs/installation-environment.html#debugging-installation-issues"
-class="uri">https://bookdown.org/guokai8/mastering-r-through-errors/docs/installation-environment.html#debugging-installation-issues</a>)
-</em> <a
+class="uri">https://bookdown.org/guokai8/mastering-r-through-errors/docs/installation-environment.html#debugging-installation-issues</a>)</li>
+<li><a
 href="https://www.r-bloggers.com/2024/05/things-that-can-go-wrong-when-using-renv/">Things
-that can go wrong when using renv</a></p>
+that can go wrong when using renv</a></li>
+</ul>
 </div>
 </div>
-<div id="a-note-on-r-versions" class="section level2">
-<h2>A note on R versions</h2>
-<div id="when-should-r-be-upgraded" class="section level3">
-<h3>When should R be upgraded?</h3>
-<p>Ideally, you won’t need to update R. The bioshell VMs come with a
-pre-configured R installation ready to go.</p>
-<p>However - issues may arise when you need to use ‘bleeding edge’
-bioconductor packages.</p>
-<p>Bioconductor has a 6-monthly release cycle, and strict versioning
-requirements. Each bioconductor version has a minimum R requirement -
-and for the very latests this could be less than what is on
-bioshell!</p>
-<p>If you need to work with packages (or versions of those packages)
-that are only available in a more recent bioconductor release than runs
-on your R version, then you might consider upgrading your R version.</p>
-<p>See <a
-href="https://bioconductor.org/about/release-announcements/">Bioconductor
-release announcements</a></p>
+<div id="transferring-your-data" class="section level2">
+<h2>Transferring your data</h2>
+<p>To get large spatial datasets across to your VM, globus is the
+reccomended method - <a
+href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/globus-howto">detailed
+instructions are here</a></p>
+<p>An alternative for small files would be SFTP via a tool like <a
+href="https://filezilla-project.org/">filezilla(client)</a> - you’ll
+need to configure with your IP address, username ans password.</p>
 </div>
-<div id="upgrading-r" class="section level3">
-<h3>Upgrading R</h3>
-<div id="the-easy-way-with-shelley" class="section level4">
-<h4>The easy way with shelley</h4>
-<p>On the command line, list the R versions that shelley knows
-about.</p>
-<pre class="sh"><code>shelley find R</code></pre>
-<p>If the version you need is there, install it!</p>
-<pre class="sh"><code>shelley build r</code></pre>
-<p>Restart your rstudio server, and see what version of R it is using.
-You may still need to update your system R to the freshly installed
-version.</p>
-</div>
-<div id="the-hard-way---by-hand" class="section level4">
-<h4>The hard way - by ‘hand’</h4>
-<p>Shelley searches galaxy singularity repositories to find the latest
-packaged version of R. Sometimes, there are more recent versions of R in
-use.</p>
-<p>Because you shoudl have full rights to these VMs, its still possible
-to update to a later R version in a ‘standard’ way, but its alot more
-work and best to have some command line and sysadmin confidence to do
-this.</p>
-<p><strong>Step 1: Install R </strong></p>
-<p>You’ll first need to determine your OS version, and the R version you
-want. It is easy to get from the posit servers. See <a
-href="https://docs.posit.co/resources/install-r.html"
-class="uri">https://docs.posit.co/resources/install-r.html</a></p>
-<pre class="sh"><code># check ubuntu version to grabe the right command (others might install fine then give librayy.so errors!)
-cat /etc/os-release
-
-export R_VERSION=4.6.1
-curl -O https://cdn.posit.co/r/ubuntu-2604/pkgs/r-${R_VERSION}_1_$(dpkg --print-architecture).deb
-sudo apt-get update
-sudo apt-get install ./r-${R_VERSION}_1_$(dpkg --print-architecture).deb</code></pre>
-<p>Now we have a new version of R installed. The old version is still
-there.</p>
-<p><strong>Step 2: Switch system R to new version</strong></p>
-<pre class="sh"><code># where is my default R?
-# Do not have any R modules loaded
-which R
-
-# For whatever reason, all the docs seem to assume that the system R is in /usr/local/bin/, but on this server, i is in /usr/bin. 
-cd /usr/bin
-
-# Keep the old R links around just in case
-sudo mv R Roldsymlink
-sudo mv Rscript Rscriptoldsymlink
-
-# Remake them, but this time to R 4.6.1
-cd /usr/bin
-sudo ln -s /opt/R/${R_VERSION}/bin/R R
-sudo ln -s /opt/R/${R_VERSION}/bin/Rscript Rscript</code></pre>
-<p><strong>Step 3: Restart Rstudio server</strong></p>
-<p>Stop and restart rstudio server</p>
-<pre class="sh"><code>module load rstudio
-sudo rstudio-server stop
-sudo rstudio-server start</code></pre>
-<p><strong>Step 4: Update Bioconductor release</strong></p>
-<p>After the R version update, jump back into Rstudio and update the
-bioconductor release to the lastest: <a
-href="https://bioconductor.org/install/"
-class="uri">https://bioconductor.org/install/</a></p>
-<pre class="r"><code>install.packages(&quot;BiocManager&quot;)
-BiocManager::install(version = &quot;3.23&quot;)</code></pre>
-</div>
-</div>
-</div>
-<div id="getting-the-data-there-and-back-again" class="section level2">
-<h2>Getting the data there (and back again)</h2>
-<p>Perhaps the simplest way to trasnfer your data is to use SFTP via a
-tool like <a href="https://filezilla-project.org/">filezilla</a>
-(client).</p>
-<p>You can add a site with your server IP address, the ‘SFTP’ protocol,
-and your username and password, then transfer data via the graphical
-interface.</p>
-<p>More information about transfering data to your bioshell machine is
-here: <a
-href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/globus-howto"
-class="uri">https://sydney-informatics-hub.github.io/BioShell-User-Guide/globus-howto</a></p>
-<!-- ### Example datasets -->
+<div id="handling-ram-errors-oom-crashes" class="section level2">
+<h2>Handling RAM errors (OOM Crashes)</h2>
+<p>Some analysis steps are RAM heavy, and sometimes you’ll find that
+certain steps will reliably crash your R session. If you belive your
+data is too large for your VM - you can request more (at the cost of
+running through your service unit allocation faster!). Its generally
+best to start small and scale up - see <a
+href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/flavours">advice
+on flavours</a></p>
+<p>For example, on nectar: <a
+href="https://support.ehelp.edu.au/support/solutions/articles/6000212271-resizing-nectar-instances"
+class="uri">https://support.ehelp.edu.au/support/solutions/articles/6000212271-resizing-nectar-instances</a></p>
+<p>Note that some methods just shouldn’t be run on thse kind of datasets
+without using some ‘smart’ data handling e.g. Counts matrix should be
+stored as sparse matricies (never dense matricies). You might split some
+analyses by sample e.t.c</p>
+<!-- As broad guide: -->
+<!-- * Training dataset: 16G ram  link it-->
+<!-- * Full dataset: 32G RAM  -->
+<!-- * Your own dataset : Might potentially be bigger still!  -->
+<!-- ## Example data -->
+<!-- If you require a test sized spatial feature experiment dataset -->
 <!-- ```{sh eval=FALSE} -->
-<!-- mkdir data -->
 <!-- cd data -->
-<!-- #wget --content-disposition "https://filesender.aarnet.edu.au/download.php?token=378da83e-7c11-40d8-a90c-eddb5da9c109&files_ids=29832957" -->
-<!-- # wget <nectar object store link> -->
-<!-- tar -xzf GSE234713_CosMx_IBD_sfe_03_banksyniche.tar.gz -->
+<!-- wget https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_midi3group03_sfe.tar.gz -->
+<!-- tar -xzf GSE234713_CosMx_IBD_midi3group03_sfe.tar.gz -->
 <!-- ``` -->
+</div>
+<div id="analysis" class="section level2">
+<h2>Analysis!</h2>
 <p>Happy analysis - May your data be clean and your sample sizes be
 adequate!</p>
 <div id="refs">
