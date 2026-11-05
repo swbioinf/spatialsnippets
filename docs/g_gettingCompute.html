@@ -426,9 +426,7 @@ alt="bios logo" /></a></p>
 <li>Apply for a bioshell VM</li>
 <li>Login to your VM</li>
 <li>Install system libraries</li>
-<li>Decide if R version needs to be upgraded (see <a
-href="#When-should-R-be-upgraded?">here</a>), do so only if
-required.</li>
+<li>Decide if R version needs to be upgraded, do so if required.</li>
 <li>Install R packages</li>
 <li>Transfer your data across</li>
 <li>Analysis!</li>
@@ -470,7 +468,7 @@ them.</p>
 of oft-used system libraries - a good place to start; <a
 href="https://docs.posit.co/resources/install-r.html#optional-install-system-dependencies-of-common-r-packages"
 class="uri">https://docs.posit.co/resources/install-r.html#optional-install-system-dependencies-of-common-r-packages</a></p>
-<p>E.g. for the Ubuntu 22.04 in Bioshell v1 image, thats:</p>
+<p>E.g. for the Ubuntu 22.04 in Bioshell v1 image, that’s:</p>
 <pre class="sh"><code>apt install -y cmake default-jdk gdal-bin git gsfonts libabsl-dev libcairo2-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libgdal-dev libgeos-dev libgl1-mesa-dev libglpk-dev libglu1-mesa-dev libharfbuzz-dev libicu-dev libjpeg-dev libmagick++-dev libmysqlclient-dev libnode-dev libpng-dev libpoppler-cpp-dev libproj-dev libprotobuf-dev libprotoc-dev libsodium-dev libsqlite3-dev libssh2-1-dev libssl-dev libtiff-dev libudunits2-dev libuv1-dev libwebp-dev libx11-dev libxml2-dev make poppler-data protobuf-compiler python3 tcl texlive tk tk-dev tk-table unixodbc-dev zlib1g-dev</code></pre>
 <p>Some further installs that are helpful for spatial analyses;</p>
 <pre class="sh"><code>
@@ -494,8 +492,6 @@ sudo apt install default-jre
 </div>
 <div id="upgrate-r-if-necessary" class="section level2">
 <h2>Upgrate R if necessary</h2>
-<div id="when-should-r-be-upgraded" class="section level3">
-<h3>When should R be upgraded?</h3>
 <p>Ideally, you won’t need to update R. The bioshell VMs come with a
 pre-configured R installation ready to go.</p>
 <p>However - issues may arise when you need to use ‘bleeding edge’
@@ -511,19 +507,14 @@ href="https://bioconductor.org/about/release-announcements/">Bioconductor
 release announcements</a></p>
 <p>If you are planning to work primarily within the Seurat ecosystem,
 this might not be needed.</p>
-</div>
 <div id="upgrading-r" class="section level3">
 <h3>Upgrading R</h3>
-<p>The version of R on the bioshell image is the lastest packaged
-version of R that shelley could install. So if you need to use a newer
-version then that, it’ll have to be installed ‘by hand’.</p>
-<p>Since you should have full rights to these VMs, its still possible to
-update to a later R version in a ‘standard’ way, but its a lot more work
-and best to have some command line and sysadmin confidence to do this.
-(Or get assistance from someone who does!)</p>
+<p>The version of R on the bioshell image is the latest packaged version
+of R that shelley could install. So if you need to use a newer version
+then that, it’ll have to be installed ‘by hand’.</p>
 <details>
 <summary>
-Future - Upgrading R with shelley
+Coming soon - Upgrading R with shelley
 </summary>
 <p>In the future, it should be possible to upgrade R to a newer version
 via shelley. However, currently, the latest version that shelley has
@@ -537,6 +528,10 @@ about.</p>
 You may still need to update your system R to the freshly installed
 version.</p>
 </details>
+<p>Since you should have full rights to these VMs, its still possible to
+update to a later R version in a ‘standard’ way, but its a lot more work
+and best to have some command line and sysadmin confidence to do this.
+(Or get assistance from someone who does!)</p>
 <p><strong>Step 1: Install R </strong></p>
 <p>You’ll first need to determine your OS version, and the R version you
 want. It is easy to get from the posit servers. See <a
@@ -586,7 +581,7 @@ version of R is running.</p>
 <p>If this is a brand new install, its ready to start installing
 packages.</p>
 <p>If you’ve already been installing things on a previous R version, you
-might need to explicly update the bioconductor release version (<a
+might need to explicitly update the bioconductor release version (<a
 href="https://bioconductor.org/install/"
 class="uri">https://bioconductor.org/install/</a>) and reinstall
 packages.</p>
@@ -598,7 +593,7 @@ BiocManager::install(version = &quot;3.23&quot;)</code></pre>
 <h2>Installing R packages</h2>
 <p>Next, you’ll want to install some R packages. Some typical
 <em>examples</em> for a new setup are listed below, you might not need
-all of them and almostly certainly will want more later!</p>
+all of them and almost certainly will want more later!</p>
 <p>Consider use of a package manager system like <a
 href="https://rstudio.github.io/renv/articles/renv.html">renv</a>,
 particularly if you’ll be working with multiple projects.</p>
@@ -625,8 +620,8 @@ common errors.</p>
   &#39;limma&#39;,
   &#39;edgeR&#39;,
   &#39;BiocParallel&#39;,
-  &#39;alabaster.sfe&#39;, # skip if not planning to use bioconductor pagackages on upgraded R, requires &#39;bleeding edge&#39; packages.
-  &#39;Voyager&#39;        # skip if not planning to use bioconductor pagackages on upgraded R, requires &#39;bleeding edge&#39; packages.
+  &#39;alabaster.sfe&#39;, # skip if not planning to use bioconductor packages on upgraded R, requires &#39;bleeding edge&#39; packages.
+  &#39;Voyager&#39;        # skip if not planning to use bioconductor packages on upgraded R, requires &#39;bleeding edge&#39; packages.
 ))</code></pre>
 <p>Install a few things from github.</p>
 <pre class="r"><code>remotes::install_github(&quot;immunogenomics/presto&quot;) # Dramatic speed up of certain operations in Seurat.</code></pre>
@@ -680,17 +675,17 @@ that can go wrong when using renv</a></li>
 <div id="transferring-your-data" class="section level2">
 <h2>Transferring your data</h2>
 <p>To get large spatial datasets across to your VM, globus is the
-reccomended method - <a
+recommended method - <a
 href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/globus-howto">detailed
 instructions are here</a></p>
 <p>An alternative for small files would be SFTP via a tool like <a
 href="https://filezilla-project.org/">filezilla(client)</a> - you’ll
-need to configure with your IP address, username ans password.</p>
+need to configure with your IP address, username and password.</p>
 </div>
 <div id="handling-ram-errors-oom-crashes" class="section level2">
 <h2>Handling RAM errors (OOM Crashes)</h2>
 <p>Some analysis steps are RAM heavy, and sometimes you’ll find that
-certain steps will reliably crash your R session. If you belive your
+certain steps will reliably crash your R session. If you believe your
 data is too large for your VM - you can request more (at the cost of
 running through your service unit allocation faster!). Its generally
 best to start small and scale up - see <a
@@ -699,10 +694,10 @@ on flavours</a></p>
 <p>For example, on nectar: <a
 href="https://support.ehelp.edu.au/support/solutions/articles/6000212271-resizing-nectar-instances"
 class="uri">https://support.ehelp.edu.au/support/solutions/articles/6000212271-resizing-nectar-instances</a></p>
-<p>Note that some methods just shouldn’t be run on thse kind of datasets
-without using some ‘smart’ data handling e.g. Counts matrix should be
-stored as sparse matricies (never dense matricies). You might split some
-analyses by sample e.t.c</p>
+<p>Note that some methods just shouldn’t be run on these kind of
+datasets without using some ‘smart’ data handling e.g. Counts matrix
+should be stored as sparse matrices (never dense matrices). You might
+split some analyses by sample e.t.c</p>
 <!-- As broad guide: -->
 <!-- * Training dataset: 16G ram  link it-->
 <!-- * Full dataset: 32G RAM  -->
