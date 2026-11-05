@@ -284,7 +284,7 @@ Some common problems:
 
 For further information on R installation errors;
 
-* [Mastering R Through Errors and Warnings](Installation issues)*(https://bookdown.org/guokai8/mastering-r-through-errors/docs/installation-environment.html#debugging-installation-issues)
+* [Mastering R Through Errors and Warnings](https://bookdown.org/guokai8/mastering-r-through-errors/docs/installation-environment.html#debugging-installation-issues)
 * [Things that can go wrong when using renv](https://www.r-bloggers.com/2024/05/things-that-can-go-wrong-when-using-renv/)
 
 
