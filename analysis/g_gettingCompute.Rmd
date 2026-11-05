@@ -31,7 +31,7 @@ Briefly the steps outlined are:
 1) Apply for a bioshell VM
 2) Login to your VM
 3) Install system libraries
-4) Decide if R version needs to be upgraded (see [here](#When-should-R-be-upgraded?)), do so only if required.
+4) Decide if R version needs to be upgraded, do so if required.
 5) Install R packages
 6) Transfer your data across
 7) Analysis!
@@ -67,7 +67,7 @@ Installation of system libraries needs root access (sudo), which we should have 
 
 The posit website provides a command for installation of a collection of oft-used system libraries - a good place to start; https://docs.posit.co/resources/install-r.html#optional-install-system-dependencies-of-common-r-packages
 
-E.g. for the Ubuntu 22.04 in Bioshell v1 image, thats:
+E.g. for the Ubuntu 22.04 in Bioshell v1 image, that's:
 ```{sh eval=FALSE}
 apt install -y cmake default-jdk gdal-bin git gsfonts libabsl-dev libcairo2-dev libcurl4-openssl-dev libfontconfig1-dev libfreetype6-dev libfribidi-dev libgdal-dev libgeos-dev libgl1-mesa-dev libglpk-dev libglu1-mesa-dev libharfbuzz-dev libicu-dev libjpeg-dev libmagick++-dev libmysqlclient-dev libnode-dev libpng-dev libpoppler-cpp-dev libproj-dev libprotobuf-dev libprotoc-dev libsodium-dev libsqlite3-dev libssh2-1-dev libssl-dev libtiff-dev libudunits2-dev libuv1-dev libwebp-dev libx11-dev libxml2-dev make poppler-data protobuf-compiler python3 tcl texlive tk tk-dev tk-table unixodbc-dev zlib1g-dev
 ```
@@ -101,15 +101,9 @@ sudo apt install default-jre
 
 ## Upgrate R if necessary
 
-
-### When should R be upgraded?
-
 Ideally, you won't need to update R. The bioshell VMs come with a pre-configured R installation ready to go. 
 
-
 However - issues may arise when you need to use 'bleeding edge' bioconductor packages. Bioconductor has a 6-monthly release cycle, and strict versioning requirements. Each bioconductor version has a minimum R requirement - and for the very latest this could be less than what is on bioshell! 
-
-
 
 If you need to work with packages (or versions of those packages) that are only available in a more recent bioconductor release than runs on your R version, then you might consider upgrading your R version.
 
@@ -120,13 +114,11 @@ If you are planning to work primarily within the Seurat ecosystem, this might no
 ### Upgrading R
 
 
-The version of R on the bioshell image is the lastest packaged version of R that shelley could install. So if you need to use a newer version then that, it'll have to be installed 'by hand'. 
-
-Since you should have full rights to these VMs, its still possible to update to a later R version in a 'standard' way, but its a lot more work and best to have some command line and sysadmin confidence to do this. (Or get assistance from someone who does!)
+The version of R on the bioshell image is the latest packaged version of R that shelley could install. So if you need to use a newer version then that, it'll have to be installed 'by hand'. 
 
 
 <details>
-  <summary>Future - Upgrading R with shelley </summary>
+  <summary>Coming soon - Upgrading R with shelley </summary>
 
   In the future, it should be possible to upgrade R to a newer version via shelley. However, currently, the latest version that shelley has access to is the one installed!
 
@@ -141,6 +133,12 @@ Since you should have full rights to these VMs, its still possible to update to 
   Restart your rstudio server, and see what version of R it is using. You may still need to update your system R to the freshly installed version.
 
 </details>
+
+
+Since you should have full rights to these VMs, its still possible to update to a later R version in a 'standard' way, but its a lot more work and best to have some command line and sysadmin confidence to do this. (Or get assistance from someone who does!)
+
+
+
 
 
 **Step 1: Install R **
@@ -207,7 +205,7 @@ After the R version update, jump back into Rstudio and check what version of R i
 
 If this is a brand new install, its ready to start installing packages.
 
-If you've already been installing things on a previous R version, you might need to explicly update the bioconductor release version (https://bioconductor.org/install/) and reinstall packages.
+If you've already been installing things on a previous R version, you might need to explicitly update the bioconductor release version (https://bioconductor.org/install/) and reinstall packages.
 
 ```{r eval=FALSE}
 install.packages("BiocManager")
@@ -221,7 +219,7 @@ BiocManager::install(version = "3.23")
 
 ## Installing R packages
 
-Next, you'll want to install some R packages. Some typical *examples* for a new setup are listed below, you might not need all of them and almostly certainly will want more later! 
+Next, you'll want to install some R packages. Some typical *examples* for a new setup are listed below, you might not need all of them and almost certainly will want more later! 
 
 Consider use of a package manager system like [renv](https://rstudio.github.io/renv/articles/renv.html), particularly if you'll be working with multiple projects.
 
@@ -254,8 +252,8 @@ BiocManager::install(c(
   'limma',
   'edgeR',
   'BiocParallel',
-  'alabaster.sfe', # skip if not planning to use bioconductor pagackages on upgraded R, requires 'bleeding edge' packages.
-  'Voyager'        # skip if not planning to use bioconductor pagackages on upgraded R, requires 'bleeding edge' packages.
+  'alabaster.sfe', # skip if not planning to use bioconductor packages on upgraded R, requires 'bleeding edge' packages.
+  'Voyager'        # skip if not planning to use bioconductor packages on upgraded R, requires 'bleeding edge' packages.
 ))
 ```
 
@@ -294,23 +292,18 @@ For further information on R installation errors;
 
 ## Transferring your data 
 
-To get large spatial datasets across to your VM, globus is the reccomended method - [detailed instructions are here](https://sydney-informatics-hub.github.io/BioShell-User-Guide/globus-howto)
+To get large spatial datasets across to your VM, globus is the recommended method - [detailed instructions are here](https://sydney-informatics-hub.github.io/BioShell-User-Guide/globus-howto)
 
-An alternative for small files would be SFTP via a tool like [filezilla(client)](https://filezilla-project.org/) - you'll need to configure with your IP address, username ans password. 
-
-
-
-
-
+An alternative for small files would be SFTP via a tool like [filezilla(client)](https://filezilla-project.org/) - you'll need to configure with your IP address, username and password. 
 
 ## Handling RAM errors (OOM Crashes)
 
 
-Some analysis steps are RAM heavy, and sometimes you'll find that certain steps will reliably crash your R session. If you belive your data is too large for your VM - you can request more (at the cost of running through your service unit allocation faster!). Its generally best to start small and scale up - see [advice on flavours](https://sydney-informatics-hub.github.io/BioShell-User-Guide/flavours)
+Some analysis steps are RAM heavy, and sometimes you'll find that certain steps will reliably crash your R session. If you believe your data is too large for your VM - you can request more (at the cost of running through your service unit allocation faster!). Its generally best to start small and scale up - see [advice on flavours](https://sydney-informatics-hub.github.io/BioShell-User-Guide/flavours)
 
 For example, on nectar: https://support.ehelp.edu.au/support/solutions/articles/6000212271-resizing-nectar-instances
 
-Note that some methods just shouldn't be run on thse kind of datasets without using some 'smart' data handling e.g. Counts matrix should be stored as sparse matricies (never dense matricies). You might split some analyses by sample e.t.c
+Note that some methods just shouldn't be run on these kind of datasets without using some 'smart' data handling e.g. Counts matrix should be stored as sparse matrices (never dense matrices). You might split some analyses by sample e.t.c
 
 <!-- As broad guide: -->
 
@@ -327,9 +320,6 @@ Note that some methods just shouldn't be run on thse kind of datasets without us
 <!-- wget https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_midi3group03_sfe.tar.gz -->
 <!-- tar -xzf GSE234713_CosMx_IBD_midi3group03_sfe.tar.gz -->
 <!-- ``` -->
-
-
-
 
 ## Analysis!
 
