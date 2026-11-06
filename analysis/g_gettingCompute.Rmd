@@ -189,31 +189,55 @@ sudo ln -s /opt/R/${R_VERSION}/bin/R R
 sudo ln -s /opt/R/${R_VERSION}/bin/Rscript Rscript
 ```
 
+Next continue on to starting up Rstudio and installing packages. 
 
-**Step 3: Restart Rstudio server**
+<!-- **Step 3: Setup Rstudio and R packages** -->
 
-Start rstudio server  - refer to the bioshell instructions here: https://sydney-informatics-hub.github.io/BioShell-User-Guide/interactive
+<!-- Continue on to start up R studio. Noting that if you've already got R studio started, you might need to stop it. -->
+
+<!-- ```{sh eval=FALSE} -->
+<!-- module load rstudio -->
+<!-- #sudo rstudio-server stop # stop it if it was already running.  -->
+<!-- sudo rstudio-server start -->
+<!-- ``` -->
+
+<!-- Annd if you've  -->
+
+
+<!-- **Step 3: Restart Rstudio server** -->
+
+<!-- Start rstudio server  - refer to the bioshell instructions here: https://sydney-informatics-hub.github.io/BioShell-User-Guide/interactive -->
+
+<!-- ```{sh eval=FALSE} -->
+<!-- module load rstudio -->
+<!-- #sudo rstudio-server stop # stop it if it was already running.  -->
+<!-- sudo rstudio-server start -->
+<!-- ``` -->
+
+<!-- **Step 4: Update Bioconductor release** -->
+
+<!-- After the R version update, jump back into Rstudio and check what version of R is running.  -->
+
+<!-- If this is a brand new install, its ready to start installing packages. -->
+
+<!-- If you've already been installing things on a previous R version, you might need to explicitly update the bioconductor release version (https://bioconductor.org/install/) and reinstall packages. -->
+
+<!-- ```{r eval=FALSE} -->
+<!-- install.packages("BiocManager") -->
+<!-- BiocManager::install(version = "3.23") -->
+<!-- ``` -->
+
+
+## Start up R studio
+
+
+Now start up R studio, as per the [bioshell docs](https://sydney-informatics-hub.github.io/BioShell-User-Guide/interactive#rstudio)
 
 ```{sh eval=FALSE}
 module load rstudio
 #sudo rstudio-server stop # stop it if it was already running. 
 sudo rstudio-server start
 ```
-
-**Step 4: Update Bioconductor release**
-
-After the R version update, jump back into Rstudio and check what version of R is running. 
-
-If this is a brand new install, its ready to start installing packages.
-
-If you've already been installing things on a previous R version, you might need to explicitly update the bioconductor release version (https://bioconductor.org/install/) and reinstall packages.
-
-```{r eval=FALSE}
-install.packages("BiocManager")
-BiocManager::install(version = "3.23")
-```
-
-
 
 
 
@@ -225,6 +249,21 @@ Next, you'll want to install some R packages. Some typical *examples* for a new 
 Consider use of a package manager system like [renv](https://rstudio.github.io/renv/articles/renv.html), particularly if you'll be working with multiple projects.
 
 These installations will takes some time to run (by default they'll compile from source). You might find your session stops responding or disconnects - just reconnect and run again if needed, the commands will pick up from where they left. See next section for dealing with some common errors.
+
+
+<details>
+  <summary> If you need to upgrade from an older bioconductor release </summary>
+
+If you've already been working with a previous verison of BiocManager (e.g. you already tried a previous R version on this machine and found you needed to upgrade), you'll need to update your biocondutor version to the desired version.  On a fresh install this isn't neccessary, BiocManager will simply find the latest.
+  
+```{r eval=FALSE}
+install.packages("BiocManager")
+BiocManager::install(version = "3.23")
+```
+
+</details>
+
+
 
 
 Install some R packages from CRAN;
@@ -241,6 +280,7 @@ install.packages ( c(
   ) )
 
 ```
+
 
 
 Install some R packages from bioconductor
@@ -321,6 +361,10 @@ Note that some methods just shouldn't be run on these kind of datasets without u
 <!-- wget https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_midi3group03_sfe.tar.gz -->
 <!-- tar -xzf GSE234713_CosMx_IBD_midi3group03_sfe.tar.gz -->
 <!-- ``` -->
+
+<!-- wget https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_seurat_01_loaded_v2.RDS -->
+
+
 
 ## Analysis!
 
