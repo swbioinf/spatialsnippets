@@ -572,26 +572,40 @@ sudo mv Rscript Rscriptoldsymlink
 cd /usr/bin
 sudo ln -s /opt/R/${R_VERSION}/bin/R R
 sudo ln -s /opt/R/${R_VERSION}/bin/Rscript Rscript</code></pre>
-<p><strong>Step 3: Restart Rstudio server</strong></p>
-<p>Start rstudio server - refer to the bioshell instructions here: <a
-href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/interactive"
-class="uri">https://sydney-informatics-hub.github.io/BioShell-User-Guide/interactive</a></p>
+<p>Next continue on to starting up Rstudio and installing packages.</p>
+<!-- **Step 3: Setup Rstudio and R packages** -->
+<!-- Continue on to start up R studio. Noting that if you've already got R studio started, you might need to stop it. -->
+<!-- ```{sh eval=FALSE} -->
+<!-- module load rstudio -->
+<!-- #sudo rstudio-server stop # stop it if it was already running.  -->
+<!-- sudo rstudio-server start -->
+<!-- ``` -->
+<!-- Annd if you've  -->
+<!-- **Step 3: Restart Rstudio server** -->
+<!-- Start rstudio server  - refer to the bioshell instructions here: https://sydney-informatics-hub.github.io/BioShell-User-Guide/interactive -->
+<!-- ```{sh eval=FALSE} -->
+<!-- module load rstudio -->
+<!-- #sudo rstudio-server stop # stop it if it was already running.  -->
+<!-- sudo rstudio-server start -->
+<!-- ``` -->
+<!-- **Step 4: Update Bioconductor release** -->
+<!-- After the R version update, jump back into Rstudio and check what version of R is running.  -->
+<!-- If this is a brand new install, its ready to start installing packages. -->
+<!-- If you've already been installing things on a previous R version, you might need to explicitly update the bioconductor release version (https://bioconductor.org/install/) and reinstall packages. -->
+<!-- ```{r eval=FALSE} -->
+<!-- install.packages("BiocManager") -->
+<!-- BiocManager::install(version = "3.23") -->
+<!-- ``` -->
+</div>
+</div>
+<div id="start-up-r-studio" class="section level2">
+<h2>Start up R studio</h2>
+<p>Now start up R studio, as per the <a
+href="https://sydney-informatics-hub.github.io/BioShell-User-Guide/interactive#rstudio">bioshell
+docs</a></p>
 <pre class="sh"><code>module load rstudio
 #sudo rstudio-server stop # stop it if it was already running. 
 sudo rstudio-server start</code></pre>
-<p><strong>Step 4: Update Bioconductor release</strong></p>
-<p>After the R version update, jump back into Rstudio and check what
-version of R is running.</p>
-<p>If this is a brand new install, its ready to start installing
-packages.</p>
-<p>If you’ve already been installing things on a previous R version, you
-might need to explicitly update the bioconductor release version (<a
-href="https://bioconductor.org/install/"
-class="uri">https://bioconductor.org/install/</a>) and reinstall
-packages.</p>
-<pre class="r"><code>install.packages(&quot;BiocManager&quot;)
-BiocManager::install(version = &quot;3.23&quot;)</code></pre>
-</div>
 </div>
 <div id="installing-r-packages" class="section level2">
 <h2>Installing R packages</h2>
@@ -606,6 +620,18 @@ compile from source). You might find your session stops responding or
 disconnects - just reconnect and run again if needed, the commands will
 pick up from where they left. See next section for dealing with some
 common errors.</p>
+<details>
+<summary>
+If you need to upgrade from an older bioconductor release
+</summary>
+<p>If you’ve already been working with a previous verison of BiocManager
+(e.g. you already tried a previous R version on this machine and found
+you needed to upgrade), you’ll need to update your biocondutor version
+to the desired version. On a fresh install this isn’t neccessary,
+BiocManager will simply find the latest.</p>
+<pre class="r"><code>install.packages(&quot;BiocManager&quot;)
+BiocManager::install(version = &quot;3.23&quot;)</code></pre>
+</details>
 <p>Install some R packages from CRAN;</p>
 <pre class="r"><code>install.packages ( c(
   &quot;BiocManager&quot;,
@@ -710,6 +736,7 @@ split some analyses by sample e.t.c</p>
 <!-- wget https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_midi3group03_sfe.tar.gz -->
 <!-- tar -xzf GSE234713_CosMx_IBD_midi3group03_sfe.tar.gz -->
 <!-- ``` -->
+<!-- wget https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_seurat_01_loaded_v2.RDS -->
 </div>
 <div id="analysis" class="section level2">
 <h2>Analysis!</h2>
