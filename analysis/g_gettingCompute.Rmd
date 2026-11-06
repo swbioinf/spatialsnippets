@@ -1,6 +1,5 @@
 ---
 title: "Getting Compute"
-author: "Sarah Williams"
 output:
   html_notebook: 
     toc: yes
