@@ -99,17 +99,18 @@ sudo apt install default-jre
 
 
 
-## Upgrate R if necessary
+## Upgrade R if necessary
 
 Ideally, you won't need to update R. The bioshell VMs come with a pre-configured R installation ready to go. 
 
 However - issues may arise when you need to use 'bleeding edge' bioconductor packages. Bioconductor has a 6-monthly release cycle, and strict versioning requirements. Each bioconductor version has a minimum R requirement - and for the very latest this could be less than what is on bioshell! 
 
-If you need to work with packages (or versions of those packages) that are only available in a more recent bioconductor release than runs on your R version, then you might consider upgrading your R version.
-
+If you need to work with packages (or versions of those packages) that are only available in a more recent bioconductor release than runs on your R version, then you might consider upgrading your R version. 
 See [Bioconductor release announcements](https://bioconductor.org/about/release-announcements/)
 
-If you are planning to work primarily within the Seurat ecosystem, this might not be needed. 
+For example; the [alabaster.sfe](https://bioconductor.org/packages/3.23/bioc/html/alabaster.sfe.html) package is used in some spatial sampler examples and requires R >= 4.5.0 (BioC 3.21+), but version one of the bioshell image has R 4.3.3. (NB: Saving data without using alabaster is an alternative.)  If you are planning to work primarily within the Seurat ecosystem, this might not be needed. 
+
+
 
 ### Upgrading R
 
@@ -275,8 +276,8 @@ Some common problems:
 * **Package not available** : ' _package ‘XYZ’ is not available for this version of R_
     * Typo in package name
     * This is a bioconductor package, and you're trying to install it with 'install.packages()'. Use BiocManager()
-    * This is a bioconductor package, but it is too new to be on the bioconductor release you are using (which in term is limited to your R version - see [here](#When-should-R-be-upgraded?). 
-    On your package's bioconductor page ([example](https://bioconductor.org/packages/3.23/bioc/html/alabaster.sce.html)) you can see 'in bioconductor since' for the release version needed, (and the 'all versions' link for finding out what version was available for previous bioconductor releases.
+    * This is a bioconductor package, but it is too new to be on the bioconductor release you are using (which in term is limited to your R version - see [here](#Upgrade-R-if-necessary). 
+    On your package's bioconductor page you can see 'in bioconductor since' for the release version needed, (and the 'all versions' link for finding out what version was available for previous bioconductor releases.
     * This package isn't in CRAN or bioconductor - Typically you'll install these directly from a github repo with devtools (see above)
 * **Missing system library** : Typically this error will offer up 'apt install' command or name of a system library that is needed. Sometimes it doesn't, and you'll need to search online for what you do need to install.
 * **System library configuration issue**: Some packages need further configuration before they work, consult installation instructions for those libraries (e.g. rJava)
