@@ -490,8 +490,8 @@ sudo apt install libfftw3-dev libfftw3-doc
 sudo apt install default-jre
 </code></pre>
 </div>
-<div id="upgrate-r-if-necessary" class="section level2">
-<h2>Upgrate R if necessary</h2>
+<div id="upgrade-r-if-necessary" class="section level2">
+<h2>Upgrade R if necessary</h2>
 <p>Ideally, you won’t need to update R. The bioshell VMs come with a
 pre-configured R installation ready to go.</p>
 <p>However - issues may arise when you need to use ‘bleeding edge’
@@ -501,12 +501,17 @@ R requirement - and for the very latest this could be less than what is
 on bioshell!</p>
 <p>If you need to work with packages (or versions of those packages)
 that are only available in a more recent bioconductor release than runs
-on your R version, then you might consider upgrading your R version.</p>
-<p>See <a
+on your R version, then you might consider upgrading your R version. See
+<a
 href="https://bioconductor.org/about/release-announcements/">Bioconductor
 release announcements</a></p>
-<p>If you are planning to work primarily within the Seurat ecosystem,
-this might not be needed.</p>
+<p>For example; the <a
+href="https://bioconductor.org/packages/3.23/bioc/html/alabaster.sfe.html">alabaster.sfe</a>
+package is used in some spatial sampler examples and requires R &gt;=
+4.5.0 (BioC 3.21+), but version one of the bioshell image has R 4.3.3.
+(NB: Saving data without using alabaster is an alternative.) If you are
+planning to work primarily within the Seurat ecosystem, this might not
+be needed.</p>
 <div id="upgrading-r" class="section level3">
 <h3>Upgrading R</h3>
 <p>The version of R on the bioshell image is the latest packaged version
@@ -643,12 +648,10 @@ available for this version of R</em>
 ‘install.packages()’. Use BiocManager()</li>
 <li>This is a bioconductor package, but it is too new to be on the
 bioconductor release you are using (which in term is limited to your R
-version - see <a href="#When-should-R-be-upgraded?">here</a>. On your
-package’s bioconductor page (<a
-href="https://bioconductor.org/packages/3.23/bioc/html/alabaster.sce.html">example</a>)
-you can see ‘in bioconductor since’ for the release version needed, (and
-the ‘all versions’ link for finding out what version was available for
-previous bioconductor releases.</li>
+version - see <a href="#Upgrade-R-if-necessary">here</a>. On your
+package’s bioconductor page you can see ‘in bioconductor since’ for the
+release version needed, (and the ‘all versions’ link for finding out
+what version was available for previous bioconductor releases.</li>
 <li>This package isn’t in CRAN or bioconductor - Typically you’ll
 install these directly from a github repo with devtools (see above)</li>
 </ul></li>
