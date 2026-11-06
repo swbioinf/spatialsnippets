@@ -17,6 +17,12 @@ Such workshops are regularly delivered for the Australian research community thr
 * [**Biocommons Workshops**](https://www.biocommons.org.au/webinars-workshops): Australia-wide, covering a wide array of bioinformatics analyses, including spatial transcriptomics. Past webinars are also [available online](https://www.biocommons.org.au/past-events). These workshops are often very popular and can fill up, so registration is essential!
 * [**QCIF Digitial Research workshops**](https://www.qcif.edu.au/training-calendar): QCIF offers a regular calendar of bioinformatics, statistics, AI and programming workshops. Spatial transcriptomics and single cell transcriptomics are in the rotation. Registration again essential!
 
+### Access to compute
+
+
+Spatial transcriptomics analyses tend have moderate computational needs and a high degree of interactivity. They can need more ram that is available on a typical laptop or desktop computer, and the continuous need to check and evaluate results makes them ill suited to traditional HPC. A shared managed R server may be available in bioinformatics-focussed groups, but not every bioinformatician has that.
+
+Here is guide to [accessing compute and setting up a machine for spatial analysis](g_gettingCompute.html), via use of the [**BioShell**](https://sydney-informatics-hub.github.io/BioShell-User-Guide/) service. 
 
 
 ### Self Directed learning
