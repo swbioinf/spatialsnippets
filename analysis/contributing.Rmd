@@ -27,7 +27,6 @@ Template for writing new test examples available here. And some preprocessed dat
 
 * [New example template](e_template.html) : https://github.com/swbioinf/spatialsnippets/blob/main/analysis/e_template.Rmd
 
-
 Any feedback on usability or statistics of these methods is gratefully received, and can be cited in the authorship of each page. 
 
 

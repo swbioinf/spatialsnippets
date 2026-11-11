@@ -23,7 +23,16 @@ These examples assume that the data has been loaded, preprocessed (e.g. QC-ed, U
 
 
 
-# References
+## Downloading example data
+
+
+wget https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_midi3group03_sfe.tar.gz 
+wget https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_sfe_03_banksyniche.tar.gz
+wget https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_seurat_01_loaded_v2.RDS
+
+
+
+## References
 
 
 <div id="refs"></div>

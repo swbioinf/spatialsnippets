@@ -8,7 +8,7 @@ navbar:
   - text: Data
     href: index_data.html
   - text: Workshops + Support
-    href: Support_and_workshops.html
+    href: support_and_workshops.html
   - text: About
     href: about.html
   - text: License
