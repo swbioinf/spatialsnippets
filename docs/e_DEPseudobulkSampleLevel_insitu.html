@@ -379,7 +379,7 @@ div.tocify {
   <a href="index_data.html">Data</a>
 </li>
 <li>
-  <a href="contributing.html">Contributing</a>
+  <a href="support_and_workshops.html">Workshops + Support</a>
 </li>
 <li>
   <a href="about.html">About</a>
@@ -483,6 +483,9 @@ class="citation">(Garrido-Trigo et al. 2023)</span>;</p>
 </ul>
 <div id="load-libraries-and-data" class="section level2">
 <h2>Load libraries and data</h2>
+<p>To get a copy of this input data object;</p>
+<pre class="sh"><code># Full version (used for this document): 
+curl -O https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_seurat_01_loaded_v2.RDS</code></pre>
 <pre class="r"><code>library(Seurat)
 library(tidyverse)
 library(limma)
@@ -496,7 +499,6 @@ so &lt;- readRDS(seurat_file_01_loaded)</code></pre>
 </div>
 <div id="experimental-design" class="section level2">
 <h2>Experimental design</h2>
-<!-- Move this to own page? --->
 <p>There are three individuals per condition, one tissue sample from
 each individual. 9 slides in total. Each ‘sample’ is listed below.</p>
 <p>As a cosmx Each tissue sample has multiple FOVs captured.</p>
@@ -563,44 +565,7 @@ ggplot(so@meta.data, aes(x=nCount_RNA)) +
   scale_x_log10() +
   theme_bw()+
   ggtitle(&quot;How many reads per cell?&quot;)</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-3-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-3-1">
-Past versions of unnamed-chunk-3-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-3-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/45e29911e61123d1d74593f11a4c9894e1ed57a2/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-3-1.png" target="_blank">45e2991</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2025-08-07
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-4-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <pre class="r"><code>so&lt;- so[,so$nCount_RNA &gt;= min_reads_per_cell]</code></pre>
 </div>
 <div id="filter-cells-per-group" class="section level3">
@@ -630,55 +595,7 @@ DT::datatable(celltype_summary_table)</code></pre>
   scale_x_log10() +
   theme_bw() +
   ggtitle(&quot;How many cells per sample cluster?&quot;)</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-5-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
-Past versions of unnamed-chunk-5-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-5-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/45e29911e61123d1d74593f11a4c9894e1ed57a2/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-5-1.png" target="_blank">45e2991</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2025-08-07
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-5-1.png" target="_blank">3e314f0</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2025-08-07
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-6-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
 <p>Record the names of those sample_clusters that contain enough cells
 to be used. Will use this later to filter.</p>
 <pre class="r"><code>celltype_summary_table.passed &lt;- celltype_summary_table[celltype_summary_table$cells &gt;= min_cells_per_samplecluster,]
@@ -931,13 +848,13 @@ p2 &lt;- make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot
 p3 &lt;- make_ma_style_plot(res_table = filter(de_results_all, contrast == &quot;UCvHC&quot;, celltype==&quot;stroma&quot;)) + ggtitle(&quot;UC vs HC - stroma&quot;)
 
 p1 + p2 + p3</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-15-1.png" alt="" width="1152" style="display: block; margin: auto;" /></p>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-16-1.png" alt="" width="1152" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
-Past versions of unnamed-chunk-15-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
+Past versions of unnamed-chunk-16-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-15-1" class="collapse">
+<div id="fig-unnamed-chunk-16-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -956,7 +873,18 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/45e29911e61123d1d74593f11a4c9894e1ed57a2/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-15-1.png" target="_blank">45e2991</a>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/9d56ea97320fbb8b0e7e074fd9837d1e130c4e9b/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-16-1.png" target="_blank">9d56ea9</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2026-10-23
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/45e29911e61123d1d74593f11a4c9894e1ed57a2/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-16-1.png" target="_blank">45e2991</a>
 </td>
 <td>
 swbioinf
@@ -982,13 +910,13 @@ below;</p>
 <pre class="r"><code>p1 &lt;- VlnPlot(subset(so, celltype_subset == &quot;plasmas&quot;), features = &quot;TNFRSF13B&quot;, group.by = &#39;group&#39;, alpha = 0.1)
 p2 &lt;- FeaturePlot(so, &quot;TNFRSF13B&quot;, split.by = &quot;group&quot;)
 p1 / p2</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-16-1.png" alt="" width="960" style="display: block; margin: auto;" /></p>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-1.png" alt="" width="960" style="display: block; margin: auto;" /></p>
 <p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
-Past versions of unnamed-chunk-16-1.png
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
+Past versions of unnamed-chunk-17-1.png
 </button>
 </p>
-<div id="fig-unnamed-chunk-16-1" class="collapse">
+<div id="fig-unnamed-chunk-17-1" class="collapse">
 <div class="table-responsive">
 <table class="table table-condensed table-hover">
 <thead>
@@ -1007,7 +935,29 @@ Date
 <tbody>
 <tr>
 <td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/45e29911e61123d1d74593f11a4c9894e1ed57a2/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-16-1.png" target="_blank">45e2991</a>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/9d56ea97320fbb8b0e7e074fd9837d1e130c4e9b/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-1.png" target="_blank">9d56ea9</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2026-10-23
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/45e29911e61123d1d74593f11a4c9894e1ed57a2/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-1.png" target="_blank">45e2991</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-1.png" target="_blank">3e314f0</a>
 </td>
 <td>
 swbioinf
@@ -1044,115 +994,7 @@ p2 &lt;- ImageFeaturePlot(so.sample2,
                nmols = 10000) 
 
 plot(p1)</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-1.png" alt="" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-1">
-Past versions of unnamed-chunk-17-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-17-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/45e29911e61123d1d74593f11a4c9894e1ed57a2/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-1.png" target="_blank">45e2991</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2025-08-07
-</td>
-</tr>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-1.png" target="_blank">3e314f0</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2025-08-07
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<pre class="r"><code>plot(p2)</code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-2.png" alt="" width="960" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-17-2">
-Past versions of unnamed-chunk-17-2.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-17-2" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/swbioinf/spatialsnippets/blob/45e29911e61123d1d74593f11a4c9894e1ed57a2/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-17-2.png" target="_blank">45e2991</a>
-</td>
-<td>
-swbioinf
-</td>
-<td>
-2025-08-07
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<p>But it gets difficult to summarise see the changes in either of
-those.</p>
-<p>We can also use the the normalised pseudobulk expression to see how
-gene expression varies within each fov,individual,celltype and condition
-- The plot below shows an overview of normalised TNFRSF18 expression
-across the entire experiment.</p>
-<pre class="r"><code># Get tmm normalised coutns for all pseudobulk
-# WHen we did the DE we calculated this a celltype at a time, so values might differ slightly!
-dge &lt;- DGEList(pseudobulk_counts_matrix)
-dge &lt;- calcNormFactors(dge)
-norm_pseudobulk &lt;- cpm(dge , log=TRUE) # uses tmm normalisation
-
-# Plot expression for TNFRSF13B
-plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;TNFRSF13B&quot;,])
-ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
-  geom_boxplot(outlier.shape = NA) +
-  geom_point() + 
-  theme_bw() + 
-  theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
-  facet_wrap(~celltype_subset) </code></pre>
-<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-18-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-18-1.png" alt="" width="960" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-18-1">
 Past versions of unnamed-chunk-18-1.png
@@ -1175,6 +1017,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/9d56ea97320fbb8b0e7e074fd9837d1e130c4e9b/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-18-1.png" target="_blank">9d56ea9</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2026-10-23
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/45e29911e61123d1d74593f11a4c9894e1ed57a2/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-18-1.png" target="_blank">45e2991</a>
@@ -1201,10 +1054,22 @@ swbioinf
 </table>
 </div>
 </div>
-<p>Contrast with PIGR, which was flagged at differentially expressed
-across multiple cell types. (Though, being a largely epithelial gene, is
-highest in the epithelia.)</p>
-<pre class="r"><code>plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;PIGR&quot;,])
+<pre class="r"><code>plot(p2)</code></pre>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-18-2.png" alt="" width="960" style="display: block; margin: auto;" /></p>
+<p>But it gets difficult to summarise see the changes in either of
+those.</p>
+<p>We can also use the the normalised pseudobulk expression to see how
+gene expression varies within each fov,individual,celltype and condition
+- The plot below shows an overview of normalised TNFRSF18 expression
+across the entire experiment.</p>
+<pre class="r"><code># Get tmm normalised coutns for all pseudobulk
+# WHen we did the DE we calculated this a celltype at a time, so values might differ slightly!
+dge &lt;- DGEList(pseudobulk_counts_matrix)
+dge &lt;- calcNormFactors(dge)
+norm_pseudobulk &lt;- cpm(dge , log=TRUE) # uses tmm normalisation
+
+# Plot expression for TNFRSF13B
+plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;TNFRSF13B&quot;,])
 ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
   geom_boxplot(outlier.shape = NA) +
   geom_point() + 
@@ -1236,6 +1101,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/9d56ea97320fbb8b0e7e074fd9837d1e130c4e9b/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-1.png" target="_blank">9d56ea9</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2026-10-23
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/45e29911e61123d1d74593f11a4c9894e1ed57a2/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-1.png" target="_blank">45e2991</a>
 </td>
 <td>
@@ -1259,6 +1135,76 @@ swbioinf
 <tr>
 <td>
 <a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-19-1.png" target="_blank">3e314f0</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>Contrast with PIGR, which was flagged at differentially expressed
+across multiple cell types. (Though, being a largely epithelial gene, is
+highest in the epithelia.)</p>
+<pre class="r"><code>plottable &lt;- cbind(pseudobulk_anno_table, expression = norm_pseudobulk[&quot;PIGR&quot;,])
+ggplot(plottable, aes(x=condition, y=expression, col=condition )) +
+  geom_boxplot(outlier.shape = NA) +
+  geom_point() + 
+  theme_bw() + 
+  theme(axis.text.x=element_text(angle = -90, hjust = 0)) + 
+  facet_wrap(~celltype_subset) </code></pre>
+<p><img src="figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-20-1.png" alt="" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-20-1">
+Past versions of unnamed-chunk-20-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-20-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/45e29911e61123d1d74593f11a4c9894e1ed57a2/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-20-1.png" target="_blank">45e2991</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/f9a3c731068201f089f063ffa6720263fae15576/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-20-1.png" target="_blank">f9a3c73</a>
+</td>
+<td>
+swbioinf
+</td>
+<td>
+2025-08-07
+</td>
+</tr>
+<tr>
+<td>
+<a href="https://github.com/swbioinf/spatialsnippets/blob/3e314f0233f451257416b85f11d8df41c31bead4/docs/figure/e_DEPseudobulkSampleLevel_insitu.Rmd/unnamed-chunk-20-1.png" target="_blank">3e314f0</a>
 </td>
 <td>
 swbioinf
