@@ -84,6 +84,18 @@ The study included 9 cosmx slides of colonic biopsies
 
 ## Load libraries and data
 
+
+
+To get a copy of this input data object;
+```{sh eval=FALSE}
+# Full version (used for this document): 
+curl -O https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_seurat_01_loaded_v2.RDS
+```
+
+
+
+
+
 ```{r}
 library(Seurat)
 library(tidyverse)
@@ -99,7 +111,6 @@ so <- readRDS(seurat_file_01_loaded)
 
 ## Experimental design
 
-<!-- Move this to own page? --->
 
 There are three individuals per condition, one tissue sample from each individual. 9 slides in total. Each 'sample' is listed below.
 
