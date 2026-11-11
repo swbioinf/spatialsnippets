@@ -99,11 +99,31 @@ library(patchwork)
 library(ggrepel) # gg_repel, For non-overlapping gene labels
 ```
 
+To get a copy of this input data object;
+
+```{sh eval=FALSE}
+# Full version (used for this document): 
+curl -O https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_sfe_01_loaded.tar.gz
+tar -xzf GSE234713_CosMx_IBD_sfe_01_loaded.tar.gz
+# Or - Subsampled version (reccomended for testing): 
+curl -O https://object-store.rc.nectar.org.au/v1/AUTH_e2a432b1b30e4b55bb6a2e5b8d65fd73/spatial_sampler_data/datasets/GSE234713_CosMx_IBD_midi3group03_sfe.tar.gz
+tar -xzf GSE234713_CosMx_IBD_midi3group03_sfe.tar.gz
+```
+
+
+
+Paths to data files;
 ```{r}
 data_dir              <- file.path("~/projects/spatialsnippets/datasets/GSE234713_IBDcosmx_GarridoTrigo2023/processed_data") 
-sfe_01_loaded <- file.path(data_dir, "GSE234713_CosMx_IBD_sfe_01_loaded")
-se_pseudobulk_file <- file.path(data_dir, "GSE234713_CosMx_IBD_pseudobulk_sample_se2.RDS")
+sfe_01_loaded         <- file.path(data_dir, "GSE234713_CosMx_IBD_sfe_01_loaded") # input
+se_pseudobulk_file    <- file.path(data_dir, "GSE234713_CosMx_IBD_pseudobulk_sample_se2.RDS") # intermediate data
 ```
+
+<!--
+data_dir <- file.path("~/projects/spatialsnippets/datasets/objectstore") 
+sfe_01_loaded         <- file.path(data_dir, "GSE234713_CosMx_IBD_midi3group03_sfe")
+se_pseudobulk_file    <- file.path(data_dir, "GSE234713_CosMx_IBD_pseudobulk_sample_se2.RDS") # intermediate data
+-->
 
 
 ```{r}
@@ -223,10 +243,20 @@ Even so, its well worth saving the 'pseudobulk' object to disk for later calcula
 
 
 ```{r eval=FALSE}
-
 sfe$pdb_sample <- paste0(sfe$tissue_sample, '_', sfe$celltype_subset)
 
-se.pdb <- aggregateAcrossCells(sfe, ids=sfe$pdb_sample)
+
+# Messages like below (when using alabaster backends), may be resolved by 'realizing' the on-disk object.
+#using unknown matrix fallback for 'CSC_H5SparseMatrixSeed'
+#Error: value vector of an element of the 'SVT' slot in a SVT_SparseMatrix object is not a numeric or logical type
+counts(sfe) <- realize(counts(sfe))
+
+# TODO: update to scrapper::aggregateAcrossCells.se()
+# A newwer version stores this data in 'sums' and retuirns as a se object
+# counts() funciton isn't implemented directly on this version, so for now stick with the old
+#se.pdb <- aggregateAcrossCells.se(sfe,  sfe$pdb_sample,   num.threads = 8 )
+
+se.pdb <- scuttle::aggregateAcrossCells(sfe, ids=sfe$pdb_sample)
 # Use 8 cores, requires BiocParallel, 
 #se.pdb <- aggregateAcrossCells(sfe, ids=sfe$pdb_sample,
 #                               BPPARAM = MulticoreParam(workers=8)  )
@@ -295,7 +325,7 @@ ncol(se.pdb)
 
 Ignoring pseodureplicate fovs from a single sample, how many biological samples are represented in our filtered table?
 
-In this experiment, there are enough samples to run the contrasts for every cell type.
+In this experiment, there are enough samples to run the contrasts for every cell type (in the full dataset).
 
 ```{r}
 
@@ -407,7 +437,8 @@ for (the_celltype in levels(se.pdb$celltype_subset)) {
     
   # Make a new table with contrasts that we have enough biosamples for.
   contrasts_to_test <- contrasts_wanted[enough_biosamples,]
-  
+  # skip clusters with no possible contrasts after filtering
+  if( nrow(contrasts_to_test) < 1 ) {next}
   
   
   ## Setup model
@@ -486,7 +517,7 @@ de_results_sig <- filter(de_results_all, adj.P.Val < 0.05)
 Table of significant results.
 
 ```{r}
-DT::datatable(mutate(de_results_sig, across(is.numeric, signif, digits = 3)))
+DT::datatable(de_results_sig)
 ```
 
 
@@ -522,7 +553,7 @@ make_ma_style_plot <- function(res_table, pval_threshold = 0.05, n_genes_to_labe
 #res_table.UCvHC.epi <- filter(de_results_all, contrast == "UCvHC", celltype=="epi")
 
 p1 <- make_ma_style_plot(res_table = filter(de_results_all, contrast == "UCvHC", celltype=="plasmas")) + ggtitle("UC vs HC - plasmas")
-p2 <- make_ma_style_plot(res_table = filter(de_results_all, contrast == "UCvHC", celltype=="tcells"))+ ggtitle("UC vs HC - T-cells")
+p2 <- make_ma_style_plot(res_table = filter(de_results_all, contrast == "UCvHC", celltype=="myeloids"))+ ggtitle("UC vs HC - myeloids")
 p3 <- make_ma_style_plot(res_table = filter(de_results_all, contrast == "UCvHC", celltype=="stroma")) + ggtitle("UC vs HC - stroma")
 
 p1 + p2 + p3
@@ -695,7 +726,8 @@ for (the_celltype in levels(se.pdb$celltype)) {
   # Make a new table with contrasts that we have enough biosamples for.
   contrasts_to_test <- contrasts_wanted[enough_biosamples,]
   
-  
+  # skip clusters with no possible contrasts after filtering
+  if( nrow(contrasts_to_test) < 1 ) {next}
   
   ## Setup model
   
